@@ -1,24 +1,139 @@
-import React,{useState} from 'react';
-import { StyleSheet,View,KeyboardAvoidingView,Text,Image,Dimensions,TouchableOpacity, StatusBar} from 'react-native';
+import React,{useState,useCallback,useReducer,useEffect} from 'react';
+import { StyleSheet,View,KeyboardAvoidingView,Text,Image,Dimensions,TouchableOpacity, StatusBar,Alert,ActivityIndicator,AsyncStorage} from 'react-native';
 import {MaterialIcons} from "@expo/vector-icons";
-import { Input,Button } from 'react-native-elements';
+import {Button } from 'react-native-elements';
 import Colors from '../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
+import CustomInput from '../components/Input';
+import {useSelector,useDispatch} from 'react-redux';
+import * as barberActions from '../store/actions/barberActions';
+import * as Crypto from 'expo-crypto'; 
 
 //responsivity (Dimensions get method)
 const screen = Dimensions.get('window');
 
+//UseReducer Input Management//////////////////////////////////////////////////////////////////////////////////
+const Form_Input_Update = 'Form_Input_Update';
+const formReducer=(state,action) =>{
+    if(action.type === Form_Input_Update){
+        const updatedValues = {
+          ...state.inputValues,
+          [action.inputID]:action.value
+        };
+        const updatedValidities = {
+          ...state.inputValidities,
+          [action.inputID]:action.isValid
+        };
+        let formIsValidUpdated = true;
+        for(const key in updatedValidities){
+          formIsValidUpdated = formIsValidUpdated && updatedValidities[key];
+        }
+        return{
+          inputValues:updatedValues,
+          inputValidities:updatedValidities,
+          formIsValid:formIsValidUpdated
+        };
+    }
+   
+     return state;
+    
+};
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 const LoginScreen = props =>{
 
-  
+   /*
+   *******Fetch All Barbers
+  */
+    const dispatch =useDispatch();
+    useEffect(()=>{
+
+    const getBarbers = async()=>{ 
+    try{
+        dispatch(barberActions.setBarbers());
+        }catch(err){
+          console.log(err);
+        }
+    };
+   
+    getBarbers();
+    },[dispatch]);
+
+    const barbers= useSelector(state=>state.barbers.barbers);
+    console.log(barbers);
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  /*Responsivity */
-  
+///Input management
+const [isLogin,setIsLogin]= useState(false);//ActivityIndicator handling
+const prefix='+213';
+
+const[formState,disaptchFormState] = useReducer(formReducer,
+    {inputValues:{
+      phone: '',
+      password:''
+    },
+     inputValidities:{
+       phone:false,
+       password:false
+     },
+     formIsValid:false});
+
+
+const inputChangeHandler = useCallback((inputIdentifier, inputValue,inputValidity) =>{
+
+disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity,inputID:inputIdentifier});
+},[disaptchFormState]);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-  const [phone,setPhone] = useState('');
-  const [password,setPassword] = useState('');
+const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
+
+  AsyncStorage.setItem('userData',
+                        JSON.stringify({
+                        token:token,
+                        userID:userID,
+                        expiryDate: expirationDate.toISOString(),
+                        gender:gender,
+                        id:id
+                       }) 
+                       );
+        };
+
+   //Press Login Button handling ==> LOGIN
+  const login = async ()=>{
+
+    if(formState.formIsValid){
+      try{
+        const hashedPassword = await Crypto.digestStringAsync(
+          Crypto.CryptoDigestAlgorithm.SHA512,
+          formState.inputValues.password
+        );
+        
+        setIsLogin(true);
+        const result = await fetch(`http://192.168.1.34:3000/phone/${prefix+formState.inputValues.phone}`);
+        const resData= await result.json();
+        setIsLogin(false);
+        const currentBarber= barbers.find(item=>item.phone===prefix+formState.inputValues.phone && 
+                                                item.password===hashedPassword);
+                                                
+        if(resData.userRecord.phoneNumber === prefix+formState.inputValues.phone && currentBarber){
+            props.navigation.navigate('Barber',{barberID:currentBarber.id,barberUID:resData.userRecord.uid});
+            saveDataToStorage(resData.token,resData.userRecord.uid,new Date(resData.expirationDate),currentBarber.type,currentBarber.id);
+            Alert.alert(`${currentBarber.name} ${currentBarber.surname}`,'Contents de vous revoir!',[{text:"Merci"}]);
+        }else{
+          Alert.alert('Erreur!','Numéro de téléphone ou mot de passe invalide.',[{text:"OK"}]);
+        }
+
+      }catch(error){
+        console.log(error);
+        Alert.alert('Oups!','Une erreur est survenue.',[{text:"OK"}]);
+        setIsLogin(false);
+       
+      }
+    }else{
+      Alert.alert('Erreur!','Numéro de téléphone ou mot de passe invalide.',[{text:"OK"}]);
+    } 
+
+  };     
 
     return(
       <View style={styles.container}>
@@ -32,41 +147,57 @@ const LoginScreen = props =>{
                  <Image source={require('../assets/images/t1.png')} style={styles.logo}/>
                  <Text style={styles.callToAction}>Contactez un coiffeur en quelques clics</Text>
              </View>
-             <View style={styles.inputsContainer}>
-                 <View style={styles.inputPhoneContainer}>
-                  <Input 
-                      rightIcon={<MaterialIcons title = "phone" name ='phone' color='#323446' size={23} />}
-                      placeholder="Téléphone"
-                      inputContainerStyle={styles.input}
-                      placeholderTextColor='rgba(50,52,70,0.4)'
-                      inputStyle={{fontSize:15}}
-                      />
-                  
-                 </View>
-                 <View style={styles.inputPasswordContainer}>
-                  <Input 
-                      rightIcon={<MaterialIcons title="lock" name ='remove-red-eye' color='#323446' size={23} />}
-                      placeholder=" Mot de Passe"
-                      inputContainerStyle={styles.input}
-                      placeholderTextColor='rgba(50,52,70,0.4)'
-                      inputStyle={{fontSize:15}}
-                      />
-                 </View>
-             </View>
+              <View style={styles.inputsContainer}>
+                  <CustomInput
+                    id='phone'
+                    rightIcon={<MaterialIcons title = "phone" name ='phone' color='#323446' size={23} />}
+                    leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Colors.blue,paddingRight:5}}><Image source={require('../assets/images/algeriaFlag.png')} style={{width:24,height:28,marginRight:5}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
+                    placeholder='555555555'
+                    keyboardType="phone-pad"
+                    returnKeyType="next"
+                    onInputChange={inputChangeHandler}
+                    initialValue=''
+                    initiallyValid={true}
+                    phone
+                    required
+                    errorText='Veuillez entrer un numéro valide svp!'
+                    placeholderTextColor='rgba(50,52,70,0.4)'
+                    inputStyle={{fontSize:15}}
+                  />
+                  <CustomInput
+                    id='password'
+                    rightIcon={<MaterialIcons title="lock" name ='remove-red-eye' color='#323446' size={23} />}
+                    placeholder='Mot de Passe'
+                    keyboardType="default"
+                    returnKeyType="next"
+                    secureTextEntry
+                    minLength={6}
+                    autoCapitalize='none'
+                    onInputChange={inputChangeHandler}
+                    initialValue=''
+                    initiallyValid={true}
+                    required
+                    errorText='Veuillez entrer minimum 6 caractères svp!'
+                    placeholderTextColor='rgba(50,52,70,0.4)'
+                    inputStyle={{fontSize:15}}
+                  />
+              </View>
              <View style={styles.footerContainer}>
-                <Button
+                {!isLogin?<Button
                     theme={{colors: {primary:'#fd6c57'}}} 
                     title="Se connecter"
                     titleStyle={styles.labelButton}
                     buttonStyle={styles.buttonStyle}
                     ViewComponent={LinearGradient} 
+                    onPress={login}
                     linearGradientProps={{
                         colors: ['#fd6d57', '#fd9054'],
                         start: {x: 0, y: 0} ,
                         end:{x: 1, y: 0}
                         
                     }}
-                  />
+                  />:<ActivityIndicator color={Colors.primary} />}
+
                   <Text style={styles.forgotPassword}>Mot de passe oublié?</Text>
                   <View style={styles.signupContainer}>
                     <Text style={styles.doYouHaveAnAccount}>Vous n'avez pas un compte? </Text>
@@ -141,9 +272,9 @@ const styles= StyleSheet.create({
   },
   inputsContainer:{
     height:'40%',
-    width:'100%',
+    width:'90%',
     justifyContent:'center',
-    alignItems:'center'
+    alignSelf:'center'
   },
   inputPhoneContainer:{
     width:'90%',
@@ -151,7 +282,7 @@ const styles= StyleSheet.create({
     borderRadius:25,
     backgroundColor:'#d3d3d3',
     borderColor:'#d3d3d3',
-    height:50
+    height:45
   },
   input:{
     borderBottomWidth:0,

@@ -1,13 +1,14 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState,useEffect,useReducer,useCallback} from 'react';
 import { StyleSheet,View,AsyncStorage,ScrollView,ImageBackground,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActionSheetIOS,Picker} from 'react-native';
-import {MaterialIcons,MaterialCommunityIcons} from "@expo/vector-icons";
-import {Button,Input} from 'react-native-elements';
+import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
+import {useSelector,useDispatch} from 'react-redux';
 import {HeaderButtons,Item} from "react-navigation-header-buttons";
 import HeaderButton from "../../../components/HeaderButton";
+import InputProfile from '../../../components/InputProfile';
 import polylanar from "../../../lang/ar";
 import polylanfr from "../../../lang/fr";
 
-import { LinearGradient } from 'expo-linear-gradient';
+import * as authActions from '../../../store/actions/authActions';
 
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
@@ -15,10 +16,35 @@ import * as Permissions from 'expo-permissions';
 //responsivity (Dimensions get method)
 const screen = Dimensions.get('window');
 
+//UseReducer Input Management//////////////////////////////////////////////////////////////////////////////////
+const Form_Input_Update = 'Form_Input_Update';
+const formReducer=(state,action) =>{
+    if(action.type === Form_Input_Update){
+        const updatedValues = {
+          ...state.inputValues,
+          [action.inputID]:action.value
+        };
+        const updatedValidities = {
+          ...state.inputValidities,
+          [action.inputID]:action.isValid
+        };
+        let formIsValidUpdated = true;
+        for(const key in updatedValidities){
+          formIsValidUpdated = formIsValidUpdated && updatedValidities[key];
+        }
+        return{
+          inputValues:updatedValues,
+          inputValidities:updatedValidities,
+          formIsValid:formIsValidUpdated
+        };
+    }
+   
+     return state;
+    
+};
+
 const BarberProfileScreen = props =>{
 
-    const data=[{id:'1',fullname:'Angelina .J',imagePth:require('../../../assets/images/man1-1.jpg'),phone:'0659853214',sexe:'Femme',email:'maxi@gmail.com',experience:5,imagePth2:require('../../../assets/images/man2.jpg')},
-               ]; 
     const [isInfo,setIsInfo]= useState(true);
     const [isLocalisation,setIsLocalisation]= useState(false);
 
@@ -34,8 +60,8 @@ const BarberProfileScreen = props =>{
     //States for complex information textInputs
    const [wilaya,setWilaya] = useState('Wilaya');
    const wilayas = ['Alger','Blida'];
-   const [region,setRegion] = useState('Region');
-   const regions = ['Hydra','Salombé','Bab Dzair','Said Hamdine','Bab Essebt','Joinville']; 
+
+   const dispatch = useDispatch();
    
    
    //picker only iOS function 
@@ -55,28 +81,42 @@ const BarberProfileScreen = props =>{
        }
      );  
  }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///Input management
 
- //picker only iOS function 
- const onPressRegion = () =>{
-  const regionsIOS = ['Hydra','Salombé','Bab Dzair','Said Hamdine','Bab Essebt','Joinville'];    
-  ActionSheetIOS.showActionSheetWithOptions(
-    {
-      options: regionsIOS,
-      cancelButtonIndex: -1
-    },
-    buttonIndex => {
-      if (buttonIndex === -1) {
-        // cancel action
-      } else {
-       setMinute(regionsIOS[buttonIndex]);
-      } 
+const[formState,disaptchFormState] = useReducer(formReducer,
+  {inputValues:{
+    b_name: '',
+    age:'',
+    name:'',
+    surname:'',
+    email:'',
+    address:'',
+    region:''
+  },
+   inputValidities:{
+    b_name: false,
+    age:false,
+    name:false,
+    surname:false,
+    email:false,
+    address:false,
+    region:false
+   },
+   formIsValid:false});
+
+const inputChangeHandler = useCallback((inputIdentifier, inputValue,inputValidity) =>{
+
+disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity,inputID:inputIdentifier});
+},[disaptchFormState]);
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    //logout handler
+    const logout = ()=>{
+      dispatch(authActions.logout());
+      AsyncStorage.clear();
+      props.navigation.navigate('Auth');
     }
-  );  
-}
-
-    
-
-    
   
     return(
     <View style={styles.container}>
@@ -86,7 +126,7 @@ const BarberProfileScreen = props =>{
        <View style={styles.secondCard}>
             <View style={styles.secondCardContent}>
                 <View style={styles.imageContainer}>
-                    <Image source={data[0].imagePth2} style={styles.image} />
+                    <Image source={require('../../../assets/images/man2.jpg')} style={styles.image} />
                 </View>
                 <View style={styles.detailsContainer}>
                   <View style={{width:'30%'}}>
@@ -109,116 +149,181 @@ const BarberProfileScreen = props =>{
                   <Text style={{color:isInfo?'#fff':'#fd6c57',fontFamily:'poppins'}}>Informations</Text>
                </TouchableOpacity>
                <TouchableOpacity onPress={localisation} style={{padding:5,width:'50%',backgroundColor:isLocalisation?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
-                   <Text style={{color:isLocalisation?'#fff':'#fd6c57',fontFamily:'poppins'}}>Localisation</Text>
+                   <Text style={{color:isLocalisation?'#fff':'#fd6c57',fontFamily:'poppins'}}>Mon Compte</Text>
                </TouchableOpacity>
           </View>
        {isInfo?(<ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
           <KeyboardAvoidingView keyboardVerticalOffset={10}>
             <View style={styles.bnameAgeContainer}>
-                <View style={styles.inputBnameContainer}>
-                    <Input 
-                        rightIcon={<MaterialIcons title = "person-pin" name ='person-pin' color='#323446' size={23} />}
-                        placeholder="Nom business"
-                        inputContainerStyle={styles.input}
-                        placeholderTextColor='rgba(50,52,70,0.4)'
-                        inputStyle={{fontSize:15}}
-                        />
-                 </View>
-                 <View style={styles.inputAgeContainer}>
-                    <Input 
-                        rightIcon={<MaterialCommunityIcons title = "age" name ='sort-numeric' color='#323446' size={23} />}
-                        placeholder="Age"
-                        inputContainerStyle={styles.input}
-                        placeholderTextColor='rgba(50,52,70,0.4)'
-                        inputStyle={{fontSize:15}}
-                        />
-                 </View>
+              <View style={styles.inputBnameContainer}>
+                <InputProfile
+                      id='b_name'
+                      rightIcon={<MaterialIcons title = "person-pin" name ='person-pin' color='#323446' size={23} />}
+                      placeholder='Nom business'
+                      keyboardType="default"
+                      returnKeyType="next"
+                      onInputChange={inputChangeHandler}
+                      initialValue=''
+                      initiallyValid={true}
+                      required
+                      placeholderTextColor='rgba(50,52,70,0.4)'
+                      inputStyle={{fontSize:15}}
+                    />
+              </View>
+              <View style={styles.inputAgeContainer}>
+                <InputProfile
+                      id='age'
+                      rightIcon={<MaterialCommunityIcons title = "age" name ='sort-numeric' color='#323446' size={23} />}
+                      placeholder='Age'
+                      keyboardType="phone-pad"
+                      returnKeyType="next"
+                      onInputChange={inputChangeHandler}
+                      initialValue=''
+                      initiallyValid={true}
+                      required
+                      placeholderTextColor='rgba(50,52,70,0.4)'
+                      inputStyle={{fontSize:15}}
+                    />
+              </View>
             </View>
-             
-                 <View style={styles.inputPhoneContainer}>
-                    <Input 
-                        rightIcon={<MaterialIcons title = "name" name ='person' color='#323446' size={23} />}
-                        placeholder="Nom"
-                        inputContainerStyle={styles.input}
-                        placeholderTextColor='rgba(50,52,70,0.4)'
-                        inputStyle={{fontSize:15}}
-                        />
-                 </View>
-                 <View style={styles.inputPhoneContainer}>
-                    <Input 
-                        rightIcon={<MaterialIcons title = "firstName" name ='person' color='#323446' size={23} />}
-                        placeholder="Prénom"
-                        inputContainerStyle={styles.input}
-                        placeholderTextColor='rgba(50,52,70,0.4)'
-                        inputStyle={{fontSize:15}}
-                        />
-                 </View>
-                 <View style={styles.inputPhoneContainer}>
-                    <Input 
-                        rightIcon={<MaterialIcons title = "email" name ='email' color='#323446' size={23} />}
-                        placeholder="Email"
-                        inputContainerStyle={styles.input}
-                        placeholderTextColor='rgba(50,52,70,0.4)'
-                        inputStyle={{fontSize:15}}
-                        />
-                 </View>
-                 <View style={styles.inputPhoneContainer}>
-                    <Input 
-                        rightIcon={<MaterialIcons title = "address" name ='map' color='#323446' size={23} />}
-                        placeholder="Adresse"
-                        inputContainerStyle={styles.input}
-                        placeholderTextColor='rgba(50,52,70,0.4)'
-                        inputStyle={{fontSize:15}}
-                        />
-                 </View>
-                 <View style={styles.pickerContainer}>
-                   {Platform.OS === 'android' ? 
-                              <Picker
-                              selectedValue={wilaya}
-                              onValueChange={itemValue => setWilaya(itemValue)}
-                              style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}
-                              >
-                              {wilayas.map(el=> <Picker.Item label={el} value={el} key={el} />)}
-                              </Picker> :
-                              <Text onPress={onPress} style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}>
-                                {wilaya}
-                              </Text>} 
-                  </View>
-                  <View style={styles.pickerContainerRegion}>
-                   {Platform.OS === 'android' ? 
-                              <Picker
-                              selectedValue={region}
-                              onValueChange={itemValue => setRegion(itemValue)}
-                              style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}
-                              >
-                              {regions.map(el=> <Picker.Item label={el} value={el} key={el} />)}
-                              </Picker> :
-                              <Text onPress={onPressRegion} style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}>
-                                {region}
-                              </Text>} 
-                  </View>
+            <View style={styles.inputPhoneContainer}>
+              <InputProfile
+                  id='name'
+                  rightIcon={<MaterialIcons title = "firstName" name ='person' color='#323446' size={23} />}
+                  placeholder='Nom'
+                  keyboardType="default"
+                  returnKeyType="next"
+                  onInputChange={inputChangeHandler}
+                  initialValue=''
+                  initiallyValid={true}
+                  required
+                  placeholderTextColor='rgba(50,52,70,0.4)'
+                  inputStyle={{fontSize:15}}
+                  minLength={3}
+                  autoCapitalize='sentences'
+                />
+             </View>
+             <View style={styles.inputPhoneContainer}>
+              <InputProfile
+                id='surname'
+                rightIcon={<MaterialIcons title = "firstName" name ='person' color='#323446' size={23} />}
+                placeholder='Prénom'
+                keyboardType="default"
+                returnKeyType="next"
+                onInputChange={inputChangeHandler}
+                initialValue=''
+                initiallyValid={true}
+                required
+                placeholderTextColor='rgba(50,52,70,0.4)'
+                inputStyle={{fontSize:15}}
+                minLength={3}
+                autoCapitalize='sentences'
+              />
+            </View>
+            <View style={styles.inputPhoneContainer}>
+              <InputProfile
+                  id='email'
+                  rightIcon={<MaterialIcons title = "email" name ='email' color='#323446' size={23} />}
+                  placeholder='Email'
+                  keyboardType="default"
+                  returnKeyType="next"
+                  onInputChange={inputChangeHandler}
+                  initialValue=''
+                  initiallyValid={true}
+                  email
+                  required
+                  placeholderTextColor='rgba(50,52,70,0.4)'
+                  inputStyle={{fontSize:15}}
+                  minLength={6}
+                  autoCapitalize='sentences'
+                />
+            </View>
+            <View style={styles.inputPhoneContainer}>
+              <InputProfile
+                id='address'
+                rightIcon={<MaterialIcons title = "address" name ='map' color='#323446' size={23} />}
+                placeholder='Adresse'
+                keyboardType="default"
+                returnKeyType="next"
+                onInputChange={inputChangeHandler}
+                initialValue=''
+                initiallyValid={true}
+                required
+                placeholderTextColor='rgba(50,52,70,0.4)'
+                inputStyle={{fontSize:15}}
+                minLength={12}
+                autoCapitalize='sentences'
+              />
+            </View>
+            <View style={styles.pickerContainer}>
+              {Platform.OS === 'android' ? 
+                        <Picker
+                        selectedValue={wilaya}
+                        onValueChange={itemValue => setWilaya(itemValue)}
+                        style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}
+                        >
+                        {wilayas.map(el=> <Picker.Item label={el} value={el} key={el} />)}
+                        </Picker> :
+                        <Text onPress={onPress} style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}>
+                          {wilaya}
+                        </Text>} 
+            </View>
+            <View style={styles.inputPhoneContainer}>
+              <InputProfile
+                id='region'
+                rightIcon={<MaterialIcons title="region" name ='home' color='#323446' size={23} />}
+                placeholder='Région'
+                keyboardType="default"
+                returnKeyType="next"
+                minLength={3}
+                autoCapitalize='sentences'
+                onInputChange={inputChangeHandler}
+                initialValue=''
+                initiallyValid={true}
+                required
+                placeholderTextColor='rgba(50,52,70,0.4)'
+                inputStyle={{fontSize:15}}
+              />
+            </View>
             </KeyboardAvoidingView>
        </ScrollView>):
        (<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false}>
            <View style={styles.noticeContainer}>
                <Text style={styles.noticeTitle}>Remarque</Text>
-               <Text style={styles.noticeContent}>Nous vous prions de cliquer sur le bouton au-dessous afin d'activer votre localisation et que nous pouvons calculer la distance entre vous et vos futurs clients. </Text>
+               <Text style={styles.noticeContent}>Avertir notre équipe avant de supprimer votre compte!</Text>
                <Text style={styles.tahfifaSignature}>Equipe Tahfifa.</Text>
            </View>
            <View style={styles.buttonContainer}>
-            <Button
-                      theme={{colors: {primary:'#fd6c57'}}} 
-                      title="Activez votre localisation"
-                      titleStyle={styles.labelButton}
-                      buttonStyle={styles.buttonStyle}
-                      ViewComponent={LinearGradient} 
-                      linearGradientProps={{
-                          colors: ['#fd6d57', '#fd9054'],
-                          start: {x: 0, y: 0} ,
-                          end:{x: 1, y: 0}
-                          
-                      }}
-                    />
+                <View style={styles.cartContainer}>
+                  <TouchableOpacity style={styles.cart} onPress={logout}>
+                      <View style={{paddingBottom:5}}>
+                        <MaterialCommunityIcons title = "logout" name ='logout' color='#FD6C57' size={23} />
+                      </View>
+                      <View>
+                        <Text style={styles.optionTitle}>Se déconnecter</Text>
+                      </View>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.cartContainer}>
+                  <TouchableOpacity style={styles.cart} onPress={()=>props.navigation.navigate('BarberSupport')}>
+                       <View style={{paddingBottom:5}}>
+                         <Ionicons title = "options" name ='ios-options' color='#56A7FF' size={23} />
+                       </View>
+                       <View>
+                         <Text style={styles.optionTitle}>Paramètres</Text>
+                       </View>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.cartContainer}>
+                  <TouchableOpacity style={styles.cart}>
+                         <View style={{paddingBottom:5}}>
+                            <MaterialCommunityIcons title = "delete" name ='delete-forever' color='#FE457C' size={23} />
+                          </View>
+                          <View>
+                            <Text style={styles.optionTitle}>Mon compte</Text>
+                          </View>
+                  </TouchableOpacity>
+                </View>
            </View>
          </ScrollView>)}
     </View>
@@ -378,7 +483,7 @@ const styles= StyleSheet.create({
     },
     scrollView:{
       width:'100%',
-      marginTop:20
+      marginVertical:20
     },
     bnameAgeContainer:{
       flexDirection:'row',
@@ -427,7 +532,7 @@ const styles= StyleSheet.create({
     shadowOffset: {width: 0, height:2},
     shadowRadius: 10,
     elevation: 3,
-    overflow:'hidden'
+    
   },
   input:{
     borderBottomWidth:0,
@@ -481,6 +586,11 @@ const styles= StyleSheet.create({
       fontSize:13,
       color:'#323446'
     },
+    optionTitle:{
+      fontFamily:'poppins-bold',
+      fontSize:11,
+      color:'#323446'
+    },
     noticeContent:{
       fontFamily:'poppins',
       fontSize:12,
@@ -495,21 +605,29 @@ const styles= StyleSheet.create({
     buttonContainer:{
       width:'90%',
       alignSelf:'center',
-      marginVertical:15
+      marginVertical:10,
+      flexDirection:'row'
     },
-   labelButton:{
-    color:'#FFF',
-    fontFamily:'poppins',
-    fontSize:16,
-    textTransform:null,
-   },
-   buttonStyle:{
-    borderColor:'#fd6c57',
-    width:'100%',
-    borderRadius:20,
-    height:40,
-    alignSelf:'center'
-   }
+    cart:{
+      width:'90%',
+      height:'95%',
+      alignItems:'center',
+      justifyContent:'center',
+      shadowColor: 'black',
+      shadowOpacity: 0.96,
+      shadowOffset: {width: 0, height:2},
+      shadowRadius: 10,
+      elevation: 2,
+      overflow:'hidden',
+      borderRadius:10
+    },
+    cartContainer:{
+      width:'33%',
+      height:100,
+      alignItems:'center',
+      justifyContent:'center',
+      
+    }
 });
 
 export default BarberProfileScreen;

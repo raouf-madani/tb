@@ -4,7 +4,18 @@ import BarberNavigation from './navigation/barberNavigation';
 import {AppLoading} from 'expo';
 import * as Font from 'expo-font';
 
+import {createStore,combineReducers,applyMiddleware} from 'redux';
+import ReduxThunk from "redux-thunk";
+import {Provider} from 'react-redux';
+import barbersReducer from './store/reducers/barber';
 enableScreens();
+
+//Create the store and the combine reducers
+const rootReducer = combineReducers({
+  barbers:barbersReducer,
+  });
+  
+  const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 
 const fetchFonts = () =>{
   return Font.loadAsync({
@@ -29,7 +40,7 @@ export default function App() {
    }
 
   return (
-    <BarberNavigation />
+    <Provider store={store}><BarberNavigation /></Provider>
   );
 }
 

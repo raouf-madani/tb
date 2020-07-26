@@ -1,9 +1,10 @@
 import React from 'react';
 import {createStackNavigator} from 'react-navigation-stack';
-import {createAppContainer} from 'react-navigation';
+import {createAppContainer,createSwitchNavigator} from 'react-navigation';
 import {Platform,StyleSheet} from 'react-native';
 import Colors from '../constants/Colors';
 
+import StartupScreen from '../screens/startupScreen';
 import LoginScreen from '../screens/loginScreen';
 import SignupBarberScreen from '../screens/barber/signupBarberScreen';
 import BarberServiceScreen from '../screens/barber/barberBooking/barberServiceScreen';
@@ -15,14 +16,10 @@ import BarberProfileScreen from '../screens/barber/barberProfile/barberProfileSc
 import BarberGaleryScreen from '../screens/barber/barberProfile/barberGaleryScreen';
 import BarberHomeScreen from '../screens/home/barberHomeScreen';
 
-import {Ionicons,  MaterialIcons} from "@expo/vector-icons";
-
 
 //Main Stack Navigator
 const BarberNavigation = createStackNavigator({
-   Login: LoginScreen,
    Barber : BarberHomeScreen,
-   SignupBarber:SignupBarberScreen,
    BarberService : BarberServiceScreen,
    EditService: EditServiceScreen,
    BarberBookings: BarberBookingsScreen,
@@ -33,15 +30,16 @@ const BarberNavigation = createStackNavigator({
 },
 );
 
+const AuthNavigation = createStackNavigator({
+   Login: LoginScreen,
+   SignupBarber:SignupBarberScreen,
+  });
 
- 
-
-///////////////////////////////////////////////////////////////
-
-const styles= StyleSheet.create({
-  
-
-});
+  const MainNavigation = createSwitchNavigator({
+   Startup:StartupScreen,
+   Auth: AuthNavigation,
+   Main: BarberNavigation
+ }) 
 
 
-export default createAppContainer(BarberNavigation);
+export default createAppContainer(MainNavigation);

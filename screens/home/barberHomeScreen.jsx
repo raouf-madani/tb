@@ -1,5 +1,5 @@
 import React,{useState} from 'react';
-import { StyleSheet, Text, View, ImageBackground , Image,Dimensions,TouchableOpacity,ScrollView} from 'react-native';
+import { StyleSheet, Text, View, ImageBackground , Image,Dimensions,TouchableOpacity,ScrollView,StatusBar} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons,Entypo} from "@expo/vector-icons";
 import {  Rating  } from 'react-native-elements';
 import Colors from "../../constants/Colors";
@@ -35,6 +35,7 @@ const BarberHomeScreen = props =>{
   
     return(
       <View style ={styles.container}>
+        <StatusBar hidden/>
          <View style={styles.firstContainer}>
            <View style={styles.coverContainer}>
                <ImageBackground source={require('../../assets/images/barberScreen.png')} style={styles.cover} />
