@@ -11,7 +11,7 @@ import BarberServiceScreen from '../screens/barber/barberBooking/barberServiceSc
 import EditServiceScreen from '../screens/barber/barberBooking/editServiceScreen';
 import BarberBookingsScreen from '../screens/barber/barberBooking/barberBookingsScreen';
 import BarberBookingsDetailScreen from '../screens/barber/barberBooking/barberBookingsDetailScreen';
-import BarberSupportScreen from '../screens/barber/barberProfile/barberSupportScreen';
+import BarberParametersScreen from '../screens/barber/barberProfile/barberParametersScreen';
 import BarberProfileScreen from '../screens/barber/barberProfile/barberProfileScreen';
 import BarberGaleryScreen from '../screens/barber/barberProfile/barberGaleryScreen';
 import BarberHomeScreen from '../screens/home/barberHomeScreen';
@@ -24,7 +24,7 @@ const BarberNavigation = createStackNavigator({
    EditService: EditServiceScreen,
    BarberBookings: BarberBookingsScreen,
    BarberBookingsDetail: BarberBookingsDetailScreen,
-   BarberSupport: BarberSupportScreen,
+   BarberParameters: BarberParametersScreen,
    BarberProfile: BarberProfileScreen,
    BarberGalery: BarberGaleryScreen,
 },

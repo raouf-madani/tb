@@ -8,6 +8,7 @@ import InputProfile from '../../../components/InputProfile';
 import polylanar from "../../../lang/ar";
 import polylanfr from "../../../lang/fr";
 
+import * as barberActions from '../../../store/actions/barberActions';
 import * as authActions from '../../../store/actions/authActions';
 
 import * as ImagePicker from 'expo-image-picker';
@@ -47,6 +48,11 @@ const BarberProfileScreen = props =>{
 
     const [isInfo,setIsInfo]= useState(true);
     const [isLocalisation,setIsLocalisation]= useState(false);
+    
+    //bring firebase user id
+    const barberUID= props.navigation.getParam('barberUID');
+    //get the barber's data
+    const barber= useSelector(state=>state.barbers.barber);
 
     const info = ()=>{
       setIsInfo(true);
@@ -117,6 +123,29 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
       AsyncStorage.clear();
       props.navigation.navigate('Auth');
     }
+
+    const deleteAccount= async()=>{
+      try{
+ 
+         dispatch(barberActions.deleteBarber(barber[0].id));
+         dispatch(authActions.deleteUser(barberUID)); 
+         dispatch(authActions.logout());
+         AsyncStorage.clear();
+         props.navigation.navigate('Auth');
+      }catch(err){
+       console.log(err);
+       Alert.alert('Oups!','Une erreur est survenue!',[{text:"OK"}]);
+      }
+   };
+ 
+   const alertDelete = ()=>{
+      Alert.alert(
+       'Attention!',
+       'Voulez-vous vraiment supprimer votre compte?',
+       [{text:'Oui', style:'destructive', onPress:deleteAccount},
+        {text:'Non', style:'cancel'}]);
+        return;
+   };
   
     return(
     <View style={styles.container}>
@@ -155,7 +184,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
        {isInfo?(<ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
           <KeyboardAvoidingView keyboardVerticalOffset={10}>
             <View style={styles.bnameAgeContainer}>
-              <View style={styles.inputBnameContainer}>
+              
                 <InputProfile
                       id='b_name'
                       rightIcon={<MaterialIcons title = "person-pin" name ='person-pin' color='#323446' size={23} />}
@@ -168,9 +197,10 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                       required
                       placeholderTextColor='rgba(50,52,70,0.4)'
                       inputStyle={{fontSize:15}}
+                      widthView='57%'
                     />
-              </View>
-              <View style={styles.inputAgeContainer}>
+              
+              
                 <InputProfile
                       id='age'
                       rightIcon={<MaterialCommunityIcons title = "age" name ='sort-numeric' color='#323446' size={23} />}
@@ -183,10 +213,11 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                       required
                       placeholderTextColor='rgba(50,52,70,0.4)'
                       inputStyle={{fontSize:15}}
+                      widthView='40%'
                     />
               </View>
-            </View>
-            <View style={styles.inputPhoneContainer}>
+            
+            
               <InputProfile
                   id='name'
                   rightIcon={<MaterialIcons title = "firstName" name ='person' color='#323446' size={23} />}
@@ -201,9 +232,10 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                   inputStyle={{fontSize:15}}
                   minLength={3}
                   autoCapitalize='sentences'
+                  widthView='90%'
                 />
-             </View>
-             <View style={styles.inputPhoneContainer}>
+             
+             
               <InputProfile
                 id='surname'
                 rightIcon={<MaterialIcons title = "firstName" name ='person' color='#323446' size={23} />}
@@ -218,9 +250,10 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 inputStyle={{fontSize:15}}
                 minLength={3}
                 autoCapitalize='sentences'
+                widthView='90%'
               />
-            </View>
-            <View style={styles.inputPhoneContainer}>
+            
+           
               <InputProfile
                   id='email'
                   rightIcon={<MaterialIcons title = "email" name ='email' color='#323446' size={23} />}
@@ -236,9 +269,9 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                   inputStyle={{fontSize:15}}
                   minLength={6}
                   autoCapitalize='sentences'
+                  widthView='90%'
                 />
-            </View>
-            <View style={styles.inputPhoneContainer}>
+            
               <InputProfile
                 id='address'
                 rightIcon={<MaterialIcons title = "address" name ='map' color='#323446' size={23} />}
@@ -253,8 +286,9 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 inputStyle={{fontSize:15}}
                 minLength={12}
                 autoCapitalize='sentences'
+                widthView='90%'
               />
-            </View>
+            
             <View style={styles.pickerContainer}>
               {Platform.OS === 'android' ? 
                         <Picker
@@ -268,7 +302,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                           {wilaya}
                         </Text>} 
             </View>
-            <View style={styles.inputPhoneContainer}>
+            
               <InputProfile
                 id='region'
                 rightIcon={<MaterialIcons title="region" name ='home' color='#323446' size={23} />}
@@ -283,8 +317,9 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 required
                 placeholderTextColor='rgba(50,52,70,0.4)'
                 inputStyle={{fontSize:15}}
+                widthView='90%'
               />
-            </View>
+           
             </KeyboardAvoidingView>
        </ScrollView>):
        (<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false}>
@@ -305,7 +340,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                   </TouchableOpacity>
                 </View>
                 <View style={styles.cartContainer}>
-                  <TouchableOpacity style={styles.cart} onPress={()=>props.navigation.navigate('BarberSupport')}>
+                  <TouchableOpacity style={styles.cart} onPress={()=>props.navigation.navigate('BarberParameters',{barberUID:barberUID})}>
                        <View style={{paddingBottom:5}}>
                          <Ionicons title = "options" name ='ios-options' color='#56A7FF' size={23} />
                        </View>
@@ -315,7 +350,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                   </TouchableOpacity>
                 </View>
                 <View style={styles.cartContainer}>
-                  <TouchableOpacity style={styles.cart}>
+                  <TouchableOpacity style={styles.cart} onPress={alertDelete}>
                          <View style={{paddingBottom:5}}>
                             <MaterialCommunityIcons title = "delete" name ='delete-forever' color='#FE457C' size={23} />
                           </View>
@@ -359,7 +394,7 @@ BarberProfileScreen.navigationOptions = navData => {
             color='#fff'
             size={23}
             style={{paddingLeft:10}} 
-            onPress={()=>navData.navigation.navigate('BarberSupport')}      
+            onPress={()=>navData.navigation.navigate('BarberParameters')}      
           />
         </HeaderButtons>),
       headerRight : () =>(
@@ -488,56 +523,9 @@ const styles= StyleSheet.create({
     bnameAgeContainer:{
       flexDirection:'row',
       width:'90%',
-      alignSelf:'center'
+      alignSelf:'center',
+      justifyContent:'space-between'
     },
-   inputPhoneContainer:{
-    width:'90%',
-    borderWidth:1,
-    borderRadius:20,
-    backgroundColor:'#fff',
-    borderColor:'#fff',
-    marginVertical:5,
-    alignSelf:'center',
-    shadowColor: 'black',
-    shadowOpacity: 0.96,
-    shadowOffset: {width: 0, height:2},
-    shadowRadius: 10,
-    elevation: 3,
-    overflow:'hidden'
-  },
-  inputBnameContainer:{
-    width:'60%',
-    borderWidth:1,
-    borderRadius:20,
-    backgroundColor:'#fff',
-    borderColor:'#fff',
-    marginVertical:5,
-    marginRight:5,
-    shadowColor: 'black',
-    shadowOpacity: 0.96,
-    shadowOffset: {width: 0, height:2},
-    shadowRadius: 10,
-    elevation: 3,
-    overflow:'hidden'
-  },
-  inputAgeContainer:{
-    width:'40%',
-    borderWidth:1,
-    borderRadius:20,
-    backgroundColor:'#fff',
-    borderColor:'#fff',
-    marginVertical:5,
-    shadowColor: 'black',
-    shadowOpacity: 0.96,
-    shadowOffset: {width: 0, height:2},
-    shadowRadius: 10,
-    elevation: 3,
-    
-  },
-  input:{
-    borderBottomWidth:0,
-    paddingHorizontal:10
-  },
   pickerContainer:{
     width:'90%',
     borderWidth:1,

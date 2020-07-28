@@ -12,7 +12,7 @@ const barbersReducer=(state=initialState,action)=>{
        case CREATE_BARBER:
          const newBarber= new Barber(action.barberData.id,action.barberData.phone,action.barberData.password,
                                    action.barberData.sex,null,null,null,null,null,null,action.barberData.wilaya,
-                                   action.barberData.region,null,null,null,1,false,'Barber');
+                                   action.barberData.region,null,null,null,null,true,'Barber');
          return{
            ...state,
            barbers: state.barbers.concat(newBarber)
@@ -48,8 +48,8 @@ const barbersReducer=(state=initialState,action)=>{
           action.barberData.wilaya,
           action.barberData.region,
           action.barberData.image,
-          action.barberData.long,
-          action.barberData.lat,
+          action.barber[barberindex].long,
+          action.barber[barberindex].lat,
           state.barber[barberindex].mark,
           action.barberData.lang,
           state.barber[barberindex].type
@@ -70,64 +70,65 @@ const barbersReducer=(state=initialState,action)=>{
 
       case UPDATE_BARBER_PASSWORD:
          
-        const barberIndex = state.barbers.findIndex(barber => barber.barber_id === action.id);
+        const barberIndex = state.barber.findIndex(barber => barber.id === action.id);
+        
         const updatedBarber = new Barber(
           action.id,
-          state.barbers[barberIndex].phone,
+          state.barber[barberIndex].phone,
           action.barberData.password,
-          state.barbers[barberIndex].sex,
-          state.barbers[barberIndex].name,
-          state.barbers[barberIndex].surname,
-          state.barbers[barberIndex].b_name,
-          state.barbers[barberIndex].age,
-          state.barbers[barberIndex].email,
-          state.barbers[barberIndex].address,
-          state.barbers[barberIndex].wilaya,
-          state.barbers[barberIndex].region,
-          state.barbers[barberIndex].image,
-          state.barbers[barberIndex].long,
-          state.barbers[barberIndex].lat,
-          state.barber[barberindex].mark,
-          state.barbers[barberIndex].lang,
-          state.barbers[barberIndex].type,
+          state.barber[barberIndex].sex,
+          state.barber[barberIndex].name,
+          state.barber[barberIndex].surname,
+          state.barber[barberIndex].b_name,
+          state.barber[barberIndex].age,
+          state.barber[barberIndex].email,
+          state.barber[barberIndex].address,
+          state.barber[barberIndex].wilaya,
+          state.barber[barberIndex].region,
+          state.barber[barberIndex].image,
+          state.barber[barberIndex].long,
+          state.barber[barberIndex].lat,
+          state.barber[barberIndex].mark,
+          state.barber[barberIndex].lang,
+          state.barber[barberIndex].type,
         );   
 
-        const updatedBarbers=[...state.barbers];
+        const updatedBarbers=[...state.barber];
         updatedBarbers[barberIndex]=updatedBarber;
         return{
           ...state,
-          barbers:updatedBarbers
+          barber:updatedBarbers
         };
 
         case UPDATE_BARBER_PHONE:
-          const indexBarber = state.barbers.findIndex(barber => barber.barber_id === action.barberid);
-         
+          const indexBarber = state.barber.findIndex(barber => barber.id === action.barberid);
+          console.log('barberIndex '+indexBarber);
           const updatedBarberPhone = new Barber(
             action.barberData.id,
             action.barberData.phone,
-            state.barbers[indexBarber].password,
-            state.barbers[indexBarber].sex,
-            state.barbers[indexBarber].name,
-            state.barbers[indexBarber].surname,
-            state.barbers[indexBarber].b_name,
-            state.barbers[indexBarber].age,
-            state.barbers[indexBarber].email,
-            state.barbers[indexBarber].address,
-            state.barbers[indexBarber].wilaya,
-            state.barbers[indexBarber].region,
-            state.barbers[indexBarber].image,
-            state.barbers[indexBarber].long,
-            state.barbers[indexBarber].lat,
-            state.barber[barberindex].mark,
-            state.barbers[indexBarber].lang,
-            state.barbers[indexBarber].type,
+            state.barber[indexBarber].password,
+            state.barber[indexBarber].sex,
+            state.barber[indexBarber].name,
+            state.barber[indexBarber].surname,
+            state.barber[indexBarber].b_name,
+            state.barber[indexBarber].age,
+            state.barber[indexBarber].email,
+            state.barber[indexBarber].address,
+            state.barber[indexBarber].wilaya,
+            state.barber[indexBarber].region,
+            state.barber[indexBarber].image,
+            state.barber[indexBarber].long,
+            state.barber[indexBarber].lat,
+            state.barber[indexBarber].mark,
+            state.barber[indexBarber].lang,
+            state.barber[indexBarber].type,
           );   
 
-          const updatedAllBarbers=[...state.barbers];
-          updatedAllBarbers[indexBarber]=updatedBarberPhone;
+          const updatedThisBarber=[...state.barber];
+          updatedThisBarber[indexBarber]=updatedBarberPhone;
           return{
             ...state,
-            barbers:updatedAllBarbers
+            barber:updatedThisBarber
           };
         
        

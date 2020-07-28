@@ -1,12 +1,40 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect,useCallback} from 'react';
 import { StyleSheet, Text, View, ImageBackground , Image,Dimensions,TouchableOpacity,ScrollView,StatusBar} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons,Entypo} from "@expo/vector-icons";
 import {  Rating  } from 'react-native-elements';
 import Colors from "../../constants/Colors";
-
-
+import { useDispatch,useSelector } from 'react-redux';
+import * as barberActions from '../../store/actions/barberActions';
 
 const BarberHomeScreen = props =>{
+
+  const barberID= props.navigation.getParam('barberID');  //get Barber ID
+  const barberUID= props.navigation.getParam('barberUID'); 
+
+  const dispatch= useDispatch();
+
+   /*
+   *******Fetch One barber DATA
+  */
+ const getBarber=useCallback(async()=>{
+  try{
+    dispatch(barberActions.setBarber(barberID));
+    }catch(err){
+      console.log(err);
+    }
+},[dispatch]);
+
+  useEffect(()=>{
+  getBarber();
+  },[dispatch,getBarber]);
+
+  useEffect(()=>{
+    const willFocusSub= props.navigation.addListener('willFocus',getBarber);
+    return ()=>{
+      willFocusSub.remove();
+    };
+  },[getBarber]);
+
   const ratingCompleted = rating =>{
     console.log("Rating is: " + rating)
   }
@@ -59,7 +87,7 @@ const BarberHomeScreen = props =>{
                  <Text style={styles.commentsNumber}>  (125 Commentaires)</Text>   
                 </View>
                 <View style={styles.iconsContainer}>
-                  <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberProfile')}>
+                  <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberProfile',{barberUID:barberUID})}>
                     <View style={styles.iconFormCircle}>
                         <MaterialCommunityIcons title = "map-marker-radius" name ='map-marker-radius' color='#fff' size={23} />
                     </View>

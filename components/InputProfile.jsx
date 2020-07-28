@@ -81,7 +81,9 @@ const InputProfile = props =>{
         }
 
     return(
-        <View style={{height:45}}>
+        <View style={{height:45, width:props.widthView,borderWidth:1,borderRadius:20,backgroundColor:'#fff',
+        borderColor:!inputState.isValid?Colors.primary:'#fff',marginVertical:5,alignSelf:'center',shadowColor: 'black',shadowOpacity: 0.96,
+        shadowOffset: {width: 0, height:2},shadowRadius: 10,elevation: 3,overflow:'hidden'}}>
             <Input
                 {...props}
                 value={inputState.value}

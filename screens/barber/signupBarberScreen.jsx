@@ -144,7 +144,7 @@ const signupHandler = async () => {
 
   const phoneProvider = new firebase.auth.PhoneAuthProvider();
  
-  if(formState.formIsValid && wilaya!==wilayas[0] && region!==regions[0] && sex!==sexTypes[0]){
+  if(formState.formIsValid && wilaya!==wilayas[0] && sex!==sexTypes[0]){
     try {
 
       setVerifyInProgress(true);
@@ -428,16 +428,6 @@ const styles= StyleSheet.create({
     height:'70%',
     alignSelf:'center',
     paddingTop:20
-  },
-  inputPickerContainer:{
-    width:'100%',
-    borderWidth:1,
-    borderRadius:25,
-    backgroundColor:'#d3d3d3',
-    borderColor:'#d3d3d3',
-    marginVertical:3,
-    height:45,
-    justifyContent:'center'
   },
   labelButton:{
     color:'#FFF',

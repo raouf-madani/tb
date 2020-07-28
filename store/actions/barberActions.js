@@ -1,5 +1,6 @@
 export const CREATE_BARBER= "CREATE_BARBER";
 export const SET_BARBERS= "SET_BARBERS";
+export const SET_BARBER= "SET_BARBER";
 export const UPDATE_BARBER_PASSWORD ="UPDATE_BARBER_PASSWORD";
 export const UPDATE_BARBER_PHONE = "UPDATE_BARBER_PHONE";
 export const UPDATE_BARBER = "UPDATE_BARBER";
@@ -57,6 +58,26 @@ export const setBarbers= ()=>{
 
 };
 
+export const setBarber= id => {
+    return async dispatch=>{
+        try{
+            const response= await fetch(`http://192.168.1.34:3000/barber/${id}`);
+            if(!response.ok){
+             throw new Error('Oups! Une erreur est survenue.');
+             }
+ 
+            const resData= await response.json();
+        
+            dispatch({type:SET_BARBER,barberData:resData});
+      
+       }catch(err){
+           console.log(err);
+       }
+
+    };
+
+};
+
 export const updateBarberPassword= (id,password) => {
 
     return async dispatch => {
@@ -108,7 +129,7 @@ export const updateBarberPhone= (id,phone,barberid) => {
 };
 
 
-export const updateBarber= (id,name,surname,b_name,age,email,address,wilaya,region,image,long,lat,lang) => {
+export const updateBarber= (id,name,surname,b_name,age,email,address,wilaya,region,image,lang) => {
 
     return async dispatch => {
 
@@ -118,13 +139,13 @@ export const updateBarber= (id,name,surname,b_name,age,email,address,wilaya,regi
               headers: {
                 'Content-Type': 'application/json'
             },
-            body : JSON.stringify({name,surname,b_name,age,email,address,wilaya,region,image,long,lat,lang})
+            body : JSON.stringify({name,surname,b_name,age,email,address,wilaya,region,image,lang})
            });
            if(!response.ok){
                throw new Error('Oups! Une erreur est survenue.');
            }
            
-           dispatch({type:UPDATE_BARBER,id,barberData:{name,surname,b_name,age,email,address,wilaya,region,image,long,lat,lang}});
+           dispatch({type:UPDATE_BARBER,id,barberData:{name,surname,b_name,age,email,address,wilaya,region,image,lang}});
            
          }catch(err){
              console.log(err);

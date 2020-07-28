@@ -45,7 +45,7 @@ const LoginScreen = props =>{
    /*
    *******Fetch All Barbers
   */
-    const dispatch =useDispatch();
+   /* const dispatch =useDispatch();
     useEffect(()=>{
 
     const getBarbers = async()=>{ 
@@ -60,7 +60,7 @@ const LoginScreen = props =>{
     },[dispatch]);
 
     const barbers= useSelector(state=>state.barbers.barbers);
-    console.log(barbers);
+    console.log(barbers);*/
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///Input management
@@ -111,8 +111,11 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
         setIsLogin(true);
         const result = await fetch(`http://192.168.1.34:3000/phone/${prefix+formState.inputValues.phone}`);
         const resData= await result.json();
+        const barbers= await fetch('http://192.168.1.34:3000/barber');
+        const barbersData= await barbers.json();
+        
         setIsLogin(false);
-        const currentBarber= barbers.find(item=>item.phone===prefix+formState.inputValues.phone && 
+        const currentBarber= barbersData.find(item=>item.phone===prefix+formState.inputValues.phone && 
                                                 item.password===hashedPassword);
                                                 
         if(resData.userRecord.phoneNumber === prefix+formState.inputValues.phone && currentBarber){
@@ -160,7 +163,6 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
                     initiallyValid={true}
                     phone
                     required
-                    errorText='Veuillez entrer un numéro valide svp!'
                     placeholderTextColor='rgba(50,52,70,0.4)'
                     inputStyle={{fontSize:15}}
                   />
@@ -177,7 +179,6 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
                     initialValue=''
                     initiallyValid={true}
                     required
-                    errorText='Veuillez entrer minimum 6 caractères svp!'
                     placeholderTextColor='rgba(50,52,70,0.4)'
                     inputStyle={{fontSize:15}}
                   />

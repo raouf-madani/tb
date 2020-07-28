@@ -131,6 +131,7 @@ app.get('/barber',(req,res)=>{
    con.query('SELECT * FROM barber',(err,result,fields)=>{
      if(err) console.log('Query error',err);
     res.send(result);
+    
    });
 });
 
@@ -145,6 +146,7 @@ con.query('SELECT * FROM barber WHERE id= ?',
 (err,result,fields)=>{
   if(err) console.log('Query error',err);
   res.send(result);
+  
 });
 });
 
