@@ -103,6 +103,7 @@ export const updateBarberPassword= (id,password) => {
 
 };
 
+
 export const updateBarberPhone= (id,phone,barberid) => {
 
     return async dispatch => {
@@ -129,23 +130,25 @@ export const updateBarberPhone= (id,phone,barberid) => {
 };
 
 
-export const updateBarber= (id,name,surname,b_name,age,email,address,wilaya,region,image,lang) => {
+export const updateBarber= (id,name,surname,b_name,age,email,address,wilaya,region,image) => {
 
     return async dispatch => {
 
          try{
+           
            const response = await fetch(`http://192.168.1.34:3000/barber/updateBarber/${id}`,{
               method:'PATCH',
               headers: {
                 'Content-Type': 'application/json'
             },
-            body : JSON.stringify({name,surname,b_name,age,email,address,wilaya,region,image,lang})
+            body : JSON.stringify({name,surname,b_name,age,email,address,wilaya,region,image})
            });
+           
            if(!response.ok){
                throw new Error('Oups! Une erreur est survenue.');
            }
            
-           dispatch({type:UPDATE_BARBER,id,barberData:{name,surname,b_name,age,email,address,wilaya,region,image,lang}});
+           dispatch({type:UPDATE_BARBER,id,barberData:{name,surname,b_name,age,email,address,wilaya,region,image}});
            
          }catch(err){
              console.log(err);

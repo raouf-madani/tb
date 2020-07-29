@@ -15,7 +15,7 @@ import BarberParametersScreen from '../screens/barber/barberProfile/barberParame
 import BarberProfileScreen from '../screens/barber/barberProfile/barberProfileScreen';
 import BarberGaleryScreen from '../screens/barber/barberProfile/barberGaleryScreen';
 import BarberHomeScreen from '../screens/home/barberHomeScreen';
-
+import ForgotPasswordScreen from '../screens/forgotPasswordScreen';
 
 //Main Stack Navigator
 const BarberNavigation = createStackNavigator({
@@ -33,6 +33,7 @@ const BarberNavigation = createStackNavigator({
 const AuthNavigation = createStackNavigator({
    Login: LoginScreen,
    SignupBarber:SignupBarberScreen,
+   ForgotPassword:ForgotPasswordScreen
   });
 
   const MainNavigation = createSwitchNavigator({

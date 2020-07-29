@@ -1,7 +1,8 @@
 import React,{useState,useEffect,useReducer,useCallback} from 'react';
-import { StyleSheet,View,AsyncStorage,ScrollView,ImageBackground,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActionSheetIOS,Picker} from 'react-native';
+import { StyleSheet,View,AsyncStorage,ScrollView,ImageBackground,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActionSheetIOS,Picker,ActivityIndicator} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
 import {useSelector,useDispatch} from 'react-redux';
+import Colors from "../../../constants/Colors";
 import {HeaderButtons,Item} from "react-navigation-header-buttons";
 import HeaderButton from "../../../components/HeaderButton";
 import InputProfile from '../../../components/InputProfile';
@@ -44,10 +45,15 @@ const formReducer=(state,action) =>{
     
 };
 
+
+
 const BarberProfileScreen = props =>{
 
     const [isInfo,setIsInfo]= useState(true);
     const [isLocalisation,setIsLocalisation]= useState(false);
+    //State for update loading 
+    const [isLoading,setIsLoading]=useState(false);
+    const [isLoadingImage,setIsLoadingImage]=useState(false);
     
     //bring firebase user id
     const barberUID= props.navigation.getParam('barberUID');
@@ -64,11 +70,10 @@ const BarberProfileScreen = props =>{
     };
 
     //States for complex information textInputs
-   const [wilaya,setWilaya] = useState('Wilaya');
-   const wilayas = ['Alger','Blida'];
+   const [wilaya,setWilaya] = useState(barber[0]?barber[0].wilaya:undefined);
+   const wilayas = ['wilaya','Alger','Blida'];
 
    const dispatch = useDispatch();
-   
    
    //picker only iOS function 
    const onPress = () =>{
@@ -87,29 +92,89 @@ const BarberProfileScreen = props =>{
        }
      );  
  }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///ImagePicker
+
+//state for image
+const [pickedImage,setPickedImage]= useState(barber[0]?barber[0].image : undefined);
+
+
+const verifyPermissions= async ()=>{
+  const result= await Permissions.askAsync(Permissions.CAMERA,Permissions.CAMERA_ROLL);
+  if(result.status !== 'granted'){
+      Alert.alert('Permissions insuffisantes!',
+      'Vous devez accorder les autorisations de la caméra pour utiliser cette application.',
+      [{text:"D'accord"}]);
+      return false;
+  }
+  return true;
+};
+
+const takeImageHandler = async ()=>{
+ const hasPermissions = await verifyPermissions();
+ if(!hasPermissions){
+     return;
+ }
+ const image = await ImagePicker.launchCameraAsync({
+  mediaTypes: ImagePicker.MediaTypeOptions.All,
+     allowsEditing:true,
+     aspect:[60,60],
+     quality:0.7
+ });
+  
+  setPickedImage(image.uri);
+  
+};
+
+
+
+const takeLibraryHandler = async ()=>{
+  const hasPermissions = await verifyPermissions();
+  if(!hasPermissions){
+      return;
+  }
+ 
+  const library = await ImagePicker.launchImageLibraryAsync({
+   mediaTypes: ImagePicker.MediaTypeOptions.All,
+   allowsEditing:true,
+   aspect:[60,60],
+   quality:0.7
+ });
+  
+  
+  if(library){
+   setPickedImage(library.uri);
+  }
+  
+  
+ };
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///Input management
 
 const[formState,disaptchFormState] = useReducer(formReducer,
   {inputValues:{
-    b_name: '',
-    age:'',
-    name:'',
-    surname:'',
-    email:'',
-    address:'',
-    region:''
+    b_name: barber[0]?barber[0].b_name:'',
+    age:barber[0]?barber[0].age.toString():'',
+    name:barber[0]?barber[0].name:'',
+    surname:barber[0]?barber[0].surname:'',
+    email:barber[0]?barber[0].email:'',
+    address:barber[0]?barber[0].address:'',
+    region:barber[0]?barber[0].region:''
   },
    inputValidities:{
-    b_name: false,
-    age:false,
-    name:false,
-    surname:false,
-    email:false,
-    address:false,
-    region:false
+    b_name: true,
+    age:true,
+    name:true,
+    surname:true,
+    email:true,
+    address:true,
+    region:true
    },
-   formIsValid:false});
+   formIsValid:true});
 
 const inputChangeHandler = useCallback((inputIdentifier, inputValue,inputValidity) =>{
 
@@ -146,6 +211,38 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
         {text:'Non', style:'cancel'}]);
         return;
    };
+
+   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //Update player's data Management after pressing in Check icon
+  const saveHandler = useCallback(async()=>{
+    if(formState.formIsValid && wilaya!=='Wilaya'){
+      
+    try{
+        setIsLoading(true);
+         await dispatch(barberActions.updateBarber(barber[0].id,formState.inputValues.name,formState.inputValues.surname,
+                                          formState.inputValues.b_name,formState.inputValues.age,
+                                          formState.inputValues.email,formState.inputValues.address,
+                                          wilaya,formState.inputValues.region,pickedImage));
+        setIsLoading(false);                        
+        Alert.alert('Félicitation!','Vos données ont été changées avec succès!',[{text:"OK"}]);
+  
+    }catch(err){
+      console.log(err);
+      Alert.alert('Oups!','Une erreur est survenue!',[{text:"OK"}]);
+    }
+    
+    }else{
+      Alert.alert('Erreur!','Veuillez remplir le(s) champ(s) manquants svp!',[{text:"OK"}]);
+    }
+  
+  },[dispatch,barber[0].id,formState,pickedImage,wilaya]);
+
+   useEffect(()=>{
+     props.navigation.setParams({load:isLoading});
+     props.navigation.setParams({save:saveHandler});
+     
+   },[saveHandler,isLoading]);
+
   
     return(
     <View style={styles.container}>
@@ -155,20 +252,21 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
        <View style={styles.secondCard}>
             <View style={styles.secondCardContent}>
                 <View style={styles.imageContainer}>
-                    <Image source={require('../../../assets/images/man2.jpg')} style={styles.image} />
+                {!pickedImage ? <Image source={require('../../../assets/images/man2.jpg')} style={styles.image} />
+                : (<Image style={styles.image} source={{uri:pickedImage}} />)}
                 </View>
                 <View style={styles.detailsContainer}>
                   <View style={{width:'30%'}}>
-                    <TouchableOpacity style={styles.iconFormCircle1}>
+                    <TouchableOpacity style={styles.iconFormCircle1} onPress={takeImageHandler}>
                       <MaterialIcons title = "camera" name ='camera-enhance' color='#323446' size={23} />
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.iconFormCircle2}>
-                      <MaterialIcons title = "delete" name ='delete-forever' color='#FE457C' size={27} />
+                    <TouchableOpacity style={styles.iconFormCircle1} onPress={takeLibraryHandler}>
+                      <MaterialIcons title = "library" name ='photo-library' color='#323446' size={23} />
                     </TouchableOpacity>
                   </View>  
                   <View style={{width:'70%'}}>
-                    <Text style={styles.bnameText}>Merouane.S</Text>
-                    <Text style={styles.age}>26 ans</Text>
+                    <Text style={styles.bnameText}>{barber[0].b_name!==null?barber[0].b_name: 'Nom buisness'}</Text>
+                    <Text style={styles.age}>{barber[0].age!==null?barber[0].age+' ans': 'Votre age'}</Text>
                   </View>
                 </View>
             </View>
@@ -192,7 +290,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                       keyboardType="default"
                       returnKeyType="next"
                       onInputChange={inputChangeHandler}
-                      initialValue=''
+                      initialValue={barber[0]?barber[0].b_name:''}
                       initiallyValid={true}
                       required
                       placeholderTextColor='rgba(50,52,70,0.4)'
@@ -208,7 +306,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                       keyboardType="phone-pad"
                       returnKeyType="next"
                       onInputChange={inputChangeHandler}
-                      initialValue=''
+                      initialValue={barber[0]?barber[0].age.toString():''}
                       initiallyValid={true}
                       required
                       placeholderTextColor='rgba(50,52,70,0.4)'
@@ -225,7 +323,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                   keyboardType="default"
                   returnKeyType="next"
                   onInputChange={inputChangeHandler}
-                  initialValue=''
+                  initialValue={barber[0]?barber[0].name:''}
                   initiallyValid={true}
                   required
                   placeholderTextColor='rgba(50,52,70,0.4)'
@@ -243,7 +341,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 keyboardType="default"
                 returnKeyType="next"
                 onInputChange={inputChangeHandler}
-                initialValue=''
+                initialValue={barber[0]?barber[0].surname:''}
                 initiallyValid={true}
                 required
                 placeholderTextColor='rgba(50,52,70,0.4)'
@@ -261,7 +359,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                   keyboardType="default"
                   returnKeyType="next"
                   onInputChange={inputChangeHandler}
-                  initialValue=''
+                  initialValue={barber[0]?barber[0].email:''}
                   initiallyValid={true}
                   email
                   required
@@ -279,7 +377,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 keyboardType="default"
                 returnKeyType="next"
                 onInputChange={inputChangeHandler}
-                initialValue=''
+                initialValue={barber[0]?barber[0].address:''}
                 initiallyValid={true}
                 required
                 placeholderTextColor='rgba(50,52,70,0.4)'
@@ -289,7 +387,8 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 widthView='90%'
               />
             
-            <View style={styles.pickerContainer}>
+            <View style={{ width:'90%',borderWidth:1,paddingHorizontal:12,borderRadius:25,backgroundColor:'#fff',borderColor:wilaya!=='wilaya'?'#fff':Colors.primary,marginVertical:5,height:45,justifyContent:'center',shadowColor: 'black',shadowOpacity: 0.96,
+                          shadowOffset: {width: 0, height:2},shadowRadius: 10,elevation: 3,overflow:'hidden',alignSelf:'center'}}>
               {Platform.OS === 'android' ? 
                         <Picker
                         selectedValue={wilaya}
@@ -312,7 +411,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 minLength={3}
                 autoCapitalize='sentences'
                 onInputChange={inputChangeHandler}
-                initialValue=''
+                initialValue={barber[0]?barber[0].region:''}
                 initiallyValid={true}
                 required
                 placeholderTextColor='rgba(50,52,70,0.4)'
@@ -368,7 +467,8 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
 
 
 BarberProfileScreen.navigationOptions = navData => {
-    
+  const saveFunction=navData.navigation.getParam('save');
+  const load=navData.navigation.getParam('load');
     
     return {
       headerTransparent : true ,
@@ -387,24 +487,13 @@ BarberProfileScreen.navigationOptions = navData => {
         
         />
       ),
-      headerLeft : () =>(
-        <HeaderButtons HeaderButtonComponent = {HeaderButton}> 
-          <Item title = "menu" 
-            iconName ='ios-menu'
-            color='#fff'
-            size={23}
-            style={{paddingLeft:10}} 
-            onPress={()=>navData.navigation.navigate('BarberParameters')}      
-          />
-        </HeaderButtons>),
-      headerRight : () =>(
+      headerTintColor: '#fff',
+      headerRight : ()=> (load ? <ActivityIndicator color={Colors.primary} style={{marginRight:10}} />:
         <HeaderButtons HeaderButtonComponent = {HeaderButton}> 
           <Item title = "save" 
             iconName ='md-checkmark'
-            color='#fff'
-            size={23} 
-            style={{paddingRight:10}}       
-            onPress={()=>navData.navigation.navigate('BarberGalery')}      
+            color={Platform.OS === 'android' ? 'white' : Colors.blue}
+            onPress={saveFunction}
           />
         </HeaderButtons>)
         };

@@ -32,7 +32,7 @@ const barbersReducer=(state=initialState,action)=>{
 
       case UPDATE_BARBER:
          
-        const barberindex= state.barber.findIndex(barber => barber.barber_id === action.id);
+        const barberindex= state.barber.findIndex(barber => barber.id === action.id);
         
         const updatedBarberData= new Barber(
           action.id,
@@ -48,10 +48,10 @@ const barbersReducer=(state=initialState,action)=>{
           action.barberData.wilaya,
           action.barberData.region,
           action.barberData.image,
-          action.barber[barberindex].long,
-          action.barber[barberindex].lat,
+          state.barber[barberindex].long,
+          state.barber[barberindex].lat,
           state.barber[barberindex].mark,
-          action.barberData.lang,
+          state.barber[barberindex].lang,
           state.barber[barberindex].type
         );
         const updatedBarbersData=[...state.barber];
@@ -100,6 +100,7 @@ const barbersReducer=(state=initialState,action)=>{
           barber:updatedBarbers
         };
 
+       
         case UPDATE_BARBER_PHONE:
           const indexBarber = state.barber.findIndex(barber => barber.id === action.barberid);
           console.log('barberIndex '+indexBarber);

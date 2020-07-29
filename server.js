@@ -185,12 +185,14 @@ con.query(`UPDATE barber SET id=?,phone=? WHERE id= ?`,
 });
 });
 
+
+
 /*
   Update barber
 */ 
 app.patch('/barber/updateBarber/:id',(req,res)=>{
   
-con.query('UPDATE barber SET name=?,surname=?,b_name=?,age=?,email=?,address=?,wilaya=?,region=?,image=?,long=?,lat=?,lang=? WHERE id= ?',
+con.query('UPDATE barber SET name=?,surname=?,b_name=?,age=?,email=?,address=?,wilaya=?,region=?,image=? WHERE id= ?',
 [
   req.body.name,
   req.body.surname,
@@ -201,14 +203,12 @@ con.query('UPDATE barber SET name=?,surname=?,b_name=?,age=?,email=?,address=?,w
   req.body.wilaya,
   req.body.region,
   req.body.image,
-  req.body.long,
-  req.body.lat,
-  req.body.lang,
   req.params.id
 ],
 (err,result,fields)=>{
   if(err) console.log('Query error',err);
   res.send("success");
+  
 });
 });
 

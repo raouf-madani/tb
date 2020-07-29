@@ -1,11 +1,13 @@
 import React,{useState,useCallback,useReducer} from 'react';
-import { StyleSheet,View,KeyboardAvoidingView,Text,Image,Dimensions,TouchableOpacity, StatusBar,Alert,ActivityIndicator,AsyncStorage} from 'react-native';
+import { StyleSheet,View,KeyboardAvoidingView,Text,Image,Dimensions,StatusBar,Alert,ActivityIndicator,AsyncStorage} from 'react-native';
 import {MaterialIcons} from "@expo/vector-icons";
 import {Button } from 'react-native-elements';
 import Colors from '../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import CustomInput from '../components/Input';
 import * as Crypto from 'expo-crypto'; 
+import * as barberActions from '../store/actions/barberActions';
+import {useDispatch} from 'react-redux';
 
 //responsivity (Dimensions get method)
 const screen = Dimensions.get('window');
@@ -38,14 +40,17 @@ const formReducer=(state,action) =>{
 };
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const LoginScreen = props =>{
+const ForgotPasswordScreen = props =>{
 
   
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///Input management
-const [isLogin,setIsLogin]= useState(false);//ActivityIndicator handling
+//Press verifyNumber Button handling ==> Verification
+const [isVerified,setIsVerified]= useState(false);
+const [isLogin,setIsLogin]= useState(false);
 const prefix='+213';
+const dispatch= useDispatch();
 
 const[formState,disaptchFormState] = useReducer(formReducer,
     {inputValues:{
@@ -78,45 +83,81 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
                        );
         };
 
-   //Press Login Button handling ==> LOGIN
-  const login = async ()=>{
+const verifyNumber = async ()=>{
 
-    if(formState.formIsValid){
-      try{
-        const hashedPassword = await Crypto.digestStringAsync(
-          Crypto.CryptoDigestAlgorithm.SHA512,
-          formState.inputValues.password
-        );
+    if(formState.inputValidities.phone && formState.inputValues.phone){
+        try{
         
         setIsLogin(true);
         const result = await fetch(`http://192.168.1.34:3000/phone/${prefix+formState.inputValues.phone}`);
         const resData= await result.json();
-        const barbers= await fetch('http://192.168.1.34:3000/barber');
-        const barbersData= await barbers.json();
-        
         setIsLogin(false);
-        const currentBarber= barbersData.find(item=>item.phone===prefix+formState.inputValues.phone && 
-                                                item.password===hashedPassword);
+        
                                                 
-        if(resData.userRecord.phoneNumber === prefix+formState.inputValues.phone && currentBarber){
-            props.navigation.navigate('Barber',{barberID:currentBarber.id,barberUID:resData.userRecord.uid});
-            saveDataToStorage(resData.token,resData.userRecord.uid,new Date(resData.expirationDate),currentBarber.type,currentBarber.id);
-            Alert.alert(`${currentBarber.name} ${currentBarber.surname}`,'Contents de vous revoir!',[{text:"Merci"}]);
+        if(resData.userRecord.phoneNumber === prefix+formState.inputValues.phone){
+            setIsVerified(true);
         }else{
-          Alert.alert('Erreur!','Numéro de téléphone ou mot de passe invalide.',[{text:"OK"}]);
+            setIsVerified(false);
+            Alert.alert('Erreur!','Ce numéro de téléphone n\'existe pas. Veuillez créer un nouveau compte svp!',[{text:"OK"}]);
         }
-
-      }catch(error){
+        
+        }catch(error){
         console.log(error);
         Alert.alert('Oups!','Une erreur est survenue.',[{text:"OK"}]);
         setIsLogin(false);
-       
-      }
+        }
     }else{
-      Alert.alert('Erreur!','Numéro de téléphone ou mot de passe invalide.',[{text:"OK"}]);
+        Alert.alert('Erreur!','Numéro de téléphone invalide.',[{text:"OK"}]);
     } 
+    
+    };
+          
+const login = async()=>{
 
-  };     
+    if(formState.formIsValid && formState.inputValues.password){
+    try{
+    const hashedPassword = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA512,
+    formState.inputValues.password
+    );
+
+
+    setIsLogin(true);
+    const result = await fetch(`http://192.168.1.34:3000/phone/${prefix+formState.inputValues.phone}`);
+    const resData= await result.json();
+    const barbers= await fetch('http://192.168.1.34:3000/barber');
+    const barbersData= await barbers.json();
+    setIsLogin(false);
+
+const currentBarberObject= barbersData.find(item=> item.phone===prefix+formState.inputValues.phone && item.password===hashedPassword);
+
+if(currentBarberObject){
+Alert.alert('Erreur!','Votre nouveau mot de passe doit être différent d\'ancien mot de passe.',[{text:"Réessayer"}]);
+return;
+}
+
+const currentBarber= barbersData.find(item=>item.phone===prefix+formState.inputValues.phone);
+
+if(currentBarber){
+    
+    dispatch(barberActions.updateBarberPassword(formState.inputValues.phone,hashedPassword));
+    
+    Alert.alert(`${currentBarber.name} ${currentBarber.surname}`,'Contents de vous revoir!',[{text:"Merci"}]);
+    props.navigation.navigate('Barber',{barberID:currentBarber.id,barberUID:resData.userRecord.uid});
+    saveDataToStorage(resData.token,resData.userRecord.uid,new Date(resData.expirationDate),currentBarber.type,currentBarber.id);
+}
+
+}catch(error){
+    console.log(error);
+    Alert.alert('Oups!','Une erreur est survenue.',[{text:"OK"}]);
+    setIsLogin(false);
+}
+
+}else{
+Alert.alert('Erreur!','Veuillez rentrer votre nouveau mot de passe s\'il vous plait!',[{text:"OK"}]);
+}
+
+};  
 
     return(
       <View style={styles.container}>
@@ -132,7 +173,7 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
              </View>
               <View style={styles.inputsContainer}>
                   <CustomInput
-                    id='phone'
+                    id={'phone'}
                     rightIcon={<MaterialIcons title = "phone" name ='phone' color='#323446' size={23} />}
                     leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Colors.blue,paddingRight:5}}><Image source={require('../assets/images/algeriaFlag.png')} style={{width:24,height:28,marginRight:5}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
                     placeholder='555555555'
@@ -145,50 +186,49 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
                     required
                     placeholderTextColor='rgba(50,52,70,0.4)'
                     inputStyle={{fontSize:15}}
+                    editable={!isVerified}
                   />
                   <CustomInput
-                    id='password'
-                    rightIcon={<MaterialIcons title="lock" name ='remove-red-eye' color='#323446' size={23} />}
-                    placeholder='Mot de Passe'
-                    keyboardType="default"
-                    returnKeyType="next"
-                    secureTextEntry
-                    minLength={6}
-                    autoCapitalize='none'
-                    onInputChange={inputChangeHandler}
-                    initialValue=''
-                    initiallyValid={true}
-                    required
-                    placeholderTextColor='rgba(50,52,70,0.4)'
-                    inputStyle={{fontSize:15}}
-                  />
-              </View>
-             <View style={styles.footerContainer}>
-                {!isLogin?<Button
+                  id='password'
+                  rightIcon={<MaterialIcons title="lock" name ='remove-red-eye' color='#323446' size={23} />}
+                  placeholder='Nouveau Mot de Passe'
+                  keyboardType="default"
+                  returnKeyType="next"
+                  secureTextEntry
+                  minLength={6}
+                  autoCapitalize='none'
+                  onInputChange={inputChangeHandler}
+                  initialValue=''
+                  initiallyValid={true}
+                  required
+                  placeholderTextColor='rgba(50,52,70,0.4)'
+                  inputStyle={{fontSize:15}}
+                  editable={isVerified}
+                />
+                 <Button
                     theme={{colors: {primary:'#fd6c57'}}} 
-                    title="Se connecter"
+                    title={!isVerified?"Vérifier":"Se connecter"}
                     titleStyle={styles.labelButton}
                     buttonStyle={styles.buttonStyle}
                     ViewComponent={LinearGradient} 
-                    onPress={login}
+                    onPress={!isVerified ?verifyNumber:login}
                     linearGradientProps={{
                         colors: ['#fd6d57', '#fd9054'],
                         start: {x: 0, y: 0} ,
                         end:{x: 1, y: 0}
                         
                     }}
-                  />:<ActivityIndicator color={Colors.primary} />}
-                  <TouchableOpacity onPress={()=>props.navigation.navigate('ForgotPassword')}>
-                   <Text style={styles.forgotPassword}>Mot de passe oublié?</Text>
-                  </TouchableOpacity>
-                  <View style={styles.signupContainer}>
-                    <Text style={styles.doYouHaveAnAccount}>Vous n'avez pas un compte? </Text>
-                    <TouchableOpacity onPress={()=>props.navigation.navigate('SignupBarber')}>
-                     <Text style={styles.signupText}>S'inscrire</Text>
-                    </TouchableOpacity>
-                  </View>
+                  />
+              </View>
+             
+             
+             {isLogin && <ActivityIndicator  size='small' color={Colors.primary} />}
+            <View style={styles.signupContainer}>
+                <Text style={{color:!isVerified ?Colors.primary:'#A8A8A8',fontFamily:'poppins',fontSize:12,alignSelf:'center',}}>1- Vérifier votre numéro de téléphone.</Text>
+                <Text style={{color:isVerified?Colors.primary:Colors.blue,fontFamily:'poppins',fontSize:12,alignSelf:'center',}}>2- Réinitialiser votre mot de passe.</Text>
+            </View>
                   
-             </View>
+             
           </View>
        </KeyboardAvoidingView> 
      </View>
@@ -196,7 +236,7 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
      );    
 };
 
-LoginScreen.navigationOptions= ()=>{
+ForgotPasswordScreen.navigationOptions= ()=>{
   return {
     headerTransparent : true ,
     headerStyle:{
@@ -214,7 +254,7 @@ LoginScreen.navigationOptions= ()=>{
       
       />
     ),
-    headerLeft:()=>null,
+    headerTintColor: '#fff',
   
   };
 }
@@ -253,14 +293,31 @@ const styles= StyleSheet.create({
     color:'#323446'
   },
   inputsContainer:{
-    height:'40%',
+    height:'55%',
     width:'90%',
     justifyContent:'center',
     alignSelf:'center'
   },
-  footerContainer:{
-    height:'35%',
-    width:'100%',
+  inputPhoneContainer:{
+    width:'90%',
+    borderWidth:1,
+    borderRadius:25,
+    backgroundColor:'#d3d3d3',
+    borderColor:'#d3d3d3',
+    height:45
+  },
+  input:{
+    borderBottomWidth:0,
+    paddingHorizontal:10
+  },
+  inputPasswordContainer:{
+    width:'90%',
+    borderWidth:1,
+    borderRadius:25,
+    height:50,
+    marginTop:10,
+    backgroundColor:'#d3d3d3',
+    borderColor:'#d3d3d3'
   },
   labelButton:{
     color:'#FFF',
@@ -270,33 +327,18 @@ const styles= StyleSheet.create({
    },
    buttonStyle:{
     borderColor:'#fd6c57',
-    width:'90%',
+    width:'100%',
     borderRadius:20,
     height:45,
-    alignSelf:'center'
-   },
-  forgotPassword:{
-    fontSize:14,
-    fontFamily:'poppins',
-    color:'#323446',
     alignSelf:'center',
-    paddingTop:10
-  },
+    marginTop:15
+   },
   signupContainer:{
-    flexDirection:'row',
     paddingTop:10,
-    alignSelf:'center'
+    alignSelf:'center',
+    height:'20%',
+    
   },
-  doYouHaveAnAccount:{
-    fontSize:14,
-    fontFamily:'poppins',
-    color:'grey'
-  },
-  signupText:{
-    fontSize:14,
-    fontFamily:'poppins-bold',
-    color:'#fd6c57'
-  }
 });
 
-export default LoginScreen;
+export default ForgotPasswordScreen;
