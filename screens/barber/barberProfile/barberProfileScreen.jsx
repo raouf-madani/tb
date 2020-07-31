@@ -53,7 +53,6 @@ const BarberProfileScreen = props =>{
     const [isLocalisation,setIsLocalisation]= useState(false);
     //State for update loading 
     const [isLoading,setIsLoading]=useState(false);
-    const [isLoadingImage,setIsLoadingImage]=useState(false);
     
     //bring firebase user id
     const barberUID= props.navigation.getParam('barberUID');
@@ -77,7 +76,7 @@ const BarberProfileScreen = props =>{
    
    //picker only iOS function 
    const onPress = () =>{
-     const wilayasIOS = ['Alger','Blida'];    
+     const wilayasIOS = ['Wilaya','Alger','Blida'];    
      ActionSheetIOS.showActionSheetWithOptions(
        {
          options: wilayasIOS,
@@ -87,7 +86,7 @@ const BarberProfileScreen = props =>{
          if (buttonIndex === -1) {
            // cancel action
          } else {
-          setHour(wilayasIOS[buttonIndex]);
+          setWilaya(wilayasIOS[buttonIndex]);
          } 
        }
      );  
@@ -187,7 +186,16 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
       dispatch(authActions.logout());
       AsyncStorage.clear();
       props.navigation.navigate('Auth');
-    }
+    };
+
+    const alertLogout = ()=>{
+      Alert.alert(
+       'Attention!',
+       'Voulez-vous vraiment vous déconnecter?',
+       [{text:'Oui', style:'destructive', onPress:logout},
+        {text:'Non', style:'cancel'}]);
+        return;
+   };
 
     const deleteAccount= async()=>{
       try{
@@ -243,6 +251,8 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
      
    },[saveHandler,isLoading]);
 
+   
+
   
     return(
     <View style={styles.container}>
@@ -261,7 +271,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                       <MaterialIcons title = "camera" name ='camera-enhance' color='#323446' size={23} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.iconFormCircle1} onPress={takeLibraryHandler}>
-                      <MaterialIcons title = "library" name ='photo-library' color='#323446' size={23} />
+                      <MaterialIcons title = "library" name ='photo-library' color='#FE457C' size={23} />
                     </TouchableOpacity>
                   </View>  
                   <View style={{width:'70%'}}>
@@ -296,6 +306,8 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                       placeholderTextColor='rgba(50,52,70,0.4)'
                       inputStyle={{fontSize:15}}
                       widthView='57%'
+                      backgroundColor='#fff'
+                      height={45}
                     />
               
               
@@ -312,6 +324,8 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                       placeholderTextColor='rgba(50,52,70,0.4)'
                       inputStyle={{fontSize:15}}
                       widthView='40%'
+                      backgroundColor='#fff'
+                      height={45}
                     />
               </View>
             
@@ -331,6 +345,8 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                   minLength={3}
                   autoCapitalize='sentences'
                   widthView='90%'
+                  backgroundColor='#fff'
+                  height={45}
                 />
              
              
@@ -349,6 +365,8 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 minLength={3}
                 autoCapitalize='sentences'
                 widthView='90%'
+                backgroundColor='#fff'
+                height={45}
               />
             
            
@@ -368,6 +386,8 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                   minLength={6}
                   autoCapitalize='sentences'
                   widthView='90%'
+                  backgroundColor='#fff'
+                  height={45}
                 />
             
               <InputProfile
@@ -385,6 +405,8 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 minLength={12}
                 autoCapitalize='sentences'
                 widthView='90%'
+                backgroundColor='#fff'
+                height={45}
               />
             
             <View style={{ width:'90%',borderWidth:1,paddingHorizontal:12,borderRadius:25,backgroundColor:'#fff',borderColor:wilaya!=='wilaya'?'#fff':Colors.primary,marginVertical:5,height:45,justifyContent:'center',shadowColor: 'black',shadowOpacity: 0.96,
@@ -417,6 +439,8 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 placeholderTextColor='rgba(50,52,70,0.4)'
                 inputStyle={{fontSize:15}}
                 widthView='90%'
+                height={45}
+                backgroundColor='#fff'
               />
            
             </KeyboardAvoidingView>
@@ -429,7 +453,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
            </View>
            <View style={styles.buttonContainer}>
                 <View style={styles.cartContainer}>
-                  <TouchableOpacity style={styles.cart} onPress={logout}>
+                  <TouchableOpacity style={styles.cart} onPress={alertLogout}>
                       <View style={{paddingBottom:5}}>
                         <MaterialCommunityIcons title = "logout" name ='logout' color='#FD6C57' size={23} />
                       </View>

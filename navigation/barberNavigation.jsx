@@ -16,19 +16,26 @@ import BarberProfileScreen from '../screens/barber/barberProfile/barberProfileSc
 import BarberGaleryScreen from '../screens/barber/barberProfile/barberGaleryScreen';
 import BarberHomeScreen from '../screens/home/barberHomeScreen';
 import ForgotPasswordScreen from '../screens/forgotPasswordScreen';
+import BarberSupportScreen  from '../screens/barber/barberProfile/barberSupportScreen';
+
+
 
 //Main Stack Navigator
 const BarberNavigation = createStackNavigator({
    Barber : BarberHomeScreen,
+   BarberSupport:BarberSupportScreen,
    BarberService : BarberServiceScreen,
-   EditService: EditServiceScreen,
+   EditService:EditServiceScreen,
    BarberBookings: BarberBookingsScreen,
    BarberBookingsDetail: BarberBookingsDetailScreen,
    BarberParameters: BarberParametersScreen,
    BarberProfile: BarberProfileScreen,
    BarberGalery: BarberGaleryScreen,
+   
 },
 );
+
+
 
 const AuthNavigation = createStackNavigator({
    Login: LoginScreen,

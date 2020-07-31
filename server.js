@@ -139,7 +139,9 @@ app.get('/barber',(req,res)=>{
 Fetch one barber according to his id
 */  
 app.get('/barber/:id',(req,res)=>{
-con.query('SELECT * FROM barber WHERE id= ?',
+  
+ 
+con.query('SELECT barber.id as barberid, barber.phone, barber.password, barber.sex, barber.name as barberName, barber.surname, barber.b_name, barber.age, barber.email, barber.address, barber.image,barber.mark, barber.wilaya, barber.region,barber.lang,barber.type,service.id,service.name,service.price,service.duration,service.barber_id FROM barber LEFT JOIN service  on barber.id=service.barber_id WHERE barber.id=?',
 [
   req.params.id
 ],
@@ -147,6 +149,7 @@ con.query('SELECT * FROM barber WHERE id= ?',
   if(err) console.log('Query error',err);
   res.send(result);
   
+  console.log(result);
 });
 });
 
@@ -228,6 +231,65 @@ con.query('DELETE FROM barber WHERE id=?',
 
 });
 
+/**
+   * ************************Service
+  */
+ /*
+    Add New Service
+ */ 
+app.post('/service/addService',(req,res)=>{
+
+  console.log(req.body.name);
+  con.query('INSERT INTO service (name,price,duration,barber_id) VALUES(?,?,?,?)',
+  [
+    req.body.name,
+    req.body.price,
+    req.body.duration,
+    req.body.barber_id
+  ]
+  ,
+  (err,result,fields)=>{
+      if(err) console.log('Query error',err);
+      res.send(result);
+      
+  });
+
+});
+
+/*
+  Update service
+*/ 
+app.patch('/service/updateService/:id',(req,res)=>{
+  
+  con.query('UPDATE service SET name=?, price=?, duration=? WHERE id= ?',
+  [
+    req.body.name,
+    req.body.price,
+    req.body.duration,
+    req.params.id
+  ],
+  (err,result,fields)=>{
+    if(err) console.log('Query error',err);
+    res.send("success");
+    
+  });
+  });
+  
+  /*
+    Delete service
+  */
+  app.delete('/service/deleteService/:id',(req,res)=>{
+  
+  con.query('DELETE FROM service WHERE id=?',
+  [
+    req.params.id
+  ],
+  (err,result,fields)=>{
+    if(err) console.log('Query error',err);
+    res.send("success");
+  });
+  
+  });
 
 // Starting our server.
 app.listen(3000, () => {

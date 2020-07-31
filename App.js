@@ -12,7 +12,7 @@ enableScreens();
 
 //Create the store and the combine reducers
 const rootReducer = combineReducers({
-  barbers:barbersReducer,
+  barbers:barbersReducer
   });
   
   const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

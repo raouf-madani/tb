@@ -1,6 +1,6 @@
 import React,{useState,useCallback,useReducer} from 'react';
 import { StyleSheet,View,KeyboardAvoidingView,Text,Image,Dimensions,StatusBar,Alert,ActivityIndicator,AsyncStorage} from 'react-native';
-import {MaterialIcons} from "@expo/vector-icons";
+import {MaterialIcons,MaterialCommunityIcons} from "@expo/vector-icons";
 import {Button } from 'react-native-elements';
 import Colors from '../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -51,6 +51,11 @@ const [isVerified,setIsVerified]= useState(false);
 const [isLogin,setIsLogin]= useState(false);
 const prefix='+213';
 const dispatch= useDispatch();
+const [isEye,setIsEye]=useState(false);
+
+      const eye=()=>{
+        setIsEye(prevValue=>!prevValue);
+      };
 
 const[formState,disaptchFormState] = useReducer(formReducer,
     {inputValues:{
@@ -190,11 +195,11 @@ Alert.alert('Erreur!','Veuillez rentrer votre nouveau mot de passe s\'il vous pl
                   />
                   <CustomInput
                   id='password'
-                  rightIcon={<MaterialIcons title="lock" name ='remove-red-eye' color='#323446' size={23} />}
+                  rightIcon={<MaterialCommunityIcons title="lock" onPress={eye} name ={!isEye?'eye':'eye-off'} color='#323446' size={23} />}
                   placeholder='Nouveau Mot de Passe'
                   keyboardType="default"
                   returnKeyType="next"
-                  secureTextEntry
+                  secureTextEntry={!isEye?true:false}
                   minLength={6}
                   autoCapitalize='none'
                   onInputChange={inputChangeHandler}

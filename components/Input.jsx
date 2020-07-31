@@ -71,7 +71,7 @@ const CustomInput = props =>{
             if (props.maxLength != null && text.length > props.maxLength) {
                 isValid = false;
             }
-
+            
             dispatchInputState({type:INPUT_UPDATE,value:text,isValid:isValid})
         }
 

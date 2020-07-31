@@ -2,7 +2,7 @@ import React,{useState,useCallback,useRef,useReducer} from 'react';
 import { StyleSheet,View,ScrollView,KeyboardAvoidingView,Text,Image,ImageBackground,StatusBar,TextInput,TouchableOpacity,Picker,ActionSheetIOS,Alert,ActivityIndicator,AsyncStorage} from 'react-native';
 import {Button} from 'react-native-elements';
 import Colors from '../../constants/Colors';
-import {MaterialIcons} from "@expo/vector-icons";
+import {MaterialIcons,MaterialCommunityIcons} from "@expo/vector-icons";
 import { LinearGradient } from 'expo-linear-gradient';
 import * as FirebaseRecaptcha from "expo-firebase-recaptcha";
 import * as firebase from "firebase";
@@ -66,11 +66,16 @@ const SignupBarberScreen = props =>{
      const [wilaya,setWilaya] = useState();
      const sexTypes= ['Sexe','Homme','Femme'];
      const [sex,setSex] = useState();
+     const [isEye,setIsEye]=useState(false);
+
+      const eye=()=>{
+        setIsEye(prevValue=>!prevValue);
+      };
      
      
      //picker only iOS function 
      const onPress = () =>{
-       const wilayasIOS = ['Alger','Blida'];    
+       const wilayasIOS = ['Wilaya','Alger','Blida'];    
        ActionSheetIOS.showActionSheetWithOptions(
          {
            options: wilayasIOS,
@@ -80,7 +85,7 @@ const SignupBarberScreen = props =>{
            if (buttonIndex === -1) {
              // cancel action
            } else {
-            setHour(wilayasIOS[buttonIndex]);
+            setWilaya(wilayasIOS[buttonIndex]);
            } 
          }
        );  
@@ -256,11 +261,11 @@ const sendCode = async () => {
                     />
                  <CustomInput
                         id='password'
-                        rightIcon={<MaterialIcons title="lock" name ='remove-red-eye' color='#323446' size={23} />}
+                        rightIcon={<MaterialCommunityIcons title="lock" onPress={eye} name ={!isEye?'eye':'eye-off'} color='#323446' size={23} />}
                         placeholder='Mot de Passe'
                         keyboardType="default"
                         returnKeyType="next"
-                        secureTextEntry
+                        secureTextEntry={!isEye?true:false}
                         minLength={6}
                         autoCapitalize='none'
                         onInputChange={inputChangeHandler}

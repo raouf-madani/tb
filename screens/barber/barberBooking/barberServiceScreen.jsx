@@ -1,18 +1,59 @@
-import React, {useState,useEffect} from 'react';
-import { StyleSheet,View,Image, ScrollView,ImageBackground,Text,TouchableOpacity,Switch,Platform} from 'react-native';
+import React, {useState,useEffect,useCallback} from 'react';
+import { StyleSheet,View,Image, ScrollView,ImageBackground,Text,TouchableOpacity,Switch,Platform,ActivityIndicator,Alert} from 'react-native';
+import {Button } from 'react-native-elements';
 import Colors from '../../../constants/Colors';
+import { LinearGradient } from 'expo-linear-gradient';
+import ServiceCart from '../../../components/ServiceCart';
 import {MaterialIcons,Entypo} from "@expo/vector-icons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {HeaderButtons,Item} from "react-navigation-header-buttons";
 import HeaderButton from "../../../components/HeaderButton";
+import { useDispatch,useSelector } from 'react-redux';
+import * as barberActions from '../../../store/actions/barberActions';
+import * as servicesActions from '../../../store/actions/serviceActions';
 
-
-const data=[{id:'1',fullname:'Walid .M',imagePth:require('../../../assets/images/angelina.jpg'),phone:'0659853214',sexe:'Homme',email:'walid@gmail.com',experience:5,imagePth2:require('../../../assets/images/angelina.png'),place:'DM',placeTwo:'CC'},
-]; 
+ 
 const BarberServiceScreen = props =>{
   
   const [isServices,setIsServices]= useState(true);
   const [isDisponible,setIsDisponible]= useState(false);
+
+  const barberID= props.navigation.getParam('barberID');  //get Barber ID
+  const [error, setError] = useState();
+  const [isLoading,setIsLoading]= useState(false);//ActivityIndicator handling
+
+  const dispatch= useDispatch();
+
+   /*
+   *******Fetch One barber DATA
+  */
+ const getBarber=useCallback(async()=>{
+  try{
+    setError(null);
+    setIsLoading(true);
+    await dispatch(barberActions.setBarber(barberID));
+    setIsLoading(false);
+    }catch(err){
+      setError(err);
+      if(err){
+        Alert.alert('Oups!','Une erreur est survenue',[{text:'OK'}]);
+    } 
+      console.log(err);
+    }
+},[dispatch]);
+
+  useEffect(()=>{
+  getBarber();
+  },[dispatch,getBarber]);
+
+  useEffect(()=>{
+    const willFocusSub= props.navigation.addListener('willFocus',getBarber);
+    return ()=>{
+      willFocusSub.remove();
+    };
+  },[getBarber]);
+
+  const barber= useSelector(state=>state.barbers.barber);
 
     const services = ()=>{
       setIsServices(true);
@@ -134,6 +175,190 @@ const BarberServiceScreen = props =>{
         }
       
     };
+
+
+
+    const deleteHandler = id => {
+      Alert.alert('Êtes-vous sûr?','Voulez-vous vraiment supprimer ce service?',[
+                  {text: 'Non', style:'default'}, {text:'Oui',style:'destructive',
+                    onPress: async() =>{
+                      {
+                        setIsLoading(true);
+                        await dispatch(servicesActions.deleteService(id));
+                        getBarber();
+                        setIsLoading(false);
+                      }
+                    }}
+      ]);
+
+   };
+
+   useEffect(() => {
+    if(error){
+        Alert.alert('Oups','Une erreur est survenue!',[{text:'OK'}]);
+        console.log(error);
+    } 
+  }, [error]); 
+
+    if(isLoading){
+      return <View style={styles.activityIndicatorContainer} >
+              <ActivityIndicator size='large' color={Colors.primary} />
+             </View>
+    };
+
+     
+    if(barber[0].services.length === 0){
+      return (
+        <View style={styles.container}> 
+        <View style={styles.firstContainer}>
+          <View style={styles.coverContainer}>
+              <ImageBackground source={require('../../../assets/images/barberScreen.png')} style={styles.cover} />
+          </View>
+          
+          <View style={styles.infoContainer}>
+             <View style={styles.imageContainer}>
+                 <Image source={require('../../../assets/images/angelina.png')} style={styles.icon} />
+             </View>
+           
+             <Text style={styles.bname}>Djazia William</Text>
+             <View style={styles.iconsMenuContainer}>
+               <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('EditService')}>
+                 <View style={styles.iconFormCircle}>
+                         <MaterialIcons title = "service" name ='add-shopping-cart' color='#fff' size={23} onPress={()=>props.navigation.navigate('EditService')} />
+                 </View>
+                 <Text style={styles.iconText}>Ajouter Service</Text>
+               </TouchableOpacity>
+               <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberGalery')}>
+               <View style={styles.iconFormCircle1}>
+                       <MaterialIcons title = "portfolio" name ='linked-camera' color='#fff' size={23} onPress={()=>props.navigation.navigate('EditService')} />
+               </View>
+               <Text style={styles.iconText}>Ajouter Portfolio</Text>
+               </TouchableOpacity>
+             </View>
+          </View>
+          <View style={styles.menu}>
+             <TouchableOpacity style={{borderBottomWidth:2,borderBottomColor:isServices ?'#fd6c57':'#f9f9f9',paddingBottom:3}} onPress={services}>
+              <Text style={styles.itemText}>Mes services</Text>
+             </TouchableOpacity>
+             <TouchableOpacity style={{borderBottomWidth:2,borderBottomColor:isDisponible?'#fd6c57':'#f9f9f9',paddingBottom:3}} onPress={disponibility}>
+              <Text style={styles.itemText}>Disponibilité</Text>
+             </TouchableOpacity>
+          </View>
+        </View>
+        {isServices ? (<View style={styles.noServicesContainer}>
+            <View style={{marginBottom:10,alignSelf:'center'}}>
+              <Text style={styles.noServicesText}>Aucun service trouvé.</Text>
+            </View>
+            <Button
+              theme={{colors: {primary:'#fd6c57'}}} 
+              title="Ajouter"
+              titleStyle={styles.labelButton}
+              buttonStyle={styles.buttonStyle}
+              ViewComponent={LinearGradient} 
+              onPress={()=>props.navigation.navigate('EditService')}
+              linearGradientProps={{
+                  colors: ['#fd6d57', '#fd9054'],
+                  start: {x: 0, y: 0} ,
+                  end:{x: 1, y: 0}
+                }}/>
+        </View>): (<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false}>
+           <View style={styles.disponibilityContainer}>
+              <View style={styles.dayContainer}>
+                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchSat ? '#fd6c57':'#323446'}}>Samedi</Text>
+                    <Switch style={switchIOS} value={switchSat} onValueChange={()=>setSwitchSat(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchSat? '#fd6c57': 'white'}/>
+              </View>
+              <View>
+                  <TouchableOpacity>
+                    <Text style={styles.debutEndText} onPress={()=>{ if(switchSat){showDatePicker();setSat({...sat,isOpenSat:true});setId('sat');} }}>{sat.isOpenSat === true ? sat.openTimeSat: 'Début'} - <Text onPress={()=>{if(switchSat){showDatePicker();setSatClose({...satClose,isCloseSat:true});setId('satClose')}}}>{satClose.isCloseSat ? satClose.closeTimeSat : 'Fin'}</Text></Text>
+                  </TouchableOpacity>
+              </View>
+           </View>
+
+           <View style={{overflow:'hidden',shadowOpacity:1,shadowRadius:10,shadowColor:"#323446",borderRadius:10,elevation:5,paddingHorizontal:10,paddingVertical:15,marginVertical:10,width:'90%',alignSelf:'center',backgroundColor:'#f9f9f9',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+              <View style={{alignItems:'flex-start',justifyContent:'center'}}>
+                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchSun ? '#fd6c57':'#323446'}}>Dimanche</Text>
+                    <Switch style={switchIOS} value={switchSun} onValueChange={()=>setSwitchSun(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchSun? '#fd6c57': 'white'}/>
+              </View>
+              <View stlye={{backgroundColor:'red'}}>
+                  <TouchableOpacity>
+                    <Text style={{fontFamily:'poppins',color:'#323446',fontSize:12}} onPress={()=>{ if(switchSun){showDatePicker();setSun({...sun,isOpenSun:true});setId('sun');} }}>{sun.isOpenSun === true ? sun.openTimeSun: 'Début'} - <Text onPress={()=>{if(switchSun){showDatePicker();setSunClose({...sunClose,isCloseSun:true});setId('sunClose')}}}>{sunClose.isCloseSun ? sunClose.closeTimeSun : 'Fin'}</Text></Text>
+                  </TouchableOpacity>
+              </View>
+           </View>
+
+           <View style={{overflow:'hidden',shadowOpacity:1,shadowRadius:10,shadowColor:"#323446",borderRadius:10,elevation:5,paddingHorizontal:10,paddingVertical:15,marginVertical:10,width:'90%',alignSelf:'center',backgroundColor:'#f9f9f9',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+              <View style={{alignItems:'flex-start',justifyContent:'center'}}>
+                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchMon ? '#fd6c57':'#323446'}}>Lundi</Text>
+                    <Switch style={switchIOS} value={switchMon} onValueChange={()=>setSwitchMon(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchMon? '#fd6c57': 'white'}/>
+              </View>
+              <View stlye={{backgroundColor:'red'}}>
+                  <TouchableOpacity>
+                    <Text style={{fontFamily:'poppins',color:'#323446',fontSize:12}} onPress={()=>{ if(switchMon){showDatePicker();setMon({...mon,isOpenMon:true});setId('mon');} }}>{mon.isOpenMon === true ? mon.openTimeMon: 'Début'} - <Text onPress={()=>{if(switchMon){showDatePicker();setMonClose({...monClose,isCloseSat:true});setId('monClose')}}}>{monClose.isCloseSat ? monClose.closeTimeMon : 'Fin'}</Text></Text>
+                  </TouchableOpacity>
+              </View>
+           </View>
+
+           <View style={{overflow:'hidden',shadowOpacity:1,shadowRadius:10,shadowColor:"#323446",borderRadius:10,elevation:5,paddingHorizontal:10,paddingVertical:15,marginVertical:10,width:'90%',alignSelf:'center',backgroundColor:'#f9f9f9',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+              <View style={{alignItems:'flex-start',justifyContent:'center'}}>
+                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchTue ? '#fd6c57':'#323446'}}>Mardi</Text>
+                    <Switch style={switchIOS} value={switchTue} onValueChange={()=>setSwitchTue(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchTue? '#fd6c57': 'white'}/>
+              </View>
+              <View stlye={{backgroundColor:'red'}}>
+                  <TouchableOpacity>
+                    <Text style={{fontFamily:'poppins',color:'#323446',fontSize:12}} onPress={()=>{ if(switchTue){showDatePicker();setTue({...tue,isOpenTue:true});setId('tue');} }}>{tue.isOpenTue === true ? tue.openTimeTue: 'Début'} - <Text onPress={()=>{if(switchTue){showDatePicker();setTueClose({...tueClose,isCloseTue:true});setId('tueClose')}}}>{tueClose.isCloseTue ? tueClose.closeTimeTue : 'Fin'}</Text></Text>
+                  </TouchableOpacity>
+              </View>
+           </View>
+
+           <View style={{overflow:'hidden',shadowOpacity:1,shadowRadius:10,shadowColor:"#323446",borderRadius:10,elevation:5,paddingHorizontal:10,paddingVertical:15,marginVertical:10,width:'90%',alignSelf:'center',backgroundColor:'#f9f9f9',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+              <View style={{alignItems:'flex-start',justifyContent:'center'}}>
+                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchWed ? '#fd6c57':'#323446'}}>Mercredi</Text>
+                    <Switch style={switchIOS} value={switchWed} onValueChange={()=>setSwitchSat(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchSat? '#fd6c57': 'white'}/>
+              </View>
+              <View stlye={{backgroundColor:'red'}}>
+                  <TouchableOpacity>
+                    <Text style={{fontFamily:'poppins',color:'#323446',fontSize:12}} onPress={()=>{ if(switchSat){showDatePicker();setSat({...sat,isOpenSat:true});setId('sat');} }}>{sat.isOpenSat === true ? sat.openTimeSat: 'Début'} - <Text onPress={()=>{if(switchSat){showDatePicker();setSatClose({...satClose,isCloseSat:true});setId('satClose')}}}>{satClose.isCloseSat ? satClose.closeTimeSat : 'Fin'}</Text></Text>
+                  </TouchableOpacity>
+              </View>
+           </View>
+
+           <View style={{overflow:'hidden',shadowOpacity:1,shadowRadius:10,shadowColor:"#323446",borderRadius:10,elevation:5,paddingHorizontal:10,paddingVertical:15,marginVertical:10,width:'90%',alignSelf:'center',backgroundColor:'#f9f9f9',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+              <View style={{alignItems:'flex-start',justifyContent:'center'}}>
+                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchSat ? '#fd6c57':'#323446'}}>Jeudi</Text>
+                    <Switch style={switchIOS} value={switchSat} onValueChange={()=>setSwitchSat(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchSat? '#fd6c57': 'white'}/>
+              </View>
+              <View stlye={{backgroundColor:'red'}}>
+                  <TouchableOpacity>
+                    <Text style={{fontFamily:'poppins',color:'#323446',fontSize:12}} onPress={()=>{ if(switchSat){showDatePicker();setSat({...sat,isOpenSat:true});setId('sat');} }}>{sat.isOpenSat === true ? sat.openTimeSat: 'Début'} - <Text onPress={()=>{if(switchSat){showDatePicker();setSatClose({...satClose,isCloseSat:true});setId('satClose')}}}>{satClose.isCloseSat ? satClose.closeTimeSat : 'Fin'}</Text></Text>
+                  </TouchableOpacity>
+              </View>
+           </View>
+
+           <View style={{overflow:'hidden',shadowOpacity:1,shadowRadius:10,shadowColor:"#323446",borderRadius:10,elevation:5,paddingHorizontal:10,paddingVertical:15,marginVertical:10,width:'90%',alignSelf:'center',backgroundColor:'#f9f9f9',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+              <View style={{alignItems:'flex-start',justifyContent:'center'}}>
+                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchSat ? '#fd6c57':'#323446'}}>Vendredi</Text>
+                    <Switch style={switchIOS} value={switchSat} onValueChange={()=>setSwitchSat(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchSat? '#fd6c57': 'white'}/>
+              </View>
+              <View stlye={{backgroundColor:'red'}}>
+                  <TouchableOpacity>
+                    <Text style={{fontFamily:'poppins',color:'#323446',fontSize:12}} onPress={()=>{ if(switchSat){showDatePicker();setSat({...sat,isOpenSat:true});setId('sat');} }}>{sat.isOpenSat === true ? sat.openTimeSat: 'Début'} - <Text onPress={()=>{if(switchSat){showDatePicker();setSatClose({...satClose,isCloseSat:true});setId('satClose')}}}>{satClose.isCloseSat ? satClose.closeTimeSat : 'Fin'}</Text></Text>
+                  </TouchableOpacity>
+              </View>
+           </View>
+            
+
+             <DateTimePickerModal
+              isVisible={isDatePickerVisible}
+              mode="time"
+              onConfirm={handleConfirm}
+              onCancel={hideDatePicker}
+              is24Hour={true}
+              />
+           </ScrollView>)}
+        </View>
+      )
+   }
+   
    
     return(
         <View style={styles.container}> 
@@ -148,9 +373,19 @@ const BarberServiceScreen = props =>{
               </View>
             
               <Text style={styles.bname}>Djazia William</Text>
-             
-              <View style={styles.iconFormCircle}>
-                      <Entypo title = "scissors" name ='scissors' color='#fff' size={23} />
+              <View style={styles.iconsMenuContainer}>
+                <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('EditService')}>
+                  <View style={styles.iconFormCircle}>
+                          <MaterialIcons title = "service" name ='add-shopping-cart' color='#fff' size={23} onPress={()=>props.navigation.navigate('EditService')} />
+                  </View>
+                  <Text style={styles.iconText}>Ajouter Service</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberGalery')}>
+                <View style={styles.iconFormCircle1}>
+                        <MaterialIcons title = "portfolio" name ='linked-camera' color='#fff' size={23} onPress={()=>props.navigation.navigate('EditService')} />
+                </View>
+                <Text style={styles.iconText}>Ajouter Portfolio</Text>
+                </TouchableOpacity>
               </View>
            </View>
            <View style={styles.menu}>
@@ -163,69 +398,16 @@ const BarberServiceScreen = props =>{
            </View>
          </View>
         {isServices ?( <ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false}>
-           <View style={styles.serviceContainer}>
-               <View style={{width:'80%'}}>
-                  <View style={styles.serviceTextContainer}>
-                    <Text style={styles.serviceText}>Service 1</Text>
-                  </View>
-                  <Text style={styles.detailText}>Brushing</Text>
-                  <Text style={styles.detailText}>30min</Text>
-                  <View style={styles.priceContainer}>
-                    <Text style={styles.price}>2 000 DA</Text>
-                  </View>
-                  
-               </View>
-               <View style={styles.iconsContainer}>
-                <TouchableOpacity style={styles.iconFormCircleService}>
-                        <Entypo title = "edit" name ='edit' color='#BA55D3' size={23} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.iconFormCircleService}>
-                      <MaterialIcons title = "delete" name ='delete-forever' color='#FE457C' size={23} />
-                </TouchableOpacity> 
-               </View>
-           </View>
-           <View style={{overflow:'hidden',shadowOpacity:1,shadowRadius:10,shadowColor:"#323446",elevation:5,alignSelf:'center',flexDirection:'row',width:'90%',marginVertical:10,backgroundColor:'#f9f9f9',borderRadius:10,paddingHorizontal:10,paddingVertical:15}}>
-               <View style={{width:'80%'}}>
-                  <View style={{backgroundColor:'#fd6c57',width:60,alignItems:'center',justifyContent:'center',marginBottom:10,borderRadius:5}}>
-                    <Text style={{color:'#fff',fontFamily:'poppins',fontSize:12}}>Service 2</Text>
-                  </View>
-                  <Text style={{color:'#323446',fontFamily:'poppins',fontSize:12}}>Coiffure de mariée</Text>
-                  <Text style={{color:'#323446',fontFamily:'poppins',fontSize:12}}>1h</Text>
-                  <View style={{marginTop:10}}>
-                    <Text style={{color:'#fd6c57',fontFamily:'poppins',fontSize:12}}>10 000 DA</Text>
-                  </View>
-                  
-               </View>
-               <View style={{width:'20%',justifyContent:'space-between',alignItems:'center',borderLeftWidth:2,borderLeftColor:'#323446'}}>
-                <TouchableOpacity style={styles.iconFormCircleService}>
-                        <Entypo title = "edit" name ='edit' color='#BA55D3' size={23} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.iconFormCircleService}>
-                      <MaterialIcons title = "delete" name ='delete-forever' color='#FE457C' size={23} />
-                </TouchableOpacity> 
-               </View>
-           </View>
-           <View style={{overflow:'hidden',shadowOpacity:1,shadowRadius:10,shadowColor:"#323446",elevation:5,alignSelf:'center',flexDirection:'row',width:'90%',marginVertical:10,backgroundColor:'#f9f9f9',borderRadius:10,paddingHorizontal:10,paddingVertical:15}}>
-               <View style={{width:'80%'}}>
-                  <View style={{backgroundColor:'#fd6c57',width:60,alignItems:'center',justifyContent:'center',marginBottom:10,borderRadius:5}}>
-                    <Text style={{color:'#fff',fontFamily:'poppins',fontSize:12}}>Service 3</Text>
-                  </View>
-                  <Text style={{color:'#323446',fontFamily:'poppins',fontSize:12}}>Coiffure de soirée</Text>
-                  <Text style={{color:'#323446',fontFamily:'poppins',fontSize:12}}>45min</Text>
-                  <View style={{marginTop:10}}>
-                    <Text style={{color:'#fd6c57',fontFamily:'poppins',fontSize:12}}>9 000 DA</Text>
-                  </View>
-                  
-               </View>
-               <View style={{width:'20%',justifyContent:'space-between',alignItems:'center',borderLeftWidth:2,borderLeftColor:'#323446'}}>
-                <TouchableOpacity style={styles.iconFormCircleService}>
-                        <Entypo title = "edit" name ='edit' color='#BA55D3' size={23} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.iconFormCircleService}>
-                      <MaterialIcons title = "delete" name ='delete-forever' color='#FE457C' size={23} />
-                </TouchableOpacity> 
-               </View>
-           </View>
+          {barber[0].services.map(service=>
+          <ServiceCart
+            key={service.serviceId}
+            number={1}
+            name={service.name}
+            minute={service.duration}
+            price={service.price}
+            onPressUpdate={()=>props.navigation.navigate('EditService',{idService:service.serviceId})}
+            onPressDelete={deleteHandler.bind(this,service.serviceId)}
+          />)}
          </ScrollView>): 
          (<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false}>
            <View style={styles.disponibilityContainer}>
@@ -350,7 +532,7 @@ BarberServiceScreen.navigationOptions = navData => {
         headerRight : () =>(
           <HeaderButtons HeaderButtonComponent = {HeaderButton}> 
             <Item title = "save" 
-              iconName ='ios-checkmark'
+              iconName ='md-checkmark'
               color='#fff'
               size={23}       
             />
@@ -375,7 +557,7 @@ const styles= StyleSheet.create({
   },
   coverContainer:{
     width:'100%',
-    height:'40%',
+    height:'30%',
     overflow:'hidden'
   },
   icon:{
@@ -406,7 +588,7 @@ const styles= StyleSheet.create({
   },
   menu:{
     width:'90%',
-    height:'20%',
+    height:'30%',
     flexDirection:'row',
     justifyContent:'space-around',
     alignItems:'flex-end'
@@ -429,60 +611,13 @@ const styles= StyleSheet.create({
     justifyContent:'center',
     alignItems:'center',
   },
-  iconFormCircleService:{
-    width:30,
-    height:30,
+  iconFormCircle1:{
+    backgroundColor:'#BA55D3',
+    width:40,
+    height:40,
     borderRadius:20,
     justifyContent:'center',
-    alignItems:'center',
-  },
-  serviceContainer:{
-    overflow:'hidden',
-    shadowOpacity:1,
-    shadowRadius:10,
-    shadowColor:"#323446",
-    elevation:5,
-    alignSelf:'center',
-    flexDirection:'row',
-    width:'90%',
-    marginVertical:10,
-    backgroundColor:'#f9f9f9',
-    borderRadius:10,
-    paddingHorizontal:10,
-    paddingVertical:15
-  },
-  serviceTextContainer:{
-    backgroundColor:'#fd6c57',
-    width:60,
-    alignItems:'center',
-    justifyContent:'center',
-    marginBottom:10,
-    borderRadius:5
-  },
-  serviceText:{
-    color:'#fff',
-    fontFamily:'poppins',
-    fontSize:12
-  },
-  detailText:{
-    color:'#323446',
-    fontFamily:'poppins',
-    fontSize:12
-  },
-  priceContainer:{
-    marginTop:10
-  },
-  price:{
-    color:'#fd6c57',
-    fontFamily:'poppins',
-    fontSize:12
-  },
-  iconsContainer:{
-    width:'20%',
-    justifyContent:'space-between',
-    alignItems:'center',
-    borderLeftWidth:2,
-    borderLeftColor:'#323446'
+    alignItems:'center'
   },
   disponibilityContainer:{
     overflow:'hidden',
@@ -509,7 +644,50 @@ const styles= StyleSheet.create({
     fontFamily:'poppins',
     color:'#323446',
     fontSize:12
-  }
+  },
+  iconsMenuContainer:{
+    flexDirection:'row',
+    paddingVertical:5
+  },
+  iconContainer:{
+    marginHorizontal:13,
+    alignItems:'center'
+  },
+  iconText:{
+    fontFamily:'poppins',
+    color:'grey',
+    paddingTop:3,
+    fontSize:10
+  },
+  activityIndicatorContainer:{
+    flex:1,
+    alignItems:'center',
+    justifyContent:'center',
+    backgroundColor:'white'
+ },
+ noServicesContainer:{
+  width:'100%',
+  height:'50%',
+  justifyContent:'center'
+},
+noServicesText:{
+  fontFamily:'poppins',
+  fontSize:14,
+  color:Colors.blue
+},
+labelButton:{
+  color:'#FFF',
+  fontFamily:'poppins',
+  fontSize:16,
+  textTransform:null,
+ },
+ buttonStyle:{
+  borderColor:'#fd6c57',
+  width:'50%',
+  borderRadius:20,
+  height:45,
+  alignSelf:'center'
+ }
 });
 
 export default BarberServiceScreen;

@@ -1,6 +1,6 @@
 import React,{useState,useCallback,useReducer} from 'react';
 import { StyleSheet,View,KeyboardAvoidingView,Text,Image,Dimensions,TouchableOpacity, StatusBar,Alert,ActivityIndicator,AsyncStorage} from 'react-native';
-import {MaterialIcons} from "@expo/vector-icons";
+import {MaterialIcons,MaterialCommunityIcons} from "@expo/vector-icons";
 import {Button } from 'react-native-elements';
 import Colors from '../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -46,6 +46,11 @@ const LoginScreen = props =>{
 ///Input management
 const [isLogin,setIsLogin]= useState(false);//ActivityIndicator handling
 const prefix='+213';
+const [isEye,setIsEye]=useState(false);
+
+const eye=()=>{
+  setIsEye(prevValue=>!prevValue);
+};
 
 const[formState,disaptchFormState] = useReducer(formReducer,
     {inputValues:{
@@ -137,7 +142,7 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
                     leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Colors.blue,paddingRight:5}}><Image source={require('../assets/images/algeriaFlag.png')} style={{width:24,height:28,marginRight:5}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
                     placeholder='555555555'
                     keyboardType="phone-pad"
-                    returnKeyType="next"
+                    blurOnSubmit={false}
                     onInputChange={inputChangeHandler}
                     initialValue=''
                     initiallyValid={true}
@@ -148,11 +153,11 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
                   />
                   <CustomInput
                     id='password'
-                    rightIcon={<MaterialIcons title="lock" name ='remove-red-eye' color='#323446' size={23} />}
+                    rightIcon={<MaterialCommunityIcons title="lock" onPress={eye} name ={!isEye?'eye':'eye-off'} color='#323446' size={23} />}
                     placeholder='Mot de Passe'
                     keyboardType="default"
-                    returnKeyType="next"
-                    secureTextEntry
+                    blurOnSubmit={true}
+                    secureTextEntry={!isEye?true:false}
                     minLength={6}
                     autoCapitalize='none'
                     onInputChange={inputChangeHandler}

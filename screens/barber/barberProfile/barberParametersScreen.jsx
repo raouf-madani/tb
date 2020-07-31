@@ -55,6 +55,11 @@ const BarberParametersScreen = props =>{
   const [isPassword,setIsPassword]= useState(false);
   const [isLang,setIsLang]= useState(false);
   const [isArabic,setIsArabic]= useState(false);
+  const [isEye,setIsEye]=useState(false);
+
+      const eye=()=>{
+        setIsEye(prevValue=>!prevValue);
+      };
   
 
   const phone = ()=>{
@@ -131,6 +136,15 @@ const editPhone=async()=>{
 
 };
 
+const alertEditPhone = ()=>{
+  Alert.alert(
+   'Attention!',
+   'Voulez-vous vraiment changer votre numéro de téléphone?',
+   [{text:'Oui', style:'destructive', onPress:editPhone},
+    {text:'Non', style:'cancel'}]);
+    return;
+};
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //Update barber's password after pressing in edit text
 const editPassword=async()=>{
@@ -164,7 +178,14 @@ const editPassword=async()=>{
 
 };
   
-
+const alertEditPassword = ()=>{
+  Alert.alert(
+   'Attention!',
+   'Voulez-vous vraiment changer votre mot de passe?',
+   [{text:'Oui', style:'destructive', onPress:editPassword},
+    {text:'Non', style:'cancel'}]);
+    return;
+};
     return(
       <View style={styles.container}>
          <View style={styles.firstCard}>
@@ -204,6 +225,8 @@ const editPassword=async()=>{
               placeholderTextColor='rgba(50,52,70,0.4)'
               inputStyle={{fontSize:15}}
               widthView='80%'
+              backgroundColor='#fff'
+              height={50}
               />
               <View style={styles.buttonContainer}>
               {!isLoading ?<Button
@@ -212,7 +235,7 @@ const editPassword=async()=>{
                     titleStyle={styles.labelButton}
                     buttonStyle={styles.buttonStyle}
                     ViewComponent={LinearGradient} 
-                    onPress={editPhone}
+                    onPress={alertEditPhone}
                     linearGradientProps={{
                         colors: ['#fd6d57', '#fd9054'],
                         start: {x: 0, y: 0} ,
@@ -228,11 +251,11 @@ const editPassword=async()=>{
           <KeyboardAvoidingView keyboardVerticalOffset={10}>
                 <InputProfile
                 id='password'
-                rightIcon={<MaterialIcons title="lock" name ='remove-red-eye' color='#323446' size={23} />}
+                rightIcon={<MaterialCommunityIcons title="lock" onPress={eye} name ={!isEye?'eye':'eye-off'} color='#323446' size={23} />}
                 placeholder={!isArabic?polylanfr.NewPassword:polylanar.NewPassword}
                 keyboardType="default"
                 returnKeyType="next"
-                secureTextEntry
+                secureTextEntry={!isEye?true:false}
                 minLength={6}
                 autoCapitalize='none'
                 onInputChange={inputChangeHandler}
@@ -242,6 +265,8 @@ const editPassword=async()=>{
                 placeholderTextColor='rgba(50,52,70,0.4)'
                 inputStyle={{fontSize:15}}
                 widthView='80%'
+                backgroundColor='#fff'
+                height={50}
               />
               <View style={styles.buttonContainer}>
               {!isLoadingPassword ?<Button
@@ -250,7 +275,7 @@ const editPassword=async()=>{
                     titleStyle={styles.labelButton}
                     buttonStyle={styles.buttonStyle}
                     ViewComponent={LinearGradient} 
-                    onPress={editPassword}
+                    onPress={alertEditPassword}
                     linearGradientProps={{
                         colors: ['#fd6d57', '#fd9054'],
                         start: {x: 0, y: 0} ,
@@ -382,7 +407,7 @@ const styles= StyleSheet.create({
   buttonContainer:{
     width:'90%',
     alignSelf:'center',
-    marginVertical:20
+    marginVertical:20,
   },
  labelButton:{
   color:'#FFF',

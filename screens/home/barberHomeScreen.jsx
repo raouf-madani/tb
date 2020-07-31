@@ -35,6 +35,9 @@ const BarberHomeScreen = props =>{
     };
   },[getBarber]);
 
+   const barber=useSelector(state=>state.barbers.barber[0]);
+   console.log(barber);
+
   const ratingCompleted = rating =>{
     console.log("Rating is: " + rating)
   }
@@ -93,7 +96,7 @@ const BarberHomeScreen = props =>{
                     </View>
                     <Text style={styles.iconText}>Infos</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberService')}>
+                  <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberService',{barberID:barberID})}>
                     <View style={styles.iconFormCircle1}>
                        <Entypo title = "scissors" name ='scissors' color='#fff' size={23} />
                     </View>
@@ -105,9 +108,9 @@ const BarberHomeScreen = props =>{
                     </View>
                     <Text style={styles.iconText}>Bookings</Text>
                   </TouchableOpacity> 
-                  <TouchableOpacity style={styles.iconContainer}>
+                  <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberSupport')}>
                     <View style={styles.iconFormCircle3}>
-                      <MaterialIcons title = "phone" name ='phone' color='#fff' size={23} />
+                      <MaterialIcons title = "support" name ='menu' color='#fff' size={23} />
                     </View>
                     <Text style={styles.iconText}>Support</Text>
                   </TouchableOpacity>    
