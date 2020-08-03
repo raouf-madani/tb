@@ -102,7 +102,7 @@ const BarberHomeScreen = props =>{
                     </View>
                     <Text style={styles.iconText}>Services</Text>
                   </TouchableOpacity> 
-                  <TouchableOpacity style={styles.iconContainer}>
+                  <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('AllBookingsScreen',{barberID:barberID})} >
                     <View style={styles.iconFormCircle2}>
                        <MaterialCommunityIcons title = "calendar-check" name ='calendar-check' color='#fff' size={23} />
                     </View>

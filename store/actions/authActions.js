@@ -25,7 +25,7 @@ export const updateUserPhoneFRB= (phoneNumber,uid) => {
     return async () => {
 
          try{
-           const response = await fetch(`http://192.168.1.34:3000/phoneUpdate/${uid}`,{
+           const response = await fetch(`http://192.168.1.5:3000/phoneUpdate/${uid}`,{
               method:'PATCH',
               headers: {
                 'Content-Type': 'application/json'
@@ -50,7 +50,7 @@ export const deleteUser = uid => {
     return async () => {
     
         try{
-            const response = await fetch(`http://192.168.1.34:3000/userDelete/${uid}`,{
+            const response = await fetch(`http://192.168.1.5:3000/userDelete/${uid}`,{
                method:'DELETE'});
 
             if(!response.ok){
