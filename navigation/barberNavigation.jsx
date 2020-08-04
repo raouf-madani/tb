@@ -10,7 +10,9 @@ import SignupBarberScreen from '../screens/barber/signupBarberScreen';
 import BarberServiceScreen from '../screens/barber/barberBooking/barberServiceScreen';
 import EditServiceScreen from '../screens/barber/barberBooking/editServiceScreen';
 import BarberBookingsScreen from '../screens/barber/barberBooking/barberBookingsScreen';
+import AllBookingsScreen from '../screens/barber/barberBooking/allBookingsScreen';
 import BarberBookingsDetailScreen from '../screens/barber/barberBooking/barberBookingsDetailScreen';
+import BookingDetail from '../screens/barber/barberBooking/bookingDetail';
 import BarberParametersScreen from '../screens/barber/barberProfile/barberParametersScreen';
 import BarberProfileScreen from '../screens/barber/barberProfile/barberProfileScreen';
 import BarberGaleryScreen from '../screens/barber/barberProfile/barberGaleryScreen';
@@ -28,9 +30,12 @@ const BarberNavigation = createStackNavigator({
    EditService:EditServiceScreen,
    BarberBookings: BarberBookingsScreen,
    BarberBookingsDetail: BarberBookingsDetailScreen,
+   AllBookingsScreen : AllBookingsScreen,
+   BookingDetail : BookingDetail ,
    BarberParameters: BarberParametersScreen,
    BarberProfile: BarberProfileScreen,
    BarberGalery: BarberGaleryScreen,
+   
    
 },
 );

@@ -9,10 +9,12 @@ import ReduxThunk from "redux-thunk";
 import {Provider} from 'react-redux';
 import barbersReducer from './store/reducers/barber';
 enableScreens();
+import bookingsReducer from "./store/reducers/bookingsReducer" ;
 
 //Create the store and the combine reducers
 const rootReducer = combineReducers({
-  barbers:barbersReducer
+  barbers:barbersReducer,
+  bookings : bookingsReducer
   });
   
   const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
