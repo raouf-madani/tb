@@ -8,6 +8,7 @@ import * as FirebaseRecaptcha from "expo-firebase-recaptcha";
 import * as firebase from "firebase";
 import Firebaseconfig from '../../helpers/Firebaseconfig';
 import * as barberActions from '../../store/actions/barberActions';
+import * as worktimeActions from '../../store/actions/worktimeActions';
 import {useDispatch} from 'react-redux';
 import * as Crypto from 'expo-crypto'; 
 import CustomInput from '../../components/Input';
@@ -153,7 +154,10 @@ const signupHandler = async () => {
     try {
 
       setVerifyInProgress(true);
-      const result = await fetch(`http://192.168.1.5:3000/phone/${prefix+formState.inputValues.phone}`);
+
+    
+      const result = await fetch(`http://192.168.1.36:3000/phone/${prefix+formState.inputValues.phone}`);
+
       const resData= await result.json();
       console.log(resData);
       setVerifyInProgress(false);
@@ -202,17 +206,20 @@ const sendCode = async () => {
       const tokenResult = await user.getIdTokenResult();
       const expirationDate= new Date(Date.parse(tokenResult.expirationTime));
 
-      setConfirmInProgress(false);
-      setVerificationId("");
-      setVerificationCode("");
-
       const hashedPassword = await Crypto.digestStringAsync(
         Crypto.CryptoDigestAlgorithm.SHA512,
         formState.inputValues.password
       );
 
-      dispatch(barberActions.createBarber(formState.inputValues.phone, prefix+formState.inputValues.phone,
+      await dispatch(barberActions.createBarber(formState.inputValues.phone, prefix+formState.inputValues.phone,
         hashedPassword,sex,wilaya,formState.inputValues.region));
+      await dispatch(worktimeActions.createWorktime(formState.inputValues.phone));
+
+      setConfirmInProgress(false);
+      setVerificationId("");
+      setVerificationCode("");
+
+     
         
       props.navigation.navigate('Barber',{barberID:formState.inputValues.phone,barberUID:user.uid}); 
       Alert.alert('Salut!','Bienvenue à Tahfifa :-)',[{text:"Merci"}]);
