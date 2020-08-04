@@ -1,44 +1,12 @@
 import moment from "moment";
 
-export const ADD_BOOKING = "ADD_BOOKING"; 
+
 export const GET_BOOKING = "GET_BOOKING"; 
 export const CANCEL_BOOKING = "CANCEL_BOOKING";
 export const EXPIRED_BOOKING = "EXPIRED_BOOKING";
 
 
-export const addBooking = (booking) => {
 
-
-    return async dispatch => {
-        const response =  await fetch('http://192.168.1.5:3000/clientbookings/addbooking',
-        {
-         method : "POST",
-         headers: {
-            'Content-Type': 'application/json'
-          },
-        body : JSON.stringify(booking)
-        }
-        
-        );
-
-     const resData = await response.json;
-     
-      const myBooking = {
-          amount : booking.amount,
-          bookingDate : booking.bookingDate,
-          clientId : booking.clientId,
-          date : booking.date,
-          duration : booking.duration,
-          end : booking.end ,
-          services : booking.services,
-          start : booking.start,
-          status : booking.status
-      }
-        dispatch( {type : ADD_BOOKING , booking : myBooking});
-    };
-
-
-};
 
 
 
@@ -48,7 +16,7 @@ export const getBarberBookings = (barberId)=>{
   return async (dispatch) =>{
       try {
      
-      const arr = await fetch(`http://192.168.1.5:3000/clientbookings/${barberId}`);
+      const arr = await fetch(`http://192.168.1.5:3000/barberBookings/${barberId}`);
       const resData = await arr.json ();
       
 const bookingsIds = [];
@@ -107,42 +75,6 @@ let same = resData.filter(e=>e.id === id);
 
 
 
-// export const cancelBooking = (bookingDate,clientId)=> {
-
-// const bookDate = bookingDate.toString();
-//   return async (dispatch) =>{
-//       try {
-//           const response = await fetch(
-//               `http://192.168.1.5:3000/bookings/cancelbooking`,
-//               {
-//                 method: 'PATCH',
-//                 headers: {
-//                   'Content-Type': 'application/json'
-//                 },
-//               body : JSON.stringify({bookDate,clientId})
-//               }
-              
-              
-//             );
-         
-//             if (!response.ok) {
-//               throw new Error('Something went wrong!');
-//             }
-
-//   dispatch({type:CANCEL_BOOKING,bookingDate,clientId})
-//   } catch (error) {
-//     throw error ;
-          
-  
-//   }
- 
-
-// }
-
-
-
-// }
-
 
 
 export const cancelBooking = (id,type)=> {
@@ -151,7 +83,7 @@ export const cancelBooking = (id,type)=> {
     return async (dispatch) =>{
         try {
             const response = await fetch(
-                `http://192.168.1.5:3000/bookings/cancelbooking`,
+                `http://192.168.1.5:3000/bookings/changebooking`,
                 {
                   method: 'PATCH',
                   headers: {
