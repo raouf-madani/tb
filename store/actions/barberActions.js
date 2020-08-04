@@ -13,7 +13,7 @@ export const createBarber=(id,phone,password,sex,wilaya,region)=>{
         const barberData={id,phone,password,sex,wilaya,region};
 
         try{
-            const response= await fetch('http://192.168.1.34:3000/barber/addBarber',{
+            const response= await fetch('http://192.168.1.36:3000/barber/addBarber',{
                 method : "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -41,7 +41,7 @@ export const setBarbers= ()=>{
     return async dispatch =>{
 
       try{
-           const response= await fetch('http://192.168.1.34:3000/barber');
+           const response= await fetch('http://192.168.1.36:3000/barber');
            if(!response.ok){
             throw new Error('Oups! Une erreur est survenue.');
             }
@@ -61,7 +61,7 @@ export const setBarbers= ()=>{
 export const setBarber= id => {
     return async dispatch=>{
         try{
-            const response= await fetch(`http://192.168.1.34:3000/barber/${id}`);
+            const response= await fetch(`http://192.168.1.36:3000/barber/${id}`);
             if(!response.ok){
              throw new Error('Oups! Une erreur est survenue.');
              }
@@ -76,9 +76,11 @@ export const setBarber= id => {
             });
               
             let allBarbers = [];
+            
             barbersIDS.forEach( id => {
              
             let same = resData.filter(e=>e.barberid === id);
+            
            
             let barber = {
                     id : same[0].barberid,
@@ -97,9 +99,26 @@ export const setBarber= id => {
                     region : same[0].region,
                     lang : same[0].lang,
                     type : same[0].type,
-                    services:[]
+                    services:[],
+                    workingTimes:{}
                 }
-                same.forEach(e=>{
+                const servicesIDS=[];
+                same.forEach((e)=>{
+                    
+                    const workingTime={
+                    
+                        workingTimeID:e.workingTimeID,
+                        day:e.day,
+                        debut:e.debut,
+                        finish:e.finish,
+                        isworking:e.isworking,
+                        theBarberID:e.barber_id
+                    
+                };
+                    barber.workingTimes[e.day]=workingTime;
+                    
+                   
+                    
                     if(e.id!==null && e.name!==null && e.price!==null && e.duration!==null && e.barber_id!==null && e.durationHours!==0 && e.durationMinutes!==0){
                        
                         const hours = (e.duration / 60);
@@ -116,11 +135,23 @@ export const setBarber= id => {
                             durationHour:durationHours,
                             durationMinute:durationMinutes
                     }
+
                     
-                    barber.services.push(service);
+
+                    if(!servicesIDS.includes(e.id)){
+                        barber.services.push(service);
+                        servicesIDS.push(e.id);
+                        console.log(servicesIDS);
+                    }
+
+                    
+                    
+                    
                     }else{
                         return;
                     }
+
+
                     
                     
                 });
@@ -142,7 +173,7 @@ export const updateBarberPassword= (id,password) => {
     return async dispatch => {
 
          try{
-           const response = await fetch(`http://192.168.1.34:3000/barber/updatePassword/${id}`,{
+           const response = await fetch(`http://192.168.1.36:3000/barber/updatePassword/${id}`,{
               method:'PATCH',
               headers: {
                 'Content-Type': 'application/json'
@@ -168,7 +199,7 @@ export const updateBarberPhone= (id,phone,barberid) => {
     return async dispatch => {
 
          try{
-           const response = await fetch(`http://192.168.1.34:3000/barber/updatePhone/${barberid}`,{
+           const response = await fetch(`http://192.168.1.36:3000/barber/updatePhone/${barberid}`,{
               method:'PATCH',
               headers: {
                 'Content-Type': 'application/json'
@@ -195,7 +226,7 @@ export const updateBarber= (id,name,surname,b_name,age,email,address,wilaya,regi
 
          try{
            
-           const response = await fetch(`http://192.168.1.34:3000/barber/updateBarber/${id}`,{
+           const response = await fetch(`http://192.168.1.36:3000/barber/updateBarber/${id}`,{
               method:'PATCH',
               headers: {
                 'Content-Type': 'application/json'
@@ -221,7 +252,7 @@ export const deleteBarber = id => {
     return async dispatch => {
     
         try{
-            const response = await fetch(`http://192.168.1.34:3000/barber/deleteBarber/${id}`,{
+            const response = await fetch(`http://192.168.1.36:3000/barber/deleteBarber/${id}`,{
                method:'DELETE'});
 
             if(!response.ok){

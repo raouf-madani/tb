@@ -141,7 +141,7 @@ Fetch one barber according to his id
 app.get('/barber/:id',(req,res)=>{
   
  
-con.query('SELECT barber.id as barberid, barber.phone, barber.password, barber.sex, barber.name as barberName, barber.surname, barber.b_name, barber.age, barber.email, barber.address, barber.image,barber.mark, barber.wilaya, barber.region,barber.lang,barber.type,service.id,service.name,service.price,service.duration,service.barber_id FROM barber LEFT JOIN service  on barber.id=service.barber_id WHERE barber.id=?',
+con.query('SELECT barber.id as barberid, barber.phone, barber.password, barber.sex, barber.name as barberName, barber.surname, barber.b_name, CAST(barber.age AS char) as age, barber.email, barber.address, barber.image,barber.mark, barber.wilaya, barber.region,barber.lang,barber.type,service.id,service.name,service.price,service.duration,service.barber_id,worktime.id as workingTimeID,worktime.day,SUBSTRING(worktime.debut,1,5) as debut,SUBSTRING(worktime.finish,1,5) as finish,worktime.isworking,worktime.barber_id FROM barber LEFT JOIN service  on barber.id=service.barber_id LEFT JOIN worktime on barber.id=worktime.barber_id WHERE barber.id=?',
 [
   req.params.id
 ],
@@ -290,6 +290,76 @@ app.patch('/service/updateService/:id',(req,res)=>{
   });
   
   });
+
+
+  /**
+   * ************************Worktime
+  */
+ /*
+    Add New Worktime
+ */ 
+app.post('/worktime/addWorktime',(req,res)=>{
+
+  let values = [];
+ 
+  values.push(['Samedi',null,null,false,req.body.barber_id],['Dimanche',null,null,false,req.body.barber_id],
+              ['Lundi',null,null,false,req.body.barber_id],['Mardi',null,null,false,req.body.barber_id],
+              ['Mercredi',null,null,false,req.body.barber_id],['Jeudi',null,null,false,req.body.barber_id],
+              ['Vendredi',null,null,false,req.body.barber_id]);
+      
+  con.query('INSERT INTO worktime (day,debut,finish,isworking,barber_id) VALUES ?',
+  [values]
+  ,
+  (err,result,fields)=>{
+      if(err) console.log('Query error',err);
+      res.send("success");
+  });
+
+});
+
+
+/*
+  Update worktime
+*/ 
+app.patch('/worktime/updateWorktime/:barber_id',(req,res)=>{
+  
+
+
+con.query("UPDATE worktime SET isworking=(CASE WHEN day='Samedi' then ? WHEN day='Dimanche' then ? WHEN day='Lundi' then ? WHEN day='Mardi' then ? WHEN day='Mercredi' then ? WHEN day='Jeudi' then ? WHEN day='Vendredi' then ? end), debut=(CASE WHEN day='Samedi' then ?  WHEN day='Dimanche' then ? WHEN day='Lundi' then ? WHEN day='Mardi' then ? WHEN day='Mercredi' then ? WHEN day='Jeudi' then ? WHEN day='Vendredi' then ? end), finish=(CASE WHEN day='Samedi' then ?  WHEN day='Dimanche' then ? WHEN day='Lundi' then ? WHEN day='Mardi' then ? WHEN day='Mercredi' then ? WHEN day='Jeudi' then ? WHEN day='Vendredi' then ? end) WHERE barber_id=?",
+[
+  
+  req.body.isworkingSat,
+  req.body.isworkingSun,
+  req.body.isworkingMon,
+  req.body.isworkingTue,
+  req.body.isworkingWed,
+  req.body.isworkingThu,
+  req.body.isworkingFri,
+  req.body.debutSat,
+  req.body.debutSun,
+  req.body.debutMon,
+  req.body.debutTue,
+  req.body.debutWed,
+  req.body.debutThu,
+  req.body.debutFri,
+  req.body.finishSat,
+  req.body.finishSun,
+  req.body.finishMon,
+  req.body.finishTue,
+  req.body.finishWed,
+  req.body.finishThu,
+  req.body.finishFri,
+  req.params.barber_id
+  
+],(err,result,fields)=>{
+    if(err) console.log('Query error',err);
+    res.send("success");
+    console.log(result);
+  });
+});
+  
+
+
 
 // Starting our server.
 app.listen(3000, () => {

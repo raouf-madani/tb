@@ -4,13 +4,15 @@ import {Button } from 'react-native-elements';
 import Colors from '../../../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import ServiceCart from '../../../components/ServiceCart';
-import {MaterialIcons,Entypo} from "@expo/vector-icons";
+import {MaterialIcons} from "@expo/vector-icons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {HeaderButtons,Item} from "react-navigation-header-buttons";
 import HeaderButton from "../../../components/HeaderButton";
+import WorkTimeCart from "../../../components/WorkTimeCart";
 import { useDispatch,useSelector } from 'react-redux';
 import * as barberActions from '../../../store/actions/barberActions';
 import * as servicesActions from '../../../store/actions/serviceActions';
+import * as worktimeActions from '../../../store/actions/worktimeActions';
 
  
 const BarberServiceScreen = props =>{
@@ -21,8 +23,27 @@ const BarberServiceScreen = props =>{
   const barberID= props.navigation.getParam('barberID');  //get Barber ID
   const [error, setError] = useState();
   const [isLoading,setIsLoading]= useState(false);//ActivityIndicator handling
+  const [isUpdating,setIsUpdating]= useState(false);//ActivityIndicator handling for worktime update
 
   const dispatch= useDispatch();
+
+   //variables for open times
+  let satTimeO;
+  let sunTimeO;
+  let monTimeO;
+  let tueTimeO; 
+  let wedTimeO;
+  let thuTimeO;
+  let friTimeO;
+
+  //variables for closed times
+  let satTimeC;
+  let sunTimeC;
+  let monTimeC;
+  let tueTimeC;
+  let wedTimeC;
+  let thuTimeC;
+  let friTimeC;
 
    /*
    *******Fetch One barber DATA
@@ -65,41 +86,35 @@ const BarberServiceScreen = props =>{
       setIsDisponible(true);
     };
 
-    let switchIOS;
-    if(Platform.OS === 'ios'){
-      switchIOS = {
-       alignSelf:'center', 
-       transform:  [{ scaleX: .7 }, { scaleY: .7 }] 
-     };
-   }
+   
 
      //Switch buttons states for slots
-     const [switchSat, setSwitchSat] = useState(false);
-     const [switchSun, setSwitchSun] = useState(false);
-     const [switchMon, setSwitchMon] = useState(false);
-     const [switchTue, setSwitchTue] = useState(false);
-     const [switchWed, setSwitchWed] = useState(false);
-     const [switchThu, setSwitchThu] = useState(false);
-     const [switchFri, setSwitchFri] = useState(false);
+     const [switchSat, setSwitchSat] = useState(barber[0]?barber[0].workingTimes['Samedi'].isworking : false);
+     const [switchSun, setSwitchSun] = useState(barber[0]?barber[0].workingTimes['Dimanche'].isworking :false);
+     const [switchMon, setSwitchMon] = useState(barber[0]?barber[0].workingTimes['Lundi'].isworking :false);
+     const [switchTue, setSwitchTue] = useState(barber[0]?barber[0].workingTimes['Mardi'].isworking :false);
+     const [switchWed, setSwitchWed] = useState(barber[0]?barber[0].workingTimes['Mercredi'].isworking :false);
+     const [switchThu, setSwitchThu] = useState(barber[0]?barber[0].workingTimes['Jeudi'].isworking :false);
+     const [switchFri, setSwitchFri] = useState(barber[0]?barber[0].workingTimes['Vendredi'].isworking :false);
    
      //Text states for 7 days isOpenSat ? date : Début
      // isCloseSat ? date : Fin
      //Open Date states for 7 days. isOpenSat ? openTimeSat : Début
      //Close Date states for 7 days. isCloseSat ? closeTimeSat : Fin
-     const [sat, setSat] = useState({isOpenSat:false,openTimeSat:'début'});
-     const [satClose, setSatClose] = useState({isCloseSat:false,closeTimeSat:'début'});
-     const [sun, setSun] = useState({isOpenSun:false,openTimeSun:'début'});
-     const [sunClose, setSunClose] = useState({isCloseSun:false,closeTimeSun:'début'});
-     const [mon, setMon] = useState({isOpenMon:false,openTimeMon:'début'});
-     const [monClose, setMonClose] = useState({isCloseMon:false,closeTimeMon:'début'});
-     const [tue, setTue] = useState({isOpenTue:false,openTimeTue:'début'});
-     const [tueClose, setTueClose] = useState({isCloseTue:false,closeTimeTue:'début'});
-     const [wed, setWed] = useState({isOpenWed:false,openTimeWed:'début'});
-     const [wedClose, setWedClose] = useState({isCloseWed:false,closeTimeWed:'début'});
-     const [thu, setThu] = useState({isOpenThu:false,openTimeThu:'début'});
-     const [thuClose, setThuClose] = useState({isCloseThu:false,openTimeThu:'début'});
-     const [fri, setFri] = useState({isOpenFri:false,openTimeFri:'début'});
-     const [friClose, setFriClose] = useState({isCloseFri:false,closeTimeFri:'début'});
+     const [sat, setSat] = useState({isOpenSat:barber[0]?barber[0].workingTimes['Samedi'].isworking :false,openTimeSat:barber[0]?barber[0].workingTimes['Samedi'].debut :'début'});
+     const [satClose, setSatClose] = useState({isCloseSat:barber[0]?barber[0].workingTimes['Samedi'].isworking :false,closeTimeSat:barber[0]?barber[0].workingTimes['Samedi'].finish :'fin'});
+     const [sun, setSun] = useState({isOpenSun:barber[0]?barber[0].workingTimes['Dimanche'].isworking :false,openTimeSun:barber[0]?barber[0].workingTimes['Dimanche'].debut :'début'});
+     const [sunClose, setSunClose] = useState({isCloseSun:barber[0]?barber[0].workingTimes['Dimanche'].isworking :false,closeTimeSun:barber[0]?barber[0].workingTimes['Dimanche'].finish :'fin'});
+     const [mon, setMon] = useState({isOpenMon:barber[0]?barber[0].workingTimes['Lundi'].isworking :false,openTimeMon:barber[0]?barber[0].workingTimes['Lundi'].debut :'début'});
+     const [monClose, setMonClose] = useState({isCloseMon:barber[0]?barber[0].workingTimes['Lundi'].isworking :false,closeTimeMon:barber[0]?barber[0].workingTimes['Lundi'].finish :'fin'});
+     const [tue, setTue] = useState({isOpenTue:barber[0]?barber[0].workingTimes['Mardi'].isworking :false,openTimeTue:barber[0]?barber[0].workingTimes['Mardi'].debut :'début'});
+     const [tueClose, setTueClose] = useState({isCloseTue:barber[0]?barber[0].workingTimes['Mardi'].isworking :false,closeTimeTue:barber[0]?barber[0].workingTimes['Mardi'].finish :'fin'});
+     const [wed, setWed] = useState({isOpenWed:barber[0]?barber[0].workingTimes['Mercredi'].isworking :false,openTimeWed:barber[0]?barber[0].workingTimes['Mercredi'].debut :'début'});
+     const [wedClose, setWedClose] = useState({isCloseWed:barber[0]?barber[0].workingTimes['Mercredi'].isworking :false,closeTimeWed:barber[0]?barber[0].workingTimes['Mercredi'].finish :'fin'});
+     const [thu, setThu] = useState({isOpenThu:barber[0]?barber[0].workingTimes['Jeudi'].isworking :false,openTimeThu:barber[0]?barber[0].workingTimes['Jeudi'].debut :'début'});
+     const [thuClose, setThuClose] = useState({isCloseThu:barber[0]?barber[0].workingTimes['Jeudi'].isworking :false,closeTimeThu:barber[0]?barber[0].workingTimes['Jeudi'].finish :'fin'});
+     const [fri, setFri] = useState({isOpenFri:barber[0]?barber[0].workingTimes['Vendredi'].isworking :false,openTimeFri:barber[0]?barber[0].workingTimes['Vendredi'].debut :'début'});
+     const [friClose, setFriClose] = useState({isCloseFri:barber[0]?barber[0].workingTimes['Vendredi'].isworking :false,closeTimeFri:barber[0]?barber[0].workingTimes['Vendredi'].finish :'fin'});
      
      //Date Picker states
      const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -145,36 +160,38 @@ const BarberServiceScreen = props =>{
         hideDatePicker();
         //set the hours after confirming it in the datePicker
         if(id === 'sat'){
-          setSat({...sat,openTimeSat:date.getHours()+'h'+date.getMinutes()});
+          setSat({...sat,openTimeSat:date.getHours()+':'+date.getMinutes()});
         }else if(id==='satClose'){
-          setSatClose({...satClose,closeTimeSat:date.getHours()+'h'+date.getMinutes()});
+          setSatClose({...satClose,closeTimeSat:date.getHours()+':'+date.getMinutes()});
         }else if (id==='sun'){
-          setSun({...sun,openTimeSun:date.getHours()+'h'+date.getMinutes()}); 
+          setSun({...sun,openTimeSun:date.getHours()+':'+date.getMinutes()}); 
         }else if(id==='sunClose'){
-          setSunClose({...sunClose,closeTimeSun:date.getHours()+'h'+date.getMinutes()});
+          setSunClose({...sunClose,closeTimeSun:date.getHours()+':'+date.getMinutes()});
         }else if (id==='mon'){
-          setMon({...mon,openTimeMon:date.getHours()+'h'+date.getMinutes()});
+          setMon({...mon,openTimeMon:date.getHours()+':'+date.getMinutes()});
         }else if(id==='monClose'){
-          setMonClose({...monClose,closeTimeMon:date.getHours()+'h'+date.getMinutes()});
+          setMonClose({...monClose,closeTimeMon:date.getHours()+':'+date.getMinutes()});
         }else if(id==='tue'){
-          setTue({...tue,openTimeTue:date.getHours()+'h'+date.getMinutes()});
+          setTue({...tue,openTimeTue:date.getHours()+':'+date.getMinutes()});
         }else if(id === 'tueClose'){
-          setTueClose({...tueClose,closeTimeTue:date.getHours()+'h'+date.getMinutes()});
+          setTueClose({...tueClose,closeTimeTue:date.getHours()+':'+date.getMinutes()});
         }else if(id==='wed'){
-          setWed({...wed,openTimeWed:date.getHours()+'h'+date.getMinutes()});
+          setWed({...wed,openTimeWed:date.getHours()+':'+date.getMinutes()});
         }else if(id==='wedClose'){
-          setWedClose({...wedClose,closeTimeWed:date.getHours()+'h'+date.getMinutes()});
+          setWedClose({...wedClose,closeTimeWed:date.getHours()+':'+date.getMinutes()});
         }else if(id==='thu'){
-          setThu({...thu,openTimeThu:date.getHours()+'h'+date.getMinutes()});
+          setThu({...thu,openTimeThu:date.getHours()+':'+date.getMinutes()});
         }else if (id === 'thuClose'){
-          setThuClose({...thuClose,closeTimeThu:date.getHours()+'h'+date.getMinutes()});
+          setThuClose({...thuClose,closeTimeThu:date.getHours()+':'+date.getMinutes()});
         }else if(id === 'fri'){
-          setFri({...fri,openTimeFri:date.getHours()+'h'+date.getMinutes()});
+          setFri({...fri,openTimeFri:date.getHours()+':'+date.getMinutes()});
         }else if(id === 'friClose'){
-          setFriClose({...friClose,closeTimeFri:date.getHours()+'h'+date.getMinutes()});
+          setFriClose({...friClose,closeTimeFri:date.getHours()+':'+date.getMinutes()});
         }
       
     };
+
+    
 
 
 
@@ -192,6 +209,53 @@ const BarberServiceScreen = props =>{
       ]);
 
    };
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  //Update barber's worktime data after pressing in Check icon
+  const saveHandler = useCallback(async()=>{
+      
+    //time variables
+     satTimeO= sat.openTimeSat;
+     sunTimeO= sun.openTimeSun; 
+     monTimeO= mon.openTimeMon; 
+     tueTimeO= tue.openTimeTue; 
+     wedTimeO= wed.openTimeWed; 
+     thuTimeO= thu.openTimeThu; 
+     friTimeO= fri.openTimeFri; 
+
+     satTimeC= satClose.closeTimeSat;
+     sunTimeC= sunClose.closeTimeSun;
+     monTimeC= monClose.closeTimeMon;
+     tueTimeC= tueClose.closeTimeTue;
+     wedTimeC= wedClose.closeTimeWed;
+     thuTimeC= thuClose.closeTimeThu;
+     friTimeC= friClose.closeTimeFri;
+     
+    try{
+      setIsUpdating(true);
+       
+       await dispatch(worktimeActions.updateWorktime(
+         switchSat,switchSun,switchMon,switchTue,switchWed,switchThu,switchFri,
+         satTimeO,sunTimeO,monTimeO,tueTimeO,wedTimeO,thuTimeO,friTimeO,
+         satTimeC,sunTimeC,monTimeC,tueTimeC,wedTimeC,thuTimeC,friTimeC,barber[0].id));
+
+        setIsUpdating(false);   
+                  
+      Alert.alert('Félicitation!','Vos données ont été changées avec succès!',[{text:"OK"}]);
+  
+    }catch(err){
+      console.log(err);
+      Alert.alert('Oups!','Une erreur est survenue!',[{text:"OK"}]);
+    }
+    
+  
+  },[dispatch,switchSat,switchSun,switchMon,switchTue,switchWed,switchThu,switchFri,sat.openTimeSat,sun.openTimeSun,mon.openTimeMon,tue.openTimeTue,wed.openTimeWed,thu.openTimeThu,fri.openTimeFri,satClose.closeTimeSat,sunClose.closeTimeSun,monClose.closeTimeMon,tueClose.closeTimeTue,wedClose.closeTimeWed,thuClose.closeTimeThu,friClose.closeTimeFri,barber[0].id]);
+
+   useEffect(()=>{
+     props.navigation.setParams({load:isUpdating});
+     props.navigation.setParams({save:saveHandler});
+     props.navigation.setParams({disponible:isDisponible})
+   },[saveHandler,isUpdating,isDisponible]);
 
    useEffect(() => {
     if(error){
@@ -262,91 +326,98 @@ const BarberServiceScreen = props =>{
                   end:{x: 1, y: 0}
                 }}/>
         </View>): (<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false}>
-           <View style={styles.disponibilityContainer}>
-              <View style={styles.dayContainer}>
-                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchSat ? '#fd6c57':'#323446'}}>Samedi</Text>
-                    <Switch style={switchIOS} value={switchSat} onValueChange={()=>setSwitchSat(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchSat? '#fd6c57': 'white'}/>
-              </View>
-              <View>
-                  <TouchableOpacity>
-                    <Text style={styles.debutEndText} onPress={()=>{ if(switchSat){showDatePicker();setSat({...sat,isOpenSat:true});setId('sat');} }}>{sat.isOpenSat === true ? sat.openTimeSat: 'Début'} - <Text onPress={()=>{if(switchSat){showDatePicker();setSatClose({...satClose,isCloseSat:true});setId('satClose')}}}>{satClose.isCloseSat ? satClose.closeTimeSat : 'Fin'}</Text></Text>
-                  </TouchableOpacity>
-              </View>
-           </View>
+          
+           <WorkTimeCart
+             switchDay={switchSat}
+             day={barber[0].workingTimes['Samedi'].day}
+             value={switchSat}
+             onValueChange={()=>setSwitchSat(prevValue=>!prevValue)}
+             onPress={()=>{ if(switchSat){showDatePicker();setSat({...sat,isOpenSat:true});setId('sat');} }}
+             openDay={sat.isOpenSat}
+             openTimeDay={sat.openTimeSat}
+             onPress2={()=>{if(switchSat){showDatePicker();setSatClose({...satClose,isCloseSat:true});setId('satClose')}}}
+             closeDay={satClose.isCloseSat}
+             closeTimeDay={satClose.closeTimeSat}
+           />
+           <WorkTimeCart
+             switchDay={switchSun}
+             day={barber[0].workingTimes['Dimanche'].day}
+             value={switchSun}
+             onValueChange={()=>setSwitchSun(prevValue=>!prevValue)}
+             onPress={()=>{ if(switchSun){showDatePicker();setSun({...sun,isOpenSun:true});setId('sun');} }}
+             openDay={sun.isOpenSun}
+             openTimeDay={sun.openTimeSun}
+             onPress2={()=>{if(switchSun){showDatePicker();setSunClose({...sunClose,isCloseSun:true});setId('sunClose')}}}
+             closeDay={sunClose.isCloseSun}
+             closeTimeDay={sunClose.closeTimeSun}
+           />
 
-           <View style={{overflow:'hidden',shadowOpacity:1,shadowRadius:10,shadowColor:"#323446",borderRadius:10,elevation:5,paddingHorizontal:10,paddingVertical:15,marginVertical:10,width:'90%',alignSelf:'center',backgroundColor:'#f9f9f9',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-              <View style={{alignItems:'flex-start',justifyContent:'center'}}>
-                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchSun ? '#fd6c57':'#323446'}}>Dimanche</Text>
-                    <Switch style={switchIOS} value={switchSun} onValueChange={()=>setSwitchSun(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchSun? '#fd6c57': 'white'}/>
-              </View>
-              <View stlye={{backgroundColor:'red'}}>
-                  <TouchableOpacity>
-                    <Text style={{fontFamily:'poppins',color:'#323446',fontSize:12}} onPress={()=>{ if(switchSun){showDatePicker();setSun({...sun,isOpenSun:true});setId('sun');} }}>{sun.isOpenSun === true ? sun.openTimeSun: 'Début'} - <Text onPress={()=>{if(switchSun){showDatePicker();setSunClose({...sunClose,isCloseSun:true});setId('sunClose')}}}>{sunClose.isCloseSun ? sunClose.closeTimeSun : 'Fin'}</Text></Text>
-                  </TouchableOpacity>
-              </View>
-           </View>
+           <WorkTimeCart
+             switchDay={switchMon}
+             day={barber[0].workingTimes['Lundi'].day}
+             value={switchMon}
+             onValueChange={()=>setSwitchMon(prevValue=>!prevValue)}
+             onPress={()=>{ if(switchMon){showDatePicker();setMon({...mon,isOpenMon:true});setId('mon');} }}
+             openDay={mon.isOpenMon}
+             openTimeDay={mon.openTimeMon}
+             onPress2={()=>{if(switchMon){showDatePicker();setMonClose({...monClose,isCloseMon:true});setId('monClose')}}}
+             closeDay={monClose.isCloseMon}
+             closeTimeDay={monClose.closeTimeMon}
+           />
 
-           <View style={{overflow:'hidden',shadowOpacity:1,shadowRadius:10,shadowColor:"#323446",borderRadius:10,elevation:5,paddingHorizontal:10,paddingVertical:15,marginVertical:10,width:'90%',alignSelf:'center',backgroundColor:'#f9f9f9',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-              <View style={{alignItems:'flex-start',justifyContent:'center'}}>
-                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchMon ? '#fd6c57':'#323446'}}>Lundi</Text>
-                    <Switch style={switchIOS} value={switchMon} onValueChange={()=>setSwitchMon(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchMon? '#fd6c57': 'white'}/>
-              </View>
-              <View stlye={{backgroundColor:'red'}}>
-                  <TouchableOpacity>
-                    <Text style={{fontFamily:'poppins',color:'#323446',fontSize:12}} onPress={()=>{ if(switchMon){showDatePicker();setMon({...mon,isOpenMon:true});setId('mon');} }}>{mon.isOpenMon === true ? mon.openTimeMon: 'Début'} - <Text onPress={()=>{if(switchMon){showDatePicker();setMonClose({...monClose,isCloseSat:true});setId('monClose')}}}>{monClose.isCloseSat ? monClose.closeTimeMon : 'Fin'}</Text></Text>
-                  </TouchableOpacity>
-              </View>
-           </View>
+            <WorkTimeCart
+             switchDay={switchTue}
+             day={barber[0].workingTimes['Mardi'].day}
+             value={switchTue}
+             onValueChange={()=>setSwitchTue(prevValue=>!prevValue)}
+             onPress={()=>{ if(switchTue){showDatePicker();setTue({...tue,isOpenTue:true});setId('tue');} }}
+             openDay={tue.isOpenTue}
+             openTimeDay={tue.openTimeTue}
+             onPress2={()=>{if(switchTue){showDatePicker();setTueClose({...tueClose,isCloseTue:true});setId('tueClose')}}}
+             closeDay={tueClose.isCloseTue}
+             closeTimeDay={tueClose.closeTimeTue}
+           />
 
-           <View style={{overflow:'hidden',shadowOpacity:1,shadowRadius:10,shadowColor:"#323446",borderRadius:10,elevation:5,paddingHorizontal:10,paddingVertical:15,marginVertical:10,width:'90%',alignSelf:'center',backgroundColor:'#f9f9f9',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-              <View style={{alignItems:'flex-start',justifyContent:'center'}}>
-                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchTue ? '#fd6c57':'#323446'}}>Mardi</Text>
-                    <Switch style={switchIOS} value={switchTue} onValueChange={()=>setSwitchTue(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchTue? '#fd6c57': 'white'}/>
-              </View>
-              <View stlye={{backgroundColor:'red'}}>
-                  <TouchableOpacity>
-                    <Text style={{fontFamily:'poppins',color:'#323446',fontSize:12}} onPress={()=>{ if(switchTue){showDatePicker();setTue({...tue,isOpenTue:true});setId('tue');} }}>{tue.isOpenTue === true ? tue.openTimeTue: 'Début'} - <Text onPress={()=>{if(switchTue){showDatePicker();setTueClose({...tueClose,isCloseTue:true});setId('tueClose')}}}>{tueClose.isCloseTue ? tueClose.closeTimeTue : 'Fin'}</Text></Text>
-                  </TouchableOpacity>
-              </View>
-           </View>
+          <WorkTimeCart
+             switchDay={switchWed}
+             day={barber[0].workingTimes['Mercredi'].day}
+             value={switchWed}
+             onValueChange={()=>setSwitchWed(prevValue=>!prevValue)}
+             onPress={()=>{ if(switchWed){showDatePicker();setWed({...wed,isOpenWed:true});setId('wed');} }}
+             openDay={wed.isOpenWed}
+             openTimeDay={wed.openTimeWed}
+             onPress2={()=>{if(switchWed){showDatePicker();setWedClose({...wedClose,isCloseWed:true});setId('wedClose')}}}
+             closeDay={wedClose.isCloseWed}
+             closeTimeDay={wedClose.closeTimeWed}
+           />
 
-           <View style={{overflow:'hidden',shadowOpacity:1,shadowRadius:10,shadowColor:"#323446",borderRadius:10,elevation:5,paddingHorizontal:10,paddingVertical:15,marginVertical:10,width:'90%',alignSelf:'center',backgroundColor:'#f9f9f9',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-              <View style={{alignItems:'flex-start',justifyContent:'center'}}>
-                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchWed ? '#fd6c57':'#323446'}}>Mercredi</Text>
-                    <Switch style={switchIOS} value={switchWed} onValueChange={()=>setSwitchSat(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchSat? '#fd6c57': 'white'}/>
-              </View>
-              <View stlye={{backgroundColor:'red'}}>
-                  <TouchableOpacity>
-                    <Text style={{fontFamily:'poppins',color:'#323446',fontSize:12}} onPress={()=>{ if(switchSat){showDatePicker();setSat({...sat,isOpenSat:true});setId('sat');} }}>{sat.isOpenSat === true ? sat.openTimeSat: 'Début'} - <Text onPress={()=>{if(switchSat){showDatePicker();setSatClose({...satClose,isCloseSat:true});setId('satClose')}}}>{satClose.isCloseSat ? satClose.closeTimeSat : 'Fin'}</Text></Text>
-                  </TouchableOpacity>
-              </View>
-           </View>
+           <WorkTimeCart
+             switchDay={switchThu}
+             day={barber[0].workingTimes['Jeudi'].day}
+             value={switchThu}
+             onValueChange={()=>setSwitchThu(prevValue=>!prevValue)}
+             onPress={()=>{ if(switchThu){showDatePicker();setThu({...thu,isOpenThu:true});setId('thu');} }}
+             openDay={thu.isOpenThu}
+             openTimeDay={thu.openTimeThu}
+             onPress2={()=>{if(switchThu){showDatePicker();setThuClose({...thuClose,isCloseThu:true});setId('thuClose')}}}
+             closeDay={thuClose.isCloseThu}
+             closeTimeDay={thuClose.closeTimeThu}
+           />
 
-           <View style={{overflow:'hidden',shadowOpacity:1,shadowRadius:10,shadowColor:"#323446",borderRadius:10,elevation:5,paddingHorizontal:10,paddingVertical:15,marginVertical:10,width:'90%',alignSelf:'center',backgroundColor:'#f9f9f9',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-              <View style={{alignItems:'flex-start',justifyContent:'center'}}>
-                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchSat ? '#fd6c57':'#323446'}}>Jeudi</Text>
-                    <Switch style={switchIOS} value={switchSat} onValueChange={()=>setSwitchSat(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchSat? '#fd6c57': 'white'}/>
-              </View>
-              <View stlye={{backgroundColor:'red'}}>
-                  <TouchableOpacity>
-                    <Text style={{fontFamily:'poppins',color:'#323446',fontSize:12}} onPress={()=>{ if(switchSat){showDatePicker();setSat({...sat,isOpenSat:true});setId('sat');} }}>{sat.isOpenSat === true ? sat.openTimeSat: 'Début'} - <Text onPress={()=>{if(switchSat){showDatePicker();setSatClose({...satClose,isCloseSat:true});setId('satClose')}}}>{satClose.isCloseSat ? satClose.closeTimeSat : 'Fin'}</Text></Text>
-                  </TouchableOpacity>
-              </View>
-           </View>
-
-           <View style={{overflow:'hidden',shadowOpacity:1,shadowRadius:10,shadowColor:"#323446",borderRadius:10,elevation:5,paddingHorizontal:10,paddingVertical:15,marginVertical:10,width:'90%',alignSelf:'center',backgroundColor:'#f9f9f9',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-              <View style={{alignItems:'flex-start',justifyContent:'center'}}>
-                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchSat ? '#fd6c57':'#323446'}}>Vendredi</Text>
-                    <Switch style={switchIOS} value={switchSat} onValueChange={()=>setSwitchSat(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchSat? '#fd6c57': 'white'}/>
-              </View>
-              <View stlye={{backgroundColor:'red'}}>
-                  <TouchableOpacity>
-                    <Text style={{fontFamily:'poppins',color:'#323446',fontSize:12}} onPress={()=>{ if(switchSat){showDatePicker();setSat({...sat,isOpenSat:true});setId('sat');} }}>{sat.isOpenSat === true ? sat.openTimeSat: 'Début'} - <Text onPress={()=>{if(switchSat){showDatePicker();setSatClose({...satClose,isCloseSat:true});setId('satClose')}}}>{satClose.isCloseSat ? satClose.closeTimeSat : 'Fin'}</Text></Text>
-                  </TouchableOpacity>
-              </View>
-           </View>
-            
-
+           <WorkTimeCart
+             switchDay={switchFri}
+             day={barber[0].workingTimes['Vendredi'].day}
+             value={switchFri}
+             onValueChange={()=>setSwitchFri(prevValue=>!prevValue)}
+             onPress={()=>{ if(switchFri){showDatePicker();setFri({...fri,isOpenFri:true});setId('fri');} }}
+             openDay={fri.isOpenFri}
+             openTimeDay={fri.openTimeFri}
+             onPress2={()=>{if(switchFri){showDatePicker();setFriClose({...friClose,isCloseFri:true});setId('friClose')}}}
+             closeDay={friClose.isCloseFri}
+             closeTimeDay={friClose.closeTimeFri}
+           />
+          
+          
              <DateTimePickerModal
               isVisible={isDatePickerVisible}
               mode="time"
@@ -410,90 +481,95 @@ const BarberServiceScreen = props =>{
           />)}
          </ScrollView>): 
          (<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false}>
-           <View style={styles.disponibilityContainer}>
-              <View style={styles.dayContainer}>
-                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchSat ? '#fd6c57':'#323446'}}>Samedi</Text>
-                    <Switch style={switchIOS} value={switchSat} onValueChange={()=>setSwitchSat(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchSat? '#fd6c57': 'white'}/>
-              </View>
-              <View>
-                  <TouchableOpacity>
-                    <Text style={styles.debutEndText} onPress={()=>{ if(switchSat){showDatePicker();setSat({...sat,isOpenSat:true});setId('sat');} }}>{sat.isOpenSat === true ? sat.openTimeSat: 'Début'} - <Text onPress={()=>{if(switchSat){showDatePicker();setSatClose({...satClose,isCloseSat:true});setId('satClose')}}}>{satClose.isCloseSat ? satClose.closeTimeSat : 'Fin'}</Text></Text>
-                  </TouchableOpacity>
-              </View>
-           </View>
+           <WorkTimeCart
+             switchDay={switchSat}
+             day={barber[0].workingTimes['Samedi'].day}
+             value={switchSat}
+             onValueChange={()=>setSwitchSat(prevValue=>!prevValue)}
+             onPress={()=>{ if(switchSat){showDatePicker();setSat({...sat,isOpenSat:true});setId('sat');} }}
+             openDay={sat.isOpenSat}
+             openTimeDay={sat.openTimeSat}
+             onPress2={()=>{if(switchSat){showDatePicker();setSatClose({...satClose,isCloseSat:true});setId('satClose')}}}
+             closeDay={satClose.isCloseSat}
+             closeTimeDay={satClose.closeTimeSat}
+           />
+           <WorkTimeCart
+             switchDay={switchSun}
+             day={barber[0].workingTimes['Dimanche'].day}
+             value={switchSun}
+             onValueChange={()=>setSwitchSun(prevValue=>!prevValue)}
+             onPress={()=>{ if(switchSun){showDatePicker();setSun({...sun,isOpenSun:true});setId('sun');} }}
+             openDay={sun.isOpenSun}
+             openTimeDay={sun.openTimeSun}
+             onPress2={()=>{if(switchSun){showDatePicker();setSunClose({...sunClose,isCloseSun:true});setId('sunClose')}}}
+             closeDay={sunClose.isCloseSun}
+             closeTimeDay={sunClose.closeTimeSun}
+           />
 
-           <View style={{overflow:'hidden',shadowOpacity:1,shadowRadius:10,shadowColor:"#323446",borderRadius:10,elevation:5,paddingHorizontal:10,paddingVertical:15,marginVertical:10,width:'90%',alignSelf:'center',backgroundColor:'#f9f9f9',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-              <View style={{alignItems:'flex-start',justifyContent:'center'}}>
-                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchSun ? '#fd6c57':'#323446'}}>Dimanche</Text>
-                    <Switch style={switchIOS} value={switchSun} onValueChange={()=>setSwitchSun(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchSun? '#fd6c57': 'white'}/>
-              </View>
-              <View stlye={{backgroundColor:'red'}}>
-                  <TouchableOpacity>
-                    <Text style={{fontFamily:'poppins',color:'#323446',fontSize:12}} onPress={()=>{ if(switchSun){showDatePicker();setSun({...sun,isOpenSun:true});setId('sun');} }}>{sun.isOpenSun === true ? sun.openTimeSun: 'Début'} - <Text onPress={()=>{if(switchSun){showDatePicker();setSunClose({...sunClose,isCloseSun:true});setId('sunClose')}}}>{sunClose.isCloseSun ? sunClose.closeTimeSun : 'Fin'}</Text></Text>
-                  </TouchableOpacity>
-              </View>
-           </View>
+           <WorkTimeCart
+             switchDay={switchMon}
+             day={barber[0].workingTimes['Lundi'].day}
+             value={switchMon}
+             onValueChange={()=>setSwitchMon(prevValue=>!prevValue)}
+             onPress={()=>{ if(switchMon){showDatePicker();setMon({...mon,isOpenMon:true});setId('mon');} }}
+             openDay={mon.isOpenMon}
+             openTimeDay={mon.openTimeMon}
+             onPress2={()=>{if(switchMon){showDatePicker();setMonClose({...monClose,isCloseMon:true});setId('monClose')}}}
+             closeDay={monClose.isCloseMon}
+             closeTimeDay={monClose.closeTimeMon}
+           />
 
-           <View style={{overflow:'hidden',shadowOpacity:1,shadowRadius:10,shadowColor:"#323446",borderRadius:10,elevation:5,paddingHorizontal:10,paddingVertical:15,marginVertical:10,width:'90%',alignSelf:'center',backgroundColor:'#f9f9f9',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-              <View style={{alignItems:'flex-start',justifyContent:'center'}}>
-                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchMon ? '#fd6c57':'#323446'}}>Lundi</Text>
-                    <Switch style={switchIOS} value={switchMon} onValueChange={()=>setSwitchMon(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchMon? '#fd6c57': 'white'}/>
-              </View>
-              <View stlye={{backgroundColor:'red'}}>
-                  <TouchableOpacity>
-                    <Text style={{fontFamily:'poppins',color:'#323446',fontSize:12}} onPress={()=>{ if(switchMon){showDatePicker();setMon({...mon,isOpenMon:true});setId('mon');} }}>{mon.isOpenMon === true ? mon.openTimeMon: 'Début'} - <Text onPress={()=>{if(switchMon){showDatePicker();setMonClose({...monClose,isCloseSat:true});setId('monClose')}}}>{monClose.isCloseSat ? monClose.closeTimeMon : 'Fin'}</Text></Text>
-                  </TouchableOpacity>
-              </View>
-           </View>
+            <WorkTimeCart
+             switchDay={switchTue}
+             day={barber[0].workingTimes['Mardi'].day}
+             value={switchTue}
+             onValueChange={()=>setSwitchTue(prevValue=>!prevValue)}
+             onPress={()=>{ if(switchTue){showDatePicker();setTue({...tue,isOpenTue:true});setId('tue');} }}
+             openDay={tue.isOpenTue}
+             openTimeDay={tue.openTimeTue}
+             onPress2={()=>{if(switchTue){showDatePicker();setTueClose({...tueClose,isCloseTue:true});setId('tueClose')}}}
+             closeDay={tueClose.isCloseTue}
+             closeTimeDay={tueClose.closeTimeTue}
+           />
 
-           <View style={{overflow:'hidden',shadowOpacity:1,shadowRadius:10,shadowColor:"#323446",borderRadius:10,elevation:5,paddingHorizontal:10,paddingVertical:15,marginVertical:10,width:'90%',alignSelf:'center',backgroundColor:'#f9f9f9',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-              <View style={{alignItems:'flex-start',justifyContent:'center'}}>
-                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchTue ? '#fd6c57':'#323446'}}>Mardi</Text>
-                    <Switch style={switchIOS} value={switchTue} onValueChange={()=>setSwitchTue(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchTue? '#fd6c57': 'white'}/>
-              </View>
-              <View stlye={{backgroundColor:'red'}}>
-                  <TouchableOpacity>
-                    <Text style={{fontFamily:'poppins',color:'#323446',fontSize:12}} onPress={()=>{ if(switchTue){showDatePicker();setTue({...tue,isOpenTue:true});setId('tue');} }}>{tue.isOpenTue === true ? tue.openTimeTue: 'Début'} - <Text onPress={()=>{if(switchTue){showDatePicker();setTueClose({...tueClose,isCloseTue:true});setId('tueClose')}}}>{tueClose.isCloseTue ? tueClose.closeTimeTue : 'Fin'}</Text></Text>
-                  </TouchableOpacity>
-              </View>
-           </View>
+          <WorkTimeCart
+             switchDay={switchWed}
+             day={barber[0].workingTimes['Mercredi'].day}
+             value={switchWed}
+             onValueChange={()=>setSwitchWed(prevValue=>!prevValue)}
+             onPress={()=>{ if(switchWed){showDatePicker();setWed({...wed,isOpenWed:true});setId('wed');} }}
+             openDay={wed.isOpenWed}
+             openTimeDay={wed.openTimeWed}
+             onPress2={()=>{if(switchWed){showDatePicker();setWedClose({...wedClose,isCloseWed:true});setId('wedClose')}}}
+             closeDay={wedClose.isCloseWed}
+             closeTimeDay={wedClose.closeTimeWed}
+           />
 
-           <View style={{overflow:'hidden',shadowOpacity:1,shadowRadius:10,shadowColor:"#323446",borderRadius:10,elevation:5,paddingHorizontal:10,paddingVertical:15,marginVertical:10,width:'90%',alignSelf:'center',backgroundColor:'#f9f9f9',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-              <View style={{alignItems:'flex-start',justifyContent:'center'}}>
-                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchWed ? '#fd6c57':'#323446'}}>Mercredi</Text>
-                    <Switch style={switchIOS} value={switchWed} onValueChange={()=>setSwitchSat(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchSat? '#fd6c57': 'white'}/>
-              </View>
-              <View stlye={{backgroundColor:'red'}}>
-                  <TouchableOpacity>
-                    <Text style={{fontFamily:'poppins',color:'#323446',fontSize:12}} onPress={()=>{ if(switchSat){showDatePicker();setSat({...sat,isOpenSat:true});setId('sat');} }}>{sat.isOpenSat === true ? sat.openTimeSat: 'Début'} - <Text onPress={()=>{if(switchSat){showDatePicker();setSatClose({...satClose,isCloseSat:true});setId('satClose')}}}>{satClose.isCloseSat ? satClose.closeTimeSat : 'Fin'}</Text></Text>
-                  </TouchableOpacity>
-              </View>
-           </View>
+           <WorkTimeCart
+             switchDay={switchThu}
+             day={barber[0].workingTimes['Jeudi'].day}
+             value={switchThu}
+             onValueChange={()=>setSwitchThu(prevValue=>!prevValue)}
+             onPress={()=>{ if(switchThu){showDatePicker();setThu({...thu,isOpenThu:true});setId('thu');} }}
+             openDay={thu.isOpenThu}
+             openTimeDay={thu.openTimeThu}
+             onPress2={()=>{if(switchThu){showDatePicker();setThuClose({...thuClose,isCloseThu:true});setId('thuClose')}}}
+             closeDay={thuClose.isCloseThu}
+             closeTimeDay={thuClose.closeTimeThu}
+           />
 
-           <View style={{overflow:'hidden',shadowOpacity:1,shadowRadius:10,shadowColor:"#323446",borderRadius:10,elevation:5,paddingHorizontal:10,paddingVertical:15,marginVertical:10,width:'90%',alignSelf:'center',backgroundColor:'#f9f9f9',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-              <View style={{alignItems:'flex-start',justifyContent:'center'}}>
-                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchSat ? '#fd6c57':'#323446'}}>Jeudi</Text>
-                    <Switch style={switchIOS} value={switchSat} onValueChange={()=>setSwitchSat(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchSat? '#fd6c57': 'white'}/>
-              </View>
-              <View stlye={{backgroundColor:'red'}}>
-                  <TouchableOpacity>
-                    <Text style={{fontFamily:'poppins',color:'#323446',fontSize:12}} onPress={()=>{ if(switchSat){showDatePicker();setSat({...sat,isOpenSat:true});setId('sat');} }}>{sat.isOpenSat === true ? sat.openTimeSat: 'Début'} - <Text onPress={()=>{if(switchSat){showDatePicker();setSatClose({...satClose,isCloseSat:true});setId('satClose')}}}>{satClose.isCloseSat ? satClose.closeTimeSat : 'Fin'}</Text></Text>
-                  </TouchableOpacity>
-              </View>
-           </View>
-
-           <View style={{overflow:'hidden',shadowOpacity:1,shadowRadius:10,shadowColor:"#323446",borderRadius:10,elevation:5,paddingHorizontal:10,paddingVertical:15,marginVertical:10,width:'90%',alignSelf:'center',backgroundColor:'#f9f9f9',flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
-              <View style={{alignItems:'flex-start',justifyContent:'center'}}>
-                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:switchSat ? '#fd6c57':'#323446'}}>Vendredi</Text>
-                    <Switch style={switchIOS} value={switchSat} onValueChange={()=>setSwitchSat(prevValue=>!prevValue)} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={switchSat? '#fd6c57': 'white'}/>
-              </View>
-              <View stlye={{backgroundColor:'red'}}>
-                  <TouchableOpacity>
-                    <Text style={{fontFamily:'poppins',color:'#323446',fontSize:12}} onPress={()=>{ if(switchSat){showDatePicker();setSat({...sat,isOpenSat:true});setId('sat');} }}>{sat.isOpenSat === true ? sat.openTimeSat: 'Début'} - <Text onPress={()=>{if(switchSat){showDatePicker();setSatClose({...satClose,isCloseSat:true});setId('satClose')}}}>{satClose.isCloseSat ? satClose.closeTimeSat : 'Fin'}</Text></Text>
-                  </TouchableOpacity>
-              </View>
-           </View>
-            
+           <WorkTimeCart
+             switchDay={switchFri}
+             day={barber[0].workingTimes['Vendredi'].day}
+             value={switchFri}
+             onValueChange={()=>setSwitchFri(prevValue=>!prevValue)}
+             onPress={()=>{ if(switchFri){showDatePicker();setFri({...fri,isOpenFri:true});setId('fri');} }}
+             openDay={fri.isOpenFri}
+             openTimeDay={fri.openTimeFri}
+             onPress2={()=>{if(switchFri){showDatePicker();setFriClose({...friClose,isCloseFri:true});setId('friClose')}}}
+             closeDay={friClose.isCloseFri}
+             closeTimeDay={friClose.closeTimeFri}
+           />
 
              <DateTimePickerModal
               isVisible={isDatePickerVisible}
@@ -509,7 +585,9 @@ const BarberServiceScreen = props =>{
 };
 
 BarberServiceScreen.navigationOptions = navData => {
-    
+  const saveFunction=navData.navigation.getParam('save');
+  const load=navData.navigation.getParam('load');
+  const disponible=navData.navigation.getParam('disponible')
     return  {
     
         headerTransparent : true ,
@@ -529,12 +607,13 @@ BarberServiceScreen.navigationOptions = navData => {
           />
         ),
         headerTintColor: '#fff',
-        headerRight : () =>(
+        headerRight : () =>(load ? <ActivityIndicator color={Colors.primary} style={{marginRight:10}} />:
           <HeaderButtons HeaderButtonComponent = {HeaderButton}> 
-            <Item title = "save" 
-              iconName ='md-checkmark'
+            <Item title = {disponible?'Sauvegarder':' '} 
+              iconName ={disponible?'md-checkmark':''}
               color='#fff'
-              size={23}       
+              size={23}   
+              onPress={saveFunction}    
             />
           </HeaderButtons>)
   };
@@ -619,32 +698,7 @@ const styles= StyleSheet.create({
     justifyContent:'center',
     alignItems:'center'
   },
-  disponibilityContainer:{
-    overflow:'hidden',
-    shadowOpacity:1,
-    shadowRadius:10,
-    shadowColor:"#323446",
-    borderRadius:10,
-    elevation:5,
-    paddingHorizontal:10,
-    paddingVertical:15,
-    marginVertical:10,
-    width:'90%',
-    alignSelf:'center',
-    backgroundColor:'#f9f9f9',
-    flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center'
-  },
-  dayContainer:{
-    alignItems:'flex-start',
-    justifyContent:'center'
-  },
-  debutEndText:{
-    fontFamily:'poppins',
-    color:'#323446',
-    fontSize:12
-  },
+  
   iconsMenuContainer:{
     flexDirection:'row',
     paddingVertical:5

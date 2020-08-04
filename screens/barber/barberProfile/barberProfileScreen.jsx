@@ -157,7 +157,7 @@ const takeLibraryHandler = async ()=>{
 const[formState,disaptchFormState] = useReducer(formReducer,
   {inputValues:{
     b_name: barber[0]?barber[0].b_name:'',
-    age:barber[0]?barber[0].age.toString():'',
+    age:barber[0]?barber[0].age:'',
     name:barber[0]?barber[0].name:'',
     surname:barber[0]?barber[0].surname:'',
     email:barber[0]?barber[0].email:'',
@@ -221,7 +221,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
    };
 
    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  //Update player's data Management after pressing in Check icon
+  //Update barber's data Management after pressing in Check icon
   const saveHandler = useCallback(async()=>{
     if(formState.formIsValid && wilaya!=='Wilaya'){
       
@@ -318,7 +318,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                       keyboardType="phone-pad"
                       returnKeyType="next"
                       onInputChange={inputChangeHandler}
-                      initialValue={barber[0]?barber[0].age.toString():''}
+                      initialValue={barber[0]?barber[0].age:''}
                       initiallyValid={true}
                       required
                       placeholderTextColor='rgba(50,52,70,0.4)'
