@@ -8,13 +8,16 @@ import {createStore,combineReducers,applyMiddleware} from 'redux';
 import ReduxThunk from "redux-thunk";
 import {Provider} from 'react-redux';
 import barbersReducer from './store/reducers/barber';
-enableScreens();
 import bookingsReducer from "./store/reducers/bookingsReducer" ;
+import feedbacksReducer from "./store/reducers/feedback";
+
+enableScreens();
 
 //Create the store and the combine reducers
 const rootReducer = combineReducers({
   barbers:barbersReducer,
-  bookings : bookingsReducer
+  bookings : bookingsReducer,
+  feedbacks:feedbacksReducer
   });
   
   const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

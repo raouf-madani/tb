@@ -1,16 +1,19 @@
 import React,{useState,useEffect,useCallback} from 'react';
-import { StyleSheet, Text, View, ImageBackground , Image,Dimensions,TouchableOpacity,ScrollView,StatusBar} from 'react-native';
+import { StyleSheet, Text, View, ImageBackground , Image,Dimensions,TouchableOpacity,ScrollView,StatusBar,Alert,ActivityIndicator} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons,Entypo} from "@expo/vector-icons";
 import {  Rating  } from 'react-native-elements';
 import Colors from "../../constants/Colors";
 import { useDispatch,useSelector } from 'react-redux';
 import * as barberActions from '../../store/actions/barberActions';
+import * as feedbackActions from '../../store/actions/feedbackActions';
+import Feedback from '../../components/Feedback';
 
 const BarberHomeScreen = props =>{
 
   const barberID= props.navigation.getParam('barberID');  //get Barber ID
   const barberUID= props.navigation.getParam('barberUID'); 
-
+  const [error, setError] = useState();
+  const [isLoading,setIsLoading]= useState(false);//ActivityIndicator handling
   const dispatch= useDispatch();
 
    /*
@@ -18,14 +21,23 @@ const BarberHomeScreen = props =>{
   */
  const getBarber=useCallback(async()=>{
   try{
-    dispatch(barberActions.setBarber(barberID));
+    setError(false);
+    setIsLoading(true);
+    await dispatch(barberActions.setBarber(barberID));
+    await dispatch(feedbackActions.setFeedbacks(barberID));
+    setIsLoading(false);
     }catch(err){
       console.log(err);
+      setError(err);
+      if(err){
+        Alert.alert('Oups!','Une erreur est survenue',[{text:'OK'}]);
+    } 
     }
 },[dispatch]);
 
   useEffect(()=>{
   getBarber();
+  
   },[dispatch,getBarber]);
 
   useEffect(()=>{
@@ -37,10 +49,8 @@ const BarberHomeScreen = props =>{
 
    const barber=useSelector(state=>state.barbers.barber[0]);
    console.log(barber);
-
-  const ratingCompleted = rating =>{
-    console.log("Rating is: " + rating)
-  }
+   const feedbacks=useSelector(state=>state.feedbacks.feedbacks);
+   console.log(feedbacks);
   
   const [isAbout,setIsAbout]= useState(true);
   const [isPortfolio,setIsPortfolio]= useState(false);
@@ -63,6 +73,42 @@ const BarberHomeScreen = props =>{
       setIsPortfolio(false); 
       setIsFeedback(true);
     };
+
+    const minServicesPrice=prices=>{
+      let arrayPrices=[];
+      if(prices.lentgh ===0){
+        return;
+      }
+      prices.forEach(e=>{
+        arrayPrices.push(e.price);
+      });
+  
+      return Math.min(...arrayPrices);
+     
+    };
+   
+    const averageMarks=marks=>{
+       let total = 0;
+       let cpt=0;
+      
+
+        marks.forEach(review=>{
+          if(review.mark !==null){
+            total = total + review.mark;
+            cpt=cpt+1;
+          }
+        });
+       
+      
+        return total / cpt;
+       
+    };
+
+    if(isLoading){
+      return ( <ImageBackground source={require('../../assets/images/support.png')} style={styles.coverTwo}>
+                  <ActivityIndicator size='large' color={Colors.primary} />
+              </ImageBackground>)
+    };
   
     return(
       <View style ={styles.container}>
@@ -75,19 +121,18 @@ const BarberHomeScreen = props =>{
                <View style={styles.imageContainer}>
                   <Image source={require('../../assets/images/man2.jpg')} style={styles.icon} />
                </View>
-               <Text style={styles.bname}>Merouane</Text>
-               <Text style={styles.jobAge}>Coiffeur au Salon la rose, 25ans </Text>
+               <Text style={styles.bname}>{barber && barber.b_name!==null?barber.b_name:'Nom business'}</Text>
+               <Text style={styles.jobAge}>{barber && (barber.name!==null || barber.surname!==null || barber.age!==null)?`${barber.name} ${barber.surname}, ${barber.age}ans`:'Nom, prénom et votre age'}</Text>
                <View style={{flexDirection:'row'}}>
                 <Rating
                       type='custom'
-                      ratingCount={5}
-                      onFinishRating={ratingCompleted}
+                      startingValue={feedbacks.length===0? 1: averageMarks(feedbacks)}
                       imageSize={20}
                       ratingBackgroundColor={'#323446'}
                       ratingColor='#fd6c57'
                       tintColor='#f9f9f9'
                     />
-                 <Text style={styles.commentsNumber}>  (125 Commentaires)</Text>   
+                 <Text style={styles.commentsNumber}>{feedbacks.length!==0 ? ` (${feedbacks.length} Commentaires)`:' Aucun Commentaire!'}</Text>   
                 </View>
                 <View style={styles.iconsContainer}>
                   <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberProfile',{barberUID:barberUID})}>
@@ -133,11 +178,11 @@ const BarberHomeScreen = props =>{
             <View style={styles.firstRow}>
                 <View>
                   <Text style={styles.title}>Nom Complet</Text>
-                  <Text style={styles.detail}>Merouane Sahnounr</Text>
+                  <Text style={styles.detail}>{barber && (barber.name!==null || barber.surname!==null)?`${barber.name} ${barber.surname}`:'Votre nom complet'}</Text>
                 </View>
                 <View>
                   <Text style={styles.title}>A Partir de</Text> 
-                  <Text style={styles.price}>1500 دج</Text>
+                  <Text style={styles.price}>{barber && barber.services.length!==0 ? minServicesPrice(barber.services)+' دج':'0 دج'}</Text>
                 </View>  
             </View>
             
@@ -149,31 +194,31 @@ const BarberHomeScreen = props =>{
                   <View style={styles.daysContainer}>
                     <View style={styles.dayContainer}>
                       <Text style={styles.dayText}>Samedi</Text>
-                      <Text style={styles.detail}>08h30 - 00h00</Text>
+                      <Text style={styles.detail}>{barber && barber.workingTimes['Sam'].isworking===1?`${barber.workingTimes['Sam'].debut} - ${barber.workingTimes['Sam'].finish}` : 'Non disponible'}</Text>
                     </View>
                     <View style={styles.dayContainer}>
                       <Text style={styles.dayText}>Dimanche</Text>
-                      <Text style={styles.detail}>08h30 - 00h00</Text> 
+                      <Text style={styles.detail}>{barber && barber.workingTimes['Dim'].isworking===1?`${barber.workingTimes['Dim'].debut} - ${barber.workingTimes['Dim'].finish}` : 'Non disponible'}</Text> 
                     </View>
                     <View style={styles.dayContainer}>
                       <Text style={styles.dayText}>Lundi</Text>
-                      <Text style={styles.detail}>08h30 - 00h00</Text> 
+                      <Text style={styles.detail}>{barber && barber.workingTimes['Lun'].isworking===1?`${barber.workingTimes['Lun'].debut} - ${barber.workingTimes['Lun'].finish}` : 'Non disponible'}</Text> 
                     </View>
                     <View style={styles.dayContainer}>
                       <Text style={styles.dayText}>Mardi</Text>
-                      <Text style={styles.detail}>08h30 - 00h00</Text>
+                      <Text style={styles.detail}>{barber && barber.workingTimes['Mar'].isworking===1?`${barber.workingTimes['Mar'].debut} - ${barber.workingTimes['Mar'].finish}` : 'Non disponible'}</Text>
                     </View>
                     <View style={styles.dayContainer}>
                       <Text style={styles.dayText}>Mercredi</Text>
-                      <Text style={styles.detail}>08h30 - 00h00</Text>
+                      <Text style={styles.detail}>{barber && barber.workingTimes['Mer'].isworking===1?`${barber.workingTimes['Mer'].debut} - ${barber.workingTimes['Mer'].finish}` : 'Non disponible'}</Text>
                     </View>
                     <View style={styles.dayContainer}>
                       <Text style={styles.dayText}>Jeudi</Text>
-                      <Text style={styles.detail}>08h30 - 00h00</Text>
+                      <Text style={styles.detail}>{barber && barber.workingTimes['Jeu'].isworking===1?`${barber.workingTimes['Jeu'].debut} - ${barber.workingTimes['Jeu'].finish}` : 'Non disponible'}</Text>
                     </View>
                     <View style={styles.dayContainer}>
                       <Text style={styles.dayText}>Vendredi</Text>
-                      <Text style={styles.detail}>08h30 - 00h00</Text>  
+                      <Text style={styles.detail}>{barber && barber.workingTimes['Ven'].isworking===1?`${barber.workingTimes['Ven'].debut} - ${barber.workingTimes['Ven'].finish}` : 'Non disponible'}</Text>  
                     </View>
                   </View>
                 </ScrollView>
@@ -182,10 +227,10 @@ const BarberHomeScreen = props =>{
             <View style={styles.thirdRow}>
                 <View style={styles.leftColumn}>
                   <Text style={styles.title}>Adresse</Text>
-                  <Text style={styles.detail}>Boulevard Abderezak Takarli, rue 1800 </Text>
+                  <Text style={styles.detail}>{barber && barber.address!==null?barber.address:'Votre adresse personnelle'}</Text>
                   <View style={styles.cityContainer}>
                     <MaterialCommunityIcons title="city" name ='city' color='#fd6c57' size={20} />
-                    <Text style={styles.cityText}> Bab dzair, Blida </Text>
+                    <Text style={styles.cityText}>{barber && (barber.wilaya!==null || barber.region!==null)?`${barber.region}, ${barber.wilaya}`:'Région, Ville'}</Text>
                   </View>
                   
                 </View>
@@ -269,109 +314,12 @@ const BarberHomeScreen = props =>{
          </ScrollView>):undefined}
 
          {isFeedback?(<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false} contentContainerStyle={{alignItems:'center'}}>
-              <View style={{flexDirection:'row',width:'90%',marginVertical:10}}>
-                <View style={{width:'20%'}}>
-                  <View style={{width:60,height:60}}>
-                        <Image source={require('../../assets/images/ines.jpg')} style={{width:'100%',height:'100%',borderRadius:30}} />
-                  </View>
-                </View>
-                <View style={{width:'80%',backgroundColor:'#fff',alignItems:'flex-start'}}>
-                    <View>
-                      <Rating
-                        type='custom'
-                        ratingCount={5}
-                        onFinishRating={ratingCompleted}
-                        imageSize={20}
-                        ratingBackgroundColor={'#323446'}
-                        ratingColor='#fd6c57'
-                        tintColor='#fff'
-                      />
-                    </View>
-                    <View style={{padding:10,backgroundColor:'#f9f9f9',borderRadius:20,alignItems:'flex-start',justifyContent:'center'}}>
-                         <Text>
-                           Elle est trop forte cette coiffeuse, je la recommande vivement!
-                         </Text>
-                    </View>
-                 </View>
-              </View>
-
-              <View style={{flexDirection:'row',width:'90%',marginVertical:10}}>
-                <View style={{width:'20%'}}>
-                  <View style={{width:60,height:60}}>
-                        <Image source={require('../../assets/images/chris.jpg')} style={{width:'100%',height:'100%',borderRadius:30}} />
-                  </View>
-                </View>
-                <View style={{width:'80%',backgroundColor:'#fff',alignItems:'flex-start'}}>
-                    <View>
-                      <Rating
-                        type='custom'
-                        ratingCount={5}
-                        onFinishRating={ratingCompleted}
-                        imageSize={20}
-                        ratingBackgroundColor={'#323446'}
-                        ratingColor='#fd6c57'
-                        tintColor='#fff'
-                      />
-                    </View>
-                    <View style={{padding:10,backgroundColor:'#f9f9f9',borderRadius:20,alignItems:'flex-start',justifyContent:'center'}}>
-                         <Text>
-                           Wow! Mme Djazia est trop sympa. J'adore son style! Merci beaucoup
-                         </Text>
-                    </View>
-                 </View>
-              </View>
-
-              <View style={{flexDirection:'row',width:'90%',marginVertical:10}}>
-                <View style={{width:'20%'}}>
-                  <View style={{width:60,height:60,borderRadius:30,overflow:'hidden'}}>
-                        <Image source={require('../../assets/images/fatima.jpg')} style={{width:'100%',height:'100%',borderRadius:30}} />
-                  </View>
-                </View>
-                <View style={{width:'80%',backgroundColor:'#fff',alignItems:'flex-start'}}>
-                    <View>
-                      <Rating
-                        type='custom'
-                        ratingCount={5}
-                        onFinishRating={ratingCompleted}
-                        imageSize={20}
-                        ratingBackgroundColor={'#323446'}
-                        ratingColor='#fd6c57'
-                        tintColor='#fff'
-                      />
-                    </View>
-                    <View style={{padding:10,backgroundColor:'#f9f9f9',borderRadius:20,alignItems:'flex-start',justifyContent:'center'}}>
-                         <Text>
-                           Bonjour, j'ai pas trop aimé la coiffure qu'elle m'a fait Mme Djazia mais bon je vais la donner 3.
-                         </Text>
-                    </View>
-                 </View>
-              </View>
-
-              <View style={{flexDirection:'row',width:'90%',marginVertical:10}}>
-                <View style={{width:'20%'}}>
-                  <View style={{width:60,height:60,borderRadius:30,overflow:'hidden'}}>
-                        <Image source={require('../../assets/images/gutue.jpg')} style={{width:'100%',height:'100%',borderRadius:30}} />
-                  </View>
-                </View>
-                <View style={{width:'80%',backgroundColor:'#fff',alignItems:'flex-start'}}>
-                    <View>
-                      <Rating
-                        type='custom'
-                        ratingCount={5}
-                        onFinishRating={ratingCompleted}
-                        imageSize={20}
-                        ratingBackgroundColor={'#323446'}
-                        ratingColor='#fd6c57'
-                        tintColor='#fff'
-                      />
-                    </View>
-                    <View style={{padding:10,backgroundColor:'#f9f9f9',borderRadius:20,alignItems:'flex-start',justifyContent:'center'}}>
-                         <Text>
-                           Merci beaucoup Mme Djazia! Elle est très propre et très généreuse.
-                         </Text>
-                    </View>
-                 </View>
-              </View>
+           {feedbacks.map(feed=>  <Feedback
+               key={feed.id}
+               mark={feed.mark}
+               comment={feed.comment}
+               feedbacks={feedbacks}
+              />)}
               
          </ScrollView>):undefined}
 
@@ -424,7 +372,7 @@ const styles= StyleSheet.create({
   },
   cover:{
     width:'100%',
-    resizeMode:'contain',
+    resizeMode:'cover',
     height:'100%'
   },
   infoContainer:{
@@ -610,7 +558,15 @@ const styles= StyleSheet.create({
   modelImage:{
     width:90,
     height:90
-  }
+  },
+ coverTwo:{
+   flex:1,
+   alignItems:'center',
+   justifyContent:'center',
+   width:'100%',
+   height:'100%',
+   resizeMode:'cover'
+ }
 });
 
 export default BarberHomeScreen;

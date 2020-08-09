@@ -12,7 +12,7 @@ const barbersReducer=(state=initialState,action)=>{
        case CREATE_BARBER:
          const newBarber= new Barber(action.barberData.id,action.barberData.phone,action.barberData.password,
                                    action.barberData.sex,null,null,null,null,null,null,action.barberData.wilaya,
-                                   action.barberData.region,null,null,null,null,true,'Barber');
+                                   action.barberData.region,null,null,null,null,true,'Barber',[],{});
          return{
            ...state,
            barbers: state.barbers.concat(newBarber)
@@ -52,7 +52,9 @@ const barbersReducer=(state=initialState,action)=>{
           state.barber[barberindex].lat,
           state.barber[barberindex].mark,
           state.barber[barberindex].lang,
-          state.barber[barberindex].type
+          state.barber[barberindex].type,
+          state.barber[barberindex].services,
+          state.barber[barberindex].workingTimes
         );
         const updatedBarbersData=[...state.barber];
         updatedBarbersData[barberindex]= updatedBarberData;
@@ -91,6 +93,8 @@ const barbersReducer=(state=initialState,action)=>{
           state.barber[barberIndex].mark,
           state.barber[barberIndex].lang,
           state.barber[barberIndex].type,
+          state.barber[barberIndex].services,
+          state.barber[barberIndex].workingTimes
         );   
 
         const updatedBarbers=[...state.barber];
@@ -103,7 +107,7 @@ const barbersReducer=(state=initialState,action)=>{
        
         case UPDATE_BARBER_PHONE:
           const indexBarber = state.barber.findIndex(barber => barber.id === action.barberid);
-          console.log('barberIndex '+indexBarber);
+       
           const updatedBarberPhone = new Barber(
             action.barberData.id,
             action.barberData.phone,
@@ -123,6 +127,8 @@ const barbersReducer=(state=initialState,action)=>{
             state.barber[indexBarber].mark,
             state.barber[indexBarber].lang,
             state.barber[indexBarber].type,
+            state.barber[indexBarber].services,
+            state.barber[indexBarber].workingTimes
           );   
 
           const updatedThisBarber=[...state.barber];
@@ -131,6 +137,8 @@ const barbersReducer=(state=initialState,action)=>{
             ...state,
             barber:updatedThisBarber
           };
+
+          
         
        
        default: 

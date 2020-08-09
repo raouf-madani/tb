@@ -382,10 +382,10 @@ app.post('/worktime/addWorktime',(req,res)=>{
 
   let values = [];
  
-  values.push(['Samedi',null,null,false,req.body.barber_id],['Dimanche',null,null,false,req.body.barber_id],
-              ['Lundi',null,null,false,req.body.barber_id],['Mardi',null,null,false,req.body.barber_id],
-              ['Mercredi',null,null,false,req.body.barber_id],['Jeudi',null,null,false,req.body.barber_id],
-              ['Vendredi',null,null,false,req.body.barber_id]);
+  values.push(['Sam',null,null,false,req.body.barber_id],['Dim',null,null,false,req.body.barber_id],
+              ['Lun',null,null,false,req.body.barber_id],['Mar',null,null,false,req.body.barber_id],
+              ['Mer',null,null,false,req.body.barber_id],['Jeu',null,null,false,req.body.barber_id],
+              ['Ven',null,null,false,req.body.barber_id]);
       
   con.query('INSERT INTO worktime (day,debut,finish,isworking,barber_id) VALUES ?',
   [values]

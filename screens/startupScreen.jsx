@@ -1,5 +1,5 @@
 import React,{useEffect} from 'react';
-import { StyleSheet, View, ImageBackground, ActivityIndicator,AsyncStorage} from 'react-native';
+import { StyleSheet, View, ImageBackground, ActivityIndicator,AsyncStorage,StatusBar} from 'react-native';
 import Colors from '../constants/Colors';
 import * as authActions from '../store/actions/authActions';
 import {useDispatch} from 'react-redux';
@@ -37,10 +37,12 @@ const StartupScreen = props =>{
 
     return(
       <View style = {styles.container}>
+        <StatusBar hidden />
         <ImageBackground 
-        source={require('../assets/images/barber2.jpg')} 
+        source={require('../assets/images/splash.png')} 
         style={styles.bigBackgroundImage}
         >
+            
             <View style={styles.overlayBackground}>
                 <ActivityIndicator size='large' color={Colors.primary} />
             
@@ -57,16 +59,22 @@ const StartupScreen = props =>{
 const styles= StyleSheet.create({
 container : {
     flex : 1 ,
+    width:'100%',
+    height:'100%'
 },
 bigBackgroundImage:{
 flex:1,
 resizeMode:'cover',
+width:'100%',
+height:'100%'
 }, 
 overlayBackground:{
-backgroundColor:"rgba(0, 0, 0, 0.4)", 
+backgroundColor:"rgba(0, 0, 0, 0.1)", 
 flex:1,
 justifyContent:'center',
-alignItems:'center'
+alignItems:'center',
+width:'100%',
+height:'100%'
 }
 
 });

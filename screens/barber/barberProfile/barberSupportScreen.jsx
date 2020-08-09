@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet,View,AsyncStorage,ScrollView,ImageBackground,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActionSheetIOS,Picker,ActivityIndicator} from 'react-native';
+import { StyleSheet,View,ImageBackground,TouchableOpacity,Text,Image,KeyboardAvoidingView,Dimensions} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
 import {useSelector,useDispatch} from 'react-redux';
 import Colors from "../../../constants/Colors";
@@ -21,7 +21,9 @@ const BarberSupportScreen = props =>{
 
     return(
     <View style={styles.container}>
-       
+       <ImageBackground source={require('../../../assets/images/support.png')} style={styles.background}>
+         
+       </ImageBackground>
     </View>
     
      );    
@@ -59,14 +61,15 @@ const styles= StyleSheet.create({
     backgroundColor:'white',
     width:'100%',
     alignItems:'center',
-    justifyContent:'center'
+    justifyContent:'center',
+    height:'100%'
    },
-   row:{
-    width:'90%',
-    flexDirection:'row',
-    justifyContent:'space-around',
-    alignSelf:'center',
-    marginVertical:10
+   background:{
+    width:'100%',
+    alignItems:'center',
+    justifyContent:'center',
+    height:'100%',
+    resizeMode:'cover'
 },
 });
 
