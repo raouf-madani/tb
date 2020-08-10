@@ -95,9 +95,11 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
         
         setIsLogin(true);
 
-        const result = await fetch(`http://192.168.1.9:3000/phone/${prefix+formState.inputValues.phone}`);
+
+        const result = await fetch(`http://173.212.234.137:3000/phone/${prefix+formState.inputValues.phone}`);
         const resData= await result.json();
-        const barbers= await fetch('http://192.168.1.9:3000/barber');
+        const barbers= await fetch('http://173.212.234.137:3000/barber');
+
 
         const barbersData= await barbers.json();
         
@@ -130,11 +132,11 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
        <KeyboardAvoidingView  keyboardVerticalOffset={10}>
          <StatusBar hidden />
           <View style={styles.backgroundContainer}>
-            <Image source={require('../assets/images/man1-1.jpg')} style={{resizeMode:'cover',width:'100%',height:'100%'}}/>
+            <Image source={require('../assets/images/loginimage.jpg')} style={{resizeMode:'cover',width:'100%',height:'100%'}}/>
           </View>
           <View style={styles.secondContainer}>
              <View style={styles.logoContainer}>
-                 <Image source={require('../assets/images/t1.png')} style={styles.logo}/>
+                 <Image source={require('../assets/images/logo.png')} style={styles.logo}/>
                  <Text style={styles.callToAction}>Contactez un coiffeur en quelques clics</Text>
              </View>
               <View style={styles.inputsContainer}>

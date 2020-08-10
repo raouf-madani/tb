@@ -8,7 +8,7 @@ export const createService=(name,price,duration,barber_id)=>{
         const serviceData={name,price,duration,barber_id};
        
         try{
-            const response= await fetch('http://192.168.1.36:3000/service/addService',{
+            const response= await fetch('http://173.212.234.137:3000/service/addService',{
                 method : "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -34,7 +34,7 @@ export const updateService= (id,name,price,duration) => {
 
          try{
            
-           const response = await fetch(`http://192.168.1.36:3000/service/updateService/${id}`,{
+           const response = await fetch(`http://173.212.234.137:3000/service/updateService/${id}`,{
               method:'PATCH',
               headers: {
                 'Content-Type': 'application/json'
@@ -60,7 +60,7 @@ export const deleteService = id => {
     return async () => {
     
         try{
-            const response = await fetch(`http://192.168.1.36:3000/service/deleteService/${id}`,{
+            const response = await fetch(`http://173.212.234.137:3000/service/deleteService/${id}`,{
                method:'DELETE'});
 
             if(!response.ok){

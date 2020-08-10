@@ -42,7 +42,7 @@ const EditServiceScreen = props =>{
    
 
    const currentServiceID=props.navigation.getParam('idService');  //get Service ID
-   console.log(currentServiceID);
+   
    const barber=useSelector(state=>state.barbers.barber[0]);
    console.log(barber);
    const currentUserService = barber.services.find(service => service.serviceId === currentServiceID); //get current service data
@@ -176,7 +176,7 @@ useEffect(()=>{
       <KeyboardAvoidingView  keyboardVerticalOffset={10}>
          <StatusBar hidden />
           <View style={styles.backgroundContainer}>
-            <Image source={require('../../../assets/images/man1-1.jpg')} style={{resizeMode:'cover',width:'100%',height:'100%'}}/>
+            <Image source={require('../../../assets/images/loginimage.jpg')} style={{resizeMode:'cover',width:'100%',height:'100%'}}/>
           </View>
           <View style={styles.secondContainer}>
              <View style={styles.headerContainer}>
@@ -184,7 +184,7 @@ useEffect(()=>{
                      <Text style={{fontFamily:'poppins-bold',fontSize:13,color:'#323446'}}>Choisissez votre service</Text>
                    </View>
                    <View>
-                     <Text style={{fontFamily:'poppins-bold',fontSize:13,color:'#fd6c57'}}>Total: 0دج</Text>
+                     <Text style={{fontFamily:'poppins-bold',fontSize:13,color:'#fd6c57'}}>{'Total: '+ barber && currentUserService?currentUserService.price.toString()+' دج':'0 دج'}</Text>
                    </View>
              </View>
 

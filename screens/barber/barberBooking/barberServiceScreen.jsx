@@ -89,32 +89,32 @@ const BarberServiceScreen = props =>{
    
 
      //Switch buttons states for slots
-     const [switchSat, setSwitchSat] = useState(barber[0]?barber[0].workingTimes['Samedi'].isworking : false);
-     const [switchSun, setSwitchSun] = useState(barber[0]?barber[0].workingTimes['Dimanche'].isworking :false);
-     const [switchMon, setSwitchMon] = useState(barber[0]?barber[0].workingTimes['Lundi'].isworking :false);
-     const [switchTue, setSwitchTue] = useState(barber[0]?barber[0].workingTimes['Mardi'].isworking :false);
-     const [switchWed, setSwitchWed] = useState(barber[0]?barber[0].workingTimes['Mercredi'].isworking :false);
-     const [switchThu, setSwitchThu] = useState(barber[0]?barber[0].workingTimes['Jeudi'].isworking :false);
-     const [switchFri, setSwitchFri] = useState(barber[0]?barber[0].workingTimes['Vendredi'].isworking :false);
+     const [switchSat, setSwitchSat] = useState(barber[0]?barber[0].workingTimes['Sam'].isworking : false);
+     const [switchSun, setSwitchSun] = useState(barber[0]?barber[0].workingTimes['Dim'].isworking :false);
+     const [switchMon, setSwitchMon] = useState(barber[0]?barber[0].workingTimes['Lun'].isworking :false);
+     const [switchTue, setSwitchTue] = useState(barber[0]?barber[0].workingTimes['Mar'].isworking :false);
+     const [switchWed, setSwitchWed] = useState(barber[0]?barber[0].workingTimes['Mer'].isworking :false);
+     const [switchThu, setSwitchThu] = useState(barber[0]?barber[0].workingTimes['Jeu'].isworking :false);
+     const [switchFri, setSwitchFri] = useState(barber[0]?barber[0].workingTimes['Ven'].isworking :false);
    
      //Text states for 7 days isOpenSat ? date : Début
      // isCloseSat ? date : Fin
      //Open Date states for 7 days. isOpenSat ? openTimeSat : Début
      //Close Date states for 7 days. isCloseSat ? closeTimeSat : Fin
-     const [sat, setSat] = useState({isOpenSat:barber[0]?barber[0].workingTimes['Samedi'].isworking :false,openTimeSat:barber[0]?barber[0].workingTimes['Samedi'].debut :'début'});
-     const [satClose, setSatClose] = useState({isCloseSat:barber[0]?barber[0].workingTimes['Samedi'].isworking :false,closeTimeSat:barber[0]?barber[0].workingTimes['Samedi'].finish :'fin'});
-     const [sun, setSun] = useState({isOpenSun:barber[0]?barber[0].workingTimes['Dimanche'].isworking :false,openTimeSun:barber[0]?barber[0].workingTimes['Dimanche'].debut :'début'});
-     const [sunClose, setSunClose] = useState({isCloseSun:barber[0]?barber[0].workingTimes['Dimanche'].isworking :false,closeTimeSun:barber[0]?barber[0].workingTimes['Dimanche'].finish :'fin'});
-     const [mon, setMon] = useState({isOpenMon:barber[0]?barber[0].workingTimes['Lundi'].isworking :false,openTimeMon:barber[0]?barber[0].workingTimes['Lundi'].debut :'début'});
-     const [monClose, setMonClose] = useState({isCloseMon:barber[0]?barber[0].workingTimes['Lundi'].isworking :false,closeTimeMon:barber[0]?barber[0].workingTimes['Lundi'].finish :'fin'});
-     const [tue, setTue] = useState({isOpenTue:barber[0]?barber[0].workingTimes['Mardi'].isworking :false,openTimeTue:barber[0]?barber[0].workingTimes['Mardi'].debut :'début'});
-     const [tueClose, setTueClose] = useState({isCloseTue:barber[0]?barber[0].workingTimes['Mardi'].isworking :false,closeTimeTue:barber[0]?barber[0].workingTimes['Mardi'].finish :'fin'});
-     const [wed, setWed] = useState({isOpenWed:barber[0]?barber[0].workingTimes['Mercredi'].isworking :false,openTimeWed:barber[0]?barber[0].workingTimes['Mercredi'].debut :'début'});
-     const [wedClose, setWedClose] = useState({isCloseWed:barber[0]?barber[0].workingTimes['Mercredi'].isworking :false,closeTimeWed:barber[0]?barber[0].workingTimes['Mercredi'].finish :'fin'});
-     const [thu, setThu] = useState({isOpenThu:barber[0]?barber[0].workingTimes['Jeudi'].isworking :false,openTimeThu:barber[0]?barber[0].workingTimes['Jeudi'].debut :'début'});
-     const [thuClose, setThuClose] = useState({isCloseThu:barber[0]?barber[0].workingTimes['Jeudi'].isworking :false,closeTimeThu:barber[0]?barber[0].workingTimes['Jeudi'].finish :'fin'});
-     const [fri, setFri] = useState({isOpenFri:barber[0]?barber[0].workingTimes['Vendredi'].isworking :false,openTimeFri:barber[0]?barber[0].workingTimes['Vendredi'].debut :'début'});
-     const [friClose, setFriClose] = useState({isCloseFri:barber[0]?barber[0].workingTimes['Vendredi'].isworking :false,closeTimeFri:barber[0]?barber[0].workingTimes['Vendredi'].finish :'fin'});
+     const [sat, setSat] = useState({isOpenSat:barber[0]?barber[0].workingTimes['Sam'].isworking :false,openTimeSat:barber[0]?barber[0].workingTimes['Sam'].debut :null});
+     const [satClose, setSatClose] = useState({isCloseSat:barber[0]?barber[0].workingTimes['Sam'].isworking :false,closeTimeSat:barber[0]?barber[0].workingTimes['Sam'].finish :null});
+     const [sun, setSun] = useState({isOpenSun:barber[0]?barber[0].workingTimes['Dim'].isworking :false,openTimeSun:barber[0]?barber[0].workingTimes['Dim'].debut :null});
+     const [sunClose, setSunClose] = useState({isCloseSun:barber[0]?barber[0].workingTimes['Dim'].isworking :false,closeTimeSun:barber[0]?barber[0].workingTimes['Dim'].finish :null});
+     const [mon, setMon] = useState({isOpenMon:barber[0]?barber[0].workingTimes['Lun'].isworking :false,openTimeMon:barber[0]?barber[0].workingTimes['Lun'].debut :null});
+     const [monClose, setMonClose] = useState({isCloseMon:barber[0]?barber[0].workingTimes['Lun'].isworking :false,closeTimeMon:barber[0]?barber[0].workingTimes['Lun'].finish :null});
+     const [tue, setTue] = useState({isOpenTue:barber[0]?barber[0].workingTimes['Mar'].isworking :false,openTimeTue:barber[0]?barber[0].workingTimes['Mar'].debut :null});
+     const [tueClose, setTueClose] = useState({isCloseTue:barber[0]?barber[0].workingTimes['Mar'].isworking :false,closeTimeTue:barber[0]?barber[0].workingTimes['Mar'].finish :null});
+     const [wed, setWed] = useState({isOpenWed:barber[0]?barber[0].workingTimes['Mer'].isworking :false,openTimeWed:barber[0]?barber[0].workingTimes['Mer'].debut :null});
+     const [wedClose, setWedClose] = useState({isCloseWed:barber[0]?barber[0].workingTimes['Mer'].isworking :false,closeTimeWed:barber[0]?barber[0].workingTimes['Mer'].finish :null});
+     const [thu, setThu] = useState({isOpenThu:barber[0]?barber[0].workingTimes['Jeu'].isworking :false,openTimeThu:barber[0]?barber[0].workingTimes['Jeu'].debut :null});
+     const [thuClose, setThuClose] = useState({isCloseThu:barber[0]?barber[0].workingTimes['Jeu'].isworking :false,closeTimeThu:barber[0]?barber[0].workingTimes['Jeu'].finish :null});
+     const [fri, setFri] = useState({isOpenFri:barber[0]?barber[0].workingTimes['Ven'].isworking :false,openTimeFri:barber[0]?barber[0].workingTimes['Ven'].debut :null});
+     const [friClose, setFriClose] = useState({isCloseFri:barber[0]?barber[0].workingTimes['Ven'].isworking :false,closeTimeFri:barber[0]?barber[0].workingTimes['Ven'].finish :null});
      
      //Date Picker states
      const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -131,26 +131,26 @@ const BarberServiceScreen = props =>{
       //if the Saturday switch is off >>> initialState
       useEffect(()=>{
         if(!switchSat){
-           setSat({...sat,isOpenSat:false,openTimeSat:'Début'});
-           setSatClose({...satClose,isCloseSat:false,closeTimeSat:'Fin'})
+           setSat({...sat,isOpenSat:false,openTimeSat:null});
+           setSatClose({...satClose,isCloseSat:false,closeTimeSat:null})
         }if (!switchSun){
-           setSun({...sun,isOpenSun:false,openTimeSun:'Début'});
-           setSunClose({...sunClose,isCloseSun:false,closeTimeSun:'Fin'});
+           setSun({...sun,isOpenSun:false,openTimeSun:null});
+           setSunClose({...sunClose,isCloseSun:false,closeTimeSun:null});
         }if (!switchMon){
-           setMon({...mon,isOpenMon:false,openTimeMon:'Début'});
-           setMonClose({...monClose,isCloseMon:false,closeTimeMon:'Fin'});
+           setMon({...mon,isOpenMon:false,openTimeMon:null});
+           setMonClose({...monClose,isCloseMon:false,closeTimeMon:null});
         }if (!switchTue){
-           setTue({...tue,isOpenTue:false,openTimeTue:'Début'});
-           setTueClose({...tueClose,isCloseTue:false,closeTimeTue:'Fin'});
+           setTue({...tue,isOpenTue:false,openTimeTue:null});
+           setTueClose({...tueClose,isCloseTue:false,closeTimeTue:null});
         }if(!switchWed){
-           setWed({...wed,isOpenWed:false,openTimeWed:'Début'}); 
-           setWedClose({...wedClose,isCloseWed:false,closeTimeWed:'Fin'});
+           setWed({...wed,isOpenWed:false,openTimeWed:null}); 
+           setWedClose({...wedClose,isCloseWed:false,closeTimeWed:null});
         }if(!switchThu){
-           setThu({...thu,isOpenThu:false,openTimeThu:'Début'});
-           setThuClose({...thuClose,isCloseThu:false,closeTimeThu:'Fin'});
+           setThu({...thu,isOpenThu:false,openTimeThu:null});
+           setThuClose({...thuClose,isCloseThu:false,closeTimeThu:null});
         }if(!switchFri){
-           setFri({...fri,isOpenFri:false,openTimeFri:'Début'});
-           setFriClose({...friClose,isCloseFri:false,closeTimeFri:'Fin'});
+           setFri({...fri,isOpenFri:false,openTimeFri:null});
+           setFriClose({...friClose,isCloseFri:false,closeTimeFri:null});
         }    
           
       },[switchSat,switchSun,switchMon,switchTue,switchWed,switchThu,switchFri]);
@@ -257,17 +257,12 @@ const BarberServiceScreen = props =>{
      props.navigation.setParams({disponible:isDisponible})
    },[saveHandler,isUpdating,isDisponible]);
 
-   useEffect(() => {
-    if(error){
-        Alert.alert('Oups','Une erreur est survenue!',[{text:'OK'}]);
-        console.log(error);
-    } 
-  }, [error]); 
+   
 
     if(isLoading){
-      return <View style={styles.activityIndicatorContainer} >
+      return <ImageBackground source={require('../../../assets/images/support.png')} style={styles.activityIndicatorContainer} >
               <ActivityIndicator size='large' color={Colors.primary} />
-             </View>
+             </ImageBackground>
     };
 
      
@@ -329,7 +324,7 @@ const BarberServiceScreen = props =>{
           
            <WorkTimeCart
              switchDay={switchSat}
-             day={barber[0].workingTimes['Samedi'].day}
+             day={barber[0].workingTimes['Sam'].day}
              value={switchSat}
              onValueChange={()=>setSwitchSat(prevValue=>!prevValue)}
              onPress={()=>{ if(switchSat){showDatePicker();setSat({...sat,isOpenSat:true});setId('sat');} }}
@@ -341,7 +336,7 @@ const BarberServiceScreen = props =>{
            />
            <WorkTimeCart
              switchDay={switchSun}
-             day={barber[0].workingTimes['Dimanche'].day}
+             day={barber[0].workingTimes['Dim'].day}
              value={switchSun}
              onValueChange={()=>setSwitchSun(prevValue=>!prevValue)}
              onPress={()=>{ if(switchSun){showDatePicker();setSun({...sun,isOpenSun:true});setId('sun');} }}
@@ -354,7 +349,7 @@ const BarberServiceScreen = props =>{
 
            <WorkTimeCart
              switchDay={switchMon}
-             day={barber[0].workingTimes['Lundi'].day}
+             day={barber[0].workingTimes['Lun'].day}
              value={switchMon}
              onValueChange={()=>setSwitchMon(prevValue=>!prevValue)}
              onPress={()=>{ if(switchMon){showDatePicker();setMon({...mon,isOpenMon:true});setId('mon');} }}
@@ -367,7 +362,7 @@ const BarberServiceScreen = props =>{
 
             <WorkTimeCart
              switchDay={switchTue}
-             day={barber[0].workingTimes['Mardi'].day}
+             day={barber[0].workingTimes['Mar'].day}
              value={switchTue}
              onValueChange={()=>setSwitchTue(prevValue=>!prevValue)}
              onPress={()=>{ if(switchTue){showDatePicker();setTue({...tue,isOpenTue:true});setId('tue');} }}
@@ -380,7 +375,7 @@ const BarberServiceScreen = props =>{
 
           <WorkTimeCart
              switchDay={switchWed}
-             day={barber[0].workingTimes['Mercredi'].day}
+             day={barber[0].workingTimes['Mer'].day}
              value={switchWed}
              onValueChange={()=>setSwitchWed(prevValue=>!prevValue)}
              onPress={()=>{ if(switchWed){showDatePicker();setWed({...wed,isOpenWed:true});setId('wed');} }}
@@ -393,7 +388,7 @@ const BarberServiceScreen = props =>{
 
            <WorkTimeCart
              switchDay={switchThu}
-             day={barber[0].workingTimes['Jeudi'].day}
+             day={barber[0].workingTimes['Jeu'].day}
              value={switchThu}
              onValueChange={()=>setSwitchThu(prevValue=>!prevValue)}
              onPress={()=>{ if(switchThu){showDatePicker();setThu({...thu,isOpenThu:true});setId('thu');} }}
@@ -406,7 +401,7 @@ const BarberServiceScreen = props =>{
 
            <WorkTimeCart
              switchDay={switchFri}
-             day={barber[0].workingTimes['Vendredi'].day}
+             day={barber[0].workingTimes['Ven'].day}
              value={switchFri}
              onValueChange={()=>setSwitchFri(prevValue=>!prevValue)}
              onPress={()=>{ if(switchFri){showDatePicker();setFri({...fri,isOpenFri:true});setId('fri');} }}
@@ -483,7 +478,7 @@ const BarberServiceScreen = props =>{
          (<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false}>
            <WorkTimeCart
              switchDay={switchSat}
-             day={barber[0].workingTimes['Samedi'].day}
+             day={barber[0].workingTimes['Sam'].day}
              value={switchSat}
              onValueChange={()=>setSwitchSat(prevValue=>!prevValue)}
              onPress={()=>{ if(switchSat){showDatePicker();setSat({...sat,isOpenSat:true});setId('sat');} }}
@@ -495,7 +490,7 @@ const BarberServiceScreen = props =>{
            />
            <WorkTimeCart
              switchDay={switchSun}
-             day={barber[0].workingTimes['Dimanche'].day}
+             day={barber[0].workingTimes['Dim'].day}
              value={switchSun}
              onValueChange={()=>setSwitchSun(prevValue=>!prevValue)}
              onPress={()=>{ if(switchSun){showDatePicker();setSun({...sun,isOpenSun:true});setId('sun');} }}
@@ -508,7 +503,7 @@ const BarberServiceScreen = props =>{
 
            <WorkTimeCart
              switchDay={switchMon}
-             day={barber[0].workingTimes['Lundi'].day}
+             day={barber[0].workingTimes['Lun'].day}
              value={switchMon}
              onValueChange={()=>setSwitchMon(prevValue=>!prevValue)}
              onPress={()=>{ if(switchMon){showDatePicker();setMon({...mon,isOpenMon:true});setId('mon');} }}
@@ -521,7 +516,7 @@ const BarberServiceScreen = props =>{
 
             <WorkTimeCart
              switchDay={switchTue}
-             day={barber[0].workingTimes['Mardi'].day}
+             day={barber[0].workingTimes['Mar'].day}
              value={switchTue}
              onValueChange={()=>setSwitchTue(prevValue=>!prevValue)}
              onPress={()=>{ if(switchTue){showDatePicker();setTue({...tue,isOpenTue:true});setId('tue');} }}
@@ -534,7 +529,7 @@ const BarberServiceScreen = props =>{
 
           <WorkTimeCart
              switchDay={switchWed}
-             day={barber[0].workingTimes['Mercredi'].day}
+             day={barber[0].workingTimes['Mer'].day}
              value={switchWed}
              onValueChange={()=>setSwitchWed(prevValue=>!prevValue)}
              onPress={()=>{ if(switchWed){showDatePicker();setWed({...wed,isOpenWed:true});setId('wed');} }}
@@ -547,7 +542,7 @@ const BarberServiceScreen = props =>{
 
            <WorkTimeCart
              switchDay={switchThu}
-             day={barber[0].workingTimes['Jeudi'].day}
+             day={barber[0].workingTimes['Jeu'].day}
              value={switchThu}
              onValueChange={()=>setSwitchThu(prevValue=>!prevValue)}
              onPress={()=>{ if(switchThu){showDatePicker();setThu({...thu,isOpenThu:true});setId('thu');} }}
@@ -560,7 +555,7 @@ const BarberServiceScreen = props =>{
 
            <WorkTimeCart
              switchDay={switchFri}
-             day={barber[0].workingTimes['Vendredi'].day}
+             day={barber[0].workingTimes['Ven'].day}
              value={switchFri}
              onValueChange={()=>setSwitchFri(prevValue=>!prevValue)}
              onPress={()=>{ if(switchFri){showDatePicker();setFri({...fri,isOpenFri:true});setId('fri');} }}
@@ -714,15 +709,18 @@ const styles= StyleSheet.create({
     fontSize:10
   },
   activityIndicatorContainer:{
-    flex:1,
-    alignItems:'center',
-    justifyContent:'center',
-    backgroundColor:'white'
+   flex:1,
+   resizeMode:'cover',
+   width:'100%',
+   height:'100%',
+   justifyContent:'center',
+   alignItems:'center' 
  },
  noServicesContainer:{
   width:'100%',
   height:'50%',
   justifyContent:'center'
+  
 },
 noServicesText:{
   fontFamily:'poppins',

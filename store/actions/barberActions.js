@@ -14,7 +14,7 @@ export const createBarber=(id,phone,password,sex,wilaya,region)=>{
 
         try{
 
-            const response= await fetch('http://192.168.1.36:3000/barber/addBarber',{
+            const response= await fetch('http://173.212.234.137:3000/barber/addBarber',{
 
                 method : "POST",
                 headers: {
@@ -44,7 +44,7 @@ export const setBarbers= ()=>{
 
       try{
 
-           const response= await fetch('http://192.168.1.36:3000/barber');
+           const response= await fetch('http://173.212.234.137:3000/barber');
 
            if(!response.ok){
             throw new Error('Oups! Une erreur est survenue.');
@@ -66,7 +66,7 @@ export const setBarber= id => {
     return async dispatch=>{
         try{
 
-            const response= await fetch(`http://192.168.1.36:3000/barber/${id}`);
+            const response= await fetch(`http://173.212.234.137:3000/barber/${id}`);
 
             if(!response.ok){
              throw new Error('Oups! Une erreur est survenue.');
@@ -180,7 +180,7 @@ export const updateBarberPassword= (id,password) => {
 
          try{
 
-           const response = await fetch(`http://192.168.1.36:3000/barber/updatePassword/${id}`,{
+           const response = await fetch(`http://173.212.234.137:3000/barber/updatePassword/${id}`,{
 
               method:'PATCH',
               headers: {
@@ -202,13 +202,15 @@ export const updateBarberPassword= (id,password) => {
 };
 
 
+
+
 export const updateBarberPhone= (id,phone,barberid) => {
 
     return async dispatch => {
 
          try{
 
-           const response = await fetch(`http://192.168.1.36:3000/barber/updatePhone/${barberid}`,{
+           const response = await fetch(`http://173.212.234.137:3000/barber/updatePhone/${barberid}`,{
 
               method:'PATCH',
               headers: {
@@ -237,7 +239,7 @@ export const updateBarber= (id,name,surname,b_name,age,email,address,wilaya,regi
          try{
            
 
-           const response = await fetch(`http://192.168.1.36:3000/barber/updateBarber/${id}`,{
+           const response = await fetch(`http://173.212.234.137:3000/barber/updateBarber/${id}`,{
 
               method:'PATCH',
               headers: {
@@ -265,7 +267,7 @@ export const deleteBarber = id => {
     
         try{
 
-            const response = await fetch(`http://192.168.1.36:3000/barber/deleteBarber/${id}`,{
+            const response = await fetch(`http://173.212.234.137:3000/barber/deleteBarber/${id}`,{
 
                method:'DELETE'});
 

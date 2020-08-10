@@ -189,7 +189,7 @@ const alertEditPassword = ()=>{
     return(
       <View style={styles.container}>
          <View style={styles.firstCard}>
-          <ImageBackground source={require('../../../assets/images/man1-1.jpg')} style={styles.backgroundFirstCard} resizeMode='cover'/>
+          <ImageBackground source={require('../../../assets/images/loginimage.jpg')} style={styles.backgroundFirstCard} resizeMode='cover'/>
          </View>
          <View style={styles.menuContainer}>
               <TouchableOpacity onPress={phone} style={{padding:5,width:'30%',backgroundColor:isPhone?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>

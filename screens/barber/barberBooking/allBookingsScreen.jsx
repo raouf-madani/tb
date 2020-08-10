@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { StyleSheet, Text, View,ActivityIndicator, Dimensions, ScrollView } from 'react-native';
+import { StyleSheet, Text, View,ActivityIndicator, Dimensions, ScrollView,ImageBackground } from 'react-native';
 
 import Colors from "../../../constants/Colors";
 import {Calendar, CalendarList, Agenda,LocaleConfig} from 'react-native-calendars';
@@ -150,10 +150,9 @@ setSelectedDay(moment(date.dateString).format('ddd'));
 //IF IS LOADING
 if (isLoading) {
     return (
-      <View style= {styles.centered}>
+      <ImageBackground source={require('../../../assets/images/support.png')} style= {styles.centered}>
         <ActivityIndicator size="large" color= {Colors.primary} />
-
-      </View>
+      </ImageBackground>
     );
 }
 
@@ -162,9 +161,11 @@ if (isLoading) {
     return(
         <View style = {styles.container}>
 
-      
+        <View style={{height:'10%',backgroundColor:'#fff'}}>
 
-        <View  >
+        </View>
+
+        <View>
 
             <Calendar
             style = {{borderBottomLeftRadius : 25,borderBottomRightRadius : 25,overflow : "hidden",paddingVertical : "2%" , marginBottom : 15}}
@@ -176,7 +177,7 @@ if (isLoading) {
             textSectionTitleDisabledColor: '#fff',
             todayTextColor: '#2d4150',
             dayTextColor: '#fff',
-            textDisabledColor: '#252525',
+            textDisabledColor:Colors.blue,
             dotColor: '#fff',
             selectedDotColor: '#ffffff',
             arrowColor: '#fff',
@@ -248,8 +249,15 @@ if (isLoading) {
 
 AllBookingsScreen.navigationOptions = ()=> {
     return {
-      title : "Toutes les réservations" ,
-      
+      title : "Mes Réservations" ,
+      headerTransparent : true ,
+      headerBackTitle : " ",
+      headerTintColor: '#fff',
+      headerTitleStyle:{
+        fontFamily:'poppins-bold',
+        marginTop:5
+      },
+      headerTintColor: Colors.primary,
     }
 
 }
@@ -270,7 +278,10 @@ const styles= StyleSheet.create({
    centered: {
        flex: 1,
        justifyContent: 'center',
-       alignItems: 'center'
+       alignItems: 'center',
+       width:'100%',
+       height:'100%',
+       resizeMode:'cover'
      }
    
   });

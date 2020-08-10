@@ -231,7 +231,8 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                                           formState.inputValues.b_name,formState.inputValues.age,
                                           formState.inputValues.email,formState.inputValues.address,
                                           wilaya,formState.inputValues.region,pickedImage));
-        setIsLoading(false);                        
+        setIsLoading(false); 
+                               
         Alert.alert('Félicitation!','Vos données ont été changées avec succès!',[{text:"OK"}]);
   
     }catch(err){
@@ -257,7 +258,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
     return(
     <View style={styles.container}>
         <View style={styles.firstCard}>
-          <ImageBackground source={require('../../../assets/images/man1-1.jpg')} style={styles.backgroundFirstCard} resizeMode='cover'/>
+          <ImageBackground source={require('../../../assets/images/loginimage.jpg')} style={styles.backgroundFirstCard} resizeMode='cover'/>
        </View>
        <View style={styles.secondCard}>
             <View style={styles.secondCardContent}>
