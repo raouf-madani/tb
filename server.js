@@ -89,7 +89,14 @@ let con = mysql.createConnection({
     password: "",
     database:process.env.DATABASE
   });
- 
+//  //CONNECT THE DATABASE
+// let con = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   password: "",
+//   database: "tahfifa"
+// });
+
   con.connect( err => {
     if (err) {
       console.log(err);
@@ -296,82 +303,83 @@ app.patch('/service/updateService/:id',(req,res)=>{
 
  /***********************************************************************/
    //Bookings MAnipulations
+  /***********************************************************************/
+   //Bookings MAnipulations
 //GET THE CLIENT'S BOOKINGS Top Display for the Barber
 
-app.get("/clientbookings/:barberId",(req,res)=>{
+app.get("/barberBookings/:barberId",(req,res)=>{
+  // clientbookings
+    const barberId = req.params.barberId;
 
-  const barberId = req.params.barberId;
-
-  const query = "SELECT booking.id,booking.amount , booking.id ,CAST(booking.date AS char) as date,CAST(booking.date_booking AS char) as bookingDate,SUBSTRING(booking.start,1,5) as start,SUBSTRING(booking.end,1,5)as end,booking.client_id as clientId,booking.barber_id as barberId , booking.status, booking.duration as bookingDuration , booking.address,booking.region,booking.wilaya,service.name , service.price , service.duration  as serviceDuration from booking INNER JOIN composition on composition.booking_id = booking.id  INNER JOIN service on  service.id = composition.service_id WHERE booking.barber_id = ? "
-  
-  con.query(query,[barberId],(err,result,fields)=>{
-      if(err) res.send(err);
-
-   
-      res.send(result);
-  });
-
-  });
-
-
-//Cancel Manually a Booking throught the booking Detail 
-app.patch("/bookings/cancelbooking",(req,res)=>{
-
-  con.query("UPDATE booking SET status = ? WHERE  booking.id= ? ",[req.body.type,req.body.id],
-  (err,result,fields)=>{ 
-
-  if (err) {
-    res.send(err);
-  } else {
-    res.send("Success");
-  }
-  
-});
- 
-});
-
-//CANCEL EXPIRED BOOKINGS
-  
-app.patch("/bookings/expiredbookings",(req,res)=>{
-   con.query("UPDATE booking SET status = 'expirée' WHERE  SUBSTRING(date_booking,1,10)  = SUBSTRING(NOW(),1,10) AND booking.barber_id = ? AND status = 'en attente'  AND CURRENT_TIMESTAMP > start OR SUBSTRING(date_booking,1,10)  <  SUBSTRING(NOW(),1,10)  AND booking.barber_id = ? AND status = 'en attente' ",[req.body.clientId,req.body.clientId],
-   (err,result,fields)=>{ 
- 
-   if (err) {
-     console.log(err)
-     res.send(err);
-   } else {
-
-     res.send("Success");
-   }
-   
- });
- 
- });
-
-
-
-
-
-   //GET THE CLIENT'S BOOKING Information
-   app.get("/bookings/:clientId",(req,res)=>{
-
-    const clientId = req.params.clientId;
+    const query = "SELECT booking.id,booking.amount , booking.id ,CAST(booking.date AS char) as date,CAST(booking.date_booking AS char) as bookingDate,SUBSTRING(booking.start,1,5) as start,SUBSTRING(booking.end,1,5)as end,booking.client_id as clientId,booking.barber_id as barberId , booking.status, booking.duration as bookingDuration , booking.address,booking.region,booking.wilaya,service.name , service.price , service.duration  as serviceDuration from booking INNER JOIN composition on composition.booking_id = booking.id  INNER JOIN service on  service.id = composition.service_id WHERE booking.barber_id = ? "
     
-    const query = "SELECT booking.address ,booking.wilaya ,booking.region,client.name,client.surname,client.phone from booking INNER JOIN client on client.id = booking.client_id  WHERE booking.client_id = ? "
-    
-    con.query(query,[clientId],(err,result,fields)=>{
+    con.query(query,[barberId],(err,result,fields)=>{
         if(err) res.send(err);
-    
+ 
+     
         res.send(result);
-    
-    });
-    
-    
-    
     });
 
+    });
+
+ 
+//Cancel Manually a Booking throught the booking Detail 
+app.patch("/bookings/changebooking",(req,res)=>{
+ 
+    con.query("UPDATE booking SET status = ? WHERE  booking.id= ? ",[req.body.type,req.body.id],
+    (err,result,fields)=>{ 
+  
+    if (err) {
+      res.send(err);
+    } else {
+      res.send("Success");
+    }
+    
+  });
+   
+  });
+  
+  //CANCEL EXPIRED BOOKINGS
+    
+  app.patch("/bookings/expiredbookings",(req,res)=>{
+     con.query("UPDATE booking SET status = 'expirée' WHERE  SUBSTRING(date_booking,1,10)  = SUBSTRING(NOW(),1,10) AND booking.barber_id = ? AND status = 'en attente'  AND CURRENT_TIMESTAMP > start OR SUBSTRING(date_booking,1,10)  <  SUBSTRING(NOW(),1,10)  AND booking.barber_id = ? AND status = 'en attente' ",[req.body.clientId,req.body.clientId],
+     (err,result,fields)=>{ 
+   
+     if (err) {
+       console.log(err)
+       res.send(err);
+     } else {
+  
+       res.send("Success");
+     }
+     
+   });
+   
+   });
+
+
+
+
+
+     //GET THE CLIENT'S BOOKING Information
+     app.get("/client/clientinfos/:clientId",(req,res)=>{
+
+      const clientId = req.params.clientId;
+      
+      const query = "SELECT booking.address ,booking.wilaya ,booking.region,client.name,client.surname,client.phone from booking INNER JOIN client on client.id = booking.client_id  WHERE booking.client_id = ? "
+      
+      con.query(query,[clientId],(err,result,fields)=>{
+          if(err) res.send(err);
+      
+          res.send(result);
+      
+      });
+      
+      
+      
+      });
 /***********************************************************************/
-=======
+
   /**
    * ************************Worktime
   */

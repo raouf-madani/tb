@@ -96,7 +96,7 @@ useEffect(()=>{
     try {
   setLoading(true);
     
-      const arr = await fetch(`http://192.168.1.5:3000/client/clientinfos/${props.navigation.getParam("clientId")}`);
+      const arr = await fetch(`http://192.168.1.9:3000/client/clientinfos/${props.navigation.getParam("clientId")}`);
       const resData = await arr.json ();
       setBarberInfos(...resData);
       setLoading(false);
