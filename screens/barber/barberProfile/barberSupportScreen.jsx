@@ -8,7 +8,6 @@ import HeaderButton from "../../../components/HeaderButton";
 import polylanar from "../../../lang/ar";
 import polylanfr from "../../../lang/fr";
 
-import * as barberActions from '../../../store/actions/barberActions';
 
 //responsivity (Dimensions get method)
 const screen = Dimensions.get('window');
@@ -22,7 +21,32 @@ const BarberSupportScreen = props =>{
     return(
     <View style={styles.container}>
        <ImageBackground source={require('../../../assets/images/support.png')} style={styles.background}>
-         
+         <View style={{alignItems:'center',width:'90%'}}>
+            <View style={{marginBottom:15}}>
+               <Image source={require('../../../assets/images/icon.png')} style={{width:80,height:80}} />
+            </View>
+            <View style={{width:'100%',marginBottom:15}}>
+              <Text style={{fontFamily:'poppins',fontSize:13,color:Colors.blue,alignSelf:'center'}}>
+                Si un problème persiste, n'hésitez pas à nous contacter au plus vite via les informations suivantes:
+              </Text>
+            </View>
+            <View style={{width:'100%',marginBottom:10}}>
+              <Text style={{fontFamily:'poppins',fontSize:13,color:Colors.blue,marginVertical:2}}>1- Appelez-nous maintenant en appuyant sur <Text style={{color:Colors.secondary}}>0658341876</Text></Text>
+              <Text style={{fontFamily:'poppins',fontSize:13,color:Colors.blue,marginVertical:2}}>2- Page contact, <Text style={{color:Colors.colorH1}}>tahfifa.com/contact</Text></Text>
+            </View>
+            <View style={{flexDirection:'row',alignItems:'center',alignSelf:'flex-start'}}>
+              <View  style={{marginHorizontal:5}}>
+                 <MaterialCommunityIcons name="instagram" size={32} color="black" />
+              </View>
+              <View style={{marginHorizontal:5}}>
+              <MaterialCommunityIcons name="facebook-box" size={32} color="black" /> 
+              </View>
+              <View style={{marginHorizontal:5}}>
+              <MaterialCommunityIcons name="snapchat" size={32} color="black" /> 
+              </View> 
+              
+            </View>
+         </View>
        </ImageBackground>
     </View>
     
@@ -30,7 +54,7 @@ const BarberSupportScreen = props =>{
 };
 
 
-BarberSupportScreen.navigationOptions = navData => {
+BarberSupportScreen.navigationOptions = () => {
  
     
     return {

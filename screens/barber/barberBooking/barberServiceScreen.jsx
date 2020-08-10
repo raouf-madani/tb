@@ -279,7 +279,7 @@ const BarberServiceScreen = props =>{
                  <Image source={require('../../../assets/images/angelina.png')} style={styles.icon} />
              </View>
            
-             <Text style={styles.bname}>Djazia William</Text>
+             <Text style={styles.bname}>{barber[0] && barber[0].b_name!==null?barber[0].b_name:'Nom business'}</Text>
              <View style={styles.iconsMenuContainer}>
                <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('EditService')}>
                  <View style={styles.iconFormCircle}>
@@ -438,7 +438,7 @@ const BarberServiceScreen = props =>{
                   <Image source={require('../../../assets/images/angelina.png')} style={styles.icon} />
               </View>
             
-              <Text style={styles.bname}>Djazia William</Text>
+              <Text style={styles.bname}>{barber[0] && barber[0].b_name!==null?barber[0].b_name:'Nom business'}</Text>
               <View style={styles.iconsMenuContainer}>
                 <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('EditService')}>
                   <View style={styles.iconFormCircle}>
