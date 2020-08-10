@@ -16,7 +16,9 @@ export const getBarberBookings = (barberId)=>{
   return async (dispatch) =>{
       try {
      
+
       const arr = await fetch(`http://173.212.234.137:3000/barberBookings/${barberId}`);
+
       const resData = await arr.json ();
       
 const bookingsIds = [];
@@ -83,7 +85,9 @@ export const cancelBooking = (id,type)=> {
     return async (dispatch) =>{
         try {
             const response = await fetch(
+
                 `http://173.212.234.137:3000/bookings/changebooking`,
+
                 {
                   method: 'PATCH',
                   headers: {
@@ -123,7 +127,9 @@ try {
  
 
   const response = await fetch(
+
       `http://173.212.234.137:3000/bookings/expiredbookings`,
+
       {
         method: 'PATCH',
         headers: {

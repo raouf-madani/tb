@@ -95,9 +95,11 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
         
         setIsLogin(true);
 
+
         const result = await fetch(`http://173.212.234.137:3000/phone/${prefix+formState.inputValues.phone}`);
         const resData= await result.json();
         const barbers= await fetch('http://173.212.234.137:3000/barber');
+
 
         const barbersData= await barbers.json();
         
