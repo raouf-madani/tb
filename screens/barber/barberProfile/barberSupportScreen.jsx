@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet,View,ImageBackground,TouchableOpacity,Text,Image,KeyboardAvoidingView,Dimensions} from 'react-native';
+import { StyleSheet,View,ImageBackground,TouchableOpacity,Text,Image,Alert,Dimensions,Platform,Linking} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
 import {useSelector,useDispatch} from 'react-redux';
 import Colors from "../../../constants/Colors";
@@ -13,10 +13,34 @@ import polylanfr from "../../../lang/fr";
 const screen = Dimensions.get('window');
 
 
-
+ 
 
 
 const BarberSupportScreen = props =>{
+
+  const URL = "https://google.com";
+
+  const callPhone = ()=>{
+  
+    let phoneNumber = '';
+
+    if (Platform.OS === 'android') {
+      phoneNumber = 'tel:${0658341876}';
+    } else {
+      phoneNumber = 'telprompt:${0658341876}';
+    }
+
+    Linking.openURL(phoneNumber);
+ 
+ };
+
+ const url= ()=>{
+  Linking.openURL(URL).catch((err) => {
+    if(err){
+      Alert.alert('Oups!','Une erreur est survenue',[{text:'OK'}]);
+  } 
+  });
+ }
 
     return(
     <View style={styles.container}>
@@ -31,8 +55,8 @@ const BarberSupportScreen = props =>{
               </Text>
             </View>
             <View style={{width:'100%',marginBottom:10}}>
-              <Text style={{fontFamily:'poppins',fontSize:13,color:Colors.blue,marginVertical:2}}>1- Appelez-nous maintenant en appuyant sur <Text style={{color:Colors.secondary}}>0658341876</Text></Text>
-              <Text style={{fontFamily:'poppins',fontSize:13,color:Colors.blue,marginVertical:2}}>2- Page contact, <Text style={{color:Colors.colorH1}}>tahfifa.com/contact</Text></Text>
+              <Text style={{fontFamily:'poppins',fontSize:13,color:Colors.blue,marginVertical:2}}>1- Appelez-nous en appuyant sur <Text style={{color:Colors.secondary}} onPress={callPhone}>0658341876</Text></Text>
+              <Text style={{fontFamily:'poppins',fontSize:13,color:Colors.blue,marginVertical:2}}>2- Page contact, <Text style={{color:Colors.colorH1}} onPress={url}>tahfifa.com/contact</Text></Text>
             </View>
             <View style={{flexDirection:'row',alignItems:'center',alignSelf:'flex-start'}}>
               <View  style={{marginHorizontal:5}}>
@@ -43,6 +67,9 @@ const BarberSupportScreen = props =>{
               </View>
               <View style={{marginHorizontal:5}}>
               <MaterialCommunityIcons name="snapchat" size={32} color="black" /> 
+              </View> 
+              <View style={{marginHorizontal:5}}>
+              <Image source={require('../../../assets/images/tiktok.png')} style={{width:25,height:25}} /> 
               </View> 
               
             </View>
