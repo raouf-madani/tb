@@ -6,6 +6,8 @@ import Colors from '../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import CustomInput from '../components/Input';
 import * as Crypto from 'expo-crypto'; 
+import * as authActions from '../store/actions/authActions';
+import {useDispatch} from 'react-redux';
 
 //responsivity (Dimensions get method)
 const screen = Dimensions.get('window');
@@ -47,6 +49,7 @@ const LoginScreen = props =>{
 const [isLogin,setIsLogin]= useState(false);//ActivityIndicator handling
 const prefix='+213';
 const [isEye,setIsEye]=useState(false);
+const dispatch= useDispatch();
 
 const eye=()=>{//eye icon for password
   setIsEye(prevValue=>!prevValue);
@@ -98,10 +101,11 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
 
         const result = await fetch(`http://173.212.234.137:3000/phone/${prefix+formState.inputValues.phone}`);
         const resData= await result.json();
+        
         const barbers= await fetch('http://173.212.234.137:3000/barber');
-
-
         const barbersData= await barbers.json();
+        
+         
         
         setIsLogin(false);
         const currentBarber= barbersData.find(item=>item.phone===prefix+formState.inputValues.phone && 

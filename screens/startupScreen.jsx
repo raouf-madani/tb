@@ -11,26 +11,36 @@ const StartupScreen = props =>{
     useEffect(()=>{
        const tryLogin=async()=>{
            const userData= await AsyncStorage.getItem('userData');
-          
+           
+         
            if(!userData){
                props.navigation.navigate('Auth');
                return;
            }
+
+           
            
            const transformedData = JSON.parse(userData); // transform string to Javascript Object or Array
-           const {token,userID,expiryDate,gender,id} = transformedData;
-           const expirationDate = new Date(expiryDate);
-           //AsyncStorage.clear();
+        
            
-           if(!token || !userID || !id || expirationDate <= new Date()){
-            props.navigation.navigate('Auth');
-            return;
-           }
+           
+           const {token,userID,expiryDate,id} = transformedData;
+           const expirationDate = new Date(expiryDate);
+          
+           
+
+           await dispatch(authActions.refreshTokenStepOne(token));
+           //AsyncStorage.clear();
+           const userTokenData= await AsyncStorage.getItem('userTokenData');
+           const transformedTokenData= JSON.parse(userTokenData);
+           const {refreshToken,expiresIn}= transformedTokenData;
+           
 
            const expirationTime = expirationDate.getTime() - new Date().getTime();
-            
+           const newExpirationTime= expirationTime + parseInt(expiresIn);
+     
             props.navigation.navigate('Barber',{barberID:id,barberUID:userID});
-            dispatch(authActions.authenticate(token,userID,expirationTime));
+            dispatch(authActions.authenticate(refreshToken,userID,newExpirationTime));
        }
        tryLogin();
     },[dispatch]);

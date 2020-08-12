@@ -48,9 +48,9 @@ const BarberHomeScreen = props =>{
   },[getBarber]);
 
    const barber=useSelector(state=>state.barbers.barber[0]);
-   console.log(barber);
+
    const feedbacks=useSelector(state=>state.feedbacks.feedbacks);
-   console.log(feedbacks);
+   
   
   const [isAbout,setIsAbout]= useState(true);
   const [isPortfolio,setIsPortfolio]= useState(false);
