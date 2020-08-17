@@ -94,7 +94,7 @@ const BarberServiceScreen = props =>{
      const [switchMon, setSwitchMon] = useState(barber[0]?barber[0].workingTimes['Lun'].isworking :false);
      const [switchTue, setSwitchTue] = useState(barber[0]?barber[0].workingTimes['Mar'].isworking :false);
      const [switchWed, setSwitchWed] = useState(barber[0]?barber[0].workingTimes['Mer'].isworking :false);
-     const [switchThu, setSwitchThu] = useState(barber[0]?barber[0].workingTimes['Jeu'].isworking :false);
+     const [switchThu, setSwitchThu] = useState(barber[0].workingTimes['Jeu'].isworking);
      const [switchFri, setSwitchFri] = useState(barber[0]?barber[0].workingTimes['Ven'].isworking :false);
    
      //Text states for 7 days isOpenSat ? date : Début
@@ -464,10 +464,10 @@ const BarberServiceScreen = props =>{
            </View>
          </View>
         {isServices ?( <ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false}>
-          {barber[0].services.map(service=>
+          {barber[0].services.map((service,index)=>
           <ServiceCart
             key={service.serviceId}
-            number={1}
+            number={index+1}
             name={service.name}
             minute={service.duration}
             price={service.price}

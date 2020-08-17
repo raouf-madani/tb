@@ -32,6 +32,11 @@ const StartupScreen = props =>{
            await dispatch(authActions.refreshTokenStepOne(token));
            //AsyncStorage.clear();
            const userTokenData= await AsyncStorage.getItem('userTokenData');
+           if(!userTokenData){
+            props.navigation.navigate('Auth');
+            return;
+           }
+
            const transformedTokenData= JSON.parse(userTokenData);
            const {refreshToken,expiresIn}= transformedTokenData;
            

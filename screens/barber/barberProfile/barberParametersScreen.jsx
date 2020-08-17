@@ -116,9 +116,9 @@ const editPhone=async()=>{
             return;
           }
           setIsLoading(true);
-          dispatch(barberActions.updateBarberPhone(formState.inputValues.phone,prefix+formState.inputValues.phone,
+          await dispatch(barberActions.updateBarberPhone(formState.inputValues.phone,prefix+formState.inputValues.phone,
                                                  barber[0].id));
-          dispatch(authActions.updateUserPhoneFRB(prefix+formState.inputValues.phone,barberUID));                                       
+          await dispatch(authActions.updateUserPhoneFRB(prefix+formState.inputValues.phone,barberUID));                                       
           setIsLoading(false);
           dispatch(authActions.logout());
           AsyncStorage.clear();
@@ -160,7 +160,7 @@ const editPassword=async()=>{
             return;
           }
           setIsLoadingPassword(true);
-          dispatch(barberActions.updateBarberPassword(barber[0].id,hashedPassword));                                   
+          await dispatch(barberActions.updateBarberPassword(barber[0].id,hashedPassword));                                   
           setIsLoadingPassword(false);
           dispatch(authActions.logout());
           AsyncStorage.clear();
@@ -189,7 +189,7 @@ const alertEditPassword = ()=>{
     return(
       <View style={styles.container}>
          <View style={styles.firstCard}>
-          <ImageBackground source={require('../../../assets/images/loginimage.jpg')} style={styles.backgroundFirstCard} resizeMode='cover'/>
+          <ImageBackground source={barber[0].sex==='Femme'?require( '../../../assets/images/woman5.jpg'):require('../../../assets/images/loginimage.jpg')} style={styles.backgroundFirstCard} resizeMode='cover'/>
          </View>
          <View style={styles.menuContainer}>
               <TouchableOpacity onPress={phone} style={{padding:5,width:'30%',backgroundColor:isPhone?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>

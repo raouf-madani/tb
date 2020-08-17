@@ -25,6 +25,7 @@ const BarberHomeScreen = props =>{
     setIsLoading(true);
     await dispatch(barberActions.setBarber(barberID));
     await dispatch(feedbackActions.setFeedbacks(barberID));
+    
     setIsLoading(false);
     }catch(err){
       console.log(err);
@@ -48,9 +49,9 @@ const BarberHomeScreen = props =>{
   },[getBarber]);
 
    const barber=useSelector(state=>state.barbers.barber[0]);
-
+   console.log(barber);
    const feedbacks=useSelector(state=>state.feedbacks.feedbacks);
-   
+   console.log(feedbacks);
   
   const [isAbout,setIsAbout]= useState(true);
   const [isPortfolio,setIsPortfolio]= useState(false);
@@ -103,6 +104,31 @@ const BarberHomeScreen = props =>{
         return total / cpt;
        
     };
+
+    const getMark=useCallback(async()=>{
+      try{
+        setError(false);
+        setIsLoading(true);
+        if(feedbacks.length===0){
+          await dispatch(barberActions.updateBarberMark(barberID,1));
+        }else{
+          await dispatch(barberActions.updateBarberMark(barberID,averageMarks(feedbacks)));
+        }
+        
+        setIsLoading(false);
+        }catch(err){
+          console.log(err);
+          setError(err);
+          if(err){
+            Alert.alert('Oups!','Une erreur est survenue',[{text:'OK'}]);
+        } 
+        }
+    },[dispatch]);
+    
+      useEffect(()=>{
+        getMark();
+      
+      },[dispatch,getMark]);
 
     if(isLoading){
       return ( <ImageBackground source={require('../../assets/images/support.png')} style={styles.coverTwo}>

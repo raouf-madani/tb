@@ -1,53 +1,56 @@
-import React from 'react';
-import { StyleSheet, Text, View,Dimensions,TouchableOpacity } from 'react-native';
+import React,{useState} from 'react';
+import { StyleSheet, Text, View,Dimensions,TouchableOpacity,ImageBackground } from 'react-native';
 import Colors from "../constants/Colors";
-import {MaterialIcons,Entypo} from "@expo/vector-icons";
+import {MaterialIcons,MaterialCommunityIcons} from "@expo/vector-icons";
 
 //responsivity (Dimensions get method)
-const screen = Dimensions.get('window');
+const height = Dimensions.get('window').height;
 
 
 
 const ServiceCart = props =>{
-
-
+     const isImage= {barbe:require('../assets/images/beard.jpeg'),hair:require('../assets/images/hairstyle.png')}; 
+    
    
 
     return(
         <View style={styles.serviceContainer}>
-               <View style={{width:'80%'}}>
-                  <View style={styles.serviceTextContainer}>
-                    <Text style={styles.serviceText}>{'Service '+props.number}</Text>
-                  </View>
-                  <Text style={styles.detailText}>{props.name}</Text>
-                  <Text style={styles.detailText}>{props.minute+'min'}</Text>
-                  <View style={styles.priceContainer}>
-                    <Text style={styles.price}>{props.price+' DA'}</Text>
-                  </View>
-           </View>
-               <View style={styles.iconsContainer}>
-                <TouchableOpacity style={styles.iconFormCircleService} onPress={props.onPressUpdate}>
-                        <Entypo title = "edit" name ='edit' color='#BA55D3' size={23} />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.iconFormCircleService} onPress={props.onPressDelete}>
-                      <MaterialIcons title = "delete" name ='delete-forever' color='#FE457C' size={23} />
-                </TouchableOpacity> 
+          <View style={styles.backgroundContainer}>
+            <ImageBackground style={styles.background} resizeMode='cover' source={isImage.hair}>
+                    <View style={styles.firstRow}>
+                        <View style={styles.serviceNumberContainer}>
+                          <Text style={styles.number}>{'Service '+props.number}</Text>
+                        </View>
+                        <View style={styles.serviceNumberContainer}>
+                          <Text style={styles.number}>{props.minute+' min'}</Text>
+                        </View>
+                    </View>
+                    <View style={styles.secondRow}>
+                          <Text style={styles.textPrice}>{props.price+' دج'}</Text>
+                    </View>
+            </ImageBackground>
+          </View>
+         
+           <View style={styles.iconsContainer}>
+               <View>
+                   <Text style={styles.serviceName}>{props.name}</Text>
+               </View>
+               <View style={styles.iconsRow}>
+                     <TouchableOpacity onPress={props.onPressUpdate} style={styles.iconFormCircleService}>
+                       <MaterialIcons name="edit" size={19} color={Colors.colorF5} />
+                     </TouchableOpacity>
+                     <TouchableOpacity onPress={props.onPressDelete} style={styles.iconFormCircleService}>
+                       <MaterialCommunityIcons name="delete-forever" size={19} color={Colors.secondary} />
+                     </TouchableOpacity>
                </View>
            </View>
+       </View>
      );    
 };
 
 
 const styles= StyleSheet.create({
 
-   
-  iconFormCircleService:{
-    width:30,
-    height:30,
-    borderRadius:20,
-    justifyContent:'center',
-    alignItems:'center',
-  },
   serviceContainer:{
     overflow:'hidden',
     shadowOpacity:1,
@@ -58,43 +61,84 @@ const styles= StyleSheet.create({
     flexDirection:'row',
     width:'90%',
     marginVertical:10,
-    backgroundColor:'#f9f9f9',
     borderRadius:10,
-    paddingHorizontal:10,
-    paddingVertical:15
+    height:height*0.15
   },
-  serviceTextContainer:{
-    backgroundColor:'#fd6c57',
-    width:60,
+  backgroundContainer:{
+    width:'65%',
+    height:'100%',
+    backgroundColor:'#f9f9f9'
+  },
+  background:{
+    width:'100%',
+    height:'100%',
+    justifyContent:'space-between'
+  },
+  firstRow:{
+    width:'90%',
+    alignSelf:'center',
+    flexDirection:'row',
+    justifyContent:'space-between',
+    paddingTop:5
+  },
+  serviceNumberContainer:{
+    backgroundColor:'rgba(0,0,0,0.5)',
+    paddingVertical:3,
+    paddingHorizontal:10,
     alignItems:'center',
     justifyContent:'center',
-    marginBottom:10,
-    borderRadius:5
+    borderRadius:20
   },
-  serviceText:{
-    color:'#fff',
+  number:{
+    fontSize:9,
     fontFamily:'poppins',
-    fontSize:12
+    color:'#fff'
   },
-  detailText:{
-    color:'#323446',
-    fontFamily:'poppins',
-    fontSize:12
+  secondRow:{
+    backgroundColor:'#fff',
+    width:'50%',
+    alignSelf:'center',
+    alignItems:'center',
+    justifyContent:'flex-end',
+    borderTopRightRadius:30,
+    borderTopLeftRadius:30
   },
-  priceContainer:{
-    marginTop:10
+  textPrice:{
+    fontSize:18,
+    color:Colors.primary,
+    fontFamily:'poppins-bold'
   },
-  price:{
-    color:'#fd6c57',
-    fontFamily:'poppins',
-    fontSize:12
+  serviceName:{
+    color:Colors.blue,
+    fontFamily:'poppins-bold',
+    fontSize:12,
+    alignSelf:'center'
+  },
+  iconsRow:{
+    flexDirection:'row',
+    justifyContent:'space-around',
+    width:'100%'
   },
   iconsContainer:{
-    width:'20%',
+    width:'35%',
     justifyContent:'space-between',
     alignItems:'center',
-    borderLeftWidth:2,
-    borderLeftColor:'#323446'
+    backgroundColor:'#fff',
+    paddingVertical:10,
+    paddingHorizontal:10
+  },
+  iconFormCircleService:{
+    width:30,
+    height:30,
+    borderRadius:20,
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor:'white',
+    overflow:'hidden',
+    shadowOpacity:1,
+    shadowRadius:10,
+    shadowColor:"#323446",
+    elevation:5
   },
 });
 

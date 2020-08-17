@@ -6,8 +6,7 @@ import Colors from '../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import CustomInput from '../components/Input';
 import * as Crypto from 'expo-crypto'; 
-import * as authActions from '../store/actions/authActions';
-import {useDispatch} from 'react-redux';
+
 
 //responsivity (Dimensions get method)
 const screen = Dimensions.get('window');
@@ -49,7 +48,7 @@ const LoginScreen = props =>{
 const [isLogin,setIsLogin]= useState(false);//ActivityIndicator handling
 const prefix='+213';
 const [isEye,setIsEye]=useState(false);
-const dispatch= useDispatch();
+
 
 const eye=()=>{//eye icon for password
   setIsEye(prevValue=>!prevValue);
