@@ -88,49 +88,11 @@ const BarberHomeScreen = props =>{
      
     };
    
-    const averageMarks=marks=>{
-       let total = 0;
-       let cpt=0;
-      
-
-        marks.forEach(review=>{
-          if(review.mark !==null){
-            total = total + review.mark;
-            cpt=cpt+1;
-          }
-        });
-       
-      
-        return total / cpt;
-       
-    };
-
-    const getMark=useCallback(async()=>{
-      try{
-        setError(false);
-        setIsLoading(true);
-        if(feedbacks.length===0){
-          await dispatch(barberActions.updateBarberMark(barberID,1));
-        }else{
-          await dispatch(barberActions.updateBarberMark(barberID,averageMarks(feedbacks)));
-        }
-        
-        setIsLoading(false);
-        }catch(err){
-          console.log(err);
-          setError(err);
-          if(err){
-            Alert.alert('Oups!','Une erreur est survenue',[{text:'OK'}]);
-        } 
-        }
-    },[dispatch]);
     
-      useEffect(()=>{
-        getMark();
-      
-      },[dispatch,getMark]);
 
-    if(isLoading){
+   
+
+    if(isLoading || barber===undefined){
       return ( <ImageBackground source={require('../../assets/images/support.png')} style={styles.coverTwo}>
                   <ActivityIndicator size='large' color={Colors.primary} />
               </ImageBackground>)
@@ -152,7 +114,7 @@ const BarberHomeScreen = props =>{
                <View style={{flexDirection:'row'}}>
                 <Rating
                       type='custom'
-                      startingValue={feedbacks.length===0? 1: averageMarks(feedbacks)}
+                      startingValue={barber && feedbacks.length===0? 1: barber.mark}
                       imageSize={20}
                       ratingBackgroundColor={'#323446'}
                       ratingColor='#fd6c57'

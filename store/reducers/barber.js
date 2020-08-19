@@ -1,4 +1,4 @@
-import {CREATE_BARBER,SET_BARBERS,SET_BARBER,UPDATE_BARBER_PASSWORD,UPDATE_BARBER,DELETE_BARBER,UPDATE_BARBER_PHONE,UPDATE_MARK} from '../actions/barberActions';
+import {CREATE_BARBER,SET_BARBERS,SET_BARBER,UPDATE_BARBER_PASSWORD,UPDATE_BARBER,DELETE_BARBER,UPDATE_BARBER_PHONE} from '../actions/barberActions';
 import Barber from '../../models/barber';
 
 const initialState={
@@ -104,39 +104,7 @@ const barbersReducer=(state=initialState,action)=>{
           barber:updatedBarbers
         };
 
-        case UPDATE_MARK:
-         
-          const thebarberindex = state.barber.findIndex(barber => barber.id === action.id);
-          console.log(thebarberindex);
-          const updatedBarberMark = new Barber(
-            action.id,
-            state.barber[thebarberindex].phone,
-            state.barber[thebarberindex].password,
-            state.barber[thebarberindex].sex,
-            state.barber[thebarberindex].name,
-            state.barber[thebarberindex].surname,
-            state.barber[thebarberindex].b_name,
-            state.barber[thebarberindex].age,
-            state.barber[thebarberindex].email,
-            state.barber[thebarberindex].address,
-            state.barber[thebarberindex].wilaya,
-            state.barber[thebarberindex].region,
-            state.barber[thebarberindex].image,
-            state.barber[thebarberindex].long,
-            state.barber[thebarberindex].lat,
-            action.barberData.mark,
-            state.barber[thebarberindex].lang,
-            state.barber[thebarberindex].type,
-            state.barber[thebarberindex].services,
-            state.barber[thebarberindex].workingTimes
-          );   
-  
-          const updatedBarbersMark=[...state.barber];
-          updatedBarbersMark[thebarberindex]=updatedBarberMark;
-          return{
-            ...state,
-            barber:updatedBarbersMark
-          };
+
        
         case UPDATE_BARBER_PHONE:
           const indexBarber = state.barber.findIndex(barber => barber.id === action.barberid);

@@ -36,7 +36,7 @@ const StartupScreen = props =>{
             props.navigation.navigate('Auth');
             return;
            }
-
+   
            const transformedTokenData= JSON.parse(userTokenData);
            const {refreshToken,expiresIn}= transformedTokenData;
            
