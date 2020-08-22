@@ -22,6 +22,7 @@ export const createService=(name,price,duration,barber_id)=>{
            
         }catch(err){
             console.log(err);
+            throw err;
         } 
 
     };
@@ -50,6 +51,7 @@ export const updateService= (id,name,price,duration) => {
            
          }catch(err){
              console.log(err);
+             throw err;
          }
     };
 
@@ -71,6 +73,7 @@ export const deleteService = id => {
             
           }catch(err){
               console.log(err);
+              throw err;
           }
  
     };

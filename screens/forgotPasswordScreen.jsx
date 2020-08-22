@@ -1,5 +1,5 @@
 import React,{useState,useCallback,useReducer} from 'react';
-import { StyleSheet,View,KeyboardAvoidingView,Text,Image,Dimensions,StatusBar,Alert,ActivityIndicator,AsyncStorage} from 'react-native';
+import { StyleSheet,View,KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard,Text,Image,Dimensions,StatusBar,Alert,ActivityIndicator,AsyncStorage} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons} from "@expo/vector-icons";
 import {Button } from 'react-native-elements';
 import Colors from '../constants/Colors';
@@ -165,6 +165,7 @@ Alert.alert('Erreur!','Veuillez rentrer votre nouveau mot de passe s\'il vous pl
 };  
 
     return(
+      <TouchableWithoutFeedback onPress = {()=>{Keyboard.dismiss()}}>
       <View style={styles.container}>
        <KeyboardAvoidingView  keyboardVerticalOffset={10}>
          <StatusBar hidden />
@@ -237,7 +238,7 @@ Alert.alert('Erreur!','Veuillez rentrer votre nouveau mot de passe s\'il vous pl
           </View>
        </KeyboardAvoidingView> 
      </View>
-
+     </TouchableWithoutFeedback>
      );    
 };
 

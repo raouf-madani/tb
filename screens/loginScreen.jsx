@@ -1,5 +1,5 @@
 import React,{useState,useCallback,useReducer} from 'react';
-import { StyleSheet,View,KeyboardAvoidingView,Text,Image,Dimensions,TouchableOpacity, StatusBar,Alert,ActivityIndicator,AsyncStorage} from 'react-native';
+import { StyleSheet,View,KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard,Text,Image,Dimensions,TouchableOpacity, StatusBar,Alert,ActivityIndicator,AsyncStorage} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons} from "@expo/vector-icons";
 import {Button } from 'react-native-elements';
 import Colors from '../constants/Colors';
@@ -131,6 +131,7 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
   };     
 
     return(
+      <TouchableWithoutFeedback onPress = {()=>Keyboard.dismiss()}>
       <View style={styles.container}>
        <KeyboardAvoidingView  keyboardVerticalOffset={10}>
          <StatusBar hidden />
@@ -148,8 +149,8 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
                     rightIcon={<MaterialIcons title = "phone" name ='phone' color='#323446' size={23} />}
                     leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Colors.blue,paddingRight:5}}><Image source={require('../assets/images/algeriaFlag.png')} style={{width:24,height:28,marginRight:5}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
                     placeholder='555555555'
+                    returnKeyType="next"
                     keyboardType="phone-pad"
-                    blurOnSubmit={false}
                     onInputChange={inputChangeHandler}
                     initialValue=''
                     initiallyValid={true}
@@ -163,7 +164,6 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
                     rightIcon={<MaterialCommunityIcons title="lock" onPress={eye} name ={!isEye?'eye':'eye-off'} color='#323446' size={23} />}
                     placeholder='Mot de Passe'
                     keyboardType="default"
-                    blurOnSubmit={true}
                     secureTextEntry={!isEye?true:false}
                     minLength={6}
                     autoCapitalize='none'
@@ -204,7 +204,7 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
           </View>
        </KeyboardAvoidingView> 
      </View>
-
+     </TouchableWithoutFeedback>
      );    
 };
 

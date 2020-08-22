@@ -31,6 +31,7 @@ export const createBarber=(id,phone,password,sex,wilaya,region)=>{
             
         }catch(err){
             console.log(err);
+            throw err;
         } 
 
     }
@@ -56,6 +57,7 @@ export const setBarbers= ()=>{
            
       }catch(err){
           console.log(err);
+          throw err;
       }
 
     };
@@ -168,6 +170,7 @@ export const setBarber= id => {
       
        }catch(err){
            console.log(err);
+           throw err;
        }
 
     };
@@ -196,6 +199,7 @@ export const updateBarberPassword= (id,password) => {
           
          }catch(err){
              console.log(err);
+             throw err;
          }
     };
 
@@ -224,6 +228,7 @@ export const updateBarberPhone= (id,phone,barberid) => {
            
          }catch(err){
              console.log(err);
+             throw err;
          }
     };
 
@@ -254,6 +259,7 @@ export const updateBarber= (id,name,surname,b_name,age,email,address,wilaya,regi
            
          }catch(err){
              console.log(err);
+             throw err;
          }
     };
 
@@ -277,6 +283,7 @@ export const deleteBarber = id => {
             
           }catch(err){
               console.log(err);
+              throw err;
           }
  
     };

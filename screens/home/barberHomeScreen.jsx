@@ -1,7 +1,8 @@
 import React,{useState,useEffect,useCallback} from 'react';
 import { StyleSheet, Text, View, ImageBackground , Image,Dimensions,TouchableOpacity,ScrollView,StatusBar,Alert,ActivityIndicator} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons,Entypo} from "@expo/vector-icons";
-import {  Rating  } from 'react-native-elements';
+import { LinearGradient } from 'expo-linear-gradient';
+import {  Rating,Button  } from 'react-native-elements';
 import Colors from "../../constants/Colors";
 import { useDispatch,useSelector } from 'react-redux';
 import * as barberActions from '../../store/actions/barberActions';
@@ -14,6 +15,7 @@ const BarberHomeScreen = props =>{
   const barberUID= props.navigation.getParam('barberUID'); 
   const [error, setError] = useState();
   const [isLoading,setIsLoading]= useState(false);//ActivityIndicator handling
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const dispatch= useDispatch();
 
    /*
@@ -23,23 +25,20 @@ const BarberHomeScreen = props =>{
   try{
     setError(false);
     setIsLoading(true);
+    setIsRefreshing(true);
     await dispatch(barberActions.setBarber(barberID));
     await dispatch(feedbackActions.setFeedbacks(barberID));
-    
     setIsLoading(false);
+    setIsRefreshing(false);
     }catch(err){
-      console.log(err);
-      setError(err);
-      if(err){
-        Alert.alert('Oups!','Une erreur est survenue',[{text:'OK'}]);
-    } 
+      setError(true);
+      throw err; 
     }
-},[dispatch]);
+},[dispatch,setError]);
 
   useEffect(()=>{
   getBarber();
-  
-  },[dispatch,getBarber]);
+  },[dispatch,getBarber,setError]);
 
   useEffect(()=>{
     const willFocusSub= props.navigation.addListener('willFocus',getBarber);
@@ -49,9 +48,9 @@ const BarberHomeScreen = props =>{
   },[getBarber]);
 
    const barber=useSelector(state=>state.barbers.barber[0]);
-   console.log(barber);
+   //console.log(barber);
    const feedbacks=useSelector(state=>state.feedbacks.feedbacks);
-   console.log(feedbacks);
+   //console.log(feedbacks);
   
   const [isAbout,setIsAbout]= useState(true);
   const [isPortfolio,setIsPortfolio]= useState(false);
@@ -89,15 +88,36 @@ const BarberHomeScreen = props =>{
     };
    
     
-
-   
+    if(error){
+      
+      return ( <ImageBackground source={require('../../assets/images/support.png')} style={styles.coverTwo}>
+                  <View style={{marginBottom:10,alignSelf:'center'}}>
+                    <Text style={styles.noServicesText}>Votre connexion est trop faible!</Text>
+                  </View>
+                  <Button
+                    theme={{colors: {primary:'#fd6c57'}}} 
+                    title="Réessayer"
+                    titleStyle={styles.labelButton}
+                    buttonStyle={styles.buttonStyle}
+                    ViewComponent={LinearGradient}
+                    onPress={getBarber}
+                    linearGradientProps={{
+                        colors: ['#fd6d57', '#fd9054'],
+                        start: {x: 0, y: 0} ,
+                        end:{x: 1, y: 0}
+                      }}/>
+              </ImageBackground>);
+    };
+     
 
     if(isLoading || barber===undefined){
+      
       return ( <ImageBackground source={require('../../assets/images/support.png')} style={styles.coverTwo}>
                   <ActivityIndicator size='large' color={Colors.primary} />
-              </ImageBackground>)
+               </ImageBackground>)
     };
   
+    
     return(
       <View style ={styles.container}>
         <StatusBar hidden/>
@@ -114,7 +134,7 @@ const BarberHomeScreen = props =>{
                <View style={{flexDirection:'row'}}>
                 <Rating
                       type='custom'
-                      startingValue={barber && feedbacks.length===0? 1: barber.mark}
+                      startingValue={barber && feedbacks.length===0?1:barber.mark}
                       imageSize={20}
                       ratingBackgroundColor={'#323446'}
                       ratingColor='#fd6c57'
@@ -123,7 +143,7 @@ const BarberHomeScreen = props =>{
                  <Text style={styles.commentsNumber}>{feedbacks.length!==0 ? ` (${feedbacks.length} Commentaires)`:' Aucun Commentaire!'}</Text>   
                 </View>
                 <View style={styles.iconsContainer}>
-                  <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberProfile',{barberUID:barberUID})}>
+                  <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberProfile',{barberUID:barberUID,barberID:barberID})}>
                     <View style={styles.iconFormCircle}>
                         <MaterialCommunityIcons title = "map-marker-radius" name ='map-marker-radius' color='#fff' size={23} />
                     </View>
@@ -162,7 +182,7 @@ const BarberHomeScreen = props =>{
            </View>
           
          </View>
-        { isAbout ?(<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false}>
+        { isAbout ?(<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false} refreshing={isRefreshing}>
             <View style={styles.firstRow}>
                 <View>
                   <Text style={styles.title}>Nom Complet</Text>
@@ -232,7 +252,7 @@ const BarberHomeScreen = props =>{
                   <Text style={styles.title}>Modèles</Text>
                   <Text style={styles.detail}>Affichez tout</Text>
                 </View>
-                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} style={styles.photosContainer} contentContainerStyle={{justifyContent:'space-around'}}>
+                <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} refreshing={isRefreshing} style={styles.photosContainer} contentContainerStyle={{justifyContent:'space-around'}}>
                   <View style={styles.modelImageContainer}>
                     <Image source={require('../../assets/images/man1.jpg')} style={styles.modelImage} />
                   </View>
@@ -254,7 +274,7 @@ const BarberHomeScreen = props =>{
          
          </ScrollView>):undefined}
 
-        {isPortfolio?(<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false} contentContainerStyle={{alignItems:'center'}}>
+        {isPortfolio?(<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false} refreshing={isRefreshing} contentContainerStyle={{alignItems:'center'}}>
                <View style={{flexDirection:'row',width:'90%',marginVertical:10}}>
                   <View style={{width:'33.3%',alignItems:'center'}}>
                     <Image source={require('../../assets/images/man1.jpg')} style={styles.modelImage} />
@@ -301,11 +321,13 @@ const BarberHomeScreen = props =>{
                </View>
          </ScrollView>):undefined}
 
-         {isFeedback?(<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false} contentContainerStyle={{alignItems:'center'}}>
+         {isFeedback?(<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false} refreshing={isRefreshing} contentContainerStyle={{alignItems:'center'}}>
            {feedbacks.map(feed=>  <Feedback
                key={feed.id}
                mark={feed.mark}
                comment={feed.comment}
+               name={feed.name}
+               surname={feed.surname}
                feedbacks={feedbacks}
               />)}
               
@@ -549,11 +571,28 @@ const styles= StyleSheet.create({
   },
  coverTwo:{
    flex:1,
-   alignItems:'center',
    justifyContent:'center',
    width:'100%',
    height:'100%',
    resizeMode:'cover'
+ },
+ noServicesText:{
+  fontFamily:'poppins',
+  fontSize:14,
+  color:Colors.blue
+},
+labelButton:{
+  color:'#FFF',
+  fontFamily:'poppins',
+  fontSize:16,
+  textTransform:null,
+ },
+ buttonStyle:{
+  borderColor:'#fd6c57',
+  width:'50%',
+  borderRadius:20,
+  height:45,
+  alignSelf:'center'
  }
 });
 

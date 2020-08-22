@@ -54,11 +54,11 @@ const BarberSupportScreen = props =>{
                 Si un problème persiste, n'hésitez pas à nous contacter au plus vite via les informations suivantes:
               </Text>
             </View>
-            <View style={{width:'100%',marginBottom:10}}>
+            <View style={{width:'100%',marginBottom:10,alignSelf:'center'}}>
               <Text style={{fontFamily:'poppins',fontSize:13,color:Colors.blue,marginVertical:2}}>1- Appelez-nous en appuyant sur <Text style={{color:Colors.secondary}} onPress={callPhone}>0658341876</Text></Text>
               <Text style={{fontFamily:'poppins',fontSize:13,color:Colors.blue,marginVertical:2}}>2- Page contact, <Text style={{color:Colors.colorH1}} onPress={url}>tahfifa.com/contact</Text></Text>
             </View>
-            <View style={{flexDirection:'row',alignItems:'center',alignSelf:'flex-start'}}>
+            <View style={{flexDirection:'row',alignItems:'center',alignSelf:'center'}}>
               <View  style={{marginHorizontal:5}}>
                  <MaterialCommunityIcons name="instagram" size={32} color="black" />
               </View>

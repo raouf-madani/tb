@@ -1,8 +1,8 @@
 import React,{useState,useCallback,useRef,useReducer} from 'react';
-import { StyleSheet,View,ScrollView,KeyboardAvoidingView,Text,Image,ImageBackground,StatusBar,TextInput,TouchableOpacity,Picker,ActionSheetIOS,Alert,ActivityIndicator,AsyncStorage} from 'react-native';
+import { StyleSheet,View,ScrollView,KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard,Text,Image,ImageBackground,StatusBar,TextInput,TouchableOpacity,Picker,ActionSheetIOS,Alert,ActivityIndicator,AsyncStorage} from 'react-native';
 import {Button} from 'react-native-elements';
 import Colors from '../../constants/Colors';
-import {MaterialIcons,MaterialCommunityIcons} from "@expo/vector-icons";
+import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
 import { LinearGradient } from 'expo-linear-gradient';
 import * as FirebaseRecaptcha from "expo-firebase-recaptcha";
 import * as firebase from "firebase";
@@ -64,9 +64,9 @@ const SignupBarberScreen = props =>{
     
      //States for complex information textInputs
      const wilayas = ['Wilaya','Alger','Blida'];
-     const [wilaya,setWilaya] = useState();
+     const [wilaya,setWilaya] = useState(undefined);
      const sexTypes= ['Sexe','Homme','Femme'];
-     const [sex,setSex] = useState();
+     const [sex,setSex] = useState(undefined);
      const [isEye,setIsEye]=useState(false);
 
       const eye=()=>{
@@ -76,7 +76,7 @@ const SignupBarberScreen = props =>{
      
      //picker only iOS function 
      const onPress = () =>{
-       const wilayasIOS = ['Wilaya','Alger','Blida'];    
+       const wilayasIOS = ['Alger','Blida'];    
        ActionSheetIOS.showActionSheetWithOptions(
          {
            options: wilayasIOS,
@@ -150,7 +150,7 @@ const signupHandler = async () => {
 
   const phoneProvider = new firebase.auth.PhoneAuthProvider();
  
-  if(formState.formIsValid && wilaya!==wilayas[0] && sex!==sexTypes[0]){
+  if(formState.formIsValid && wilaya!==wilayas[0] && sex!==sexTypes[0] && wilaya!==undefined && sex!==undefined){
     try {
 
       setVerifyInProgress(true);
@@ -238,7 +238,7 @@ const sendCode = async () => {
 };
 
     return(
-    
+      <TouchableWithoutFeedback onPress = {()=>{Keyboard.dismiss()}}>
         <ImageBackground source={require('../../assets/images/chica4.jpg')} style={styles.container}>
           <KeyboardAvoidingView keyboardVerticalOffset={10}>
           <StatusBar hidden />
@@ -291,26 +291,32 @@ const sendCode = async () => {
                       <Picker
                       selectedValue={sex}
                       onValueChange={itemValue => setSex(itemValue)}
-                      style={{fontFamily:'poppins',fontSize:12,color:'rgba(50,52,70,0.4)',marginHorizontal:14}}
+                      style={{fontFamily:'poppins',fontSize:12,color:Colors.blue,marginHorizontal:14}}
                       >
                       {sexTypes.map(el=> <Picker.Item label={el} value={el} key={el} />)}
                       </Picker> :
-                      <Text onPress={onPressSex} style={{fontFamily:'poppins',fontSize:12,color:'rgba(50,52,70,0.4)'}}>
-                        {sex}
-                      </Text>}
+                      <View style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:17,paddingRight:25}}>
+                      <Text onPress={onPressSex} style={{fontFamily:'poppins',fontSize:12,color:Colors.blue,fontSize:15,fontWeight:'500'}}>
+                        {sex?sex:sexTypes[0]}
+                      </Text>
+                      <Ionicons name="ios-arrow-down" size={24} color={Colors.blue} onPress={onPressSex} />
+                      </View>}
                   </View>
                   <View style={{ width:'100%',borderWidth:1,borderRadius:25,backgroundColor:'#d3d3d3',borderColor:wilaya!==wilayas[0]?'#d3d3d3':Colors.primary,marginVertical:3,height:45,justifyContent:'center'}}>
                   {Platform.OS === 'android' ? 
                               <Picker
                               selectedValue={wilaya}
                               onValueChange={itemValue => setWilaya(itemValue)}
-                              style={{fontFamily:'poppins',fontSize:12,color:'rgba(50,52,70,0.4)',marginHorizontal:14}}
+                              style={{fontFamily:'poppins',fontSize:12,color:Colors.blue,marginHorizontal:14}}
                               >
                               {wilayas.map(el=> <Picker.Item label={el} value={el} key={el} />)}
                               </Picker> :
-                              <Text onPress={onPress} style={{fontFamily:'poppins',fontSize:12,color:'rgba(50,52,70,0.4)'}}>
-                                {wilaya}
-                              </Text>}
+                              <View style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:17,paddingRight:25}}>
+                              <Text onPress={onPress} style={{fontFamily:'poppins',fontSize:15,color:Colors.blue,fontWeight:'500'}}>
+                                {wilaya?wilaya:wilayas[0]}
+                              </Text>
+                              <Ionicons name="ios-arrow-down" size={24} color={Colors.blue} onPress={onPress} />
+                              </View>}
                 </View>
                 <CustomInput
                         id='region'
@@ -386,7 +392,7 @@ const sendCode = async () => {
              
           </KeyboardAvoidingView>
         </ImageBackground>
-       
+       </TouchableWithoutFeedback>
 
      );    
 };

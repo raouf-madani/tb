@@ -39,7 +39,7 @@ const StartupScreen = props =>{
    
            const transformedTokenData= JSON.parse(userTokenData);
            const {refreshToken,expiresIn}= transformedTokenData;
-           
+         
 
            const expirationTime = expirationDate.getTime() - new Date().getTime();
            const newExpirationTime= expirationTime + parseInt(expiresIn);
@@ -54,7 +54,7 @@ const StartupScreen = props =>{
       <View style = {styles.container}>
         <StatusBar hidden />
         <ImageBackground 
-        source={require('../assets/images/splash.png')} 
+        source={require('../assets/images/support.png')} 
         style={styles.bigBackgroundImage}
         >
             
