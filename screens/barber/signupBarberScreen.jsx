@@ -17,6 +17,7 @@ import CustomInput from '../../components/Input';
 try {
   if (Firebaseconfig.apiKey) {
     firebase.initializeApp(Firebaseconfig);
+    console.log(Firebaseconfig);
   }
 } catch (err) {
   // ignore app already initialized error on snack
@@ -158,8 +159,7 @@ const signupHandler = async () => {
     
 
       const result = await fetch(`http://173.212.234.137:3000/phone/${prefix+formState.inputValues.phone}`);
-
-
+    
       const resData= await result.json();
       console.log(resData);
       setVerifyInProgress(false);

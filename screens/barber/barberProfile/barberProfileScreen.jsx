@@ -124,7 +124,7 @@ const takeImageHandler = async ()=>{
      quality:0.7
  });
   
-  setPickedImage(image.uri);
+  setPickedImage(image);
   
 };
 
@@ -145,7 +145,7 @@ const takeLibraryHandler = async ()=>{
   
   
   if(library){
-   setPickedImage(library.uri);
+   setPickedImage(library);
   }
   
   
@@ -233,6 +233,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
   //Update barber's data Management after pressing in Check icon
   const saveHandler = useCallback(async()=>{
     if(formState.formIsValid && wilaya!=='Wilaya'){
+      console.log(pickedImage);
       
     try{
         setIsLoading(true);
@@ -284,7 +285,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
             <View style={styles.secondCardContent}>
                 <View style={styles.imageContainer}>
                 {!pickedImage ? <Image source={require('../../../assets/images/man2.jpg')} style={styles.image} />
-                : (<Image style={styles.image} source={{uri:pickedImage}} />)}
+                : (<Image style={styles.image} source={{uri:pickedImage.uri}} />)}
                 </View>
                 <View style={styles.detailsContainer}>
                   <View style={{width:'30%'}}>

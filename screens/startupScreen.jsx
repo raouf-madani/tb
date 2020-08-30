@@ -26,10 +26,11 @@ const StartupScreen = props =>{
            
            const {token,userID,expiryDate,id} = transformedData;
            const expirationDate = new Date(expiryDate);
-          
-           
+           dispatch(authActions.authenticate(token,userID,expirationDate));
+           props.navigation.navigate('Barber',{barberID:id,barberUID:userID});
+            console.log(token);
 
-           await dispatch(authActions.refreshTokenStepOne(token));
+           /*await dispatch(authActions.refreshTokenStepOne(token));
            //AsyncStorage.clear();
            const userTokenData= await AsyncStorage.getItem('userTokenData');
            if(!userTokenData){
@@ -43,9 +44,8 @@ const StartupScreen = props =>{
 
            const expirationTime = expirationDate.getTime() - new Date().getTime();
            const newExpirationTime= expirationTime + parseInt(expiresIn);
-     
-            props.navigation.navigate('Barber',{barberID:id,barberUID:userID});
-            dispatch(authActions.authenticate(refreshToken,userID,newExpirationTime));
+            console.log(refreshToken);
+            */
        }
        tryLogin();
     },[dispatch]);

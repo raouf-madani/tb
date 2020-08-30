@@ -12,7 +12,7 @@ const barbersReducer=(state=initialState,action)=>{
        case CREATE_BARBER:
          const newBarber= new Barber(action.barberData.id,action.barberData.phone,action.barberData.password,
                                    action.barberData.sex,null,null,null,null,null,null,action.barberData.wilaya,
-                                   action.barberData.region,null,null,null,null,true,'Barber',[],{});
+                                   action.barberData.region,null,null,null,2.5,true,'Barber',[],{});
          return{
            ...state,
            barbers: state.barbers.concat(newBarber)

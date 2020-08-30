@@ -8,7 +8,7 @@ import { useDispatch,useSelector } from 'react-redux';
 import * as barberActions from '../../store/actions/barberActions';
 import * as feedbackActions from '../../store/actions/feedbackActions';
 import Feedback from '../../components/Feedback';
-
+const height = Dimensions.get('window').height;
 const BarberHomeScreen = props =>{
 
   const barberID= props.navigation.getParam('barberID');  //get Barber ID
@@ -50,7 +50,7 @@ const BarberHomeScreen = props =>{
    const barber=useSelector(state=>state.barbers.barber[0]);
    //console.log(barber);
    const feedbacks=useSelector(state=>state.feedbacks.feedbacks);
-   //console.log(feedbacks);
+   console.log(feedbacks);
   
   const [isAbout,setIsAbout]= useState(true);
   const [isPortfolio,setIsPortfolio]= useState(false);
@@ -134,7 +134,7 @@ const BarberHomeScreen = props =>{
                <View style={{flexDirection:'row'}}>
                 <Rating
                       type='custom'
-                      startingValue={barber && feedbacks.length===0?1:barber.mark}
+                      startingValue={barber && feedbacks.length===0?2.5:barber.mark}
                       imageSize={20}
                       ratingBackgroundColor={'#323446'}
                       ratingColor='#fd6c57'
@@ -322,7 +322,12 @@ const BarberHomeScreen = props =>{
          </ScrollView>):undefined}
 
          {isFeedback?(<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false} refreshing={isRefreshing} contentContainerStyle={{alignItems:'center'}}>
-           {feedbacks.map(feed=>  <Feedback
+         {feedbacks.length ===0 ?
+          (<View style={styles.noFeedbacksContainer}>
+            <Text style={styles.noFeedbacksText}>Vous n'avez reçu aucun Feedback pour le moment.</Text>
+          </View>):
+          (<View>
+            {feedbacks.map(feed=>  <Feedback
                key={feed.id}
                mark={feed.mark}
                comment={feed.comment}
@@ -330,7 +335,7 @@ const BarberHomeScreen = props =>{
                surname={feed.surname}
                feedbacks={feedbacks}
               />)}
-              
+           </View>)}
          </ScrollView>):undefined}
 
       </View>
@@ -593,7 +598,19 @@ labelButton:{
   borderRadius:20,
   height:45,
   alignSelf:'center'
- }
+ },
+ noFeedbacksContainer:{
+  width:'100%',
+  justifyContent:'center',
+  alignItems:'center',
+  marginTop:height*0.2,
+  backgroundColor:'red'
+},
+noFeedbacksText:{
+  fontFamily:'poppins',
+  fontSize:13,
+  color:Colors.blue
+},  
 });
 
 export default BarberHomeScreen;

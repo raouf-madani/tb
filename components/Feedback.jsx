@@ -10,10 +10,10 @@ const screen = Dimensions.get('window');
 
 const Feedback = props =>{
 
-   
+    
 
     return(
-        props.feedbacks.length!==0? (<View style={styles.feedbackContainer}>
+       <View style={styles.feedbackContainer}>
             <View style={styles.photoContainer}>
                 <View style={styles.photoCircle}>
                     <Image source={require('../assets/images/avatarman.jpg')} style={styles.photo} />
@@ -37,11 +37,7 @@ const Feedback = props =>{
                     </Text>
                 </View>
             </View>
-        </View>):
-       ( <View style={styles.noFeedbacksContainer}>
-           <Text style={styles.noFeedbacksText}>Vous n'avez reçu aucun Feedback pour le moment.</Text>
-         </View>)
-        
+        </View>
      );    
 };
 
@@ -82,8 +78,8 @@ comment:{
 },
 noFeedbacksContainer:{
     width:'100%',
-    height:'50%',
-    justifyContent:'center'
+    justifyContent:'center',
+    alignItems:'center'
   },
   noFeedbacksText:{
     fontFamily:'poppins',
