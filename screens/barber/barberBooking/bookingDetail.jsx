@@ -23,7 +23,47 @@ const conditionConfirmer = (props.navigation.getParam("status") === "en attente"
 
 // console.log(diffrence);
 
-
+/******************SEND A NOTIFICATION TO THE client WHEN A BOOKING IS Canceled ************************/
+async function sendPushNotification(type,alert1,alert2) {
+  // "annulée","Annuler","annuler
+  const arr = await fetch(`http://173.212.234.137:3000/client/clienttokens/${props.navigation.getParam("clientId")}`);
+  const resData = await arr.json ();
+  const allMessages = [];
+  
+  resData.map(e=>{
+  
+  allMessages.push(
+    {
+      to: e.expoToken,
+      sound: 'default',
+      title: 'Réservation '+type,
+      body: 'Un Coiffeur a '+alert2+' votre réservation !',
+      data: { data: 'goes here' ,client:props.clientId,  title: 'Réservation '+type,
+      body: 'Un Coiffeur a '+alert2+' votre réservation !',},
+    }
+  
+  )
+  
+  })
+  
+  
+  allMessages.map(async (e)=>{
+     await fetch('https://exp.host/--/api/v2/push/send', {
+       method: 'POST',
+       headers: {
+         Accept: 'application/json',
+         'Accept-encoding': 'gzip, deflate',
+         'Content-Type': 'application/json',
+       },
+       body: JSON.stringify(e),
+     });
+   
+   
+   })
+     
+   }
+  
+  /******************SEND A NOTIFICATION TO THE BARBER WHEN A BOOKING IS MADE ************************/
 
 
 //Loading State
@@ -58,16 +98,31 @@ Alert.alert(
       style: 'cancel'
     },
     { text: 'Oui', onPress: async () => {
-      setLoading(true);
-      if(conditionConfirmer || conditionAnnuler ){
-          await dispatch(cancelBooking(props.navigation.getParam("id"),type));
-          props.navigation.navigate( "Barber");
-          }
-           else{
-            props.navigation.navigate( "Barber");
 
-           }
-      setLoading(false);
+      try {
+        setLoading(true);
+        if(conditionConfirmer || conditionAnnuler ){
+                       
+            await dispatch(cancelBooking(props.navigation.getParam("id"),type));
+            await sendPushNotification(type,alert1,alert2);
+            props.navigation.navigate( "Barber");
+            }      
+            setLoading(false);  
+      } catch (error) {
+        setLoading(true);
+                  Alert.alert(
+                    "Réservation non "+type,
+                    "Echec de l'action ",
+                    [
+                      { text: "OK", onPress: () =>{} }
+                    ],
+                    { cancelable: false }
+                  );
+          setLoading(false);
+                  throw error;
+      }
+    
+         
 
 
 

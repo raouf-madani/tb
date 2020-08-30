@@ -13,12 +13,26 @@ const screen = Dimensions.get("window");
 
 
 const BookingCard = props =>{
-  const gradient1 = props.status === "en attente" ? "#fd6d57" : props.status === "confirmée" ? "#11998e" : "#f32f33";
-  const gradient2 = props.status === "en attente" ? "#fd9054" : props.status === "confirmée" ? Colors.colorH1 : "#e52d27";
+  const gradient1 = props.status === "en attente" ? "#fd6d57" : props.status === "confirmée" ? "#11998e" : "#f14638";
+  const gradient2 = props.status === "en attente" ? "#fd9054" : props.status === "confirmée" ? Colors.colorH1 : "#F4686A";
 
 
     return(
-      <View style = {styles.card} >
+      <TouchableOpacity style = {styles.card}  onPress = {()=>props.navigation.navigate("BookingDetail", 
+      { 
+                day: props.day,
+                  date : props.date,
+                  status : props.status,
+                  start : props.start,
+                  end : props.end,
+                  amount : props.amount,
+                  services : props.services,
+                  barberId : props.barberId,
+                  clientId : props.clientId,
+                  cancelDate : props.cancelDate,
+                  id  : props.id,
+                  bookingDate :props.bookingDate
+                 })}  >
         <LinearGradient colors = { [gradient1, gradient2]} style = {styles.leftDate}>
               <Text style = {styles.dateText}>{props.day}</Text>
               <Text style = {styles.dateText} >{props.date}</Text>
@@ -106,7 +120,7 @@ const BookingCard = props =>{
           </View>
 }
 
-      </View>
+      </TouchableOpacity>
      );    
 };
 
@@ -183,31 +197,35 @@ detailButton2 : {
 //TEXT STYLING //
 dateText :{
   color : "#fff",
-  fontFamily : "poppins-bold"
+  fontFamily : "poppins-bold",
+  fontSize : screen.width/28
 },
 priceText : {
   fontFamily : "poppins-bold",
   color :Colors.primary,
-  fontSize : 16
+  fontSize : screen.width/28
 },
 slotText : {
 fontFamily : "poppins",
-color:"#252525"
+color:"#252525",
+fontSize : screen.width/28
 },
 servicesText : {
   fontFamily : "poppins",
-  color:"#252525"
+  color:"#252525",
+  fontSize : screen.width/28
 },
 status :{
     
 fontFamily : "poppins",
-color:"#252525"
+color:"#252525",
+fontSize : screen.width/28
  
 },
 statusType : {
   // color : Colors.primary,
   fontFamily : "poppins-bold",
-
+  fontSize : screen.width/28
 }
 
 });

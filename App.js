@@ -10,6 +10,8 @@ import {Provider} from 'react-redux';
 import barbersReducer from './store/reducers/barber';
 import bookingsReducer from "./store/reducers/bookingsReducer" ;
 import feedbacksReducer from "./store/reducers/feedback";
+import tokenReducer from './store/reducers/tokenReducer';
+
 
 enableScreens();
 
@@ -17,7 +19,8 @@ enableScreens();
 const rootReducer = combineReducers({
   barbers:barbersReducer,
   bookings : bookingsReducer,
-  feedbacks:feedbacksReducer
+  feedbacks:feedbacksReducer,
+  tokens : tokenReducer
   });
   
   const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

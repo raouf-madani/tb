@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useCallback} from 'react';
+import React,{useState,useEffect,useCallback,useRef} from 'react';
 import { StyleSheet, Text, View, ImageBackground , Image,Dimensions,TouchableOpacity,ScrollView,StatusBar,Alert,ActivityIndicator} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons,Entypo} from "@expo/vector-icons";
 import {  Rating  } from 'react-native-elements';
@@ -7,8 +7,30 @@ import { useDispatch,useSelector } from 'react-redux';
 import * as barberActions from '../../store/actions/barberActions';
 import * as feedbackActions from '../../store/actions/feedbackActions';
 import Feedback from '../../components/Feedback';
+import { getTokens ,addtoken } from '../../store/actions/tokenActions';
+
+import Constants from 'expo-constants';
+import * as Notifications from 'expo-notifications';
+import * as Permissions from 'expo-permissions';
+import { Notifications as Notifications2 } from 'expo';
+
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true,
+  }),
+});
 
 const BarberHomeScreen = props =>{
+
+//Notifications 
+const [expoPushToken, setExpoPushToken] = useState('');
+const [notification, setNotification] = useState(false);
+const notificationListener = useRef();
+const [visible, setVisible] = useState(false);
+const responseListener = useRef();
 
   const barberID= props.navigation.getParam('barberID');  //get Barber ID
   const barberUID= props.navigation.getParam('barberUID'); 
@@ -16,13 +38,18 @@ const BarberHomeScreen = props =>{
   const [isLoading,setIsLoading]= useState(false);//ActivityIndicator handling
   const dispatch= useDispatch();
 
+  //get the barber's tokens
+  const tokens = useSelector(state=>state.tokens.barberTokens);
+
    /*
    *******Fetch One barber DATA
   */
+ 
  const getBarber=useCallback(async()=>{
   try{
     setError(false);
     setIsLoading(true);
+    await dispatch(getTokens(barberID));
     await dispatch(barberActions.setBarber(barberID));
     await dispatch(feedbackActions.setFeedbacks(barberID));
     
@@ -49,9 +76,12 @@ const BarberHomeScreen = props =>{
   },[getBarber]);
 
    const barber=useSelector(state=>state.barbers.barber[0]);
-   console.log(barber);
+  //  console.log(barber);
    const feedbacks=useSelector(state=>state.feedbacks.feedbacks);
-   console.log(feedbacks);
+  //  console.log(feedbacks);
+  
+   //A Voir
+   const myBarber=useSelector(state=>state.barbers.barber);
   
   const [isAbout,setIsAbout]= useState(true);
   const [isPortfolio,setIsPortfolio]= useState(false);
@@ -91,6 +121,118 @@ const BarberHomeScreen = props =>{
     
 
    
+    /************NOTIFICATION ***********************************/
+
+
+useEffect(() => {
+
+  if(myBarber.length !== 0 )
+  {
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+  
+  }
+
+    responseListener.current =  Notifications2.addListener((data) => {
+      // props.navigation.navigate("AllBarbers",{type : "coiffeurs",clientID});
+     
+      Alert.alert(
+        data.data.title,
+        data.data.body,
+        [
+          { text: "OK", onPress: () =>{} }
+        ],
+        { cancelable: false }
+      );
+      
+      
+      
+      // console.log(Notifications2);
+    });
+
+  return () => {
+    Notifications.removeNotificationSubscription(notificationListener);
+    Notifications.removeNotificationSubscription(responseListener);
+  };
+
+
+
+}, [myBarber,tokens]);
+
+
+
+// Can use this function below, OR use Expo's Push Notification Tool-> https://expo.io/dashboard/notifications
+async function sendPushNotification(expoPushToken) {
+  const message = {
+    to: expoPushToken,
+    sound: 'default',
+    title: 'This is a message from Tahfifa ',
+    body: 'And here is the body!',
+    data: { data: 'goes here' },
+  };
+
+  await fetch('https://exp.host/--/api/v2/push/send', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Accept-encoding': 'gzip, deflate',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(message),
+  });
+}
+
+async function registerForPushNotificationsAsync() {
+  let token;
+
+  if (Constants.isDevice) {
+    const { status: existingStatus } = await Permissions.getAsync(Permissions.NOTIFICATIONS);
+  
+    let finalStatus = existingStatus;
+   
+    if (existingStatus !== 'granted') {
+      console.log(' push notification!');
+      const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+    if (finalStatus !== 'granted') {
+     
+      console.log('Failed to get push token for push notification!');
+      return;
+    }
+
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      let  tokenIndex;
+     
+      if(tokens.length>0){
+       tokenIndex = await tokens.findIndex(
+        t => t.barberId === barberID && t.expoToken === token
+      );
+    
+    }
+
+        if(tokenIndex < 0 || tokens.length ===0 ) {
+         
+            await dispatch(addtoken({expoToken:token , barberId : barberID}))
+        }
+
+  } else {
+    alert('Must use physical device for Push Notifications');
+  }
+
+  if (Platform.OS === 'android') {
+    Notifications.setNotificationChannelAsync('default', {
+      name: 'default',
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: '#FF231F7C',
+    });
+  }
+
+  return token;
+}
+
+/*****************************************Notifications End********************************************************* */
+/********************************************************************** */
 
     if(isLoading || barber===undefined){
       return ( <ImageBackground source={require('../../assets/images/support.png')} style={styles.coverTwo}>
@@ -135,7 +277,7 @@ const BarberHomeScreen = props =>{
                     </View>
                     <Text style={styles.iconText}>Services</Text>
                   </TouchableOpacity> 
-                  <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('AllBookingsScreen',{barberID:barberID})} >
+                  <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('AllBookingsScreen',{barberID:barberID,tokens})} >
                     <View style={styles.iconFormCircle2}>
                        <MaterialCommunityIcons title = "calendar-check" name ='calendar-check' color='#fff' size={23} />
                     </View>

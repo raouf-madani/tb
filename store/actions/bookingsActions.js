@@ -120,30 +120,108 @@ export const cancelBooking = (id,type)=> {
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //Expired Bookings 
 
-export const expiredbookings = (clientId)=> {
+// export const expiredbookings = (clientId)=> {
+
+//   return async (dispatch) =>{
+// try {
+ 
+
+//   const response = await fetch(
+
+//       `http://173.212.234.137:3000/bookings/expiredbookings`,
+
+//       {
+//         method: 'PATCH',
+//         headers: {
+//           'Content-Type': 'application/json'
+//         },
+//       body : JSON.stringify({clientId : clientId})
+//       }
+      
+      
+//     );
+
+//     if (!response.ok) {
+//       throw new Error('Something went wrong!');
+//     }
+
+// //     const resData = await response.json;
+
+// //  if(expired.length > 0 )
+// // {
+
+
+// // dispatch({type:EXPIRED_BOOKING,expiredBookings:expired})
+// // }
+   
+
+// } catch (error) {
+//   throw error ;
+
+          
+// }
+
+// }
+
+// }
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+//Expired Bookings with GET
+
+//Expired Bookings 
+
+export const expiredbookings = (barberId,tokens)=> {
 
   return async (dispatch) =>{
 try {
  
 
-  const response = await fetch(
+  const arr = await fetch(`http://173.212.234.137:3000/barber/getbookings/expired/${barberId}`);
+  const resData = await arr.json ();
 
-      `http://173.212.234.137:3000/bookings/expiredbookings`,
+              if(resData.length > 0) {
+                const allMessages = [];
 
-      {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-      body : JSON.stringify({clientId : clientId})
-      }
-      
-      
-    );
+                tokens.map(e=>{
+                
+                allMessages.push(
+                  {
+                    to: e.expoToken,
+                    sound: 'default',
+                    title: 'Expirée',
+                    body: 'Vous avez une réservation qui a expirée !',
+                    data: { data: 'goes here' ,title: 'Vous avez une réservation qui a expirée !u',
+                    body: 'Vous avez une réservation qui a expirée !',},
+                  }
+                
+                )
+                
+                })
+              
+                allMessages.map(async (e)=>{
+                  await fetch('https://exp.host/--/api/v2/push/send', {
+                    method: 'POST',
+                    headers: {
+                      Accept: 'application/json',
+                      'Accept-encoding': 'gzip, deflate',
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(e),
+                  });
+                
+                
+                })
+                
+              }
 
-    if (!response.ok) {
-      throw new Error('Something went wrong!');
-    }
+    // if (!response.ok) {
+    //   throw new Error('Something went wrong!');
+    // }
+    // else {
+     
+    
+
+    // }
 
 //     const resData = await response.json;
 
