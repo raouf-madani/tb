@@ -255,8 +255,8 @@ const styles= StyleSheet.create({
     alignItems:'center'
   },
   logo:{
-    width:160,
-    height:49,
+    width:180,
+    height:42,
     marginVertical:10
   },
   callToAction:{
