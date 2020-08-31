@@ -10,10 +10,10 @@ const screen = Dimensions.get('window');
 
 const Feedback = props =>{
 
-   
+    
 
     return(
-        props.feedbacks.length!==0? (<View style={styles.feedbackContainer}>
+       <View style={styles.feedbackContainer}>
             <View style={styles.photoContainer}>
                 <View style={styles.photoCircle}>
                     <Image source={require('../assets/images/avatarman.jpg')} style={styles.photo} />
@@ -31,16 +31,13 @@ const Feedback = props =>{
                     />:<Text style={styles.noMark}>Aucune note!</Text>}
                 </View>
                 <View style={styles.commentContainer}>
+                    <Text style={{fontFamily:'poppins-bold',fontSize:13,color:Colors.blue}}>{props.name===null && props.surname=== null ? 'Inconnu':props.name+' '+ props.surname}</Text>
                     <Text style={styles.comment}>
                     {props.comment? props.comment:'Aucun commentaire!'}
                     </Text>
                 </View>
             </View>
-        </View>):
-       ( <View style={styles.noFeedbacksContainer}>
-           <Text style={styles.noFeedbacksText}>Vous n'avez reçu aucun feedback pour le moment.</Text>
-         </View>)
-        
+        </View>
      );    
 };
 
@@ -81,8 +78,8 @@ comment:{
 },
 noFeedbacksContainer:{
     width:'100%',
-    height:'50%',
-    justifyContent:'center'
+    justifyContent:'center',
+    alignItems:'center'
   },
   noFeedbacksText:{
     fontFamily:'poppins',

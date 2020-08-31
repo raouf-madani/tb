@@ -50,22 +50,24 @@ const BarberServiceScreen = props =>{
   */
  const getBarber=useCallback(async()=>{
   try{
-    setError(null);
+    setError(false);
     setIsLoading(true);
     await dispatch(barberActions.setBarber(barberID));
     setIsLoading(false);
     }catch(err){
-      setError(err);
+      setError(true);
       if(err){
-        Alert.alert('Oups!','Une erreur est survenue',[{text:'OK'}]);
+        Alert.alert('Oups!','Votre connexion est trop faible!',[{text:'OK'}]);
+        
     } 
       console.log(err);
+      throw err;
     }
-},[dispatch]);
+},[dispatch,setError]);
 
   useEffect(()=>{
   getBarber();
-  },[dispatch,getBarber]);
+  },[dispatch,getBarber,setError]);
 
   useEffect(()=>{
     const willFocusSub= props.navigation.addListener('willFocus',getBarber);
@@ -258,6 +260,26 @@ const BarberServiceScreen = props =>{
    },[saveHandler,isUpdating,isDisponible]);
 
    
+   if(error){
+      
+    return ( <ImageBackground source={require('../../../assets/images/support.png')} style={styles.activityIndicatorContainer}>
+                <View style={{marginBottom:10,alignSelf:'center'}}>
+                  <Text style={styles.noServicesText}>Votre connexion est trop faible!</Text>
+                </View>
+                <Button
+                  theme={{colors: {primary:'#fd6c57'}}} 
+                  title="Réessayer"
+                  titleStyle={styles.labelButton}
+                  buttonStyle={styles.buttonStyle}
+                  ViewComponent={LinearGradient}
+                  onPress={getBarber}
+                  linearGradientProps={{
+                      colors: ['#fd6d57', '#fd9054'],
+                      start: {x: 0, y: 0} ,
+                      end:{x: 1, y: 0}
+                    }}/>
+            </ImageBackground>);
+  };
 
     if(isLoading){
       return <ImageBackground source={require('../../../assets/images/support.png')} style={styles.activityIndicatorContainer} >

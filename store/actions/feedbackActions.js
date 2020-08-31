@@ -19,6 +19,7 @@ export const setFeedbacks= barber_id => {
       
        }catch(err){
            console.log(err);
+           throw err;
        }
 
     };

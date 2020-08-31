@@ -32,7 +32,7 @@ const saveDataToStorage = (expiresIn,refreshToken) => {
           };
 
 export const refreshTokenStepOne = (token)=>{
-
+   
     return async ()=>{
         try{
             const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithCustomToken?key=${Firebase.apiKey}`,{
@@ -45,18 +45,19 @@ export const refreshTokenStepOne = (token)=>{
             body : JSON.stringify({token,returnSecureToken:true})
            });
            if(!response.ok){
-               throw new Error('Oups! Une erreur est survenue Firebase.');
+               throw new Error('Oups! Une erreur est survenue refeshtoken.');
            }
            const resData = await response.json();
-          
+           
            saveDataToStorage(resData.expiresIn,resData.refreshToken);
+           
         }catch(err){
-
+            
         }
     }
 }
 
-export const refreshTokenStepTwo = (refresh_token)=>{
+/*export const refreshTokenStepTwo = (refresh_token)=>{
 
     return async ()=>{
         try{
@@ -75,11 +76,11 @@ export const refreshTokenStepTwo = (refresh_token)=>{
 
 
         }catch(err){
-
+            throw err;
         }
     }
 }
-
+*/
 
 export const updateUserPhoneFRB= (phoneNumber,uid) => {
 
@@ -106,6 +107,7 @@ export const updateUserPhoneFRB= (phoneNumber,uid) => {
            
          }catch(err){
              console.log(err);
+             throw err;
          }
     };
 
@@ -130,6 +132,7 @@ export const deleteUser = uid => {
             
           }catch(err){
               console.log(err);
+              throw err;
           }
  
     };

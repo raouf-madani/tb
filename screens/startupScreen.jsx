@@ -26,10 +26,11 @@ const StartupScreen = props =>{
            
            const {token,userID,expiryDate,id} = transformedData;
            const expirationDate = new Date(expiryDate);
-          
-           
+           dispatch(authActions.authenticate(token,userID,expirationDate));
+           props.navigation.navigate('Barber',{barberID:id,barberUID:userID});
+            console.log(token);
 
-           await dispatch(authActions.refreshTokenStepOne(token));
+           /*await dispatch(authActions.refreshTokenStepOne(token));
            //AsyncStorage.clear();
            const userTokenData= await AsyncStorage.getItem('userTokenData');
            if(!userTokenData){
@@ -39,13 +40,12 @@ const StartupScreen = props =>{
    
            const transformedTokenData= JSON.parse(userTokenData);
            const {refreshToken,expiresIn}= transformedTokenData;
-           
+         
 
            const expirationTime = expirationDate.getTime() - new Date().getTime();
            const newExpirationTime= expirationTime + parseInt(expiresIn);
-     
-            props.navigation.navigate('Barber',{barberID:id,barberUID:userID});
-            dispatch(authActions.authenticate(refreshToken,userID,newExpirationTime));
+            console.log(refreshToken);
+            */
        }
        tryLogin();
     },[dispatch]);
@@ -54,7 +54,7 @@ const StartupScreen = props =>{
       <View style = {styles.container}>
         <StatusBar hidden />
         <ImageBackground 
-        source={require('../assets/images/splash.png')} 
+        source={require('../assets/images/support.png')} 
         style={styles.bigBackgroundImage}
         >
             

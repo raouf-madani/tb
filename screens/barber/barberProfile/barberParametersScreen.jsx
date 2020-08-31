@@ -1,5 +1,5 @@
 import React,{useState,useReducer,useCallback} from 'react';
-import {StyleSheet,View,AsyncStorage,ScrollView,ImageBackground,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActivityIndicator} from 'react-native';
+import {StyleSheet,View,AsyncStorage,ScrollView,ImageBackground,TouchableWithoutFeedback,Keyboard,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActivityIndicator,Platform} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons} from "@expo/vector-icons";
 import {Button} from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -187,6 +187,7 @@ const alertEditPassword = ()=>{
     return;
 };
     return(
+      <TouchableWithoutFeedback onPress = {()=>Keyboard.dismiss()}>
       <View style={styles.container}>
          <View style={styles.firstCard}>
           <ImageBackground source={barber[0].sex==='Femme'?require( '../../../assets/images/woman5.jpg'):require('../../../assets/images/loginimage.jpg')} style={styles.backgroundFirstCard} resizeMode='cover'/>
@@ -212,7 +213,7 @@ const alertEditPassword = ()=>{
           <KeyboardAvoidingView keyboardVerticalOffset={10}>
               <InputProfile
               id='phone'
-              rightIcon={<MaterialIcons title="phone" name ='phone' color='#323446' size={23} />}
+              rightIcon={<MaterialIcons title="phone" name ='phone' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
               leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Colors.blue,paddingRight:5}}><Image source={require('../../../assets/images/algeriaFlag.png')} style={{width:24,height:28,marginRight:5}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
               placeholder='555555555'
               keyboardType="phone-pad"
@@ -222,10 +223,9 @@ const alertEditPassword = ()=>{
               initiallyValid={true}
               phone
               required
-              placeholderTextColor='rgba(50,52,70,0.4)'
-              inputStyle={{fontSize:15}}
+              placeholderTextColor={Platform.OS==='android'?'rgba(50,52,70,0.4)':'#f9f9f9'}
               widthView='80%'
-              backgroundColor='#fff'
+              backgroundColor={Platform.OS==='android'?'#fff':Colors.blue}
               height={50}
               />
               <View style={styles.buttonContainer}>
@@ -251,7 +251,7 @@ const alertEditPassword = ()=>{
           <KeyboardAvoidingView keyboardVerticalOffset={10}>
                 <InputProfile
                 id='password'
-                rightIcon={<MaterialCommunityIcons title="lock" onPress={eye} name ={!isEye?'eye':'eye-off'} color='#323446' size={23} />}
+                rightIcon={<MaterialCommunityIcons title="lock" onPress={eye} name ={!isEye?'eye':'eye-off'} color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
                 placeholder={!isArabic?polylanfr.NewPassword:polylanar.NewPassword}
                 keyboardType="default"
                 returnKeyType="next"
@@ -262,10 +262,10 @@ const alertEditPassword = ()=>{
                 initialValue=''
                 initiallyValid={true}
                 required
-                placeholderTextColor='rgba(50,52,70,0.4)'
+                placeholderTextColor={Platform.OS==='android'?'rgba(50,52,70,0.4)':'#f9f9f9'}
                 inputStyle={{fontSize:15}}
                 widthView='80%'
-                backgroundColor='#fff'
+                backgroundColor={Platform.OS==='android'?'#fff':Colors.blue}
                 height={50}
               />
               <View style={styles.buttonContainer}>
@@ -291,11 +291,11 @@ const alertEditPassword = ()=>{
           <KeyboardAvoidingView keyboardVerticalOffset={10}>
             <View style={styles.langContainer}>
               {!isArabic?(<View style={styles.langRow}>
-                <Text style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}>Français</Text>
+                <Text style={{fontFamily:'poppins',fontSize:12,color:Platform.OS==='android'?Colors.blue:'#fff'}}>Français</Text>
                 <Image source={require('../../../assets/images/france.png')} style={{width:24,height:24}}/>
               </View>):undefined}
               {isArabic?(<View style={styles.langRow}>
-                <Text style={{fontFamily:'poppins',fontSize:13,color:'#323446'}}>العربية</Text>
+                <Text style={{fontFamily:'poppins',fontSize:13,color:Platform.OS==='android'?Colors.blue:'#fff'}}>العربية</Text>
                 <Image source={require('../../../assets/images/algeria.png')} style={{width:24,height:24}}/>
               </View>):undefined}
             </View>
@@ -319,7 +319,7 @@ const alertEditPassword = ()=>{
         </ScrollView>):undefined}
         
       </View>
-
+      </TouchableWithoutFeedback>
      );    
 };
 
@@ -380,8 +380,8 @@ const styles= StyleSheet.create({
     width:'80%',
     borderWidth:1,
     borderRadius:20,
-    backgroundColor:'#fff',
-    borderColor:'#fff',
+    backgroundColor:Platform.OS==='android'?'#fff':Colors.blue,
+    borderColor:Platform.OS==='android'?'#fff':Colors.blue,
     marginVertical:5,
     alignSelf:'center',
     shadowColor: 'black',

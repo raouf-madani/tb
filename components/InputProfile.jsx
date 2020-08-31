@@ -1,5 +1,5 @@
 import React, {useReducer,useEffect} from 'react';
-import { StyleSheet, Text, View,Dimensions } from 'react-native';
+import { StyleSheet, Text, View,Dimensions,Platform } from 'react-native';
 import { Input } from 'react-native-elements';
 import Colors from "../constants/Colors";
 
@@ -92,7 +92,7 @@ const InputProfile = props =>{
                 placeholder={props.placeholder}
                 inputContainerStyle={styles.input}
                 placeholderTextColor={props.placeholderTextColor}
-                inputStyle={{fontSize:15,color:Colors.blue}}
+                inputStyle={{fontSize:15,color:Platform.OS==='android'?Colors.blue:'#fff'}}
                 errorMessage={props.errorMessage}
             />
         </View>

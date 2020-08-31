@@ -21,6 +21,7 @@ export const createWorktime=(barber_id)=>{
            
         }catch(err){
             console.log(err);
+            throw err;
         } 
 
     };
@@ -50,6 +51,7 @@ export const updateWorktime= (isworkingSat,isworkingSun,isworkingMon,isworkingTu
            
          }catch(err){
              console.log(err);
+             throw err;
          }
     };
 

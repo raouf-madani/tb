@@ -1,5 +1,5 @@
 import React,{useState,useEffect,useReducer,useCallback} from 'react';
-import { StyleSheet,View,AsyncStorage,ScrollView,ImageBackground,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActionSheetIOS,Picker,ActivityIndicator} from 'react-native';
+import { StyleSheet,View,AsyncStorage,ScrollView,TouchableWithoutFeedback,Keyboard,ImageBackground,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActionSheetIOS,Picker,ActivityIndicator,Platform} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
 import {useSelector,useDispatch} from 'react-redux';
 import Colors from "../../../constants/Colors";
@@ -53,9 +53,12 @@ const BarberProfileScreen = props =>{
     const [isLocalisation,setIsLocalisation]= useState(false);
     //State for update loading 
     const [isLoading,setIsLoading]=useState(false);
+    const [isDeleteLoading, setIsDeleteLoading]= useState(false);
+    const [error,setError]=useState();
     
     //bring firebase user id
     const barberUID= props.navigation.getParam('barberUID');
+    const barberID=props.navigation.getParam('barberID');
     //get the barber's data
     const barber= useSelector(state=>state.barbers.barber);
 
@@ -121,7 +124,7 @@ const takeImageHandler = async ()=>{
      quality:0.7
  });
   
-  setPickedImage(image.uri);
+  setPickedImage(image);
   
 };
 
@@ -142,7 +145,7 @@ const takeLibraryHandler = async ()=>{
   
   
   if(library){
-   setPickedImage(library.uri);
+   setPickedImage(library);
   }
   
   
@@ -199,15 +202,21 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
 
     const deleteAccount= async()=>{
       try{
- 
-         dispatch(barberActions.deleteBarber(barber[0].id));
+        setIsDeleteLoading(true);
+        setError(false);
+         dispatch(barberActions.deleteBarber(barberID));
          dispatch(authActions.deleteUser(barberUID)); 
          dispatch(authActions.logout());
+         setIsDeleteLoading(false);
          AsyncStorage.clear();
          props.navigation.navigate('Auth');
       }catch(err){
        console.log(err);
-       Alert.alert('Oups!','Une erreur est survenue!',[{text:"OK"}]);
+       setError(true);
+       if(error){
+        Alert.alert('Oups!','Votre connexion est trop faible!',[{text:"OK"}]);
+       }
+       throw err;
       }
    };
  
@@ -224,9 +233,11 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
   //Update barber's data Management after pressing in Check icon
   const saveHandler = useCallback(async()=>{
     if(formState.formIsValid && wilaya!=='Wilaya'){
+      console.log(pickedImage);
       
     try{
         setIsLoading(true);
+        setError(false);
          await dispatch(barberActions.updateBarber(barber[0].id,formState.inputValues.name,formState.inputValues.surname,
                                           formState.inputValues.b_name,formState.inputValues.age,
                                           formState.inputValues.email,formState.inputValues.address,
@@ -237,7 +248,11 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
   
     }catch(err){
       console.log(err);
-      Alert.alert('Oups!','Une erreur est survenue!',[{text:"OK"}]);
+      setError(true);
+      if(error){
+        Alert.alert('Oups!','Votre connexion est trop faible!',[{text:"OK"}]);
+       }
+       throw err;
     }
     
     }else{
@@ -252,10 +267,16 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
      
    },[saveHandler,isLoading]);
 
-   
+
+   if(isDeleteLoading){
+    return ( <ImageBackground source={require('../../../assets/images/support.png')} style={styles.coverTwo}>
+                <ActivityIndicator size='large' color={Colors.primary} />
+            </ImageBackground>)
+  };
 
   
     return(
+      <TouchableWithoutFeedback onPress = {()=>Keyboard.dismiss()}>  
     <View style={styles.container}>
         <View style={styles.firstCard}>
           <ImageBackground source={barber[0].sex==='Femme'?require( '../../../assets/images/woman5.jpg'):require('../../../assets/images/loginimage.jpg')} style={styles.backgroundFirstCard} resizeMode='cover'/>
@@ -264,7 +285,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
             <View style={styles.secondCardContent}>
                 <View style={styles.imageContainer}>
                 {!pickedImage ? <Image source={require('../../../assets/images/man2.jpg')} style={styles.image} />
-                : (<Image style={styles.image} source={{uri:pickedImage}} />)}
+                : (<Image style={styles.image} source={{uri:pickedImage.uri}} />)}
                 </View>
                 <View style={styles.detailsContainer}>
                   <View style={{width:'30%'}}>
@@ -296,7 +317,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
               
                 <InputProfile
                       id='b_name'
-                      rightIcon={<MaterialIcons title = "person-pin" name ='person-pin' color='#323446' size={23} />}
+                      rightIcon={<MaterialIcons title = "person-pin" name ='person-pin' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
                       placeholder='Nom business'
                       keyboardType="default"
                       returnKeyType="next"
@@ -304,17 +325,16 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                       initialValue={barber[0]?barber[0].b_name:''}
                       initiallyValid={true}
                       required
-                      placeholderTextColor='rgba(50,52,70,0.4)'
-                      inputStyle={{fontSize:15}}
+                      placeholderTextColor={Platform.OS==='android'?'rgba(50,52,70,0.4)':'#f9f9f9'}
                       widthView='57%'
-                      backgroundColor='#fff'
+                      backgroundColor={Platform.OS==='android'?'#fff':Colors.blue}
                       height={45}
                     />
               
               
                 <InputProfile
                       id='age'
-                      rightIcon={<MaterialCommunityIcons title = "age" name ='sort-numeric' color='#323446' size={23} />}
+                      rightIcon={<MaterialCommunityIcons title = "age" name ='sort-numeric' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
                       placeholder='Age'
                       keyboardType="phone-pad"
                       returnKeyType="next"
@@ -322,10 +342,9 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                       initialValue={barber[0]?barber[0].age:''}
                       initiallyValid={true}
                       required
-                      placeholderTextColor='rgba(50,52,70,0.4)'
-                      inputStyle={{fontSize:15}}
+                      placeholderTextColor={Platform.OS==='android'?'rgba(50,52,70,0.4)':'#f9f9f9'}
                       widthView='40%'
-                      backgroundColor='#fff'
+                      backgroundColor={Platform.OS==='android'?'#fff':Colors.blue}
                       height={45}
                     />
               </View>
@@ -333,7 +352,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
             
               <InputProfile
                   id='name'
-                  rightIcon={<MaterialIcons title = "firstName" name ='person' color='#323446' size={23} />}
+                  rightIcon={<MaterialIcons title = "firstName" name ='person' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
                   placeholder='Nom'
                   keyboardType="default"
                   returnKeyType="next"
@@ -341,19 +360,18 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                   initialValue={barber[0]?barber[0].name:''}
                   initiallyValid={true}
                   required
-                  placeholderTextColor='rgba(50,52,70,0.4)'
-                  inputStyle={{fontSize:15}}
+                  placeholderTextColor={Platform.OS==='android'?'rgba(50,52,70,0.4)':'#f9f9f9'}
                   minLength={3}
                   autoCapitalize='sentences'
                   widthView='90%'
-                  backgroundColor='#fff'
+                  backgroundColor={Platform.OS==='android'?'#fff':Colors.blue}
                   height={45}
                 />
              
              
               <InputProfile
                 id='surname'
-                rightIcon={<MaterialIcons title = "firstName" name ='person' color='#323446' size={23} />}
+                rightIcon={<MaterialIcons title = "firstName" name ='person' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
                 placeholder='Prénom'
                 keyboardType="default"
                 returnKeyType="next"
@@ -361,19 +379,18 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 initialValue={barber[0]?barber[0].surname:''}
                 initiallyValid={true}
                 required
-                placeholderTextColor='rgba(50,52,70,0.4)'
-                inputStyle={{fontSize:15}}
+                placeholderTextColor={Platform.OS==='android'?'rgba(50,52,70,0.4)':'#f9f9f9'}
                 minLength={3}
                 autoCapitalize='sentences'
                 widthView='90%'
-                backgroundColor='#fff'
+                backgroundColor={Platform.OS==='android'?'#fff':Colors.blue}
                 height={45}
               />
             
            
               <InputProfile
                   id='email'
-                  rightIcon={<MaterialIcons title = "email" name ='email' color='#323446' size={23} />}
+                  rightIcon={<MaterialIcons title = "email" name ='email' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
                   placeholder='Email'
                   keyboardType="default"
                   returnKeyType="next"
@@ -382,18 +399,17 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                   initiallyValid={true}
                   email
                   required
-                  placeholderTextColor='rgba(50,52,70,0.4)'
-                  inputStyle={{fontSize:15}}
+                  placeholderTextColor={Platform.OS==='android'?'rgba(50,52,70,0.4)':'#f9f9f9'}
                   minLength={6}
                   autoCapitalize='sentences'
                   widthView='90%'
-                  backgroundColor='#fff'
+                  backgroundColor={Platform.OS==='android'?'#fff':Colors.blue}
                   height={45}
                 />
             
               <InputProfile
                 id='address'
-                rightIcon={<MaterialIcons title = "address" name ='map' color='#323446' size={23} />}
+                rightIcon={<MaterialIcons title = "address" name ='map' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
                 placeholder='Adresse'
                 keyboardType="default"
                 returnKeyType="next"
@@ -401,16 +417,15 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 initialValue={barber[0]?barber[0].address:''}
                 initiallyValid={true}
                 required
-                placeholderTextColor='rgba(50,52,70,0.4)'
-                inputStyle={{fontSize:15}}
+                placeholderTextColor={Platform.OS==='android'?'rgba(50,52,70,0.4)':'#f9f9f9'}
                 minLength={12}
                 autoCapitalize='sentences'
                 widthView='90%'
-                backgroundColor='#fff'
+                backgroundColor={Platform.OS==='android'?'#fff':Colors.blue}
                 height={45}
               />
             
-            <View style={{ width:'90%',borderWidth:1,paddingHorizontal:12,borderRadius:25,backgroundColor:'#fff',borderColor:wilaya!=='wilaya'?'#fff':Colors.primary,marginVertical:5,height:45,justifyContent:'center',shadowColor: 'black',shadowOpacity: 0.96,
+            <View style={{ width:'90%',borderWidth:1,paddingHorizontal:12,borderRadius:25,backgroundColor:Platform.OS==='android'?'#fff':Colors.blue,borderColor:wilaya!=='wilaya'?'#fff':Colors.primary,marginVertical:5,height:45,justifyContent:'center',shadowColor: 'black',shadowOpacity: 0.96,
                           shadowOffset: {width: 0, height:2},shadowRadius: 10,elevation: 3,overflow:'hidden',alignSelf:'center'}}>
               {Platform.OS === 'android' ? 
                         <Picker
@@ -420,14 +435,17 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                         >
                         {wilayas.map(el=> <Picker.Item label={el} value={el} key={el} />)}
                         </Picker> :
-                        <Text onPress={onPress} style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}>
+                        <View style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:17,paddingRight:25}}>
+                        <Text onPress={onPress} style={{fontFamily:'poppins',fontSize:15,fontWeight:'500',color:'#fff'}}>
                           {wilaya}
-                        </Text>} 
+                        </Text>
+                        <Ionicons name="ios-arrow-down" size={24} color="#fff" onPress={onPress} />
+                        </View>} 
             </View>
             
               <InputProfile
                 id='region'
-                rightIcon={<MaterialIcons title="region" name ='home' color='#323446' size={23} />}
+                rightIcon={<MaterialIcons title="region" name ='home' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
                 placeholder='Région'
                 keyboardType="default"
                 returnKeyType="next"
@@ -437,11 +455,10 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 initialValue={barber[0]?barber[0].region:''}
                 initiallyValid={true}
                 required
-                placeholderTextColor='rgba(50,52,70,0.4)'
-                inputStyle={{fontSize:15}}
+                placeholderTextColor={Platform.OS==='android'?'rgba(50,52,70,0.4)':'#f9f9f9'}
                 widthView='90%'
                 height={45}
-                backgroundColor='#fff'
+                backgroundColor={Platform.OS==='android'?'#fff':Colors.blue}
               />
            
             </KeyboardAvoidingView>
@@ -486,7 +503,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
            </View>
          </ScrollView>)}
     </View>
-    
+    </TouchableWithoutFeedback>
      );    
 };
 
@@ -542,7 +559,6 @@ const styles= StyleSheet.create({
      shadowOffset: {width: 0, height:2},
      shadowRadius: 10,
      elevation: 5,
-     backgroundColor:'red'
     },
     backgroundFirstCard:{
       width:'100%',
@@ -729,6 +745,14 @@ const styles= StyleSheet.create({
       alignItems:'center',
       justifyContent:'center',
       
+    },
+    coverTwo:{
+      flex:1,
+      alignItems:'center',
+      justifyContent:'center',
+      width:'100%',
+      height:'100%',
+      resizeMode:'cover'
     }
 });
 

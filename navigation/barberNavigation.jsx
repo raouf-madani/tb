@@ -17,7 +17,7 @@ import BarberGaleryScreen from '../screens/barber/barberProfile/barberGaleryScre
 import BarberHomeScreen from '../screens/home/barberHomeScreen';
 import ForgotPasswordScreen from '../screens/forgotPasswordScreen';
 import BarberSupportScreen  from '../screens/barber/barberProfile/barberSupportScreen';
-
+import TestScreen from '../screens/testScreen';
 
 
 //Main Stack Navigator

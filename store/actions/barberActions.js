@@ -31,6 +31,7 @@ export const createBarber=(id,phone,password,sex,wilaya,region)=>{
             
         }catch(err){
             console.log(err);
+            throw err;
         } 
 
     }
@@ -56,6 +57,7 @@ export const setBarbers= ()=>{
            
       }catch(err){
           console.log(err);
+          throw err;
       }
 
     };
@@ -168,6 +170,7 @@ export const setBarber= id => {
       
        }catch(err){
            console.log(err);
+           throw err;
        }
 
     };
@@ -196,6 +199,7 @@ export const updateBarberPassword= (id,password) => {
           
          }catch(err){
              console.log(err);
+             throw err;
          }
     };
 
@@ -224,10 +228,12 @@ export const updateBarberPhone= (id,phone,barberid) => {
            
          }catch(err){
              console.log(err);
+             throw err;
          }
     };
 
 };
+
 
 
 export const updateBarber= (id,name,surname,b_name,age,email,address,wilaya,region,image) => {
@@ -235,25 +241,39 @@ export const updateBarber= (id,name,surname,b_name,age,email,address,wilaya,regi
     return async dispatch => {
 
          try{
-           
+           const data = new FormData();
+           const body= {id:'123'};
 
+            data.append('avatar', {
+            name: image.fileName,
+            type: image.type,
+            uri:
+                Platform.OS === 'android' ? image.uri : image.uri.replace('file://', ''),
+            });
+        
+            Object.keys(body).forEach((key) => {
+            data.append(key, body[key]);
+            });
+           const uri= image.uri;
            const response = await fetch(`http://173.212.234.137:3000/barber/updateBarber/${id}`,{
 
               method:'PATCH',
               headers: {
                 'Content-Type': 'application/json'
             },
-            body : JSON.stringify({name,surname,b_name,age,email,address,wilaya,region,image})
+            body : JSON.stringify({name,surname,b_name,age,email,address,wilaya,region,data})
            });
            
            if(!response.ok){
                throw new Error('Oups! Une erreur est survenue.');
            }
-           
-           dispatch({type:UPDATE_BARBER,id,barberData:{name,surname,b_name,age,email,address,wilaya,region,image}});
+           console.log(data);
+           console.log(uri);
+           dispatch({type:UPDATE_BARBER,id,barberData:{name,surname,b_name,age,email,address,wilaya,region,uri}});
            
          }catch(err){
              console.log(err);
+             throw err;
          }
     };
 
@@ -277,6 +297,7 @@ export const deleteBarber = id => {
             
           }catch(err){
               console.log(err);
+              throw err;
           }
  
     };

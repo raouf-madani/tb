@@ -1,5 +1,5 @@
 import React, {useState,useReducer,useEffect,useCallback} from 'react';
-import { StyleSheet,View,KeyboardAvoidingView,Text,Image,Dimensions,ActionSheetIOS, StatusBar,Picker,ActivityIndicator,Alert} from 'react-native';
+import { StyleSheet,View,KeyboardAvoidingView,Text,Image,Dimensions,TouchableWithoutFeedback,Keyboard,ActionSheetIOS, StatusBar,Picker,ActivityIndicator,Alert} from 'react-native';
 import {Button } from 'react-native-elements';
 import InputProfile from '../../../components/InputProfile';
 import Colors from '../../../constants/Colors';
@@ -171,7 +171,7 @@ useEffect(()=>{
 
 
     return(
-           
+    <TouchableWithoutFeedback onPress = {()=>Keyboard.dismiss()}>      
     <View style={styles.container}>
       <KeyboardAvoidingView  keyboardVerticalOffset={10}>
          <StatusBar hidden />
@@ -293,6 +293,7 @@ useEffect(()=>{
           </View>
        </KeyboardAvoidingView>
     </View>
+    </TouchableWithoutFeedback>
      );    
 };
 
