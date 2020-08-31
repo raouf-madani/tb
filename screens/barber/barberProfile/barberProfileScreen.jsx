@@ -533,7 +533,7 @@ BarberProfileScreen.navigationOptions = navData => {
         <HeaderButtons HeaderButtonComponent = {HeaderButton}> 
           <Item title = "save" 
             iconName ='md-checkmark'
-            color={Platform.OS === 'android' ? 'white' : Colors.blue}
+            color='white' 
             onPress={saveFunction}
           />
         </HeaderButtons>)
@@ -723,17 +723,14 @@ const styles= StyleSheet.create({
       width:'90%',
       alignSelf:'center',
       marginVertical:10,
-      flexDirection:'row'
+      flexDirection:'row',
+      justifyContent:'center'
     },
     cart:{
       width:'90%',
       height:'95%',
       alignItems:'center',
       justifyContent:'center',
-      shadowColor: 'black',
-      shadowOpacity: 0.96,
-      shadowOffset: {width: 0, height:2},
-      shadowRadius: 10,
       elevation: 2,
       overflow:'hidden',
       borderRadius:10
@@ -743,7 +740,11 @@ const styles= StyleSheet.create({
       height:100,
       alignItems:'center',
       justifyContent:'center',
-      
+      borderWidth:Platform.OS==='ios'? 1:none,
+      borderRadius:Platform.OS==='ios'? 40:none,
+      marginHorizontal:Platform.OS==='ios'? 3:none,
+      borderColor:Platform.OS==='ios'? Colors.blue:undefined,
+      borderStyle:Platform.OS==='ios'? 'dashed':undefined
     },
     coverTwo:{
       flex:1,

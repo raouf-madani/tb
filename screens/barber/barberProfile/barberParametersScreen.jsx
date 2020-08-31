@@ -214,7 +214,7 @@ const alertEditPassword = ()=>{
               <InputProfile
               id='phone'
               rightIcon={<MaterialIcons title="phone" name ='phone' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
-              leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Colors.blue,paddingRight:5}}><Image source={require('../../../assets/images/algeriaFlag.png')} style={{width:24,height:28,marginRight:5}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
+              leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Platform.OS==='android'?'#323446':'#fff',paddingRight:5}}><Image source={require('../../../assets/images/algeriaFlag.png')} style={{width:24,height:28,marginRight:5}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
               placeholder='555555555'
               keyboardType="phone-pad"
               returnKeyType="next"
@@ -291,11 +291,11 @@ const alertEditPassword = ()=>{
           <KeyboardAvoidingView keyboardVerticalOffset={10}>
             <View style={styles.langContainer}>
               {!isArabic?(<View style={styles.langRow}>
-                <Text style={{fontFamily:'poppins',fontSize:12,color:Platform.OS==='android'?Colors.blue:'#fff'}}>Français</Text>
+                <Text style={{fontFamily:'poppins',fontSize:15,color:Platform.OS==='android'?Colors.blue:'#fff'}}>Français</Text>
                 <Image source={require('../../../assets/images/france.png')} style={{width:24,height:24}}/>
               </View>):undefined}
               {isArabic?(<View style={styles.langRow}>
-                <Text style={{fontFamily:'poppins',fontSize:13,color:Platform.OS==='android'?Colors.blue:'#fff'}}>العربية</Text>
+                <Text style={{fontFamily:'poppins',fontSize:15,color:Platform.OS==='android'?Colors.blue:'#fff'}}>العربية</Text>
                 <Image source={require('../../../assets/images/algeria.png')} style={{width:24,height:24}}/>
               </View>):undefined}
             </View>
@@ -332,7 +332,7 @@ BarberParametersScreen.navigationOptions= navData => {
       headerTintColor: '#fff',
       headerTitleStyle:{
         fontFamily:'poppins-bold',
-        marginTop:5
+        marginTop:5,
       },
       
      
@@ -421,7 +421,11 @@ const styles= StyleSheet.create({
   borderRadius:20,
   height:40,
   alignSelf:'center'
- }
+ },
+ phoneNumber:{
+ color:Platform.OS==='android'?'#323446':'#fff',
+ fontSize:15
+}
 });
 
 export default BarberParametersScreen;

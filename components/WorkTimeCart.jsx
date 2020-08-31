@@ -38,21 +38,22 @@ const WorkTimeCart = props =>{
 const styles= StyleSheet.create({
 
 disponibilityContainer:{
-    overflow:'hidden',
-    shadowOpacity:1,
-    shadowRadius:10,
-    shadowColor:"#323446",
-    borderRadius:10,
-    elevation:5,
-    paddingHorizontal:10,
-    paddingVertical:15,
-    marginVertical:10,
-    width:'90%',
-    alignSelf:'center',
-    backgroundColor:'#f9f9f9',
-    flexDirection:'row',
-    justifyContent:'space-between',
-    alignItems:'center'
+  overflow:Platform.OS==='ios'?'visible':'hidden',
+  shadowOpacity:0.5,
+  shadowOffset:{width:0,height:2},
+  shadowRadius:2,
+  shadowColor:"#000",
+  borderRadius:10,
+  elevation:5,
+  paddingHorizontal:10,
+  paddingVertical:15,
+  marginVertical:10,
+  width:'90%',
+  alignSelf:'center',
+  backgroundColor:'#f9f9f9',
+  flexDirection:'row',
+  justifyContent:'space-between',
+  alignItems:'center'
 },
 dayContainer:{
     alignItems:'flex-start',

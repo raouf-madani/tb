@@ -36,11 +36,11 @@ const ServiceCart = props =>{
                    <Text style={styles.serviceName}>{props.name}</Text>
                </View>
                <View style={styles.iconsRow}>
-                     <TouchableOpacity onPress={props.onPressUpdate} style={styles.iconFormCircleService}>
-                       <MaterialIcons name="edit" size={19} color={Colors.colorF5} />
+                     <TouchableOpacity onPress={props.onPressUpdate} style={Platform.OS === 'android?' ?styles.iconFormCircleService:styles.iconFormCircleEdit}>
+                       <MaterialIcons name="edit" size={19} color={Platform.OS === 'android?' ?Colors.colorF5:'white'} />
                      </TouchableOpacity>
-                     <TouchableOpacity onPress={props.onPressDelete} style={styles.iconFormCircleService}>
-                       <MaterialCommunityIcons name="delete-forever" size={19} color={Colors.secondary} />
+                     <TouchableOpacity onPress={props.onPressDelete} style={Platform.OS === 'android?' ?styles.iconFormCircleService:styles.iconFormCircleDelete}>
+                       <MaterialCommunityIcons name="delete-forever" size={19} color={Platform.OS === 'android?' ?Colors.secondary:'white'} />
                      </TouchableOpacity>
                </View>
            </View>
@@ -52,16 +52,17 @@ const ServiceCart = props =>{
 const styles= StyleSheet.create({
 
   serviceContainer:{
-    overflow:'hidden',
-    shadowOpacity:1,
-    shadowRadius:10,
-    shadowColor:"#323446",
+    overflow:Platform.OS==='ios'?'visible':'hidden',
+    shadowOpacity:0.5,
+    shadowOffset:{width:0,height:2},
+    shadowRadius:2,
+    shadowColor:"#000",
+    borderRadius:10,
     elevation:5,
     alignSelf:'center',
     flexDirection:'row',
     width:'90%',
     marginVertical:10,
-    borderRadius:10,
     height:height*0.15
   },
   backgroundContainer:{
@@ -123,7 +124,7 @@ const styles= StyleSheet.create({
     width:'35%',
     justifyContent:'space-between',
     alignItems:'center',
-    backgroundColor:'#fff',
+    backgroundColor:Platform.OS==='android'?'#fff':'#f9f9f9',
     paddingVertical:10,
     paddingHorizontal:10
   },
@@ -135,11 +136,28 @@ const styles= StyleSheet.create({
     alignItems:'center',
     backgroundColor:'white',
     overflow:'hidden',
-    shadowOpacity:1,
-    shadowRadius:10,
-    shadowColor:"#323446",
     elevation:5
   },
+  iconFormCircleEdit:{
+    width:30,
+    height:30,
+    borderRadius:20,
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor:Colors.colorF5,
+    overflow:'hidden',
+    elevation:5
+  },
+  iconFormCircleDelete:{
+    width:30,
+    height:30,
+    borderRadius:20,
+    justifyContent:'center',
+    alignItems:'center',
+    backgroundColor:Colors.secondary,
+    overflow:'hidden',
+    elevation:5
+  }
 });
 
 export default ServiceCart;

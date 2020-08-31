@@ -1,10 +1,7 @@
 import React from 'react';
 import { StyleSheet,View,ImageBackground,TouchableOpacity,Text,Image,Alert,Dimensions,Platform,Linking} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
-import {useSelector,useDispatch} from 'react-redux';
 import Colors from "../../../constants/Colors";
-import {HeaderButtons,Item} from "react-navigation-header-buttons";
-import HeaderButton from "../../../components/HeaderButton";
 import polylanar from "../../../lang/ar";
 import polylanfr from "../../../lang/fr";
 
@@ -18,7 +15,11 @@ const screen = Dimensions.get('window');
 
 const BarberSupportScreen = props =>{
 
-  const URL = "https://google.com";
+  const URL = "https://tahfifaapp.com";
+  const facebookURL = "https://www.facebook.com/TahfifaApp";
+  const instagramURL = "https://www.instagram.com/tahfifaapp/";
+  const linkedinURL = "https://www.linkedin.com/company/tahfifa/";
+  const tiktokURL = "";
 
   const callPhone = ()=>{
   
@@ -40,7 +41,31 @@ const BarberSupportScreen = props =>{
       Alert.alert('Oups!','Une erreur est survenue',[{text:'OK'}]);
   } 
   });
- }
+ };
+
+ const facebookUrl= ()=>{
+  Linking.openURL(facebookURL).catch((err) => {
+    if(err){
+      Alert.alert('Oups!','Une erreur est survenue',[{text:'OK'}]);
+  } 
+  });
+ };
+
+ const instagramUrl= ()=>{
+  Linking.openURL(instagramURL).catch((err) => {
+    if(err){
+      Alert.alert('Oups!','Une erreur est survenue',[{text:'OK'}]);
+  } 
+  });
+ };
+
+ const linkedinUrl= ()=>{
+  Linking.openURL(linkedinURL).catch((err) => {
+    if(err){
+      Alert.alert('Oups!','Une erreur est survenue',[{text:'OK'}]);
+  } 
+  });
+ };
 
     return(
     <View style={styles.container}>
@@ -54,23 +79,26 @@ const BarberSupportScreen = props =>{
                 Si un problème persiste, n'hésitez pas à nous contacter au plus vite via les informations suivantes:
               </Text>
             </View>
-            <View style={{width:'100%',marginBottom:10,alignSelf:'center'}}>
-              <Text style={{fontFamily:'poppins',fontSize:13,color:Colors.blue,marginVertical:2}}>1- Appelez-nous en appuyant sur <Text style={{color:Colors.secondary}} onPress={callPhone}>0658341876</Text></Text>
-              <Text style={{fontFamily:'poppins',fontSize:13,color:Colors.blue,marginVertical:2}}>2- Page contact, <Text style={{color:Colors.colorH1}} onPress={url}>tahfifa.com/contact</Text></Text>
-            </View>
+           
             <View style={{flexDirection:'row',alignItems:'center',alignSelf:'center'}}>
-              <View  style={{marginHorizontal:5}}>
+              <TouchableOpacity  style={{marginHorizontal:5}} onPress={instagramUrl}>
                  <MaterialCommunityIcons name="instagram" size={32} color="black" />
-              </View>
-              <View style={{marginHorizontal:5}}>
-              <MaterialCommunityIcons name="facebook-box" size={32} color="black" /> 
-              </View>
-              <View style={{marginHorizontal:5}}>
-              <MaterialCommunityIcons name="snapchat" size={32} color="black" /> 
-              </View> 
-              <View style={{marginHorizontal:5}}>
-              <Image source={require('../../../assets/images/tiktok.png')} style={{width:25,height:25}} /> 
-              </View> 
+              </TouchableOpacity>
+              <TouchableOpacity style={{marginHorizontal:5}} onPress={facebookUrl}>
+                <MaterialCommunityIcons name="facebook-box" size={32} color="black" /> 
+              </TouchableOpacity>
+              <TouchableOpacity style={{marginHorizontal:5}} onPress={linkedinUrl}>
+                <MaterialCommunityIcons name="linkedin" size={32} color="black" /> 
+              </TouchableOpacity> 
+              <TouchableOpacity style={{marginHorizontal:5}}>
+                <Image source={require('../../../assets/images/tiktok.png')} style={{width:25,height:25}} /> 
+              </TouchableOpacity>
+              <TouchableOpacity style={{marginHorizontal:5}} onPress={callPhone}>
+                 <MaterialCommunityIcons name="phone" size={32} color="black" /> 
+              </TouchableOpacity> 
+              <TouchableOpacity style={{marginHorizontal:5}} onPress={url}>
+                 <MaterialCommunityIcons name="web-box" size={32} color="black"  />
+              </TouchableOpacity>
               
             </View>
          </View>
