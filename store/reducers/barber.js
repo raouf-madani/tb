@@ -1,4 +1,4 @@
-import {CREATE_BARBER,SET_BARBERS,SET_BARBER,UPDATE_BARBER_PASSWORD,UPDATE_BARBER,DELETE_BARBER,UPDATE_BARBER_PHONE} from '../actions/barberActions';
+import {CREATE_BARBER,SET_BARBERS,SET_BARBER,UPDATE_BARBER_PASSWORD,UPDATE_BARBER,DELETE_BARBER,UPDATE_BARBER_PHONE,UPDATE_BARBER_LANG} from '../actions/barberActions';
 import Barber from '../../models/barber';
 
 const initialState={
@@ -102,6 +102,40 @@ const barbersReducer=(state=initialState,action)=>{
         return{
           ...state,
           barber:updatedBarbers
+        };
+
+        case UPDATE_BARBER_LANG:
+         
+        const barberIndexLang = state.barber.findIndex(barber => barber.id === action.id);
+        
+        const updatedBarberLang = new Barber(
+          action.id,
+          state.barber[barberIndexLang].phone,
+          state.barber[barberIndexLang].password,
+          state.barber[barberIndexLang].sex,
+          state.barber[barberIndexLang].name,
+          state.barber[barberIndexLang].surname,
+          state.barber[barberIndexLang].b_name,
+          state.barber[barberIndexLang].age,
+          state.barber[barberIndexLang].email,
+          state.barber[barberIndexLang].address,
+          state.barber[barberIndexLang].wilaya,
+          state.barber[barberIndexLang].region,
+          state.barber[barberIndexLang].image,
+          state.barber[barberIndexLang].long,
+          state.barber[barberIndexLang].lat,
+          state.barber[barberIndexLang].mark,
+          action.barberData.lang,
+          state.barber[barberIndexLang].type,
+          state.barber[barberIndexLang].services,
+          state.barber[barberIndexLang].workingTimes
+        );   
+
+        const updatedBarbersLang=[...state.barber];
+        updatedBarbersLang[barberIndexLang]=updatedBarberLang;
+        return{
+          ...state,
+          barber:updatedBarbersLang
         };
 
 

@@ -5,7 +5,7 @@ export const UPDATE_BARBER_PASSWORD ="UPDATE_BARBER_PASSWORD";
 export const UPDATE_BARBER_PHONE = "UPDATE_BARBER_PHONE";
 export const UPDATE_BARBER = "UPDATE_BARBER";
 export const DELETE_BARBER = "DELETE_BARBER";
-
+export const UPDATE_BARBER_LANG = "UPDATE_BARBER_LANG";
 
 export const createBarber=(id,phone,password,sex,wilaya,region)=>{
   
@@ -205,6 +205,34 @@ export const updateBarberPassword= (id,password) => {
 
 };
 
+
+export const updateBarberLang= (id,lang) => {
+
+    return async dispatch => {
+           console.log(id,lang);
+         try{
+
+           const response = await fetch(`http://173.212.234.137:3000/barber/updateLang/${id}`,{
+
+              method:'PATCH',
+              headers: {
+                'Content-Type': 'application/json'
+            },
+            body : JSON.stringify({lang})
+           });
+           if(!response.ok){
+               throw new Error('Oups! Une erreur est survenue in ur fetch.');
+           }
+           
+           dispatch({type:UPDATE_BARBER_LANG,id,barberData:{lang}});
+          
+         }catch(err){
+             console.log(err);
+             throw err;
+         }
+    };
+
+};
 
 export const updateBarberPhone= (id,phone,barberid) => {
 

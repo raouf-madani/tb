@@ -258,8 +258,22 @@ if (isLoading) {
 
 };
 
+AllBookingsScreen.navigationOptions= () => {
+    
+  return {
+   title:'Mes Réservations',
+  
+   headerBackTitle : " ",
+   headerTintColor: Colors.primary,
+   headerTitleStyle:{
+     fontFamily:'poppins-bold',
+     marginTop:5,
+   },
+   
+  
+  };
 
-
+};
 
 const styles= StyleSheet.create({
     container : {

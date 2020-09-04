@@ -1,4 +1,4 @@
-import React,{useState,useReducer,useCallback} from 'react';
+import React,{useState,useReducer,useCallback,useEffect} from 'react';
 import {StyleSheet,View,AsyncStorage,ScrollView,ImageBackground,TouchableWithoutFeedback,Keyboard,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActivityIndicator,Platform} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons} from "@expo/vector-icons";
 import {Button} from 'react-native-elements';
@@ -45,17 +45,36 @@ const formReducer=(state,action) =>{
 
 const BarberParametersScreen = props =>{
 
-  //get the barber's data
-  const barber= useSelector(state=>state.barbers.barber);
   //use Dispatch to dispatch our action
   const dispatch= useDispatch();
   const barberUID= props.navigation.getParam('barberUID');
+  const barberID=props.navigation.getParam('barberID');
 
   const [isPhone,setIsPhone]= useState(true);
   const [isPassword,setIsPassword]= useState(false);
   const [isLang,setIsLang]= useState(false);
-  const [isArabic,setIsArabic]= useState(false);
+  let isArabic;
   const [isEye,setIsEye]=useState(false);
+  const [error,setError]=useState(false);
+  const [isLoadingState,setIsLoadingState]= useState(false);
+
+  const getBarber=useCallback(async()=>{
+    try{
+      setError(false);
+      setIsLoadingState(true);
+      await dispatch(barberActions.setBarber(barberID));
+      setIsLoadingState(false);
+      }catch(err){
+        setError(true);
+        throw err; 
+      }
+  },[dispatch,setError]);
+  
+    useEffect(()=>{
+    getBarber();
+    
+    },[dispatch,getBarber,setError]);
+
 
       const eye=()=>{
         setIsEye(prevValue=>!prevValue);
@@ -77,11 +96,49 @@ const BarberParametersScreen = props =>{
     setIsPhone(false);
     setIsPassword(false);
   };
+
   
-  const arabic= ()=>{
-    setIsArabic(prevValue=>!prevValue);
+  //get the barber's data
+  const barber= useSelector(state=>state.barbers.barber);
+  console.log('value is '+barber[0].lang);
+
+  const arabic= async()=>{
+     
+     try{
+        if(barber[0].lang){
+           isArabic = false;
+        }else{
+          isArabic = true;
+       }
+        setIsLoadingState(true);
+        setError(false);
+       
+        console.log(isArabic);
+        await dispatch(barberActions.updateBarberLang(barberID,isArabic));
+        setIsLoadingState(false); 
+                               
+        Alert.alert('Félicitation!','Vous avez changé la langue de votre compte avec succès!',[{text:"OK"}]);
+  
+    }catch(err){
+      console.log(err);
+      setError(true);
+      if(error){
+        Alert.alert('Oups!','Votre connexion est trop faible!',[{text:"OK"}]);
+       }
+       throw err;
+    }
   };
 
+  const alertEditLang = ()=>{
+    Alert.alert(
+     'Attention!',
+     'Voulez-vous vraiment changer la langue de votre compte?',
+     [{text:'Oui', style:'destructive', onPress:arabic},
+      {text:'Non', style:'cancel'}]);
+      return;
+  };
+
+   
   //State for update loading 
   const [isLoading,setIsLoading]= useState(false);
   const [isLoadingPassword,setIsLoadingPassword]=useState(false);
@@ -127,7 +184,7 @@ const editPhone=async()=>{
     
       }catch(err){
         console.log(err);
-        Alert.alert('Oups!','Une erreur est survenue!',[{text:"OK"}]);
+        Alert.alert('Oups!','Votre connexion est trop faible!',[{text:"OK"}]);
       }
       
       }else{
@@ -169,7 +226,7 @@ const editPassword=async()=>{
     
       }catch(err){
         console.log(err);
-        Alert.alert('Oups!','Une erreur est survenue!',[{text:"OK"}]);
+        Alert.alert('Oups!','Votre connexion est trop faible!',[{text:"OK"}]);
       }
       
       }else{
@@ -186,6 +243,33 @@ const alertEditPassword = ()=>{
     {text:'Non', style:'cancel'}]);
     return;
 };
+if(error){
+      
+  return ( <ImageBackground source={require('../../../assets/images/support.png')} style={styles.coverTwo}>
+              <View style={{marginBottom:10,alignSelf:'center'}}>
+                <Text style={styles.noServicesText}>Votre connexion est trop faible!</Text>
+              </View>
+              <Button
+                theme={{colors: {primary:'#fd6c57'}}} 
+                title="Réessayer"
+                titleStyle={styles.labelButton}
+                buttonStyle={styles.buttonStyle}
+                ViewComponent={LinearGradient}
+                onPress={getBarber}
+                linearGradientProps={{
+                    colors: ['#fd6d57', '#fd9054'],
+                    start: {x: 0, y: 0} ,
+                    end:{x: 1, y: 0}
+                  }}/>
+          </ImageBackground>);
+};
+if(isLoadingState || barber===undefined){
+      
+  return ( <ImageBackground source={require('../../../assets/images/support.png')} style={styles.coverTwo}>
+              <ActivityIndicator size='large' color={Colors.primary} />
+           </ImageBackground>)
+};
+
     return(
       <TouchableWithoutFeedback onPress = {()=>Keyboard.dismiss()}>
       <View style={styles.container}>
@@ -195,17 +279,17 @@ const alertEditPassword = ()=>{
          <View style={styles.menuContainer}>
               <TouchableOpacity onPress={phone} style={{padding:5,width:'30%',backgroundColor:isPhone?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
                 <Text style={{color:isPhone?'#fff':'#fd6c57',fontFamily:'poppins'}}>
-                  {!isArabic?polylanfr.Phone:polylanar.Phone}
+                  {barber && barber[0].lang? polylanfr.Phone:polylanar.Phone}
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={password} style={{borderRightWidth:1,borderRightColor:'#fd6c57',borderLeftWidth:1,borderLeftColor:'#fd6c57',padding:5,width:'40%',backgroundColor:isPassword?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
                   <Text style={{color:isPassword?'#fff':'#fd6c57',fontFamily:'poppins'}}>
-                    {!isArabic?polylanfr.Password:polylanar.Password}
+                    {barber && barber[0].lang?polylanfr.Password:polylanar.Password}
                   </Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={lang} style={{padding:5,width:'30%',backgroundColor:isLang?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
                   <Text style={{color:isLang?'#fff':'#fd6c57',fontFamily:'poppins'}}>
-                    {!isArabic?polylanfr.Languages:polylanar.Languages}
+                    {barber && barber[0].lang?polylanfr.Languages:polylanar.Languages}
                   </Text>
               </TouchableOpacity>
         </View>
@@ -231,7 +315,7 @@ const alertEditPassword = ()=>{
               <View style={styles.buttonContainer}>
               {!isLoading ?<Button
                     theme={{colors: {primary:'#fd6c57'}}} 
-                    title={!isArabic?polylanfr.Register:polylanar.Register}
+                    title={barber && barber[0].lang?polylanfr.Register:polylanar.Register}
                     titleStyle={styles.labelButton}
                     buttonStyle={styles.buttonStyle}
                     ViewComponent={LinearGradient} 
@@ -252,7 +336,7 @@ const alertEditPassword = ()=>{
                 <InputProfile
                 id='password'
                 rightIcon={<MaterialCommunityIcons title="lock" onPress={eye} name ={!isEye?'eye':'eye-off'} color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
-                placeholder={!isArabic?polylanfr.NewPassword:polylanar.NewPassword}
+                placeholder={barber && barber[0].lang?polylanfr.NewPassword:polylanar.NewPassword}
                 keyboardType="default"
                 returnKeyType="next"
                 secureTextEntry={!isEye?true:false}
@@ -271,7 +355,7 @@ const alertEditPassword = ()=>{
               <View style={styles.buttonContainer}>
               {!isLoadingPassword ?<Button
                     theme={{colors: {primary:'#fd6c57'}}} 
-                    title={!isArabic?polylanfr.Register:polylanar.Register}
+                    title={isArabic?polylanfr.Register:polylanar.Register}
                     titleStyle={styles.labelButton}
                     buttonStyle={styles.buttonStyle}
                     ViewComponent={LinearGradient} 
@@ -290,19 +374,19 @@ const alertEditPassword = ()=>{
         {isLang?(<ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
           <KeyboardAvoidingView keyboardVerticalOffset={10}>
             <View style={styles.langContainer}>
-              {!isArabic?(<View style={styles.langRow}>
+              {barber && barber[0].lang?(<View style={styles.langRow}>
                 <Text style={{fontFamily:'poppins',fontSize:15,color:Platform.OS==='android'?Colors.blue:'#fff'}}>Français</Text>
                 <Image source={require('../../../assets/images/france.png')} style={{width:24,height:24}}/>
-              </View>):undefined}
-              {isArabic?(<View style={styles.langRow}>
+              </View>):(<View style={styles.langRow}>
                 <Text style={{fontFamily:'poppins',fontSize:15,color:Platform.OS==='android'?Colors.blue:'#fff'}}>العربية</Text>
                 <Image source={require('../../../assets/images/algeria.png')} style={{width:24,height:24}}/>
-              </View>):undefined}
+              </View>)}
             </View>
             <View style={styles.buttonContainer}>
+           
                <Button
                     theme={{colors: {primary:'#fd6c57'}}} 
-                    title={!isArabic?polylanfr.Change:polylanar.Change}
+                    title={barber && barber[0].lang?polylanfr.Change:polylanar.Change}
                     titleStyle={styles.labelButton}
                     buttonStyle={styles.buttonStyle}
                     ViewComponent={LinearGradient}
@@ -312,7 +396,7 @@ const alertEditPassword = ()=>{
                         end:{x: 1, y: 0}
                         
                     }}
-                    onPress={arabic}
+                    onPress={alertEditLang}
                 />
            </View>
            </KeyboardAvoidingView>
@@ -425,6 +509,18 @@ const styles= StyleSheet.create({
  phoneNumber:{
  color:Platform.OS==='android'?'#323446':'#fff',
  fontSize:15
+},
+coverTwo:{
+  flex:1,
+  justifyContent:'center',
+  width:'100%',
+  height:'100%',
+  resizeMode:'cover'
+},
+noServicesText:{
+  fontFamily:'poppins',
+  fontSize:14,
+  color:Colors.blue
 }
 });
 

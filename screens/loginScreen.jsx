@@ -6,7 +6,8 @@ import Colors from '../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import CustomInput from '../components/Input';
 import * as Crypto from 'expo-crypto'; 
-
+import polylanar from "../lang/ar";
+import polylanfr from "../lang/fr";
 
 //responsivity (Dimensions get method)
 const screen = Dimensions.get('window');
@@ -141,7 +142,7 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
           <View style={styles.secondContainer}>
              <View style={styles.logoContainer}>
                  <Image source={require('../assets/images/logo.png')} style={styles.logo}/>
-                 <Text style={styles.callToAction}>Contactez un coiffeur en quelques clics</Text>
+                 <Text style={styles.callToAction}>Exercez votre métier et gagnez plus d'argent</Text>
              </View>
               <View style={styles.inputsContainer}>
                   <CustomInput

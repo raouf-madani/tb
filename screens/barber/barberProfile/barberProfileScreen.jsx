@@ -238,7 +238,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
     try{
         setIsLoading(true);
         setError(false);
-         await dispatch(barberActions.updateBarber(barber[0].id,formState.inputValues.name,formState.inputValues.surname,
+         await dispatch(barberActions.updateBarber(barberID,formState.inputValues.name,formState.inputValues.surname,
                                           formState.inputValues.b_name,formState.inputValues.age,
                                           formState.inputValues.email,formState.inputValues.address,
                                           wilaya,formState.inputValues.region,pickedImage));
@@ -480,7 +480,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                   </TouchableOpacity>
                 </View>
                 <View style={styles.cartContainer}>
-                  <TouchableOpacity style={styles.cart} onPress={()=>props.navigation.navigate('BarberParameters',{barberUID:barberUID})}>
+                  <TouchableOpacity style={styles.cart} onPress={()=>props.navigation.navigate('BarberParameters',{barberUID:barberUID,barberID:barberID})}>
                        <View style={{paddingBottom:5}}>
                          <Ionicons title = "options" name ='ios-options' color='#56A7FF' size={23} />
                        </View>

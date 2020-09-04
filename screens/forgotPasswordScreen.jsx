@@ -175,7 +175,7 @@ Alert.alert('Erreur!','Veuillez rentrer votre nouveau mot de passe s\'il vous pl
           <View style={styles.secondContainer}>
              <View style={styles.logoContainer}>
                  <Image source={require('../assets/images/logo.png')} style={styles.logo}/>
-                 <Text style={styles.callToAction}>Contactez un coiffeur en quelques clics</Text>
+                 <Text style={styles.callToAction}>Exercez votre métier et gagnez plus d'argent</Text>
              </View>
               <View style={styles.inputsContainer}>
                   <CustomInput
@@ -289,8 +289,8 @@ const styles= StyleSheet.create({
     alignItems:'center'
   },
   logo:{
-    width:160,
-    height:49,
+    width:180,
+    height:42,
     marginVertical:10
   },
   callToAction:{

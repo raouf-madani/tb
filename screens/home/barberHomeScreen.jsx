@@ -83,7 +83,7 @@ const responseListener = useRef();
 
    const barber=useSelector(state=>state.barbers.barber[0]);
 
-  //  console.log(barber);
+  //console.log(barber);
 
    const feedbacks=useSelector(state=>state.feedbacks.feedbacks);
   //  console.log(feedbacks);
