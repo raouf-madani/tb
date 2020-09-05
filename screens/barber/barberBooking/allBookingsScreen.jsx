@@ -9,10 +9,11 @@ import BookingCard from '../../../components/BookingCard';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { getClientBookings, expiredbookings, getBarberBookings } from '../../../store/actions/bookingsActions';
-
+import 'moment/locale/fr' ;
 
 const screen = Dimensions.get("window");
-moment.locale("fr");  
+moment.locale('fr')
+
 LocaleConfig.locales['fr'] = {
     monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
     monthNamesShort: ['Janv.','Févr.','Mars','Avril','Mai','Juin','Juil.','Août','Sept.','Oct.','Nov.','Déc.'],
@@ -21,7 +22,6 @@ LocaleConfig.locales['fr'] = {
     today: 'Aujourd\'hui'
   };
   LocaleConfig.defaultLocale = 'fr';
-
   ///////////////////////////////////////////////////////////////////////
 const AllBookingsScreen = (props) => {
 
@@ -151,6 +151,8 @@ setSelectedDateText(moment(date.dateString).format('LL'));
 setDayBookings ([...dayBooks]);
 
 setSelectedDay(moment(date.dateString).format('ddd'));
+
+
 setSelectedDate(moment(date.dateString).format());
  
 
@@ -235,6 +237,7 @@ if (isLoading) {
                             clientId = {booking.clientId}
                             cancelDate = {booking.date}
                             id = {booking.id}
+                            press = {true}
                          /> 
 
                     )})

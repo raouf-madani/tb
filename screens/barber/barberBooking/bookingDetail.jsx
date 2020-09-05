@@ -197,6 +197,7 @@ if (isLoading) {
                             date = {props.navigation.getParam("date")}
                             status = {props.navigation.getParam("status")}
                             detail = {false}
+                            press = {false}
     
      />
             <View style = {styles.actions}>

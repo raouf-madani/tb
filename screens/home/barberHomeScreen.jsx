@@ -134,11 +134,11 @@ const responseListener = useRef();
   /***********************Overlay when there is a non Approved booking*****************************/
 
 
-  const toggleOverlay = async(bookingId) => {
+  const toggleOverlay = async(bookingId,type) => {
  
     try {
       setIsLoading(true);
-        await dispatch(changeBookingState(bookingId,"réalisée"));
+        await dispatch(changeBookingState(bookingId,type));
         await setFinished(previous=>previous.filter(e=>e.id !== bookingId));
        setFinishVisible(previous=>!previous);
       setIsLoading(false)
@@ -320,13 +320,15 @@ async function registerForPushNotificationsAsync() {
                return(
               <Overlay 
               isVisible={true}
-                key ={index}
+              key ={index}
               overlayStyle ={{width:200,height:200}}
               >
               <View> 
-              <Text>avez vous réaliser le boking de  {e.start}</Text>
-              <Button title = "Hi" onPress = {()=>toggleOverlay(finished[0].id)} />
-</View>
+              <Text>avez vous réaliser le booking de  {e.start}</Text>
+              <Button title = "oui" onPress = {()=>toggleOverlay(finished[0].id,"réalisée")} />
+              <Button title = "non" onPress = {()=>toggleOverlay(finished[0].id,"annulée")} />
+
+              </View>
               </Overlay>
               )
 
