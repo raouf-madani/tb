@@ -740,9 +740,9 @@ const styles= StyleSheet.create({
       height:100,
       alignItems:'center',
       justifyContent:'center',
-      borderWidth:Platform.OS==='ios'? 1:none,
-      borderRadius:Platform.OS==='ios'? 40:none,
-      marginHorizontal:Platform.OS==='ios'? 3:none,
+      borderWidth:Platform.OS==='ios'? 1:null,
+      borderRadius:Platform.OS==='ios'? 40:null,
+      marginHorizontal:Platform.OS==='ios'? 3:null,
       borderColor:Platform.OS==='ios'? Colors.blue:undefined,
       borderStyle:Platform.OS==='ios'? 'dashed':undefined
     },
