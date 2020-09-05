@@ -410,7 +410,7 @@ if(isLoadingState || barber===undefined){
 BarberParametersScreen.navigationOptions= navData => {
     
      return {
-      title:barber && barber[0].lang?polylanfr.Parameters:polylanar.Parameters,
+      title:'Paramètres',
       headerTransparent : true ,
       headerBackTitle : " ",
       headerTintColor: '#fff',
