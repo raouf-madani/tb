@@ -2,19 +2,20 @@ import React,{useState,useEffect,useCallback,useRef} from 'react';
 import { StyleSheet, Text, View, ImageBackground , Image,Dimensions,TouchableOpacity,ScrollView,StatusBar,Alert,ActivityIndicator} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons,Entypo} from "@expo/vector-icons";
 import { LinearGradient } from 'expo-linear-gradient';
-import {  Rating,Button  } from 'react-native-elements';
+import {  Rating,Button,Overlay  } from 'react-native-elements';
 import Colors from "../../constants/Colors";
 import { useDispatch,useSelector } from 'react-redux';
 import * as barberActions from '../../store/actions/barberActions';
 import * as feedbackActions from '../../store/actions/feedbackActions';
 import Feedback from '../../components/Feedback';
-
+import moment from 'moment';
 import { getTokens ,addtoken } from '../../store/actions/tokenActions';
 
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import { Notifications as Notifications2 } from 'expo';
+import { getBarberBookings, changeBookingState } from '../../store/actions/bookingsActions';
 
 
 Notifications.setNotificationHandler({
@@ -42,15 +43,18 @@ const responseListener = useRef();
   const [error, setError] = useState();
   const [isLoading,setIsLoading]= useState(false);//ActivityIndicator handling
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [finished,setFinished] = useState([]);
+  const [finishVisible,setFinishVisible] = useState(false)
   const dispatch= useDispatch();
 
   //get the barber's tokens
   const tokens = useSelector(state=>state.tokens.barberTokens);
+  const allBookings = useSelector(state => state.bookings.bookings);
 
    /*
    *******Fetch One barber DATA
   */
- 
+
  const getBarber=useCallback(async()=>{
   try{
     setError(false);
@@ -62,6 +66,7 @@ const responseListener = useRef();
 
     await dispatch(barberActions.setBarber(barberID));
     await dispatch(feedbackActions.setFeedbacks(barberID));
+    await dispatch(getBarberBookings(barberID));
     setIsLoading(false);
     setIsRefreshing(false);
     }catch(err){
@@ -126,9 +131,40 @@ const responseListener = useRef();
      
     };
    
+  /***********************Overlay when there is a non Approved booking*****************************/
+
+
+  const toggleOverlay = async(bookingId) => {
+ 
+    try {
+      setIsLoading(true);
+        await dispatch(changeBookingState(bookingId,"réalisée"));
+        await setFinished(previous=>previous.filter(e=>e.id !== bookingId));
+       setFinishVisible(previous=>!previous);
+      setIsLoading(false)
+
+    } catch (error) {
+       throw error;
+    }   
+  };
+
+  useEffect(()=>{
+    // console.log(moment().format("lll"));
+ 
+    const finished2 = allBookings.filter(e=>(
+      ((moment().format("ll") === moment(e.bookingDate).format("ll") && moment().format().substring(11,16)> e.end) && e.status === "confirmée" ) ||  (moment().format("ll") > moment(e.bookingDate).format("ll") && e.status === "confirmée") )
     
+    
+    )
 
+    setFinished(finished2);
+      if (finished2.length > 0){
+          setFinishVisible(true);
+      }
 
+  },[allBookings]);
+
+  /***********************Overlay when there is a non Approved booking END*****************************/
    
     /************NOTIFICATION ***********************************/
 
@@ -240,6 +276,7 @@ async function registerForPushNotificationsAsync() {
   return token;
 }
 
+
 /*****************************************Notifications End********************************************************* */
 /********************************************************************** */
 
@@ -276,6 +313,32 @@ async function registerForPushNotificationsAsync() {
     return(
       <View style ={styles.container}>
         <StatusBar hidden/>
+
+                { finished.length > 0 && finished.map((e,index)=>
+                {
+              
+               return(
+              <Overlay 
+              isVisible={true}
+                key ={index}
+              overlayStyle ={{width:200,height:200}}
+              >
+              <View> 
+              <Text>avez vous réaliser le boking de  {e.start}</Text>
+              <Button title = "Hi" onPress = {()=>toggleOverlay(finished[0].id)} />
+</View>
+              </Overlay>
+              )
+
+                }
+                
+                )
+            
+              
+            
+            }
+
+
          <View style={styles.firstContainer}>
            <View style={styles.coverContainer}>
                <ImageBackground source={require('../../assets/images/barberScreen.png')} style={styles.cover} />

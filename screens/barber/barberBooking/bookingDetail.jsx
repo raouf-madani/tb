@@ -5,7 +5,7 @@ import Colors from "../../../constants/Colors";
 import BookingCard from '../../../components/BookingCard';
 import { Ionicons ,MaterialIcons } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
-import {cancelBooking} from "../../../store/actions/bookingsActions";
+import {changeBookingState} from "../../../store/actions/bookingsActions";
 import { Rating, AirbnbRating } from 'react-native-elements';
 
 const screen = Dimensions.get("window");
@@ -103,7 +103,7 @@ Alert.alert(
         setLoading(true);
         if(conditionConfirmer || conditionAnnuler ){
                        
-            await dispatch(cancelBooking(props.navigation.getParam("id"),type));
+            await dispatch(changeBookingState(props.navigation.getParam("id"),type));
             await sendPushNotification(type,alert1,alert2);
             props.navigation.navigate( "Barber");
             }      

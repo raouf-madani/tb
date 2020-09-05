@@ -79,7 +79,7 @@ let same = resData.filter(e=>e.id === id);
 
 
 
-export const cancelBooking = (id,type)=> {
+export const changeBookingState = (id,type)=> {
 
  
     return async (dispatch) =>{
