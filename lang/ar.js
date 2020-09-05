@@ -138,7 +138,7 @@ export default{
     SuccessNewPasswordMessage:'كلمة السر الخاصة بك تم تغييرها بنجاح. الرجاد الدخول على الحساب من جديد.',
     OK:'موافق',
     EmptyField:'يرجى ملء هذا الحقل!',
-    ChangeYourPhone:'هل أنت متأكد أنك تريد تغيير رقم هاتفك؟',
+    DoYouWantToChangeYourPhoneChangeYourPhone:'هل أنت متأكد أنك تريد تغيير رقم هاتفك؟',
     Warning:'حذاري!',
     Repeat:'حاول مجددا',
     ChangeYourPassword:'هل أنت متأكد أنك تريد تغيير كلمة المرور الخاصة بك؟',
@@ -149,5 +149,6 @@ export default{
     HappyToSeeYou:'سعداء لرؤيتك مرة أخرى!',
     EnterYourNewPassword:'الرجاء إدخال كلمة المرور الجديدة الخاصة بك!',
     Booking:'الحجز',
-
+    SuccessLanguageMessage:'لقد نجحت في تغيير لغة حسابك!',
+    DoYouWantToChangeYourLanguage:'هل أنت متأكد أنك تريد تغيير لغة حسابك؟'
 };

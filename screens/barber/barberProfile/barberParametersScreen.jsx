@@ -117,13 +117,13 @@ const BarberParametersScreen = props =>{
         await dispatch(barberActions.updateBarberLang(barberID,isArabic));
         setIsLoadingState(false); 
                                
-        Alert.alert('Félicitation!','Vous avez changé la langue de votre compte avec succès!',[{text:"OK"}]);
+        Alert.alert(barber && barber[0].lang?polylanar.Congratulations:polylanfr.Congratulations,barber && barber[0].lang?polylanar.SuccessLanguageMessage:polylanfr.SuccessLanguageMessage,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
   
     }catch(err){
       console.log(err);
       setError(true);
       if(error){
-        Alert.alert('Oups!','Votre connexion est trop faible!',[{text:"OK"}]);
+        Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
        }
        throw err;
     }
@@ -131,10 +131,10 @@ const BarberParametersScreen = props =>{
 
   const alertEditLang = ()=>{
     Alert.alert(
-     'Attention!',
-     'Voulez-vous vraiment changer la langue de votre compte?',
-     [{text:'Oui', style:'destructive', onPress:arabic},
-      {text:'Non', style:'cancel'}]);
+      barber && barber[0].lang?polylanfr.Warning:polylanar.Warning,
+      barber && barber[0].lang?polylanfr.DoYouWantToChangeYourLanguage:polylanar.DoYouWantToChangeYourLanguage,
+     [{text:barber && barber[0].lang?polylanfr.Yes:polylanar.Yes, style:'destructive', onPress:arabic},
+      {text:barber && barber[0].lang?polylanfr.No:polylanar.No, style:'cancel'}]);
       return;
   };
 
@@ -169,7 +169,7 @@ const editPhone=async()=>{
   if(formState.inputValidities.phone){
       try{
           if(prefix+formState.inputValues.phone === barber[0].phone){
-            Alert.alert('Erreur!','Votre nouveau numéro de téléphone doit être différent d\'ancien numéro de téléphone.',[{text:"Réessayer"}]);
+            Alert.alert(barber && barber[0].lang?polylanfr.Error:polylanar.Error,barber && barber[0].lang?polylanfr.SameNumberMessage:polylanar.SameNumberMessage,[{text:barber && barber[0].lang?polylanfr.Repeat:polylanar.Repeat}]);
             return;
           }
           setIsLoading(true);
@@ -180,25 +180,25 @@ const editPhone=async()=>{
           dispatch(authActions.logout());
           AsyncStorage.clear();
           props.navigation.navigate('Auth');                        
-          Alert.alert('Félicitation!','Votre numéro de téléphone a été changé avec succès. Veuillez-vous connecter à nouveau svp!',[{text:"OK"}]);
+          Alert.alert(barber && barber[0].lang?polylanfr.Congratulations:polylanar.Congratulations,barber && barber[0].lang?polylanfr.SameNumberMessage:polylanar.SameNumberMessage,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
     
       }catch(err){
         console.log(err);
-        Alert.alert('Oups!','Votre connexion est trop faible!',[{text:"OK"}]);
+        Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
       }
       
       }else{
-        Alert.alert('Erreur!','Veuillez bien remplir ce champ svp!',[{text:"OK"}]);
+        Alert.alert(barber && barber[0].lang?polylanfr.Error:polylanar.Error,barber && barber[0].lang?polylanfr.EmptyField:polylanar.EmptyField,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
       }
 
 };
 
 const alertEditPhone = ()=>{
   Alert.alert(
-   'Attention!',
-   'Voulez-vous vraiment changer votre numéro de téléphone?',
-   [{text:'Oui', style:'destructive', onPress:editPhone},
-    {text:'Non', style:'cancel'}]);
+    barber && barber[0].lang?polylanfr.Warning:polylanar.Warning,
+    barber && barber[0].lang?polylanfr.DoYouWantToChangeYourPhone:polylanar.DoYouWantToChangeYourPhone,
+   [{text:barber && barber[0].lang?polylanfr.Yes:polylanar.Yes, style:'destructive', onPress:editPhone},
+    {text:barber && barber[0].lang?polylanfr.No:polylanar.No, style:'cancel'}]);
     return;
 };
 
@@ -213,7 +213,7 @@ const editPassword=async()=>{
             formState.inputValues.password
           );
           if(hashedPassword === barber[0].password){
-            Alert.alert('Erreur!','Votre nouveau mot de passe doit être différent d\'ancien mot de passe.',[{text:"Réessayer"}]);
+            Alert.alert(barber && barber[0].lang?polylanfr.Error:polylanar.Error,barber && barber[0].lang?polylanfr.SamePassword:polylanar.SamePassword,[{text:barber && barber[0].lang?polylanfr.Repeat:polylanar.Repeat}]);
             return;
           }
           setIsLoadingPassword(true);
@@ -222,32 +222,32 @@ const editPassword=async()=>{
           dispatch(authActions.logout());
           AsyncStorage.clear();
           props.navigation.navigate('Auth');                        
-          Alert.alert('Félicitation!','Votre mot de passe a été changé avec succès. Veuillez-vous connecter à nouveau svp.',[{text:"OK"}]);
+          Alert.alert(barber && barber[0].lang?polylanfr.Congratulations:polylanar.Congratulations,barber && barber[0].lang?polylanfr.SuccessNewPasswordMessage:polylanar.SuccessNewPasswordMessage,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
     
       }catch(err){
         console.log(err);
-        Alert.alert('Oups!','Votre connexion est trop faible!',[{text:"OK"}]);
+        Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
       }
       
       }else{
-        Alert.alert('Erreur!','Veuillez bien remplir ce champ svp!',[{text:"OK"}]);
+        Alert.alert(barber && barber[0].lang?polylanfr.Error:polylanar.Error,barber && barber[0].lang?polylanfr.EmptyField:polylanar.EmptyField,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
       }
 
 };
   
 const alertEditPassword = ()=>{
   Alert.alert(
-   'Attention!',
-   'Voulez-vous vraiment changer votre mot de passe?',
-   [{text:'Oui', style:'destructive', onPress:editPassword},
-    {text:'Non', style:'cancel'}]);
+    barber && barber[0].lang?polylanfr.Warning:polylanar.Warning,
+    barber && barber[0].lang?polylanfr.ChangeYourPassword:polylanar.ChangeYourPassword,
+   [{text:barber && barber[0].lang?polylanfr.Yes:polylanar.Yes, style:'destructive', onPress:editPassword},
+    {text:barber && barber[0].lang?polylanfr.No:polylanar.No, style:'cancel'}]);
     return;
 };
 if(error){
       
   return ( <ImageBackground source={require('../../../assets/images/support.png')} style={styles.coverTwo}>
               <View style={{marginBottom:10,alignSelf:'center'}}>
-                <Text style={styles.noServicesText}>Votre connexion est trop faible!</Text>
+                <Text style={styles.noServicesText}>{barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet}</Text>
               </View>
               <Button
                 theme={{colors: {primary:'#fd6c57'}}} 
@@ -410,7 +410,7 @@ if(isLoadingState || barber===undefined){
 BarberParametersScreen.navigationOptions= navData => {
     
      return {
-      title:'Paramètres',
+      title:barber && barber[0].lang?polylanfr.Parameters:polylanar.Parameters,
       headerTransparent : true ,
       headerBackTitle : " ",
       headerTintColor: '#fff',
