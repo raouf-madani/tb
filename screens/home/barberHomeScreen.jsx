@@ -16,6 +16,7 @@ import * as Notifications from 'expo-notifications';
 import * as Permissions from 'expo-permissions';
 import { Notifications as Notifications2 } from 'expo';
 import { getBarberBookings, changeBookingState } from '../../store/actions/bookingsActions';
+import ApproveOverlay from '../../components/ApproveOverlay';
 
 
 Notifications.setNotificationHandler({
@@ -314,23 +315,20 @@ async function registerForPushNotificationsAsync() {
       <View style ={styles.container}>
         <StatusBar hidden/>
 
-                { finished.length > 0 && finished.map((e,index)=>
+                { finished.length > 0 && finished.map((booking,index)=>
                 {
               
                return(
-              <Overlay 
-              isVisible={true}
-              key ={index}
-              overlayStyle ={{width:200,height:200}}
-              >
-              <View> 
-              <Text>avez vous réaliser le booking de  {e.start}</Text>
-              <Button title = "oui" onPress = {()=>toggleOverlay(finished[0].id,"réalisée")} />
-              <Button title = "non" onPress = {()=>toggleOverlay(finished[0].id,"annulée")} />
 
-              </View>
-              </Overlay>
-              )
+                 <ApproveOverlay 
+                    isVisible={true}
+                    key ={index} 
+                    toggleOverlay = {(id,type)=>toggleOverlay(id,type)}
+                    booking = {booking}
+
+                 />)
+              
+              
 
                 }
                 

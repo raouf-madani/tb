@@ -21,6 +21,8 @@ const conditionAnnuler = ( (props.navigation.getParam("status") === "confirmée"
 
 const conditionConfirmer = (props.navigation.getParam("status") === "en attente" && ((diffrence >= 30 && moment(bookingDate).format("ll") === moment().format("ll")) || moment(bookingDate).format("ll") > moment().format("ll")));
 
+const conditionCall = props.navigation.getParam("status") === "confirmée"   ;
+
 // console.log(diffrence);
 
 /******************SEND A NOTIFICATION TO THE client WHEN A BOOKING IS Canceled ************************/
@@ -202,11 +204,11 @@ if (isLoading) {
      />
             <View style = {styles.actions}>
 
-
-
+            {
+            conditionCall && 
             <View style = {{alignItems : "center"}}>
             
-               <MaterialIcons name="call" 
+            <MaterialIcons name="call" 
                             size={28} 
                             color={Colors.colorH1} 
 
@@ -214,7 +216,7 @@ if (isLoading) {
             <Text style = {styles.actionsText} >Appeler</Text>
 
           </View>
-
+}
 
         { conditionAnnuler &&
           <View style = {{alignItems : "center"}} >

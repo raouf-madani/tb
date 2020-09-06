@@ -46,34 +46,49 @@ const [selectedDate , setSelectedDate] = useState(moment(moment().format("YYYY-M
   
   const days = allBookings.map(e=>e.bookingDate);
   let mark = {};
-  
   days.forEach(day => {
+
+    if ( moment().format("ll") === moment(day).format("ll") || moment() <= moment(day)) {
   
-   if ( moment().format("ll") === moment(day).format("ll") || moment() <= moment(day)) {
-      mark[day] = { 
-          selected: true, 
-          marked: true , 
-          selectedColor: Colors.colorF5,
-          textColor: Colors.primary,
-          color : Colors.colorH1 ,
-      };
-  
-   } else {
-  
-      mark[day] = { 
-          selected: true, 
-          marked: false , 
-          selectedColor:Colors.orange,
-          text: {
-              color: 'black',
-              fontWeight: 'bold'
-            }
-      };
-  
-   }
-     
-  
-  });
+       mark[day] = { 
+           selected: true, 
+           marked: true , 
+           selectedColor: Colors.colorF5,
+           textColor: Colors.primary,
+           color : Colors.colorH1 ,
+       };
+     }
+   
+   //  }else if (moment().format("ll") === moment(day).format("ll")){
+   
+   
+   //  }
+    
+    else {
+       mark[day] = { 
+           selected: true, 
+           marked: false , 
+           selectedColor:"#F4686A",
+           text: {
+               color: 'black',
+               fontWeight: 'bold'
+             }
+       };
+   
+    }
+    
+   
+   });
+
+   mark[selectedDate.substring(0,10)] = { 
+    selected: true, 
+    marked: false , 
+    selectedColor:Colors.primary,
+    text: {
+        color: 'black',
+        fontWeight: 'bold'
+      }
+  };
   
   /**************************************************************************************** **************************************************************************************** */
   //TODAYS BOOKINGs
