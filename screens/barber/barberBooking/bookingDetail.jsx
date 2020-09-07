@@ -5,7 +5,7 @@ import Colors from "../../../constants/Colors";
 import BookingCard from '../../../components/BookingCard';
 import { Ionicons ,MaterialIcons } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
-import {cancelBooking} from "../../../store/actions/bookingsActions";
+import {changeBookingState} from "../../../store/actions/bookingsActions";
 import { Rating, AirbnbRating } from 'react-native-elements';
 
 const screen = Dimensions.get("window");
@@ -20,6 +20,8 @@ const diffrence = parseInt(moment.duration(moment(start,"h:mm:ss a").diff(moment
 const conditionAnnuler = ( (props.navigation.getParam("status") === "confirmée" && ((diffrence >= 30 && moment(bookingDate).format("ll") === moment().format("ll")) || moment(bookingDate).format("ll") > moment().format("ll"))) || props.navigation.getParam("status") === "en attente");
 
 const conditionConfirmer = (props.navigation.getParam("status") === "en attente" && ((diffrence >= 30 && moment(bookingDate).format("ll") === moment().format("ll")) || moment(bookingDate).format("ll") > moment().format("ll")));
+
+const conditionCall = props.navigation.getParam("status") === "confirmée"   ;
 
 // console.log(diffrence);
 
@@ -103,7 +105,7 @@ Alert.alert(
         setLoading(true);
         if(conditionConfirmer || conditionAnnuler ){
                        
-            await dispatch(cancelBooking(props.navigation.getParam("id"),type));
+            await dispatch(changeBookingState(props.navigation.getParam("id"),type));
             await sendPushNotification(type,alert1,alert2);
             props.navigation.navigate( "Barber");
             }      
@@ -197,15 +199,16 @@ if (isLoading) {
                             date = {props.navigation.getParam("date")}
                             status = {props.navigation.getParam("status")}
                             detail = {false}
+                            press = {false}
     
      />
             <View style = {styles.actions}>
 
-
-
+            {
+            conditionCall && 
             <View style = {{alignItems : "center"}}>
             
-               <MaterialIcons name="call" 
+            <MaterialIcons name="call" 
                             size={28} 
                             color={Colors.colorH1} 
 
@@ -213,7 +216,7 @@ if (isLoading) {
             <Text style = {styles.actionsText} >Appeler</Text>
 
           </View>
-
+}
 
         { conditionAnnuler &&
           <View style = {{alignItems : "center"}} >

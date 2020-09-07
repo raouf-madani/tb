@@ -6,5 +6,7 @@ export default{
     background:"#f9f9f9",
     colorH1 : "#4C9F70",
     colorF5: "#83B692",
-    orange: "#df4346"
+    orange: "#df4346",
+    textGrey : "#9d9da1"
+    
 };

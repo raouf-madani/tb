@@ -20,7 +20,7 @@ export const getBarberBookings = (barberId)=>{
       const arr = await fetch(`http://173.212.234.137:3000/barberBookings/${barberId}`);
 
       const resData = await arr.json ();
-      
+     
 const bookingsIds = [];
 const clientbookings = [];
 
@@ -38,6 +38,7 @@ bookingsIds.forEach( id => {
 let same = resData.filter(e=>e.id === id);
 
     let booking = {
+            address : same[0].address,
             amount : same[0].amount,
             barberId : same[0].barberId,
             bookingDate : same[0].bookingDate,
@@ -46,9 +47,11 @@ let same = resData.filter(e=>e.id === id);
             date : same[0].date,
             end : same[0].end,
             id : same[0].id,
+            region : same[0].region,
             services:[],
             start :same[0].start ,
             status : same[0].status,
+            wilaya : same[0].wilaya
            
     }
     same.forEach(e=>{
@@ -79,7 +82,7 @@ let same = resData.filter(e=>e.id === id);
 
 
 
-export const cancelBooking = (id,type)=> {
+export const changeBookingState = (id,type)=> {
 
  
     return async (dispatch) =>{
