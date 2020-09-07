@@ -2,6 +2,9 @@ import React,{useState} from 'react';
 import { StyleSheet, Text, View,Dimensions,TouchableOpacity,ImageBackground } from 'react-native';
 import Colors from "../constants/Colors";
 import {MaterialIcons,MaterialCommunityIcons} from "@expo/vector-icons";
+import {useSelector } from 'react-redux';
+import polylanar from "../lang/ar";
+import polylanfr from "../lang/fr";
 
 //responsivity (Dimensions get method)
 const height = Dimensions.get('window').height;
@@ -11,7 +14,8 @@ const height = Dimensions.get('window').height;
 const ServiceCart = props =>{
      const isImage= {barbe:require('../assets/images/beard.jpeg'),hair:require('../assets/images/hairstyle.png')}; 
     
-   
+     const barber=useSelector(state=>state.barbers.barber[0]);
+    
 
     return(
         <View style={styles.serviceContainer}>
@@ -19,10 +23,10 @@ const ServiceCart = props =>{
             <ImageBackground style={styles.background} resizeMode='cover' source={isImage.hair}>
                     <View style={styles.firstRow}>
                         <View style={styles.serviceNumberContainer}>
-                          <Text style={styles.number}>{'Service '+props.number}</Text>
+                          <Text style={styles.number}>{barber && barber.lang?polylanfr.Service+' '+props.number:polylanar.Service+' '+props.number}</Text>
                         </View>
                         <View style={styles.serviceNumberContainer}>
-                          <Text style={styles.number}>{props.minute+' min'}</Text>
+                          <Text style={styles.number}>{barber && barber.lang?props.minute+' '+polylanfr.Minute:props.minute+' '+polylanar.Minute}</Text>
                         </View>
                     </View>
                     <View style={styles.secondRow}>
