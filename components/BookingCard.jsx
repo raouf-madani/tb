@@ -3,25 +3,34 @@ import { StyleSheet, Text, View, Dimensions} from 'react-native';
 
 import Colors from '../constants/Colors';
 import {Ionicons} from "@expo/vector-icons";
-
+import {Calendar, CalendarList, Agenda,LocaleConfig} from 'react-native-calendars';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import {useSelector } from 'react-redux';
 import polylanar from "../lang/ar";
 import polylanfr from "../lang/fr";
+import moment from "moment";
 
 const screen = Dimensions.get("window");
-
+moment.locale("fr");  
+LocaleConfig.locales['fr'] = {
+    monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+    monthNamesShort: ['Janv.','Févr.','Mars','Avril','Mai','Juin','Juil.','Août','Sept.','Oct.','Nov.','Déc.'],
+    dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+    dayNamesShort: ['Dim.','Lun.','Mar.','Mer.','Jeu.','Ven.','Sam.'],
+    today: 'Aujourd\'hui'
+  };
+  LocaleConfig.defaultLocale = 'fr';
 
 
 const BookingCard = props =>{
-  const gradient1 = props.status === "en attente" ? "#fd6d57" : props.status === "confirmée" ? "#11998e" : "#f14638";
-  const gradient2 = props.status === "en attente" ? "#fd9054" : props.status === "confirmée" ? Colors.colorH1 : "#F4686A";
+  const gradient1 = props.status === "en attente" ? "#fd6d57" : (props.status === "confirmée" ||props.status === "réalisée" ) ? "#11998e" : "#f14638";
+  const gradient2 = props.status === "en attente" ? "#fd9054" : (props.status === "confirmée" ||props.status === "réalisée" ) ? Colors.colorH1 : "#F4686A";
 
   const barber=useSelector(state=>state.barbers.barber[0]);
 
     return(
-      <TouchableOpacity style = {styles.card}  onPress = {()=>props.navigation.navigate("BookingDetail", 
+      <TouchableOpacity style = {styles.card}  onPress = {()=> props.press === true && props.navigation.navigate("BookingDetail", 
       { 
                 day: props.day,
                   date : props.date,
@@ -49,7 +58,7 @@ const BookingCard = props =>{
          
            
 
-              <Text style = {{...styles.priceText ,...{color : gradient2,  textDecorationLine:( props.status ==="confirmée" || props.status ==="en attente" )? 'none' : "line-through" ,
+              <Text style = {{...styles.priceText ,...{color : gradient2,  textDecorationLine: props.status ==="expirée" ? 'line-through' : "none" ,
               }
               }}>
               {barber && barber.lang?polylanfr.Price+': ':polylanar.Price+': '} {props.amount} دج
