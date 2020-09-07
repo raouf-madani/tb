@@ -33,15 +33,28 @@ async function sendPushNotification(type,alert1,alert2) {
   const allMessages = [];
   
   resData.map(e=>{
-  
+    // start = {start}
+    //                         end = {props.navigation.getParam("end")}
+    //                         bookingDate = {bookingDate}
+    //                         status = {props.navigation.getParam("state")}
+    //                         amount = {props.navigation.getParam("amount")}
+    //                         day = {props.navigation.getParam("day")}
+    //                         date = {props.navigation.getParam("date")}
+    //                         status = {props.navigation.getParam("status")}
   allMessages.push(
     {
       to: e.expoToken,
       sound: 'default',
       title: 'Réservation '+type,
       body: 'Un Coiffeur a '+alert2+' votre réservation !',
-      data: { data: 'goes here' ,client:props.clientId,  title: 'Réservation '+type,
-      body: 'Un Coiffeur a '+alert2+' votre réservation !',},
+      data: {
+      title: 'Réservation '+type,
+      body: 'Un Coiffeur a '+alert2+' votre réservation !',
+      start : start,
+      end : props.navigation.getParam("end"),
+      bookingDate : bookingDate,
+      address : clientInfos.address
+    },
     }
   
   )
