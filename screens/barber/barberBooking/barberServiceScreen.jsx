@@ -13,7 +13,8 @@ import { useDispatch,useSelector } from 'react-redux';
 import * as barberActions from '../../../store/actions/barberActions';
 import * as servicesActions from '../../../store/actions/serviceActions';
 import * as worktimeActions from '../../../store/actions/worktimeActions';
-
+import polylanar from "../../../lang/ar";
+import polylanfr from "../../../lang/fr";
  
 const BarberServiceScreen = props =>{
   
@@ -77,7 +78,7 @@ const BarberServiceScreen = props =>{
   },[getBarber]);
 
   const barber= useSelector(state=>state.barbers.barber);
-
+  //console.log(barber);
     const services = ()=>{
       setIsServices(true);
       setIsDisponible(false);
@@ -198,8 +199,8 @@ const BarberServiceScreen = props =>{
 
 
     const deleteHandler = id => {
-      Alert.alert('Êtes-vous sûr?','Voulez-vous vraiment supprimer ce service?',[
-                  {text: 'Non', style:'default'}, {text:'Oui',style:'destructive',
+      Alert.alert(barber && barber[0].lang?polylanfr.AreYouSure:polylanar.AreYouSure,barber && barber[0].lang?polylanfr.DeleteServiceMessage:polylanar.DeleteServiceMessage,[
+                  {text: barber && barber[0].lang?polylanfr.No:polylanar.No, style:'default'}, {text:barber && barber[0].lang?polylanfr.Yes:polylanar.Yes,style:'destructive',
                     onPress: async() =>{
                       {
                         setIsLoading(true);
@@ -243,11 +244,11 @@ const BarberServiceScreen = props =>{
 
         setIsUpdating(false);   
                   
-      Alert.alert('Félicitation!','Vos données ont été changées avec succès!',[{text:"OK"}]);
+      Alert.alert(barber && barber[0].lang?polylanfr.Congratulations:polylanar.Congratulations,barber && barber[0].lang?polylanfr.SuccessfulDataSent:polylanar.SuccessfulDataSent,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
   
     }catch(err){
       console.log(err);
-      Alert.alert('Oups!','Une erreur est survenue!',[{text:"OK"}]);
+      Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
     }
     
   
@@ -264,11 +265,11 @@ const BarberServiceScreen = props =>{
       
     return ( <ImageBackground source={require('../../../assets/images/support.png')} style={styles.activityIndicatorContainer}>
                 <View style={{marginBottom:10,alignSelf:'center'}}>
-                  <Text style={styles.noServicesText}>Votre connexion est trop faible!</Text>
+                  <Text style={styles.noServicesText}>{barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet}</Text>
                 </View>
                 <Button
                   theme={{colors: {primary:'#fd6c57'}}} 
-                  title="Réessayer"
+                  title={barber && barber[0].lang?polylanfr.Repeat:polylanar.Repeat}
                   titleStyle={styles.labelButton}
                   buttonStyle={styles.buttonStyle}
                   ViewComponent={LinearGradient}
@@ -301,38 +302,38 @@ const BarberServiceScreen = props =>{
                  <Image source={require('../../../assets/images/angelina.png')} style={styles.icon} />
              </View>
            
-             <Text style={styles.bname}>{barber[0] && barber[0].b_name!==null?barber[0].b_name:'Nom business'}</Text>
+             <Text style={styles.bname}>{barber[0] && barber[0].b_name!==null?barber[0].b_name:barber && barber[0].lang?polylanfr.BusinessName:polylanar.BusinessName}</Text>
              <View style={styles.iconsMenuContainer}>
                <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('EditService')}>
                  <View style={styles.iconFormCircle}>
                          <MaterialIcons title = "service" name ='add-shopping-cart' color='#fff' size={23} onPress={()=>props.navigation.navigate('EditService')} />
                  </View>
-                 <Text style={styles.iconText}>Ajouter Service</Text>
+                 <Text style={styles.iconText}>{barber && barber[0].lang?polylanfr.AddSerivce:polylanar.AddSerivce}</Text>
                </TouchableOpacity>
                <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberGalery')}>
                <View style={styles.iconFormCircle1}>
                        <MaterialIcons title = "portfolio" name ='linked-camera' color='#fff' size={23} onPress={()=>props.navigation.navigate('EditService')} />
                </View>
-               <Text style={styles.iconText}>Ajouter Portfolio</Text>
+               <Text style={styles.iconText}>{barber && barber[0].lang?polylanfr.AddPortfolio:polylanar.AddPortfolio}</Text>
                </TouchableOpacity>
              </View>
           </View>
           <View style={styles.menu}>
              <TouchableOpacity style={{borderBottomWidth:2,borderBottomColor:isServices ?'#fd6c57':'#f9f9f9',paddingBottom:3}} onPress={services}>
-              <Text style={styles.itemText}>Mes services</Text>
+              <Text style={styles.itemText}>{barber && barber[0].lang?polylanfr.MyServices:polylanar.MyServices}</Text>
              </TouchableOpacity>
              <TouchableOpacity style={{borderBottomWidth:2,borderBottomColor:isDisponible?'#fd6c57':'#f9f9f9',paddingBottom:3}} onPress={disponibility}>
-              <Text style={styles.itemText}>Disponibilité</Text>
+              <Text style={styles.itemText}>{barber && barber[0].lang?polylanfr.Available:polylanar.Available}</Text>
              </TouchableOpacity>
           </View>
         </View>
         {isServices ? (<View style={styles.noServicesContainer}>
             <View style={{marginBottom:10,alignSelf:'center'}}>
-              <Text style={styles.noServicesText}>Aucun service trouvé.</Text>
+              <Text style={styles.noServicesText}>{barber && barber.lang?polylanfr.NoServices:polylanar.NoServices}</Text>
             </View>
             <Button
               theme={{colors: {primary:'#fd6c57'}}} 
-              title="Ajouter"
+              title={barber && barber.lang?polylanfr.Add:polylanar.Add}
               titleStyle={styles.labelButton}
               buttonStyle={styles.buttonStyle}
               ViewComponent={LinearGradient} 
@@ -346,7 +347,7 @@ const BarberServiceScreen = props =>{
           
            <WorkTimeCart
              switchDay={switchSat}
-             day={barber[0].workingTimes['Sam'].day}
+             day={barber[0].lang?barber[0].workingTimes['Sam'].day:'السبت'}
              value={switchSat}
              onValueChange={()=>setSwitchSat(prevValue=>!prevValue)}
              onPress={()=>{ if(switchSat){showDatePicker();setSat({...sat,isOpenSat:true});setId('sat');} }}
@@ -358,7 +359,7 @@ const BarberServiceScreen = props =>{
            />
            <WorkTimeCart
              switchDay={switchSun}
-             day={barber[0].workingTimes['Dim'].day}
+             day={barber[0].lang?barber[0].workingTimes['Dim'].day:'الأحد'}
              value={switchSun}
              onValueChange={()=>setSwitchSun(prevValue=>!prevValue)}
              onPress={()=>{ if(switchSun){showDatePicker();setSun({...sun,isOpenSun:true});setId('sun');} }}
@@ -371,7 +372,7 @@ const BarberServiceScreen = props =>{
 
            <WorkTimeCart
              switchDay={switchMon}
-             day={barber[0].workingTimes['Lun'].day}
+             day={barber[0].lang?barber[0].workingTimes['Lun'].day:'الإثنين'}
              value={switchMon}
              onValueChange={()=>setSwitchMon(prevValue=>!prevValue)}
              onPress={()=>{ if(switchMon){showDatePicker();setMon({...mon,isOpenMon:true});setId('mon');} }}
@@ -384,7 +385,7 @@ const BarberServiceScreen = props =>{
 
             <WorkTimeCart
              switchDay={switchTue}
-             day={barber[0].workingTimes['Mar'].day}
+             day={barber[0].lang?barber[0].workingTimes['Mar'].day:'الثلاثاء'}
              value={switchTue}
              onValueChange={()=>setSwitchTue(prevValue=>!prevValue)}
              onPress={()=>{ if(switchTue){showDatePicker();setTue({...tue,isOpenTue:true});setId('tue');} }}
@@ -397,7 +398,7 @@ const BarberServiceScreen = props =>{
 
           <WorkTimeCart
              switchDay={switchWed}
-             day={barber[0].workingTimes['Mer'].day}
+             day={barber[0].lang?barber[0].workingTimes['Mer'].day:'الأربعاء'}
              value={switchWed}
              onValueChange={()=>setSwitchWed(prevValue=>!prevValue)}
              onPress={()=>{ if(switchWed){showDatePicker();setWed({...wed,isOpenWed:true});setId('wed');} }}
@@ -410,7 +411,7 @@ const BarberServiceScreen = props =>{
 
            <WorkTimeCart
              switchDay={switchThu}
-             day={barber[0].workingTimes['Jeu'].day}
+             day={barber[0].lang?barber[0].workingTimes['Jeu'].day:'الخميس'}
              value={switchThu}
              onValueChange={()=>setSwitchThu(prevValue=>!prevValue)}
              onPress={()=>{ if(switchThu){showDatePicker();setThu({...thu,isOpenThu:true});setId('thu');} }}
@@ -423,7 +424,7 @@ const BarberServiceScreen = props =>{
 
            <WorkTimeCart
              switchDay={switchFri}
-             day={barber[0].workingTimes['Ven'].day}
+             day={barber[0].lang?barber[0].workingTimes['Ven'].day:'الجمعة'}
              value={switchFri}
              onValueChange={()=>setSwitchFri(prevValue=>!prevValue)}
              onPress={()=>{ if(switchFri){showDatePicker();setFri({...fri,isOpenFri:true});setId('fri');} }}
@@ -460,28 +461,28 @@ const BarberServiceScreen = props =>{
                   <Image source={require('../../../assets/images/angelina.png')} style={styles.icon} />
               </View>
             
-              <Text style={styles.bname}>{barber[0] && barber[0].b_name!==null?barber[0].b_name:'Nom business'}</Text>
+              <Text style={styles.bname}>{barber[0] && barber[0].b_name!==null?barber[0].b_name:barber && barber[0].lang?polylanfr.BusinessName:polylanar.BusinessName}</Text>
               <View style={styles.iconsMenuContainer}>
                 <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('EditService')}>
                   <View style={styles.iconFormCircle}>
                           <MaterialIcons title = "service" name ='add-shopping-cart' color='#fff' size={23} onPress={()=>props.navigation.navigate('EditService')} />
                   </View>
-                  <Text style={styles.iconText}>Ajouter Service</Text>
+                  <Text style={styles.iconText}>{barber && barber[0].lang?polylanfr.AddSerivce:polylanar.AddSerivce}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberGalery')}>
                 <View style={styles.iconFormCircle1}>
                         <MaterialIcons title = "portfolio" name ='linked-camera' color='#fff' size={23} onPress={()=>props.navigation.navigate('EditService')} />
                 </View>
-                <Text style={styles.iconText}>Ajouter Portfolio</Text>
+                <Text style={styles.iconText}>{barber && barber[0].lang?polylanfr.AddPortfolio:polylanar.AddPortfolio}</Text>
                 </TouchableOpacity>
               </View>
            </View>
            <View style={styles.menu}>
               <TouchableOpacity style={{borderBottomWidth:2,borderBottomColor:isServices ?'#fd6c57':'#f9f9f9',paddingBottom:3}} onPress={services}>
-               <Text style={styles.itemText}>Mes services</Text>
+               <Text style={styles.itemText}>{barber && barber[0].lang?polylanfr.MyServices:polylanar.MyServices}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={{borderBottomWidth:2,borderBottomColor:isDisponible?'#fd6c57':'#f9f9f9',paddingBottom:3}} onPress={disponibility}>
-               <Text style={styles.itemText}>Disponibilité</Text>
+               <Text style={styles.itemText}>{barber && barber[0].lang?polylanfr.Available:polylanar.Available}</Text>
               </TouchableOpacity>
            </View>
          </View>
@@ -500,7 +501,7 @@ const BarberServiceScreen = props =>{
          (<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false}>
            <WorkTimeCart
              switchDay={switchSat}
-             day={barber[0].workingTimes['Sam'].day}
+             day={barber[0].lang?barber[0].workingTimes['Sam'].day:'السبت'}
              value={switchSat}
              onValueChange={()=>setSwitchSat(prevValue=>!prevValue)}
              onPress={()=>{ if(switchSat){showDatePicker();setSat({...sat,isOpenSat:true});setId('sat');} }}
@@ -512,7 +513,7 @@ const BarberServiceScreen = props =>{
            />
            <WorkTimeCart
              switchDay={switchSun}
-             day={barber[0].workingTimes['Dim'].day}
+             day={barber[0].lang?barber[0].workingTimes['Dim'].day:'الأحد'}
              value={switchSun}
              onValueChange={()=>setSwitchSun(prevValue=>!prevValue)}
              onPress={()=>{ if(switchSun){showDatePicker();setSun({...sun,isOpenSun:true});setId('sun');} }}
@@ -525,7 +526,7 @@ const BarberServiceScreen = props =>{
 
            <WorkTimeCart
              switchDay={switchMon}
-             day={barber[0].workingTimes['Lun'].day}
+             day={barber[0].lang?barber[0].workingTimes['Lun'].day:'الإثنين'}
              value={switchMon}
              onValueChange={()=>setSwitchMon(prevValue=>!prevValue)}
              onPress={()=>{ if(switchMon){showDatePicker();setMon({...mon,isOpenMon:true});setId('mon');} }}
@@ -538,7 +539,7 @@ const BarberServiceScreen = props =>{
 
             <WorkTimeCart
              switchDay={switchTue}
-             day={barber[0].workingTimes['Mar'].day}
+             day={barber[0].lang?barber[0].workingTimes['Mar'].day:'الثلاثاء'}
              value={switchTue}
              onValueChange={()=>setSwitchTue(prevValue=>!prevValue)}
              onPress={()=>{ if(switchTue){showDatePicker();setTue({...tue,isOpenTue:true});setId('tue');} }}
@@ -551,7 +552,7 @@ const BarberServiceScreen = props =>{
 
           <WorkTimeCart
              switchDay={switchWed}
-             day={barber[0].workingTimes['Mer'].day}
+             day={barber[0].lang?barber[0].workingTimes['Mer'].day:'الأربعاء'}
              value={switchWed}
              onValueChange={()=>setSwitchWed(prevValue=>!prevValue)}
              onPress={()=>{ if(switchWed){showDatePicker();setWed({...wed,isOpenWed:true});setId('wed');} }}
@@ -564,7 +565,7 @@ const BarberServiceScreen = props =>{
 
            <WorkTimeCart
              switchDay={switchThu}
-             day={barber[0].workingTimes['Jeu'].day}
+             day={barber[0].lang?barber[0].workingTimes['Jeu'].day:'الخميس'}
              value={switchThu}
              onValueChange={()=>setSwitchThu(prevValue=>!prevValue)}
              onPress={()=>{ if(switchThu){showDatePicker();setThu({...thu,isOpenThu:true});setId('thu');} }}
@@ -577,7 +578,7 @@ const BarberServiceScreen = props =>{
 
            <WorkTimeCart
              switchDay={switchFri}
-             day={barber[0].workingTimes['Ven'].day}
+             day={barber[0].lang?barber[0].workingTimes['Ven'].day:'الجمعة'}
              value={switchFri}
              onValueChange={()=>setSwitchFri(prevValue=>!prevValue)}
              onPress={()=>{ if(switchFri){showDatePicker();setFri({...fri,isOpenFri:true});setId('fri');} }}

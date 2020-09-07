@@ -4,7 +4,7 @@ import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons"
 import Colors from "../../../constants/Colors";
 import polylanar from "../../../lang/ar";
 import polylanfr from "../../../lang/fr";
-
+import {useSelector} from 'react-redux';
 
 //responsivity (Dimensions get method)
 const screen = Dimensions.get('window');
@@ -20,7 +20,8 @@ const BarberSupportScreen = props =>{
   const instagramURL = "https://www.instagram.com/tahfifaapp/";
   const linkedinURL = "https://www.linkedin.com/company/tahfifa/";
   const tiktokURL = "";
-
+  //get the barber's data
+  const barber= useSelector(state=>state.barbers.barber);
   const callPhone = ()=>{
   
     let phoneNumber = '';
@@ -38,7 +39,7 @@ const BarberSupportScreen = props =>{
  const url= ()=>{
   Linking.openURL(URL).catch((err) => {
     if(err){
-      Alert.alert('Oups!','Une erreur est survenue',[{text:'OK'}]);
+      Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
   } 
   });
  };
@@ -46,7 +47,7 @@ const BarberSupportScreen = props =>{
  const facebookUrl= ()=>{
   Linking.openURL(facebookURL).catch((err) => {
     if(err){
-      Alert.alert('Oups!','Une erreur est survenue',[{text:'OK'}]);
+      Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
   } 
   });
  };
@@ -54,7 +55,7 @@ const BarberSupportScreen = props =>{
  const instagramUrl= ()=>{
   Linking.openURL(instagramURL).catch((err) => {
     if(err){
-      Alert.alert('Oups!','Une erreur est survenue',[{text:'OK'}]);
+      Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
   } 
   });
  };
@@ -62,7 +63,7 @@ const BarberSupportScreen = props =>{
  const linkedinUrl= ()=>{
   Linking.openURL(linkedinURL).catch((err) => {
     if(err){
-      Alert.alert('Oups!','Une erreur est survenue',[{text:'OK'}]);
+      Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
   } 
   });
  };
@@ -76,7 +77,7 @@ const BarberSupportScreen = props =>{
             </View>
             <View style={{width:'100%',marginBottom:15}}>
               <Text style={{fontFamily:'poppins',fontSize:13,color:Colors.blue,alignSelf:'center'}}>
-                Si un problème persiste, n'hésitez pas à nous contacter au plus vite via les informations suivantes:
+              {barber && barber[0].lang?polylanfr.SupportMessage:polylanar.SupportMessage}
               </Text>
             </View>
            

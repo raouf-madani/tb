@@ -117,7 +117,7 @@ const BarberParametersScreen = props =>{
         await dispatch(barberActions.updateBarberLang(barberID,isArabic));
         setIsLoadingState(false); 
                                
-        Alert.alert(barber && barber[0].lang?polylanar.Congratulations:polylanfr.Congratulations,barber && barber[0].lang?polylanar.SuccessLanguageMessage:polylanfr.SuccessLanguageMessage,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+        Alert.alert(barber && barber[0].lang?polylanar.Congratulations:polylanfr.Congratulations,barber && barber[0].lang?polylanar.SuccessLanguageMessage:polylanfr.SuccessLanguageMessage,[{text:barber && barber[0].lang?polylanar.OK:polylanfr.OK}]);
   
     }catch(err){
       console.log(err);

@@ -73,13 +73,13 @@ const BarberProfileScreen = props =>{
 
     //States for complex information textInputs
    const [wilaya,setWilaya] = useState(barber[0]?barber[0].wilaya:undefined);
-   const wilayas = ['wilaya','Alger','Blida'];
+   const wilayas = [barber && barber[0].lang?polylanfr.City:polylanar.City,'Alger','Blida'];
 
    const dispatch = useDispatch();
    
    //picker only iOS function 
    const onPress = () =>{
-     const wilayasIOS = ['Wilaya','Alger','Blida'];    
+     const wilayasIOS = [barber && barber[0].lang?polylanfr.City:polylanar.City,'Alger','Blida'];    
      ActionSheetIOS.showActionSheetWithOptions(
        {
          options: wilayasIOS,
@@ -193,10 +193,10 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
 
     const alertLogout = ()=>{
       Alert.alert(
-       'Attention!',
-       'Voulez-vous vraiment vous déconnecter?',
-       [{text:'Oui', style:'destructive', onPress:logout},
-        {text:'Non', style:'cancel'}]);
+        barber && barber[0].lang?polylanfr.Warning:polylanar.Warning,
+        barber && barber[0].lang?polylanfr.DoYouWantToDisconnect:polylanar.DoYouWantToDisconnect,
+       [{text:barber && barber[0].lang?polylanfr.Yes:polylanar.Yes, style:'destructive', onPress:logout},
+        {text:barber && barber[0].lang?polylanfr.no:polylanar.No, style:'cancel'}]);
         return;
    };
 
@@ -214,7 +214,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
        console.log(err);
        setError(true);
        if(error){
-        Alert.alert('Oups!','Votre connexion est trop faible!',[{text:"OK"}]);
+        Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
        }
        throw err;
       }
@@ -222,10 +222,10 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
  
    const alertDelete = ()=>{
       Alert.alert(
-       'Attention!',
-       'Voulez-vous vraiment supprimer votre compte?',
-       [{text:'Oui', style:'destructive', onPress:deleteAccount},
-        {text:'Non', style:'cancel'}]);
+        barber && barber[0].lang?polylanfr.Warning:polylanar.Warning,
+        barber && barber[0].lang?polylanfr.DoYouWantToDeleteYourAccount:polylanar.DoYouWantToDeleteYourAccount,
+       [{text:barber && barber[0].lang?polylanfr.Yes:polylanar.Yes, style:'destructive', onPress:deleteAccount},
+        {text:barber && barber[0].lang?polylanfr.No:polylanar.No, style:'cancel'}]);
         return;
    };
 
@@ -244,19 +244,19 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                                           wilaya,formState.inputValues.region,pickedImage));
         setIsLoading(false); 
                                
-        Alert.alert('Félicitation!','Vos données ont été changées avec succès!',[{text:"OK"}]);
+        Alert.alert(barber && barber[0].lang?polylanfr.Congratulations:polylanar.Congratulations,barber && barber[0].lang?polylanfr.SuccessfulDataSent:polylanar.SuccessfulDataSent,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
   
     }catch(err){
       console.log(err);
       setError(true);
       if(error){
-        Alert.alert('Oups!','Votre connexion est trop faible!',[{text:"OK"}]);
+        Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
        }
        throw err;
     }
     
     }else{
-      Alert.alert('Erreur!','Veuillez remplir le(s) champ(s) manquants svp!',[{text:"OK"}]);
+      Alert.alert(barber && barber[0].lang?polylanfr.Error:polylanar.Error,barber && barber[0].lang?polylanfr.EmptyFields:polylanar.EmptyFields,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
     }
   
   },[dispatch,barber[0].id,formState,pickedImage,wilaya]);
@@ -297,18 +297,18 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                     </TouchableOpacity>
                   </View>  
                   <View style={{width:'70%'}}>
-                    <Text style={styles.bnameText}>{barber[0].b_name!==null?barber[0].b_name: 'Nom buisness'}</Text>
-                    <Text style={styles.age}>{barber[0].age!==null?barber[0].age+' ans': 'Votre age'}</Text>
+                    <Text style={styles.bnameText}>{barber[0].b_name!==null?barber[0].b_name: barber && barber[0].lang?polylanfr.BusinessName:polylanar.BusinessName}</Text>
+                    <Text style={styles.age}>{barber[0].age!==null && barber[0].lang?barber[0].age+' ans': barber[0].age!==null && !barber[0].lang?barber[0].age+' سنة':barber[0].age===null && barber[0].lang?polylanfr.YourAge:barber[0].age===null && !barber[0].lang?polylanar.YourAge :undefined}</Text>
                   </View>
                 </View>
             </View>
           </View>
           <View style={styles.menuContainer}>
                <TouchableOpacity onPress={info} style={{padding:5,width:'50%',backgroundColor:isInfo?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
-                  <Text style={{color:isInfo?'#fff':'#fd6c57',fontFamily:'poppins'}}>Informations</Text>
+                  <Text style={{color:isInfo?'#fff':'#fd6c57',fontFamily:'poppins'}}>{barber && barber[0].lang?polylanfr.profileInfo:polylanar.profileInfo}</Text>
                </TouchableOpacity>
                <TouchableOpacity onPress={localisation} style={{padding:5,width:'50%',backgroundColor:isLocalisation?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
-                   <Text style={{color:isLocalisation?'#fff':'#fd6c57',fontFamily:'poppins'}}>Mon Compte</Text>
+                   <Text style={{color:isLocalisation?'#fff':'#fd6c57',fontFamily:'poppins'}}>{barber && barber[0].lang?polylanfr.MyAccount:polylanar.MyAccount}</Text>
                </TouchableOpacity>
           </View>
        {isInfo?(<ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
@@ -318,7 +318,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 <InputProfile
                       id='b_name'
                       rightIcon={<MaterialIcons title = "person-pin" name ='person-pin' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
-                      placeholder='Nom business'
+                      placeholder={barber && barber[0].lang?polylanfr.BusinessName:polylanar.BusinessName}
                       keyboardType="default"
                       returnKeyType="next"
                       onInputChange={inputChangeHandler}
@@ -335,7 +335,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 <InputProfile
                       id='age'
                       rightIcon={<MaterialCommunityIcons title = "age" name ='sort-numeric' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
-                      placeholder='Age'
+                      placeholder={barber && barber[0].lang?polylanfr.Age:polylanar.Age}
                       keyboardType="phone-pad"
                       returnKeyType="next"
                       onInputChange={inputChangeHandler}
@@ -353,7 +353,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
               <InputProfile
                   id='name'
                   rightIcon={<MaterialIcons title = "firstName" name ='person' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
-                  placeholder='Nom'
+                  placeholder={barber && barber[0].lang?polylanfr.Name:polylanar.Name}
                   keyboardType="default"
                   returnKeyType="next"
                   onInputChange={inputChangeHandler}
@@ -372,7 +372,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
               <InputProfile
                 id='surname'
                 rightIcon={<MaterialIcons title = "firstName" name ='person' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
-                placeholder='Prénom'
+                placeholder={barber && barber[0].lang?polylanfr.Surname:polylanar.Surname}
                 keyboardType="default"
                 returnKeyType="next"
                 onInputChange={inputChangeHandler}
@@ -391,7 +391,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
               <InputProfile
                   id='email'
                   rightIcon={<MaterialIcons title = "email" name ='email' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
-                  placeholder='Email'
+                  placeholder={barber && barber[0].lang?polylanfr.Email:polylanar.Email}
                   keyboardType="default"
                   returnKeyType="next"
                   onInputChange={inputChangeHandler}
@@ -409,7 +409,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
               <InputProfile
                 id='address'
                 rightIcon={<MaterialIcons title = "address" name ='map' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
-                placeholder='Adresse'
+                placeholder={barber && barber[0].lang?polylanfr.Address:polylanar.Address}
                 keyboardType="default"
                 returnKeyType="next"
                 onInputChange={inputChangeHandler}
@@ -445,7 +445,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
               <InputProfile
                 id='region'
                 rightIcon={<MaterialIcons title="region" name ='home' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
-                placeholder='Région'
+                placeholder={barber && barber[0].lang?polylanfr.Region:polylanar.Region}
                 keyboardType="default"
                 returnKeyType="next"
                 minLength={3}
@@ -464,9 +464,9 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
        </ScrollView>):
        (<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false}>
            <View style={styles.noticeContainer}>
-               <Text style={styles.noticeTitle}>Remarque</Text>
-               <Text style={styles.noticeContent}>Avertir notre équipe avant de supprimer votre compte!</Text>
-               <Text style={styles.tahfifaSignature}>Equipe Tahfifa.</Text>
+               <Text style={{fontFamily:'poppins-bold',fontSize:13,color:'#323446',alignSelf:barber && barber[0].lang?'flex-start':'flex-end'}}>{barber && barber[0].lang?polylanfr.Notice:polylanar.Notice}</Text>
+               <Text style={{fontFamily:'poppins',fontSize:12,color:'#323446',alignSelf:barber && barber[0].lang?'flex-start':'flex-end'}}>{barber && barber[0].lang?polylanfr.NoticeMessage:polylanar.NoticeMessage}</Text>
+               <Text style={{ fontFamily:'poppins',fontSize:12,color:'#fd6c57',paddingTop:5,alignSelf:barber && barber[0].lang?'flex-start':'flex-end'}}>{barber && barber[0].lang?polylanfr.TeamTahfifa:polylanar.TeamTahfifa}</Text>
            </View>
            <View style={styles.buttonContainer}>
                 <View style={styles.cartContainer}>
@@ -475,7 +475,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                         <MaterialCommunityIcons title = "logout" name ='logout' color='#FD6C57' size={23} />
                       </View>
                       <View>
-                        <Text style={styles.optionTitle}>Se déconnecter</Text>
+                        <Text style={styles.optionTitle}>{barber && barber[0].lang?polylanfr.Disconnect:polylanar.Disconnect}</Text>
                       </View>
                   </TouchableOpacity>
                 </View>
@@ -485,7 +485,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                          <Ionicons title = "options" name ='ios-options' color='#56A7FF' size={23} />
                        </View>
                        <View>
-                         <Text style={styles.optionTitle}>Paramètres</Text>
+                         <Text style={styles.optionTitle}>{barber && barber[0].lang?polylanfr.Parameters:polylanar.Parameters}</Text>
                        </View>
                   </TouchableOpacity>
                 </View>
@@ -495,7 +495,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                             <MaterialCommunityIcons title = "delete" name ='delete-forever' color='#FE457C' size={23} />
                           </View>
                           <View>
-                            <Text style={styles.optionTitle}>Mon compte</Text>
+                            <Text style={styles.optionTitle}>{barber && barber[0].lang?polylanfr.MyAccount:polylanar.MyAccount}</Text>
                           </View>
                   </TouchableOpacity>
                 </View>
@@ -604,7 +604,8 @@ const styles= StyleSheet.create({
     bnameText:{
       fontFamily:'poppins-bold',
       color:'#323446',
-      fontSize:18
+      fontSize:18,
+      alignSelf:'flex-start'
     },
     secondFirstCard:{
       width:'95%',
@@ -632,7 +633,8 @@ const styles= StyleSheet.create({
       fontFamily:'poppins',
       color:'grey',
       fontSize:11,
-      marginTop:-5
+      marginTop:-5,
+      alignSelf:'flex-start'
     },
     menuContainer:{
       marginTop:25,
@@ -698,26 +700,10 @@ const styles= StyleSheet.create({
      marginBottom:15,
      marginTop:30
     },
-    noticeTitle:{
-      fontFamily:'poppins-bold',
-      fontSize:13,
-      color:'#323446'
-    },
     optionTitle:{
       fontFamily:'poppins-bold',
       fontSize:11,
       color:'#323446'
-    },
-    noticeContent:{
-      fontFamily:'poppins',
-      fontSize:12,
-      color:'#323446'
-    },
-    tahfifaSignature:{
-      fontFamily:'poppins',
-      fontSize:12,
-      color:'#fd6c57',
-      paddingTop:5
     },
     buttonContainer:{
       width:'90%',

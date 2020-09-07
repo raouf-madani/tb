@@ -6,6 +6,8 @@ import Colors from '../../../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as servicesActions from '../../../store/actions/serviceActions';
 import { useDispatch,useSelector } from 'react-redux';
+import polylanar from "../../../lang/ar";
+import polylanfr from "../../../lang/fr";
 
 //responsivity (Dimensions get method)
 const screen = Dimensions.get('window');
@@ -44,7 +46,7 @@ const EditServiceScreen = props =>{
    const currentServiceID=props.navigation.getParam('idService');  //get Service ID
    
    const barber=useSelector(state=>state.barbers.barber[0]);
-   console.log(barber);
+   //console.log(barber);
    const currentUserService = barber.services.find(service => service.serviceId === currentServiceID); //get current service data
    
 
@@ -118,7 +120,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
 
 useEffect(() => {
   if(error){
-      Alert.alert('Oups','Une erreur est survenue!',[{text:'OK'}]);
+      Alert.alert(barber && barber.lang?polylanfr.Oups:polylanar.Oups,barber && barber.lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber.lang?polylanfr.OK:polylanar.OK}]);
       console.log(error);
   } 
 }, [error]); 
@@ -128,8 +130,8 @@ useEffect(() => {
  
   try{
       if(!formState.formIsValid || ((hour==='0' && minute==='0') || (hour===0 && minute===0) || (hour==='0' && minute===0) || (hour===0 && minute==='0')) ){
-          Alert.alert('Erreur!','Veuillez remplir les champs manquants svp!',[
-              {text:'Ok'}
+          Alert.alert(barber && barber.lang?polylanfr.Error:polylanar.Error,barber && barber.lang?polylanfr.EmptyFields:polylanar.EmptyFields,[
+              {text:barber && barber.lang?polylanfr.OK:polylanar.OK}
           ]);
           return;
       }
@@ -181,23 +183,23 @@ useEffect(()=>{
           <View style={styles.secondContainer}>
              <View style={styles.headerContainer}>
                    <View>
-                     <Text style={{fontFamily:'poppins-bold',fontSize:13,color:'#323446'}}>Choisissez votre service</Text>
+                     <Text style={{fontFamily:'poppins-bold',fontSize:13,color:'#323446'}}>{barber && barber.lang?polylanfr.ChooseService:polylanar.ChooseService}</Text>
                    </View>
                    <View>
-                     <Text style={{fontFamily:'poppins-bold',fontSize:13,color:'#fd6c57'}}>{'Total: '+ barber && currentUserService?currentUserService.price.toString()+' دج':'0 دج'}</Text>
+                     <Text style={{fontFamily:'poppins-bold',fontSize:13,color:'#fd6c57'}}>{barber && currentUserService?currentUserService.price.toString()+' دج':'0 دج'}</Text>
                    </View>
              </View>
 
              <View style={styles.inputsContainer}>
                  <View style={{flexDirection:'row',width:'90%',marginVertical:5,alignItems:'center'}}>
                    <View style={{width:'50%'}}>
-                    <Text style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}>Nom de service</Text>
+                    <Text style={{fontFamily:'poppins',fontSize:12,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.ServiceName:polylanar.ServiceName}</Text>
                    </View>
                   
                     <InputProfile
                         id="name" 
-                        placeholder="Ex: Barbe"
-                        placeholderTextColor='rgba(50,52,70,0.4)'
+                        placeholder={barber && barber.lang?polylanfr.Beard:polylanar.Beard}
+                        placeholderTextColor={Platform.OS=='android'?'rgba(50,52,70,0.4)':'#d3d3d3'}
                         keyboardType="default"
                         onInputChange={inputChangeHandler}
                         initialValue={currentUserService?currentUserService.name:''}
@@ -206,7 +208,7 @@ useEffect(()=>{
                         minLength={3}
                         autoCapitalize='sentences'
                         widthView='50%'
-                        backgroundColor='#d3d3d3'
+                        backgroundColor={Platform.OS=='ios'?Colors.blue:'#d3d3d3'}
                         height={40}
                         /> 
                   
@@ -214,9 +216,9 @@ useEffect(()=>{
 
                  <View style={{flexDirection:'row',width:'90%',marginVertical:5,alignItems:'center'}}>
                    <View style={{width:'50%'}}>
-                    <Text style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}>Heures</Text>
+                    <Text style={{fontFamily:'poppins',fontSize:12,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.Hours:polylanar.Hours}</Text>
                    </View>
-                   <View style={{ width:'50%',borderWidth:1,paddingHorizontal:12,borderRadius:25,backgroundColor:'#d3d3d3',
+                   <View style={{ width:'50%',borderWidth:1,paddingHorizontal:12,borderRadius:25,backgroundColor:Platform.OS=='ios'?Colors.blue:'#d3d3d3',
                                   borderColor:hour!=='0'||minute!=='0'?'#d3d3d3':Colors.primary,height:45,
                                   justifyContent:'center',alignSelf:'center'}}>
                    {Platform.OS === 'android' ? 
@@ -227,7 +229,7 @@ useEffect(()=>{
                               >
                               {hours.map(el=> <Picker.Item label={el} value={el} key={el} />)}
                               </Picker> :
-                              <Text onPress={onPress} style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}>
+                              <Text onPress={onPress} style={{fontFamily:'poppins',fontSize:12,color:'#fff'}}>
                                 {hour}
                               </Text>} 
                   </View>
@@ -235,9 +237,9 @@ useEffect(()=>{
                  
                  <View style={{flexDirection:'row',width:'90%',marginVertical:5,alignItems:'center'}}>
                    <View style={{width:'50%'}}>
-                    <Text style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}>Minutes</Text>
+                    <Text style={{fontFamily:'poppins',fontSize:12,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.Minutes:polylanar.Minutes}</Text>
                    </View>
-                   <View style={{ width:'50%',borderWidth:1,paddingHorizontal:12,borderRadius:25,backgroundColor:'#d3d3d3',
+                   <View style={{ width:'50%',borderWidth:1,paddingHorizontal:12,borderRadius:25,backgroundColor:Platform.OS=='ios'?Colors.blue:'#d3d3d3',
                                   borderColor:hour!=='0'||minute!=='0'?'#d3d3d3':Colors.primary,height:45,
                                   justifyContent:'center',alignSelf:'center'}}>
                    {Platform.OS === 'android' ? 
@@ -248,7 +250,7 @@ useEffect(()=>{
                               >
                               {minutes.map(el=> <Picker.Item label={el} value={el} key={el} />)}
                               </Picker> :
-                              <Text onPress={onPressMinute} style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}>
+                              <Text onPress={onPressMinute} style={{fontFamily:'poppins',fontSize:12,color:'#fff'}}>
                                 {minute}
                               </Text>} 
                   </View>
@@ -256,28 +258,29 @@ useEffect(()=>{
 
                  <View style={{flexDirection:'row',width:'90%',marginVertical:5,alignItems:'center'}}>
                    <View style={{width:'50%'}}>
-                    <Text style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}>Prix en دج</Text>
+                    <Text style={{fontFamily:'poppins',fontSize:12,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.PriceIn:polylanar.PriceIn}</Text>
                    </View>
                    <InputProfile
                       id='price'
-                      placeholder='Ex: 1500'
+                      placeholder={barber && barber.lang?polylanfr.Example+': 1500 دج':polylanar.Example+': 1500 دج'}
                       keyboardType="phone-pad"
                       onInputChange={inputChangeHandler}
                       initialValue={currentUserService?currentUserService.price.toString():''}
                       initiallyValid={true}
                       required
-                      placeholderTextColor='rgba(50,52,70,0.4)'
+                      placeholderTextColor={Platform.OS=='android'?'rgba(50,52,70,0.4)':'#d3d3d3'}
                       style={{height:20}}
                       widthView='50%'
-                      backgroundColor='#d3d3d3'
+                      backgroundColor={Platform.OS=='ios'?Colors.blue:'#d3d3d3'}
                       height={40}
+                      inputStyle={{color:'white'}}
                     />
                  </View>
              </View>
              <View style={styles.footerContainer}>
                  {!isLoading ?<Button
                     theme={{colors: {primary:'#fd6c57'}}} 
-                    title={currentUserService?"Modifier":"Ajouter"}
+                    title={currentUserService?barber && barber.lang?polylanfr.Edit:polylanar.Edit:barber.lang?polylanfr.Add:polylanar.Add}
                     titleStyle={styles.labelButton}
                     buttonStyle={styles.buttonStyle}
                     ViewComponent={LinearGradient} 

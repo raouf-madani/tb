@@ -1,6 +1,9 @@
 import React from 'react';
 import { StyleSheet, Text, View,Dimensions,TouchableOpacity,Platform,Switch } from 'react-native';
 import Colors from "../constants/Colors";
+import {useSelector } from 'react-redux';
+import polylanar from "../lang/ar";
+import polylanfr from "../lang/fr";
 
 //responsivity (Dimensions get method)
 const screen = Dimensions.get('window');
@@ -8,6 +11,9 @@ const screen = Dimensions.get('window');
 
 
 const WorkTimeCart = props =>{
+
+  const barber=useSelector(state=>state.barbers.barber[0]);
+
 
     let switchIOS;
     if(Platform.OS === 'ios'){
@@ -26,7 +32,7 @@ const WorkTimeCart = props =>{
               </View>
               <View>
                   <TouchableOpacity>
-                    <Text style={styles.debutEndText} onPress={props.onPress}>{props.openDay ? props.openTimeDay: 'Début'} - <Text onPress={props.onPress2}>{props.closeDay ? props.closeTimeDay : 'Fin'}</Text></Text>
+                    <Text style={styles.debutEndText} onPress={props.onPress}>{props.openDay ? props.openTimeDay: barber && barber.lang?polylanfr.Start:polylanar.Start} - <Text onPress={props.onPress2}>{props.closeDay ? props.closeTimeDay : barber && barber.lang?polylanfr.End:polylanar.End}</Text></Text>
                   </TouchableOpacity>
               </View>
         </View>

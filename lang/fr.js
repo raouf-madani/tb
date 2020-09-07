@@ -44,7 +44,7 @@ export default{
     Models:"Modèles",
     DisplayAll:"Affichez tout",
     BusinessName:"Nom business",
-    personalInforamtion:"Nom, prénom et votre age",
+    personalInforamtion:"Nom, prénom et votre âge",
     YourFullName:"Votre nom complet",
     YourPersonalAddress:"Votre adresse personnelle",
     Saturday:"Samedi",
@@ -67,6 +67,7 @@ export default{
     NoticeMessage:"Avertir notre équipe avant de supprimer votre compte!",
     TeamTahfifa:"Equipe Tahfifa",
     Disconnect:"Se déconnecter",
+    YourAge:"Votre âge",
     //Services screen********************************************************************
     AddSerivce:"Ajouter Service",
     AddPortfolio:"Ajouter Portfolio",
@@ -99,12 +100,13 @@ export default{
     Thu:"Jeu",
     Fri:"Ven",
     Status:"Statut",
-    Confirmed:"Confirmée",
-    Realized:"Réalisée",
-    Expired:"Expirée",
-    Canceled:"Annulée",
-    times:"Horraires",
+    Confirmed:"confirmée",
+    Realized:"réalisée",
+    Expired:"expirée",
+    Canceled:"annulée",
+    Times:"Horraires",
     Price:"Prix",
+    
     //Booking Detail screen********************************************************************
     BookingDetails:"Détails de la Réservation",
     Call:"Appeler",
@@ -122,13 +124,16 @@ export default{
     //EditService Detail screen********************************************************************
     ChooseService:"Choisissez votre service",
     ServiceName:"Nom de service",
-    Beard:"Barbe",
+    Beard:"Ex barbe",
     Hours:"Heures",
     Minutes:"Minutes",
-    PriceIn:"Prix en",
+    PriceIn:"Prix en دج",
     Add:"Ajouter",
     Edit:"Modifier",
     EditService:"Modifier Service",
+    NoServices:'Aucun service trouvé.',
+    Start:'Début',
+    End:'Fin',
     //Alerts********************************************************************
     Oups:"Oups!",
     WeakInternet:'Votre connexion est trop faible!',
@@ -155,5 +160,5 @@ export default{
     Booking:'Réservation',
     ABarberDid:'Un Coiffeur a ',
     YourBooking:' votre réservation!', 
-
+    SuccessfulDataSent:'Vos données ont été changées avec succès!'
 };

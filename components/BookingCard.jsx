@@ -6,6 +6,9 @@ import {Ionicons} from "@expo/vector-icons";
 import {Calendar, CalendarList, Agenda,LocaleConfig} from 'react-native-calendars';
 import { LinearGradient } from 'expo-linear-gradient';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import {useSelector } from 'react-redux';
+import polylanar from "../lang/ar";
+import polylanfr from "../lang/fr";
 import moment from "moment";
 
 const screen = Dimensions.get("window");
@@ -24,6 +27,7 @@ const BookingCard = props =>{
   const gradient1 = props.status === "en attente" ? "#fd6d57" : (props.status === "confirmée" ||props.status === "réalisée" ) ? "#11998e" : "#f14638";
   const gradient2 = props.status === "en attente" ? "#fd9054" : (props.status === "confirmée" ||props.status === "réalisée" ) ? Colors.colorH1 : "#F4686A";
 
+  const barber=useSelector(state=>state.barbers.barber[0]);
 
     return(
       <TouchableOpacity style = {styles.card}  onPress = {()=> props.press === true && props.navigation.navigate("BookingDetail", 
@@ -47,17 +51,17 @@ const BookingCard = props =>{
           </LinearGradient>
           <View style = {styles.infos}>
 
-             <Text style = {styles.status}>Status :
+             <Text style = {styles.status}>{barber && barber.lang?polylanfr.Status+': ':polylanar.Status+': '}
               <Text style = {{...styles.statusType,...{color : gradient2}}}> {props.status}</Text>
                </Text>
-              <Text style = {styles.slotText} >Horraires : {props.start} - {props.end} </Text>
+              <Text style = {styles.slotText} >{barber && barber.lang?polylanfr.Times+': ':polylanar.Times+': '} {props.start} - {props.end} </Text>
          
            
 
               <Text style = {{...styles.priceText ,...{color : gradient2,  textDecorationLine: props.status ==="expirée" ? 'line-through' : "none" ,
               }
               }}>
-              Prix :{props.amount} DA
+              {barber && barber.lang?polylanfr.Price+': ':polylanar.Price+': '} {props.amount} دج
               </Text>
               {/* <Text style = {styles.slotText}>Fin : </Text> */}
               
