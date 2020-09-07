@@ -17,11 +17,12 @@ const bookingDate = props.navigation.getParam("bookingDate");
 const now  = moment().format().substring(11,16) ;
 const diffrence = parseInt(moment.duration(moment(start,"h:mm:ss a").diff(moment(now,"h:mm:ss a"))).asMinutes());
 
-const conditionAnnuler = ( (props.navigation.getParam("status") === "confirmée" && ((diffrence >= 30 && moment(bookingDate).format("ll") === moment().format("ll")) || moment(bookingDate).format("ll") > moment().format("ll"))) || props.navigation.getParam("status") === "en attente");
+const conditionAnnuler = ( (props.navigation.getParam("status") === "confirmée" && ((diffrence >= 30 && moment().isSame(bookingDate, 'day')) || moment().isBefore(bookingDate, 'day'))) || props.navigation.getParam("status") === "en attente");
 
-const conditionConfirmer = (props.navigation.getParam("status") === "en attente" && ((diffrence >= 30 && moment(bookingDate).format("ll") === moment().format("ll")) || moment(bookingDate).format("ll") > moment().format("ll")));
+const conditionConfirmer = (props.navigation.getParam("status") === "en attente" && ((diffrence >= 30 && moment().isSame(bookingDate, 'day')) || moment().isBefore(bookingDate, 'day')));
 
-const conditionCall = props.navigation.getParam("status") === "confirmée"   ;
+
+const conditionCall = props.navigation.getParam("status") === "confirmée";
 
 // console.log(diffrence);
 
@@ -31,6 +32,7 @@ async function sendPushNotification(type,alert1,alert2) {
   const arr = await fetch(`http://173.212.234.137:3000/client/clienttokens/${props.navigation.getParam("clientId")}`);
   const resData = await arr.json ();
   const allMessages = [];
+  
   
   resData.map(e=>{
     // start = {start}
@@ -48,6 +50,7 @@ async function sendPushNotification(type,alert1,alert2) {
       title: 'Réservation '+type,
       body: 'Un Coiffeur a '+alert2+' votre réservation !',
       data: {
+      id :  props.navigation.getParam("id"),
       title: 'Réservation '+type,
       body: 'Un Coiffeur a '+alert2+' votre réservation !',
       start : start,
@@ -61,7 +64,7 @@ async function sendPushNotification(type,alert1,alert2) {
   
   })
   
-  
+
   allMessages.map(async (e)=>{
      await fetch('https://exp.host/--/api/v2/push/send', {
        method: 'POST',
@@ -120,6 +123,7 @@ Alert.alert(
                        
             await dispatch(changeBookingState(props.navigation.getParam("id"),type));
             await sendPushNotification(type,alert1,alert2);
+            console.log(type);
             props.navigation.navigate( "Barber");
             }      
             setLoading(false);  

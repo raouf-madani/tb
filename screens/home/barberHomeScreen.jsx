@@ -31,6 +31,7 @@ Notifications.setNotificationHandler({
 const height = Dimensions.get('window').height;
 
 const BarberHomeScreen = props =>{
+  
 
 //Notifications 
 const [expoPushToken, setExpoPushToken] = useState('');
@@ -153,10 +154,11 @@ const responseListener = useRef();
     // console.log(moment().format("lll"));
  
     const finished2 = allBookings.filter(e=>(
-      ((moment().format("ll") === moment(e.bookingDate).format("ll") && moment().format().substring(11,16)> e.end) && e.status === "confirmée" ) ||  (moment().format("ll") > moment(e.bookingDate).format("ll") && e.status === "confirmée") )
+      ((moment().isSame(e.bookingDate,"day") && moment().format().substring(11,16)> e.end) && e.status === "confirmée" ) ||  (moment().isAfter(e.bookingDate, 'day') && e.status === "confirmée") )
     
     
     )
+
 
     setFinished(finished2);
       if (finished2.length > 0){
