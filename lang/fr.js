@@ -37,7 +37,7 @@ export default{
     Feedback:"Feedback",
     NoFeedback:"Vous n'avez reçu aucun Feedback pour le moment.",
     Fullname:"Nom Complet",
-    StartForm:"A partir de",
+    StartFrom:"A partir de",
     Available:"Disponibilité",
     NoAvailable:"Non disponible",
     Address:"Adresse",
@@ -106,7 +106,7 @@ export default{
     Canceled:"annulée",
     Times:"Horraires",
     Price:"Prix",
-    
+    TheAddress:'Adresse',
     //Booking Detail screen********************************************************************
     BookingDetails:"Détails de la Réservation",
     Call:"Appeler",

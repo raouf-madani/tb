@@ -2,6 +2,9 @@ import React from 'react';
 import { StyleSheet, Text, View,Dimensions,Image } from 'react-native';
 import Colors from "../constants/Colors";
 import {  Rating  } from 'react-native-elements';
+import {useSelector } from 'react-redux';
+import polylanar from "../lang/ar";
+import polylanfr from "../lang/fr";
 
 //responsivity (Dimensions get method)
 const screen = Dimensions.get('window');
@@ -10,7 +13,7 @@ const screen = Dimensions.get('window');
 
 const Feedback = props =>{
 
-    
+    const barber=useSelector(state=>state.barbers.barber[0]);
 
     return(
        <View style={styles.feedbackContainer}>
@@ -28,12 +31,12 @@ const Feedback = props =>{
                     ratingBackgroundColor={Colors.blue}
                     ratingColor={Colors.primary}
                     tintColor='#fff'
-                    />:<Text style={styles.noMark}>Aucune note!</Text>}
+                    />:<Text style={styles.noMark}>{barber && barber.lang?polylanfr.Nomarks:polylanar.Nomarks}</Text>}
                 </View>
                 <View style={styles.commentContainer}>
                     <Text style={{fontFamily:'poppins-bold',fontSize:13,color:Colors.blue}}>{props.name===null && props.surname=== null ? 'Inconnu':props.name+' '+ props.surname}</Text>
                     <Text style={styles.comment}>
-                    {props.comment? props.comment:'Aucun commentaire!'}
+                    {props.comment? props.comment:barber && barber.lang?polylanfr.NoComments:polylanar.NoComments}
                     </Text>
                 </View>
             </View>

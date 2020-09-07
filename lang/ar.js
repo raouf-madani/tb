@@ -15,7 +15,7 @@ export default{
     Signup:"إنشاء حساب جديد؟",
     //signup screen********************************************************************
     Sex:"جنس",
-    City:"ولاية",
+    City:"الولاية",
     Region:"مقاطعة",
     DoYouhaveAnAccount:"هل لديك حساب؟",
     Slogan2:"إذهب إلى زبونك أو إستقبله في الصالون",
@@ -26,6 +26,7 @@ export default{
     //barberHome screen********************************************************************
     Yo:"سنة",
     NoComments:"لا وجود لتعليق!",
+    Comments:'تعليقات',
     Information:"المعلومات",
     Services:"الخدمات",
     Bookings:"جدول الحجز",
@@ -35,12 +36,12 @@ export default{
     Feedback:"التعليقات",
     NoFeedback:"لم تتلق أي تعليقات حتى الآن.",
     Fullname:"الإسم الكامل",
-    StartForm:"إبتداءا من",
-    Available:"أوقات عملي",
+    StartFrom:"إبتداءا من",
+    Available:"أوقات العمل",
     NoAvailable:"غير متوفر",
     Address:"عنوانك",
-    Models:"نموذجك",
-    DisplayAll:"عرض كل النوذج",
+    Models:"النموذج",
+    DisplayAll:"عرض كل النموذج",
     BusinessName:"إسم الإحتراف",
     personalInforamtion:"اللقب والاسم والعمر",
     YourFullName:"إسمك الكامل",
@@ -119,6 +120,7 @@ export default{
     No:"لا",
     CancelBooking:"إلغاء الحجز!",
     CancelBookingMessage:"هل أنت متأكد أنك تريد إلغاء هذا الحجز؟",
+    TheAddress:'العنوان',
     //Support Detail screen********************************************************************
     SupportMessage:"إذا واجهت أي مشكلة ، فلا تتردد في الإتصال بنا في أسرع وقت ممكن عبر المعلومات التالية:",
     //EditService Detail screen********************************************************************

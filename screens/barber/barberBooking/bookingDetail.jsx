@@ -4,9 +4,11 @@ import moment from 'moment';
 import Colors from "../../../constants/Colors";
 import BookingCard from '../../../components/BookingCard';
 import { Ionicons ,MaterialIcons } from '@expo/vector-icons';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import {changeBookingState} from "../../../store/actions/bookingsActions";
 import { Rating, AirbnbRating } from 'react-native-elements';
+import polylanar from "../../../lang/ar";
+import polylanfr from "../../../lang/fr";
 
 const screen = Dimensions.get("window");
 
@@ -22,6 +24,8 @@ const conditionAnnuler = ( (props.navigation.getParam("status") === "confirmée"
 const conditionConfirmer = (props.navigation.getParam("status") === "en attente" && ((diffrence >= 30 && moment(bookingDate).format("ll") === moment().format("ll")) || moment(bookingDate).format("ll") > moment().format("ll")));
 
 const conditionCall = props.navigation.getParam("status") === "confirmée"   ;
+
+const barber=useSelector(state=>state.barbers.barber[0]);
 
 // console.log(diffrence);
 
@@ -87,6 +91,8 @@ const dispatch = useDispatch();
 
 const bookingHandler = (type,alert1,alert2) =>{
 
+  const barber=useSelector(state=>state.barbers.barber[0]);
+
 //ALERT BEFORE CANCEL A BOOKING
 // Works on both Android and iOS
 Alert.alert(
@@ -95,11 +101,11 @@ Alert.alert(
   [
  
     {
-      text: 'Non',
+      text: barber && barber.lang?polylanfr.No:polylanar.No,
       onPress: () => {},
       style: 'cancel'
     },
-    { text: 'Oui', onPress: async () => {
+    { text: barber && barber.lang?polylanfr.Yes:polylanar.Yes, onPress: async () => {
 
       try {
         setLoading(true);
@@ -116,7 +122,7 @@ Alert.alert(
                     "Réservation non "+type,
                     "Echec de l'action ",
                     [
-                      { text: "OK", onPress: () =>{} }
+                      { text: barber && barber.lang?polylanfr.OK:polylanar.OK, onPress: () =>{} }
                     ],
                     { cancelable: false }
                   );
@@ -227,7 +233,7 @@ if (isLoading) {
                       onPress = {()=>bookingHandler("annulée","Annuler","annuler")}
                /> 
   
-            <Text style = {styles.actionsText}>Annuler</Text>
+            <Text style = {styles.actionsText}>{barber && barber.lang?polylanfr.Cancel:polylanar.Cancel}</Text>
 
           </View>}
 
@@ -242,7 +248,7 @@ if (isLoading) {
                   onPress = {()=>bookingHandler("confirmée","Confirmer","confirmer")}
                   />
 
-                <Text style = {styles.actionsText} >Confirmer</Text>
+                <Text style = {styles.actionsText} >{barber && barber.lang?polylanfr.Confirm:polylanar.Confirm}</Text>
 
               </View>
         }
@@ -250,16 +256,16 @@ if (isLoading) {
             </View>
 
             <View style = {styles.barber}>
-            <Text style = {styles.barberTitle}>Information Du Client </Text>
-                <Text style = {styles.barberText}>Nom : {clientInfos.surname +" "+clientInfos.name}</Text>
-                <Text style = {styles.barberText} >Wilaya : {clientInfos.region+"-"+clientInfos.wilaya}</Text>
-                <Text style = {styles.barberText} >Adresse : {clientInfos.address}</Text>
+            <Text style = {styles.barberTitle}>{barber && barber.lang?polylanfr.ClientDetails:polylanar.ClientDetails} </Text>
+                <Text style = {styles.barberText}>{barber && barber.lang?polylanfr.Fullname+': ':polylanar.Fullname+': '} {clientInfos.surname +" "+clientInfos.name}</Text>
+                <Text style = {styles.barberText} >{barber && barber.lang?polylanfr.City+': ':polylanar.City+': '} {clientInfos.region+"-"+clientInfos.wilaya}</Text>
+                <Text style = {styles.barberText} >{barber && barber.lang?polylanfr.TheAddress+': ':polylanar.TheAddress+': '} {clientInfos.address}</Text>
                 <Text style = {styles.barberText} >Tel : {clientInfos.phone}</Text>
             </View>
 
             <View style = {styles.services}>
                 <ScrollView>
-                <Text style = {styles.servicesTitle}>Services </Text>
+                <Text style = {styles.servicesTitle}>{barber && barber.lang?polylanfr.Services:polylanar.Services} </Text>
              
           {      
             services.map((service,index) => {
@@ -270,7 +276,7 @@ if (isLoading) {
                     <Text key = {index} style={styles.serviceText}>
                     {service.name +" / "+ 
                     service.serviceDuration +" Min / "+ 
-                    service.price + " DA "
+                    service.price + " دج "
                     }
                     </Text>
                    
@@ -297,7 +303,7 @@ BookingDetail.navigationOptions = (navData) => {
     return {
       headerTintColor:Colors.primary,
       headerBackTitle : " ",
-      title : "Détail de la réservation"
+      title : "Détail de la Réservation"
     }
     
     };
