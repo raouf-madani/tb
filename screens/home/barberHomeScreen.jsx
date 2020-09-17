@@ -1,5 +1,5 @@
 import React,{useState,useEffect,useCallback,useRef} from 'react';
-import { StyleSheet, Text, View, ImageBackground , Image,Dimensions,TouchableOpacity,ScrollView,StatusBar,Alert,ActivityIndicator} from 'react-native';
+import { StyleSheet, Text, View, ImageBackground , Image,Dimensions,TouchableOpacity,ScrollView,StatusBar,Alert,ActivityIndicator, Platform} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons,Entypo} from "@expo/vector-icons";
 import { LinearGradient } from 'expo-linear-gradient';
 import {  Rating,Button,Overlay  } from 'react-native-elements';
@@ -19,6 +19,7 @@ import { getBarberBookings, changeBookingState } from '../../store/actions/booki
 import ApproveOverlay from '../../components/ApproveOverlay';
 import polylanar from "../../lang/ar";
 import polylanfr from "../../lang/fr";
+import NotifOverlay from '../../components/NotifOverlay';
 
 
 Notifications.setNotificationHandler({
@@ -54,7 +55,7 @@ const responseListener = useRef();
   //get the barber's tokens
   const tokens = useSelector(state=>state.tokens.barberTokens);
   const allBookings = useSelector(state => state.bookings.bookings);
-
+   const [notificationData,setNotificationData]= useState([]);
    /*
    *******Fetch One barber DATA
   */
@@ -182,31 +183,50 @@ useEffect(() => {
   
   }
 
-    responseListener.current =  Notifications2.addListener((data) => {
-      // props.navigation.navigate("AllBarbers",{type : "coiffeurs",clientID});
-     
-      Alert.alert(
-        data.data.title,
-        data.data.body,
-        [
-          { text: "OK", onPress: () =>{} }
-        ],
-        { cancelable: false }
-      );
-      
-      
-      
-      // console.log(Notifications2);
-    });
-
-  return () => {
-    Notifications.removeNotificationSubscription(notificationListener);
-    Notifications.removeNotificationSubscription(responseListener);
-  };
-
-
 
 }, [myBarber,tokens]);
+
+useEffect(()=>{
+
+  // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+
+
+  notificationListener.current = Notifications.addNotificationReceivedListener(async (notification) => {
+    // setNotification(notification);
+
+    const notificationsList = await Notifications.getPresentedNotificationsAsync() ;
+    setNotificationData(notificationsList);
+  });
+
+  responseListener.current = Notifications.addNotificationResponseReceivedListener(async (notification) => {
+ 
+    const notificationsList = await Notifications.getPresentedNotificationsAsync() ;
+    Notifications.dismissAllNotificationsAsync();
+    notificationsList.push(notification.notification);
+    setNotificationData(notificationsList);
+  });
+
+
+
+return () => {
+  Notifications.removeNotificationSubscription(notificationListener);
+  Notifications.removeNotificationSubscription(responseListener);
+};
+
+
+
+},[])
+
+
+const notificationDataHandler = (list,sender) =>{
+
+  setNotificationData(previous=>previous.filter(e=>e.request.identifier !== list))
+  
+   toggleOverlay();
+   Notifications.dismissNotificationAsync(list);
+ 
+
+ }
 
 
 
@@ -319,9 +339,8 @@ async function registerForPushNotificationsAsync() {
       <View style ={styles.container}>
         <StatusBar hidden/>
 
-                { finished.length > 0 && finished.map((booking,index)=>
+                { finished.length > 0 && finished.reverse().map((booking,index)=>
                 {
-              
                return(
 
                  <ApproveOverlay 
@@ -337,11 +356,32 @@ async function registerForPushNotificationsAsync() {
                 }
                 
                 )
-            
-              
-            
             }
 
+            { notificationData.length >0 && notificationData.map((item,index)=>{
+
+                  const e = Platform.OS === "ios" ? item.request.content.data.body : item.request.content.data ;
+                  
+                    return(
+
+                    <NotifOverlay 
+                        key={index}
+                        close={()=>notificationDataHandler(item.request.identifier,"self")} 
+                        isVisible = {true} 
+                        start={e.start}
+                        end = {e.end}
+                        address = {e.address}
+                        bookingDate = {e.bookingDate}
+                        body = {e.body}
+                        type = {e.type}
+                        name = {e.name}
+                        surname = {e.surname}
+                        />
+
+
+                  )})
+                    
+                  }
 
          <View style={styles.firstContainer}>
            <View style={styles.coverContainer}>

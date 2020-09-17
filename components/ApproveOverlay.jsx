@@ -17,7 +17,7 @@ const date = moment(props.booking.bookingDate).format("LLLL").slice(0,-5);
         >
     <View style = {styles.contentContainer}>
                 <View style = {styles.imageContainer}>
-                <Image style={styles.image} source={require('../assets/images/done.png')}/>
+                <Image style={styles.image} source={require('../assets/images/true.png')}/>
                 </View>
 
 
@@ -46,7 +46,7 @@ const date = moment(props.booking.bookingDate).format("LLLL").slice(0,-5);
                 onPress = {()=>props.toggleOverlay(props.booking.id,"réalisée")}
                 ViewComponent={LinearGradient} 
                    linearGradientProps={{
-                        colors: ['#fd6d57', '#fd9054'],
+                        colors: ['#0DA598', '#11998e'],
                         start: {x: 0, y: 0} ,
                         end:{x: 1, y: 0}
                     }}

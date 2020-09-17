@@ -56,11 +56,15 @@ async function sendPushNotification(type,alert1,alert2) {
       data: {
       id :  props.navigation.getParam("id"),
       title: 'Réservation '+type,
-      body: 'Un Coiffeur a '+alert2+' votre réservation !',
+      body: 'Cette réservation a été  '+type+'!',
       start : start,
       end : props.navigation.getParam("end"),
       bookingDate : bookingDate,
-      address : clientInfos.address
+      address : clientInfos.address,
+      type :type,
+      sender : "barber",
+      name : barber.name ,
+      surname : barber.surname
     },
     }
   
@@ -92,7 +96,7 @@ async function sendPushNotification(type,alert1,alert2) {
 const [isLoading , setLoading] = useState (false);
 
 //Fetched Barber Infos
-const [clientInfos , setBarberInfos] = useState({
+const [clientInfos , setClientInfos] = useState({
   "address": " ",
   "name": " ",
   "phone": " ",
@@ -107,7 +111,7 @@ const dispatch = useDispatch();
 
 const bookingHandler = (type,alert1,alert2) =>{
 
-  const barber=useSelector(state=>state.barbers.barber[0]);
+
 
 //ALERT BEFORE CANCEL A BOOKING
 // Works on both Android and iOS
@@ -180,7 +184,7 @@ useEffect(()=>{
       const arr = await fetch(`http://173.212.234.137:3000/client/clientinfos/${props.navigation.getParam("clientId")}`);
 
       const resData = await arr.json ();
-      setBarberInfos(...resData);
+      setClientInfos(...resData);
       setLoading(false);
 
       }
