@@ -21,7 +21,8 @@
     },
     "android": {
       "googleServicesFile": "./google-services.json",
-      "package": "com.ayl.tahfifa"
+      "package": "com.ayl.tahfifa",
+      "useNextNotificationsApi": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
