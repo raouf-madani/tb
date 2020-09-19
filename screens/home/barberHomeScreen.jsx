@@ -195,15 +195,19 @@ useEffect(()=>{
     // setNotification(notification);
 
     const notificationsList = await Notifications.getPresentedNotificationsAsync() ;
-    setNotificationData(notificationsList);
+    
+    // setNotificationData(notificationsList);
+    props.navigation.navigate('AllBookingsScreen',{barberID:barberID,tokens}); 
+    
   });
 
   responseListener.current = Notifications.addNotificationResponseReceivedListener(async (notification) => {
  
     const notificationsList = await Notifications.getPresentedNotificationsAsync() ;
-    Notifications.dismissAllNotificationsAsync();
-    notificationsList.push(notification.notification);
-    setNotificationData(notificationsList);
+    // Notifications.dismissAllNotificationsAsync();
+    // notificationsList.push(notification.notification);
+    // setNotificationData(notificationsList);
+    props.navigation.navigate('AllBookingsScreen',{barberID:barberID,tokens}); 
   });
 
 
