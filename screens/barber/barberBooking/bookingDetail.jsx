@@ -19,11 +19,12 @@ const bookingDate = props.navigation.getParam("bookingDate");
 const now  = moment().format().substring(11,16) ;
 const diffrence = parseInt(moment.duration(moment(start,"h:mm:ss a").diff(moment(now,"h:mm:ss a"))).asMinutes());
 
-const conditionAnnuler = ( (props.navigation.getParam("status") === "confirmée" && ((diffrence >= 30 && moment(bookingDate).format("ll") === moment().format("ll")) || moment(bookingDate).format("ll") > moment().format("ll"))) || props.navigation.getParam("status") === "en attente");
+const conditionAnnuler = ( (props.navigation.getParam("status") === "confirmée" && ((diffrence >= 30 && moment().isSame(bookingDate, 'day')) || moment().isBefore(bookingDate, 'day'))) || props.navigation.getParam("status") === "en attente");
 
-const conditionConfirmer = (props.navigation.getParam("status") === "en attente" && ((diffrence >= 30 && moment(bookingDate).format("ll") === moment().format("ll")) || moment(bookingDate).format("ll") > moment().format("ll")));
+const conditionConfirmer = (props.navigation.getParam("status") === "en attente" && ((diffrence >= 30 && moment().isSame(bookingDate, 'day')) || moment().isBefore(bookingDate, 'day')));
 
-const conditionCall = props.navigation.getParam("status") === "confirmée"   ;
+
+const conditionCall = props.navigation.getParam("status") === "confirmée";
 
 const barber=useSelector(state=>state.barbers.barber[0]);
 
@@ -36,23 +37,42 @@ async function sendPushNotification(type,alert1,alert2) {
   const resData = await arr.json ();
   const allMessages = [];
   
-  resData.map(e=>{
   
+  resData.map(e=>{
+    // start = {start}
+    //                         end = {props.navigation.getParam("end")}
+    //                         bookingDate = {bookingDate}
+    //                         status = {props.navigation.getParam("state")}
+    //                         amount = {props.navigation.getParam("amount")}
+    //                         day = {props.navigation.getParam("day")}
+    //                         date = {props.navigation.getParam("date")}
+    //                         status = {props.navigation.getParam("status")}
   allMessages.push(
     {
       to: e.expoToken,
       sound: 'default',
       title: 'Réservation '+type,
       body: 'Un Coiffeur a '+alert2+' votre réservation !',
-      data: { data: 'goes here' ,client:props.clientId,  title: 'Réservation '+type,
-      body: 'Un Coiffeur a '+alert2+' votre réservation !',},
+      data: {
+      id :  props.navigation.getParam("id"),
+      title: 'Réservation '+type,
+      body: 'Cette réservation a été  '+type+'!',
+      start : start,
+      end : props.navigation.getParam("end"),
+      bookingDate : bookingDate,
+      address : clientInfos.address,
+      type :type,
+      sender : "barber",
+      name : barber.name ,
+      surname : barber.surname
+    },
     }
   
   )
   
   })
   
-  
+
   allMessages.map(async (e)=>{
      await fetch('https://exp.host/--/api/v2/push/send', {
        method: 'POST',
@@ -76,7 +96,7 @@ async function sendPushNotification(type,alert1,alert2) {
 const [isLoading , setLoading] = useState (false);
 
 //Fetched Barber Infos
-const [clientInfos , setBarberInfos] = useState({
+const [clientInfos , setClientInfos] = useState({
   "address": " ",
   "name": " ",
   "phone": " ",
@@ -91,7 +111,7 @@ const dispatch = useDispatch();
 
 const bookingHandler = (type,alert1,alert2) =>{
 
-  const barber=useSelector(state=>state.barbers.barber[0]);
+
 
 //ALERT BEFORE CANCEL A BOOKING
 // Works on both Android and iOS
@@ -113,6 +133,7 @@ Alert.alert(
                        
             await dispatch(changeBookingState(props.navigation.getParam("id"),type));
             await sendPushNotification(type,alert1,alert2);
+            console.log(type);
             props.navigation.navigate( "Barber");
             }      
             setLoading(false);  
@@ -163,7 +184,7 @@ useEffect(()=>{
       const arr = await fetch(`http://173.212.234.137:3000/client/clientinfos/${props.navigation.getParam("clientId")}`);
 
       const resData = await arr.json ();
-      setBarberInfos(...resData);
+      setClientInfos(...resData);
       setLoading(false);
 
       }
