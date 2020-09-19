@@ -60,7 +60,7 @@ async function sendPushNotification(type,alert1,alert2) {
       start : start,
       end : props.navigation.getParam("end"),
       bookingDate : bookingDate,
-      address : clientInfos.address,
+      address : props.navigation.getParam("address"),
       type :type,
       sender : "barber",
       name : barber.name ,
