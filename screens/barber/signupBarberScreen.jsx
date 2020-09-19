@@ -473,7 +473,8 @@ const styles= StyleSheet.create({
    },
    loginContainer:{
     flexDirection:'row',
-    paddingTop:15
+    paddingTop:15,
+    alignSelf:'center'
   },
   doYouHaveAnAccount:{
     fontSize:14,

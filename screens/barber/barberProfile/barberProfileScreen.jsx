@@ -196,7 +196,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
         barber && barber[0].lang?polylanfr.Warning:polylanar.Warning,
         barber && barber[0].lang?polylanfr.DoYouWantToDisconnect:polylanar.DoYouWantToDisconnect,
        [{text:barber && barber[0].lang?polylanfr.Yes:polylanar.Yes, style:'destructive', onPress:logout},
-        {text:barber && barber[0].lang?polylanfr.no:polylanar.No, style:'cancel'}]);
+        {text:barber && barber[0].lang?polylanfr.No:polylanar.No, style:'cancel'}]);
         return;
    };
 
