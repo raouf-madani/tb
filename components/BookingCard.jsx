@@ -27,6 +27,7 @@ const BookingCard = props =>{
   const gradient1 = props.status === "en attente" ? "#fd6d57" : (props.status === "confirmée" ||props.status === "réalisée" ) ? "#11998e" : "#f14638";
   const gradient2 = props.status === "en attente" ? "#fd9054" : (props.status === "confirmée" ||props.status === "réalisée" ) ? Colors.colorH1 : "#F4686A";
 
+
   const barber=useSelector(state=>state.barbers.barber[0]);
 
     return(
@@ -43,7 +44,8 @@ const BookingCard = props =>{
                   clientId : props.clientId,
                   cancelDate : props.cancelDate,
                   id  : props.id,
-                  bookingDate :props.bookingDate
+                  bookingDate :props.bookingDate,
+                  address : props.address
                  })}  >
         <LinearGradient colors = { [gradient1, gradient2]} style = {styles.leftDate}>
               <Text style = {styles.dateText}>{props.day}</Text>
@@ -97,7 +99,8 @@ const BookingCard = props =>{
                       clientId : props.clientId,
                       cancelDate : props.cancelDate,
                       id  : props.id,
-                      bookingDate :props.bookingDate
+                      bookingDate :props.bookingDate ,
+                      address : props.address
                      })} 
            >
           

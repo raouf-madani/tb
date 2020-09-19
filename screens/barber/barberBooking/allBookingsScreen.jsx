@@ -234,7 +234,7 @@ if (isLoading) {
 
                   dayBookings.map((booking , index)=>{
                       
-                      
+                      console.log(booking);
                         return(
                         <BookingCard
                             key = {index}
@@ -253,6 +253,7 @@ if (isLoading) {
                             cancelDate = {booking.date}
                             id = {booking.id}
                             press = {true}
+                            address = {booking.address}
                          /> 
 
                     )})

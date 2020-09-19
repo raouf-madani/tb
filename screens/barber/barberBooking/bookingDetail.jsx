@@ -280,7 +280,7 @@ if (isLoading) {
             <Text style = {styles.barberTitle}>{barber && barber.lang?polylanfr.ClientDetails:polylanar.ClientDetails} </Text>
                 <Text style = {styles.barberText}>{barber && barber.lang?polylanfr.Fullname+': ':polylanar.Fullname+': '} {clientInfos.surname +" "+clientInfos.name}</Text>
                 <Text style = {styles.barberText} >{barber && barber.lang?polylanfr.City+': ':polylanar.City+': '} {clientInfos.region+"-"+clientInfos.wilaya}</Text>
-                <Text style = {styles.barberText} >{barber && barber.lang?polylanfr.TheAddress+': ':polylanar.TheAddress+': '} {clientInfos.address}</Text>
+                <Text style = {styles.barberText} >{barber && barber.lang?polylanfr.TheAddress+': ':polylanar.TheAddress+': '} {props.navigation.getParam("address")}</Text>
                 <Text style = {styles.barberText} >Tel : {clientInfos.phone}</Text>
             </View>
 
