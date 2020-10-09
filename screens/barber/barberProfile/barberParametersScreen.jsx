@@ -53,6 +53,7 @@ const BarberParametersScreen = props =>{
   const [isPhone,setIsPhone]= useState(true);
   const [isPassword,setIsPassword]= useState(false);
   const [isLang,setIsLang]= useState(false);
+  const [isAccount,setIsAccount]= useState(false);
   let isArabic;
   const [isEye,setIsEye]=useState(false);
   const [error,setError]=useState(false);
@@ -81,26 +82,35 @@ const BarberParametersScreen = props =>{
       };
   
 
-  const phone = ()=>{
-    setIsPhone(true);
-    setIsPassword(false);
-    setIsLang(false);
-  };
-  const password = ()=>{
-    setIsPhone(false);
-    setIsPassword(true);
-    setIsLang(false);
-  };
-  const lang= ()=>{
-    setIsLang(true);
-    setIsPhone(false);
-    setIsPassword(false);
-  };
+      const phone = ()=>{
+        setIsPhone(true);
+        setIsPassword(false);
+        setIsLang(false);
+        setIsAccount(false);
+      };
+      const password = ()=>{
+        setIsPhone(false);
+        setIsPassword(true);
+        setIsLang(false);
+        setIsAccount(false);
+      };
+      const lang= ()=>{
+        setIsLang(true);
+        setIsPhone(false);
+        setIsPassword(false);
+        setIsAccount(false);
+      };
+    
+      const account= ()=>{
+        setIsAccount(true);
+        setIsLang(false);
+        setIsPhone(false);
+        setIsPassword(false);
+      };
 
-  
   //get the barber's data
   const barber= useSelector(state=>state.barbers.barber);
-  console.log('value is '+barber[0].lang);
+  
 
   const arabic= async()=>{
      
@@ -113,7 +123,7 @@ const BarberParametersScreen = props =>{
         setIsLoadingState(true);
         setError(false);
        
-        console.log(isArabic);
+        
         await dispatch(barberActions.updateBarberLang(barberID,isArabic));
         setIsLoadingState(false); 
                                
@@ -174,13 +184,14 @@ const editPhone=async()=>{
           }
           setIsLoading(true);
           await dispatch(barberActions.updateBarberPhone(formState.inputValues.phone,prefix+formState.inputValues.phone,
-                                                 barber[0].id));
+                                                 barberID));
           await dispatch(authActions.updateUserPhoneFRB(prefix+formState.inputValues.phone,barberUID));                                       
           setIsLoading(false);
           dispatch(authActions.logout());
           AsyncStorage.clear();
-          props.navigation.navigate('Auth');                        
           Alert.alert(barber && barber[0].lang?polylanfr.Congratulations:polylanar.Congratulations,barber && barber[0].lang?polylanfr.SameNumberMessage:polylanar.SameNumberMessage,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+          props.navigation.navigate('Auth');                        
+          
     
       }catch(err){
         console.log(err);
@@ -217,7 +228,7 @@ const editPassword=async()=>{
             return;
           }
           setIsLoadingPassword(true);
-          await dispatch(barberActions.updateBarberPassword(barber[0].id,hashedPassword));                                   
+          await dispatch(barberActions.updateBarberPassword(barberID,hashedPassword));                                   
           setIsLoadingPassword(false);
           dispatch(authActions.logout());
           AsyncStorage.clear();
@@ -243,6 +254,37 @@ const alertEditPassword = ()=>{
     {text:barber && barber[0].lang?polylanfr.No:polylanar.No, style:'cancel'}]);
     return;
 };
+
+const deleteAccount= async()=>{
+  try{
+    
+    setError(false);
+     dispatch(barberActions.deleteBarber(barberID));
+     dispatch(authActions.deleteUser(barberUID)); 
+     dispatch(authActions.logout());
+     
+     AsyncStorage.clear();
+     props.navigation.navigate('Auth');
+  }catch(err){
+   console.log(err);
+   setError(true);
+   if(error){
+    Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+   }
+   throw err;
+  }
+};
+
+const alertDelete = ()=>{
+  Alert.alert(
+    barber && barber[0].lang?polylanfr.Warning:polylanar.Warning,
+    barber && barber[0].lang?polylanfr.DoYouWantToDeleteYourAccount:polylanar.DoYouWantToDeleteYourAccount,
+   [{text:barber && barber[0].lang?polylanfr.Yes:polylanar.Yes, style:'destructive', onPress:deleteAccount},
+    {text:barber && barber[0].lang?polylanfr.No:polylanar.No, style:'cancel'}]);
+    return;
+};
+
+
 if(error){
       
   return ( <ImageBackground source={require('../../../assets/images/support.png')} style={styles.coverTwo}>
@@ -277,19 +319,24 @@ if(isLoadingState || barber===undefined){
           <ImageBackground source={barber[0].sex==='Femme'?require( '../../../assets/images/woman5.jpg'):require('../../../assets/images/loginimage.jpg')} style={styles.backgroundFirstCard} resizeMode='cover'/>
          </View>
          <View style={styles.menuContainer}>
-              <TouchableOpacity onPress={phone} style={{padding:5,width:'30%',backgroundColor:isPhone?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
-                <Text style={{color:isPhone?'#fff':'#fd6c57',fontFamily:'poppins'}}>
+              <TouchableOpacity onPress={phone} style={{padding:5,width:'25%',backgroundColor:isPhone?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
+                <Text style={{color:isPhone?'#fff':'#fd6c57',fontFamily:'poppins',fontSize:12}}>
                   {barber && barber[0].lang? polylanfr.Phone:polylanar.Phone}
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={password} style={{borderRightWidth:1,borderRightColor:'#fd6c57',borderLeftWidth:1,borderLeftColor:'#fd6c57',padding:5,width:'40%',backgroundColor:isPassword?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
-                  <Text style={{color:isPassword?'#fff':'#fd6c57',fontFamily:'poppins'}}>
+              <TouchableOpacity onPress={password} style={{borderRightWidth:1,borderRightColor:'#fd6c57',borderLeftWidth:1,borderLeftColor:'#fd6c57',padding:5,width:'25%',backgroundColor:isPassword?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
+                  <Text style={{color:isPassword?'#fff':'#fd6c57',fontFamily:'poppins',fontSize:10}}>
                     {barber && barber[0].lang?polylanfr.Password:polylanar.Password}
                   </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={lang} style={{padding:5,width:'30%',backgroundColor:isLang?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
-                  <Text style={{color:isLang?'#fff':'#fd6c57',fontFamily:'poppins'}}>
+              <TouchableOpacity onPress={lang} style={{padding:5,width:'25%',backgroundColor:isLang?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center',borderRightWidth:1,borderRightColor:'#fd6c57'}}>
+                  <Text style={{color:isLang?'#fff':'#fd6c57',fontFamily:'poppins',fontSize:12}}>
                     {barber && barber[0].lang?polylanfr.Languages:polylanar.Languages}
+                  </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={account} style={{padding:5,width:'25%',backgroundColor:isAccount?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
+                  <Text style={{color:isAccount?'#fff':'#fd6c57',fontFamily:'poppins',fontSize:12}}>
+                    Compte
                   </Text>
               </TouchableOpacity>
         </View>
@@ -303,7 +350,7 @@ if(isLoadingState || barber===undefined){
               keyboardType="phone-pad"
               returnKeyType="next"
               onInputChange={inputChangeHandler}
-              initialValue={barber[0]?barber[0].id:''}
+              initialValue={barber[0]?barberID:''}
               initiallyValid={true}
               phone
               required
@@ -355,7 +402,7 @@ if(isLoadingState || barber===undefined){
               <View style={styles.buttonContainer}>
               {!isLoadingPassword ?<Button
                     theme={{colors: {primary:'#fd6c57'}}} 
-                    title={isArabic?polylanfr.Register:polylanar.Register}
+                    title={barber && barber[0].lang?polylanfr.Register:polylanar.Register}
                     titleStyle={styles.labelButton}
                     buttonStyle={styles.buttonStyle}
                     ViewComponent={LinearGradient} 
@@ -401,7 +448,29 @@ if(isLoadingState || barber===undefined){
            </View>
            </KeyboardAvoidingView>
         </ScrollView>):undefined}
-        
+        {isAccount?(<ScrollView style={styles.scrollViewAccount} showsVerticalScrollIndicator={false}>
+          <View style={styles.noticeContainer}>
+             <Text style={styles.noticeTitle}>Remarque</Text>
+             <Text style={styles.noticeContent}>Soyez prudent! Une fois vous supprimez votre compte, vous n'aurez jamais accès avec les actuelles informations de votre compte.</Text>
+             <Text style={styles.tahfifaSignature}>Equipe Tahfifa.</Text>
+         </View>
+            <View style={styles.buttonContainer}>
+               <Button
+                    theme={{colors: {primary:'#fd6c57'}}} 
+                    title='Supprimer Mon Compte'
+                    titleStyle={styles.labelButton}
+                    buttonStyle={styles.buttonStyleDelete}
+                    ViewComponent={LinearGradient}
+                    linearGradientProps={{
+                        colors: ['#fd6d57', '#fd9054'],
+                        start: {x: 0, y: 0} ,
+                        end:{x: 1, y: 0}
+                        
+                    }}
+                    onPress={alertDelete}
+                />
+           </View>
+        </ScrollView>):undefined}
       </View>
       </TouchableWithoutFeedback>
      );    
@@ -488,6 +557,10 @@ const styles= StyleSheet.create({
     width:'100%',
     marginTop:80
   },
+  scrollViewAccount:{
+    width:'100%',
+    marginTop:50
+  },
   buttonContainer:{
     width:'90%',
     alignSelf:'center',
@@ -506,6 +579,14 @@ const styles= StyleSheet.create({
   height:40,
   alignSelf:'center'
  },
+ buttonStyleDelete:{
+  borderColor:'#fd6c57',
+  width:'80%',
+  borderRadius:20,
+  height:40,
+  alignSelf:'center',
+  marginTop:20
+ },
  phoneNumber:{
  color:Platform.OS==='android'?'#323446':'#fff',
  fontSize:15
@@ -521,7 +602,27 @@ noServicesText:{
   fontFamily:'poppins',
   fontSize:14,
   color:Colors.blue
-}
+},
+noticeContainer:{
+  width:'75%',
+  alignSelf:'center',
+ },
+ noticeTitle:{
+   fontFamily:'poppins-bold',
+   fontSize:13,
+   color:'#323446'
+ },
+ noticeContent:{
+   fontFamily:'poppins',
+   fontSize:12,
+   color:'#323446'
+ },
+ tahfifaSignature:{
+   fontFamily:'poppins',
+   fontSize:12,
+   color:'#fd6c57',
+   paddingTop:5
+ },
 });
 
 export default BarberParametersScreen;

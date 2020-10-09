@@ -6,8 +6,6 @@ import Colors from '../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import CustomInput from '../components/Input';
 import * as Crypto from 'expo-crypto'; 
-import polylanar from "../lang/ar";
-import polylanfr from "../lang/fr";
 
 //responsivity (Dimensions get method)
 const screen = Dimensions.get('window');

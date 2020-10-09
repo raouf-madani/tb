@@ -41,7 +41,8 @@ const BarberNavigation = createStackNavigator({
 const AuthNavigation = createStackNavigator({
    Login: LoginScreen,
    SignupBarber:SignupBarberScreen,
-   ForgotPassword:ForgotPasswordScreen
+   ForgotPassword:ForgotPasswordScreen,
+   EditPassword:TestScreen
   });
 
   const MainNavigation = createSwitchNavigator({

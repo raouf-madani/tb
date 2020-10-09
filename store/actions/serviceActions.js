@@ -2,10 +2,10 @@ export const CREATE_SERVICE = "CREATE_SERVICE";
 export const UPDATE_SERVICE = "UPDATE_SERVICE";
 export const DELETE_SERVICE = "DELETE_SERVICE";
 
-export const createService=(name,price,duration,barber_id)=>{
+export const createService=(name,price,duration,barber_id,typeOfService)=>{
   
     return async () =>{
-        const serviceData={name,price,duration,barber_id};
+        const serviceData={name,price,duration,barber_id,typeOfService};
        
         try{
             const response= await fetch('http://173.212.234.137:3000/service/addService',{
@@ -29,7 +29,7 @@ export const createService=(name,price,duration,barber_id)=>{
 
 };
 
-export const updateService= (id,name,price,duration) => {
+export const updateService= (id,name,price,duration,typeOfService) => {
 
     return async () => {
 
@@ -40,7 +40,7 @@ export const updateService= (id,name,price,duration) => {
               headers: {
                 'Content-Type': 'application/json'
             },
-            body : JSON.stringify({name,price,duration})
+            body : JSON.stringify({name,price,duration,typeOfService})
            });
            
            if(!response.ok){

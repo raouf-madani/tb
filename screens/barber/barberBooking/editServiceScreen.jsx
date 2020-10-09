@@ -8,6 +8,7 @@ import * as servicesActions from '../../../store/actions/serviceActions';
 import { useDispatch,useSelector } from 'react-redux';
 import polylanar from "../../../lang/ar";
 import polylanfr from "../../../lang/fr";
+import BarberServiceScreen from './barberServiceScreen';
 
 //responsivity (Dimensions get method)
 const screen = Dimensions.get('window');
@@ -55,11 +56,15 @@ const EditServiceScreen = props =>{
    const hours = ['0','1','2','3','4','5','6','7','8','9','10','11','12'];
    const [minute,setMinute] = useState(!currentServiceID?0:currentUserService.durationMinute.toString());
    const minutes = ['0','5','10','15','20','25','30','35','40','45','50','55']; 
+   const serviceTypes = ['Barbe','Cheveux','Suppléments'];
+   const [serviceType,setServiceType] = useState(!currentServiceID?serviceTypes[0]:currentUserService.typeOfService);
+   const serviceTypesWoman = ['Cheveux femme','Mariage','Soins'];
+   const [serviceTypeWoman,setServiceTypeWoman] = useState(!currentServiceID?serviceTypesWoman[0]:currentUserService.typeOfService);
    const [error, setError] = useState();
    const [isLoading,setIsLoading]= useState(false);//ActivityIndicator handling
    const dispatch= useDispatch();
    
-   //picker only iOS function 
+   //picker only iOS hours function 
    const onPress = () =>{
      const hoursIOS = ['0','1','2','3','4','5','6','7','8','9','10','11','12'];    
      ActionSheetIOS.showActionSheetWithOptions(
@@ -75,9 +80,9 @@ const EditServiceScreen = props =>{
          } 
        }
      );  
- }
+ };
 
- //picker only iOS function 
+ //picker only iOS minutes function 
  const onPressMinute = () =>{
   const minutesIOS = ['0','5','10','15','20','25','30','35','40','45','50','55'];    
   ActionSheetIOS.showActionSheetWithOptions(
@@ -93,7 +98,44 @@ const EditServiceScreen = props =>{
       } 
     }
   );  
-}
+};
+
+ //picker only iOS service type function 
+ const onPressServiceType = () =>{
+  const serviceTypesIOS = ['Barbe','Cheveux'];    
+  ActionSheetIOS.showActionSheetWithOptions(
+    {
+      options: serviceTypesIOS,
+      cancelButtonIndex: -1
+    },
+    buttonIndex => {
+      if (buttonIndex === -1) {
+        // cancel action
+      } else {
+       setServiceType(serviceTypesIOS[buttonIndex]);
+      } 
+    }
+  );  
+};
+
+//picker only iOS service type Woman function 
+const onPressServiceTypeWoman = () =>{
+  const serviceTypesWomanIOS = ['Cheveux femme','Mariage','Soins'];    
+  ActionSheetIOS.showActionSheetWithOptions(
+    {
+      options: serviceTypesWomanIOS,
+      cancelButtonIndex: -1
+    },
+    buttonIndex => {
+      if (buttonIndex === -1) {
+        // cancel action
+      } else {
+       setServiceTypeWoman(serviceTypesWomanIOS[buttonIndex]);
+      } 
+    }
+  );  
+};
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///Input management
@@ -144,18 +186,32 @@ useEffect(() => {
       setIsLoading(true);
 
          if(currentUserService){
+           if(barber.sex==='Homme'){
            await dispatch(servicesActions.updateService(currentUserService.serviceId, 
                                                         formState.inputValues.name,
                                                         +formState.inputValues.price,
-                                                        duration));
+                                                        duration,serviceType));
+           }else{
+            await dispatch(servicesActions.updateService(currentUserService.serviceId, 
+              formState.inputValues.name,
+              +formState.inputValues.price,
+              duration,serviceTypeWoman));
+           }
          }else{
+          if(barber.sex==='Homme'){
           await dispatch(servicesActions.createService(
                                                         formState.inputValues.name,
                                                         +formState.inputValues.price,
                                                         duration,
-                                                        barber.id));
+                                                        barber.id,serviceType));
+          }else{
+            await dispatch(servicesActions.createService(
+              formState.inputValues.name,
+              +formState.inputValues.price,
+              duration,
+              barber.id,serviceTypeWoman));
          }
-        
+        }
      
       props.navigation.goBack();
   } catch(err){
@@ -191,6 +247,43 @@ useEffect(()=>{
              </View>
 
              <View style={styles.inputsContainer}>
+            
+             <View style={{flexDirection:'row',width:'90%',marginVertical:5,alignItems:'center'}}>
+                   <View style={{width:'50%'}}>
+                    <Text style={{fontFamily:'poppins',fontSize:12,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.ServiceType:polylanar.ServiceType}</Text>
+                   </View>
+                   <View style={{ width:'50%',borderWidth:1,paddingHorizontal:12,borderRadius:25,backgroundColor:Platform.OS=='ios'?Colors.blue:'#d3d3d3',
+                                  borderColor:'#d3d3d3',height:45,
+                                  justifyContent:'center',alignSelf:'center'}}>
+                   {Platform.OS === 'android' &&  barber.sex === 'Homme' ? 
+                    
+                              (<Picker
+                              selectedValue={serviceType}
+                              onValueChange={itemValue => setServiceType(itemValue)}
+                              style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}
+                              >
+                              {serviceTypes.map(el=> <Picker.Item label={el} value={el} key={el} />)}
+                              </Picker>) :
+                              Platform.OS === 'android' &&  barber.sex === 'Femme' ?
+                              ( <Picker
+                               selectedValue={serviceTypeWoman}
+                               onValueChange={itemValue => setServiceTypeWoman(itemValue)}
+                               style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}
+                               >
+                               {serviceTypesWoman.map(el=> <Picker.Item label={el} value={el} key={el} />)}
+                               </Picker> )
+                              : 
+                              Platform.OS === 'ios' &&  barber.sex === 'Homme' ?
+                             
+                              (<Text onPress={onPressServiceType} style={{fontFamily:'poppins',fontSize:12,color:'#fff'}}>
+                                {serviceType}
+                              </Text>):
+                               Platform.OS === 'ios' &&  barber.sex === 'Femme' ?
+                              (<Text onPress={onPressServiceTypeWoman} style={{fontFamily:'poppins',fontSize:12,color:'#fff'}}>
+                               {serviceTypeWoman}
+                             </Text>):undefined} 
+                  </View>
+                 </View>
                  <View style={{flexDirection:'row',width:'90%',marginVertical:5,alignItems:'center'}}>
                    <View style={{width:'50%'}}>
                     <Text style={{fontFamily:'poppins',fontSize:12,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.ServiceName:polylanar.ServiceName}</Text>
@@ -198,7 +291,7 @@ useEffect(()=>{
                   
                     <InputProfile
                         id="name" 
-                        placeholder={barber && barber.lang?polylanfr.Beard:polylanar.Beard}
+                        placeholder={barber && barber.lang?polylanfr.BeardTrace:polylanar.BeardTrace}
                         placeholderTextColor={Platform.OS=='android'?'rgba(50,52,70,0.4)':'#d3d3d3'}
                         keyboardType="default"
                         onInputChange={inputChangeHandler}
@@ -291,7 +384,7 @@ useEffect(()=>{
                         end:{x: 1, y: 0}
                         
                     }}
-                  />: <ActivityIndicator color={Colors.primary}/>}
+                  />: <ActivityIndicator style={{marginBottom:25}} color={Colors.primary}/>}
              </View>
           </View>
        </KeyboardAvoidingView>
@@ -324,10 +417,10 @@ container:{
   width:'100%',
 },
 backgroundContainer:{
-  height:'30%'
+  height:'25%'
 },
 secondContainer:{
- height:'70%',
+ height:'75%',
  width:'100%',
  backgroundColor:'#fff',
  borderTopLeftRadius:30,
@@ -337,7 +430,7 @@ secondContainer:{
 },
 headerContainer:{
   width:'90%',
-  height:'20%',
+  height:'15%',
   flexDirection:'row',
   justifyContent:'space-between',
   alignItems:'center',
@@ -356,8 +449,9 @@ inputContainer:{
  borderColor:'#d3d3d3'
 },
 footerContainer:{
- height:'25%',
+ height:'30%',
  width:'100%',
+ justifyContent:'flex-end'
 },
 labelButton:{
  color:'#FFF',
@@ -371,7 +465,7 @@ buttonStyle:{
  borderRadius:20,
  height:40,
  alignSelf:'center',
- marginTop:10
+ marginBottom:25
 }
 });
 

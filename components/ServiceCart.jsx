@@ -12,7 +12,7 @@ const height = Dimensions.get('window').height;
 
 
 const ServiceCart = props =>{
-     const isImage= {barbe:require('../assets/images/beard.jpeg'),hair:require('../assets/images/hairstyle.png')}; 
+     
     
      const barber=useSelector(state=>state.barbers.barber[0]);
     
@@ -20,7 +20,7 @@ const ServiceCart = props =>{
     return(
         <View style={styles.serviceContainer}>
           <View style={styles.backgroundContainer}>
-            <ImageBackground style={styles.background} resizeMode='cover' source={isImage.hair}>
+            <ImageBackground style={styles.background} resizeMode='cover' source={props.source}>
                     <View style={styles.firstRow}>
                         <View style={styles.serviceNumberContainer}>
                           <Text style={styles.number}>{barber && barber.lang?polylanfr.Service+' '+props.number:polylanar.Service+' '+props.number}</Text>
@@ -30,13 +30,14 @@ const ServiceCart = props =>{
                         </View>
                     </View>
                     <View style={styles.secondRow}>
+                          <Text style={styles.textType}>{props.type}</Text>
                           <Text style={styles.textPrice}>{props.price+' دج'}</Text>
                     </View>
             </ImageBackground>
           </View>
          
            <View style={styles.iconsContainer}>
-               <View>
+               <View style={{width:'50%'}}>
                    <Text style={styles.serviceName}>{props.name}</Text>
                </View>
                <View style={styles.iconsRow}>
@@ -64,14 +65,13 @@ const styles= StyleSheet.create({
     borderRadius:10,
     elevation:5,
     alignSelf:'center',
-    flexDirection:'row',
     width:'90%',
     marginVertical:10,
-    height:height*0.15
+    height:height*0.25
   },
   backgroundContainer:{
-    width:'65%',
-    height:'100%',
+    width:'100%',
+    height:'70%',
     backgroundColor:'#f9f9f9'
   },
   background:{
@@ -101,12 +101,19 @@ const styles= StyleSheet.create({
   },
   secondRow:{
     backgroundColor:'#fff',
-    width:'50%',
+    width:'100%',
+    flexDirection:'row',
+    justifyContent:'space-between',
     alignSelf:'center',
     alignItems:'center',
-    justifyContent:'flex-end',
-    borderTopRightRadius:30,
-    borderTopLeftRadius:30
+    borderTopRightRadius:20,
+    borderTopLeftRadius:20,
+    paddingHorizontal:20
+  },
+  textType:{
+    fontSize:12,
+    color:Colors.primary,
+    fontFamily:'poppins-bold'
   },
   textPrice:{
     fontSize:18,
@@ -117,20 +124,24 @@ const styles= StyleSheet.create({
     color:Colors.blue,
     fontFamily:'poppins-bold',
     fontSize:12,
-    alignSelf:'center'
-  },
-  iconsRow:{
-    flexDirection:'row',
-    justifyContent:'space-around',
-    width:'100%'
+    alignSelf:'flex-start'
   },
   iconsContainer:{
-    width:'35%',
-    justifyContent:'space-between',
+    width:'100%',
+    height:'30%',
+    flexDirection:'row',
     alignItems:'center',
     backgroundColor:Platform.OS==='android'?'#fff':'#f9f9f9',
     paddingVertical:10,
-    paddingHorizontal:10
+    paddingHorizontal:10,
+    borderTopColor:'#f0F0F0',
+    borderTopWidth:1,
+    paddingHorizontal:20
+  },
+  iconsRow:{
+    flexDirection:'row',
+    justifyContent:'flex-end',
+    width:'50%',
   },
   iconFormCircleService:{
     width:30,
@@ -150,7 +161,8 @@ const styles= StyleSheet.create({
     alignItems:'center',
     backgroundColor:Colors.colorF5,
     overflow:'hidden',
-    elevation:5
+    elevation:5,
+    marginRight:10
   },
   iconFormCircleDelete:{
     width:30,
@@ -158,7 +170,7 @@ const styles= StyleSheet.create({
     borderRadius:20,
     justifyContent:'center',
     alignItems:'center',
-    backgroundColor:Colors.secondary,
+    backgroundColor:'red',
     overflow:'hidden',
     elevation:5
   }

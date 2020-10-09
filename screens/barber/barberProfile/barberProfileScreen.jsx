@@ -1,5 +1,5 @@
 import React,{useState,useEffect,useReducer,useCallback} from 'react';
-import { StyleSheet,View,AsyncStorage,ScrollView,TouchableWithoutFeedback,Keyboard,ImageBackground,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActionSheetIOS,Picker,ActivityIndicator,Platform} from 'react-native';
+import { StyleSheet,View,AsyncStorage,Linking,ScrollView,TouchableWithoutFeedback,Keyboard,ImageBackground,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActionSheetIOS,Picker,ActivityIndicator,Platform} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
 import {useSelector,useDispatch} from 'react-redux';
 import Colors from "../../../constants/Colors";
@@ -53,7 +53,6 @@ const BarberProfileScreen = props =>{
     const [isLocalisation,setIsLocalisation]= useState(false);
     //State for update loading 
     const [isLoading,setIsLoading]=useState(false);
-    const [isDeleteLoading, setIsDeleteLoading]= useState(false);
     const [error,setError]=useState();
     
     //bring firebase user id
@@ -70,6 +69,23 @@ const BarberProfileScreen = props =>{
       setIsInfo(false);
       setIsLocalisation(true);
     };
+
+  const URL = "https://tahfifaapp.com";
+  const URLAbout = "https://tahfifaapp.com/qui-sommes-nous/";
+  const url= ()=>{
+    Linking.openURL(URL).catch((err) => {
+      if(err){
+        Alert.alert('Oups!','Votre débit internet est trop faible',[{text:'OK'}]);
+    } 
+    });
+   };
+   const url2= ()=>{
+    Linking.openURL(URLAbout).catch((err) => {
+      if(err){
+        Alert.alert('Oups!','Votre débit internet est trop faible',[{text:'OK'}]);
+    } 
+    });
+   };
 
     //States for complex information textInputs
    const [wilaya,setWilaya] = useState(barber[0]?barber[0].wilaya:undefined);
@@ -200,34 +216,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
         return;
    };
 
-    const deleteAccount= async()=>{
-      try{
-        setIsDeleteLoading(true);
-        setError(false);
-         dispatch(barberActions.deleteBarber(barberID));
-         dispatch(authActions.deleteUser(barberUID)); 
-         dispatch(authActions.logout());
-         setIsDeleteLoading(false);
-         AsyncStorage.clear();
-         props.navigation.navigate('Auth');
-      }catch(err){
-       console.log(err);
-       setError(true);
-       if(error){
-        Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
-       }
-       throw err;
-      }
-   };
- 
-   const alertDelete = ()=>{
-      Alert.alert(
-        barber && barber[0].lang?polylanfr.Warning:polylanar.Warning,
-        barber && barber[0].lang?polylanfr.DoYouWantToDeleteYourAccount:polylanar.DoYouWantToDeleteYourAccount,
-       [{text:barber && barber[0].lang?polylanfr.Yes:polylanar.Yes, style:'destructive', onPress:deleteAccount},
-        {text:barber && barber[0].lang?polylanfr.No:polylanar.No, style:'cancel'}]);
-        return;
-   };
+   
 
    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //Update barber's data Management after pressing in Check icon
@@ -268,11 +257,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
    },[saveHandler,isLoading]);
 
 
-   if(isDeleteLoading){
-    return ( <ImageBackground source={require('../../../assets/images/support.png')} style={styles.coverTwo}>
-                <ActivityIndicator size='large' color={Colors.primary} />
-            </ImageBackground>)
-  };
+  
 
   
     return(
@@ -464,10 +449,10 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
        </ScrollView>):
        (<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false}>
            <View style={styles.noticeContainer}>
-               <Text style={{fontFamily:'poppins-bold',fontSize:13,color:'#323446',alignSelf:barber && barber[0].lang?'flex-start':'flex-end'}}>{barber && barber[0].lang?polylanfr.Notice:polylanar.Notice}</Text>
-               <Text style={{fontFamily:'poppins',fontSize:12,color:'#323446',alignSelf:barber && barber[0].lang?'flex-start':'flex-end'}}>{barber && barber[0].lang?polylanfr.NoticeMessage:polylanar.NoticeMessage}</Text>
-               <Text style={{ fontFamily:'poppins',fontSize:12,color:'#fd6c57',paddingTop:5,alignSelf:barber && barber[0].lang?'flex-start':'flex-end'}}>{barber && barber[0].lang?polylanfr.TeamTahfifa:polylanar.TeamTahfifa}</Text>
-           </View>
+             <Text style={styles.noticeTitle}>Saviez-vous?</Text>
+             <Text style={styles.noticeContent}>Visitez-nous sur le lien suivant pour plus d'informations: <Text onPress={url} style={{color:Colors.primary}}>tahfifaapp.com</Text></Text>
+             <Text style={styles.tahfifaSignature} onPress={url2}>Equipe TAHFIFA.</Text>
+         </View>
            <View style={styles.buttonContainer}>
                 <View style={styles.cartContainer}>
                   <TouchableOpacity style={styles.cart} onPress={alertLogout}>
@@ -489,16 +474,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                        </View>
                   </TouchableOpacity>
                 </View>
-                <View style={styles.cartContainer}>
-                  <TouchableOpacity style={styles.cart} onPress={alertDelete}>
-                         <View style={{paddingBottom:5}}>
-                            <MaterialCommunityIcons title = "delete" name ='delete-forever' color='#FE457C' size={23} />
-                          </View>
-                          <View>
-                            <Text style={styles.optionTitle}>{barber && barber[0].lang?polylanfr.MyAccount:polylanar.MyAccount}</Text>
-                          </View>
-                  </TouchableOpacity>
-                </View>
+                
            </View>
          </ScrollView>)}
     </View>
@@ -722,7 +698,7 @@ const styles= StyleSheet.create({
       borderRadius:10
     },
     cartContainer:{
-      width:'33%',
+      width:'50%',
       height:100,
       alignItems:'center',
       justifyContent:'center',
@@ -739,7 +715,25 @@ const styles= StyleSheet.create({
       width:'100%',
       height:'100%',
       resizeMode:'cover'
-    }
+    },
+    noticeContent:{
+      fontFamily:'poppins',
+      fontSize:12,
+      color:'#323446'
+    },
+     noticeTitle:{
+       fontFamily:'poppins-bold',
+       fontSize:13,
+       color:'#323446'
+     },
+  
+     
+     tahfifaSignature:{
+       fontFamily:'poppins',
+       fontSize:12,
+       color:'#fd6c57',
+       paddingTop:5
+     },
 });
 
 export default BarberProfileScreen;

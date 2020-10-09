@@ -27,7 +27,7 @@ const BarberServiceScreen = props =>{
   const [isUpdating,setIsUpdating]= useState(false);//ActivityIndicator handling for worktime update
 
   const dispatch= useDispatch();
-
+  const isImage= {beard:require('../../../assets/images/barbe.jpg'),hair:require('../../../assets/images/hair.jpg'),supp:require('../../../assets/images/supplements.jpg'),womanHair:require('../../../assets/images/womanhair.jpg'),wedding:require('../../../assets/images/mariage.jpg'),care:require('../../../assets/images/soins.jpg')};
    //variables for open times
   let satTimeO;
   let sunTimeO;
@@ -78,7 +78,7 @@ const BarberServiceScreen = props =>{
   },[getBarber]);
 
   const barber= useSelector(state=>state.barbers.barber);
-  //console.log(barber);
+  console.log(barber);
     const services = ()=>{
       setIsServices(true);
       setIsDisponible(false);
@@ -491,7 +491,9 @@ const BarberServiceScreen = props =>{
           <ServiceCart
             key={service.serviceId}
             number={index+1}
+            source={service.typeOfService==='Cheveux'?isImage.hair: service.typeOfService==='Barbe'?isImage.beard: service.typeOfService==='Soins'?isImage.care:service.typeOfService==='Mariage'?isImage.wedding:service.typeOfService==='Suppléments'?isImage.supp:service.typeOfService==='Cheveux femme'?isImage.womanHair:undefined}
             name={service.name}
+            type={service.typeOfService}
             minute={service.duration}
             price={service.price}
             onPressUpdate={()=>props.navigation.navigate('EditService',{idService:service.serviceId})}

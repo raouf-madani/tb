@@ -127,7 +127,7 @@ export const setBarber= id => {
                     
                    
                     
-                    if(e.id!==null && e.name!==null && e.price!==null && e.duration!==null && e.barber_id!==null && e.durationHours!==0 && e.durationMinutes!==0){
+                    if(e.id!==null && e.name!==null && e.price!==null && e.duration!==null && e.barber_id!==null && e.typeOfService!==null && e.durationHours!==0 && e.durationMinutes!==0){
                        
                         const hours = (e.duration / 60);
                         const durationHours = Math.floor(hours);
@@ -140,6 +140,7 @@ export const setBarber= id => {
                             price : e.price,
                             duration : e.duration,
                             barberID:e.barber_id,
+                            typeOfService:e.typeOfService,
                             durationHour:durationHours,
                             durationMinute:durationMinutes
                     }

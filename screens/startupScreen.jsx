@@ -30,22 +30,7 @@ const StartupScreen = props =>{
            props.navigation.navigate('Barber',{barberID:id,barberUID:userID});
             console.log(token);
             
-           /*await dispatch(authActions.refreshTokenStepOne(token));
-           
-           const userTokenData= await AsyncStorage.getItem('userTokenData');
-           if(!userTokenData){
-            props.navigation.navigate('Auth');
-            return;
-           }
-   
-           const transformedTokenData= JSON.parse(userTokenData);
-           const {refreshToken,expiresIn}= transformedTokenData;
          
-
-           const expirationTime = expirationDate.getTime() - new Date().getTime();
-           const newExpirationTime= expirationTime + parseInt(expiresIn);
-            console.log(refreshToken);
-            */
        }
        tryLogin();
     },[dispatch]);

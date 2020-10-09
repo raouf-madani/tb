@@ -73,9 +73,10 @@ const SignupBarberScreen = props =>{
       const eye=()=>{
         setIsEye(prevValue=>!prevValue);
       };
+      
      
      
-     //picker only iOS function 
+     //picker only iOS wilaya function 
      const onPress = () =>{
        const wilayasIOS = ['Alger','Blida'];    
        ActionSheetIOS.showActionSheetWithOptions(
@@ -93,7 +94,7 @@ const SignupBarberScreen = props =>{
        );  
    }
 
-   //picker only iOS function 
+   //picker only iOS gender function 
    const onPressSex = () =>{
     const sexIOS = ['Homme','Femme'];    
     ActionSheetIOS.showActionSheetWithOptions(
@@ -247,11 +248,12 @@ const sendCode = async () => {
                 firebaseConfig={Firebaseconfig}
               />
           
-              <View style={styles.firstContainer}>
+              <View style={{width:'85%',height:verificationId?'50%':'30%',alignSelf:'center',alignItems:'flex-start',justifyContent:'flex-end'}}>
                  <Image source={require('../../assets/images/icon.png')} style={styles.icon}/>
                  <Text style={styles.slogan}>Allez chez votre client ou recevez-le au salon</Text>
               </View>
               <View style={styles.secondContainer}>
+              {!verificationId ? (<View>
                 <CustomInput
                     id='phone'
                     rightIcon={<MaterialIcons title = "phone" name ='phone' color='#323446' size={23} />}
@@ -335,7 +337,7 @@ const sendCode = async () => {
                         editable={!verificationId}
                       />
              
-                {!verificationId ? (<View><Button
+                <View><Button
                     theme={{colors: {primary:'#fd6c57'}}} 
                     title="S'inscrire"
                     titleStyle={styles.labelButton}
@@ -350,8 +352,9 @@ const sendCode = async () => {
                     }}
                   />
                   {verifyInProgress && <ActivityIndicator color={Colors.primary} style={styles.loader} />}
+                  </View>
                   </View>):
-                  (<View>
+                  (<View style={{height:'50%'}}>
                     <View style={{width:'100%',borderWidth:1, borderRadius:25,backgroundColor:'#d3d3d3',borderColor:confirmError?Colors.primary:'#d3d3d3',marginVertical:3,height:45,alignItems:'center',justifyContent:'center'}}>
                       <TextInput
                               placeholder='Entrez les 6 chiffres'
@@ -363,6 +366,7 @@ const sendCode = async () => {
                               style={{color:'#323446'}}
                             />
                   </View>
+                  <View style={styles.cofirmResendContainer}>
                   <Button
                     theme={{colors: {primary:'#fd6c57'}}} 
                     title="Confirmer"
@@ -377,16 +381,34 @@ const sendCode = async () => {
                         
                     }}
                   />
+                  <Button
+                    theme={{colors: {primary:'#fd6c57'}}} 
+                    title="Renvoyer"
+                    titleStyle={styles.labelButton}
+                    buttonStyle={styles.confirmedButtonStyle}
+                    onPress={signupHandler}
+                    ViewComponent={LinearGradient} 
+                    linearGradientProps={{
+                        colors: ['#fd6d57', '#fd9054'],
+                        start: {x: 0, y: 0} ,
+                        end:{x: 1, y: 0}
+                        
+                    }}
+                  />
+                  </View>
                   {confirmError && (<Text style={styles.confirmErrorText}>Erreur: code erroné!</Text>)}
                     {confirmInProgress ? <ActivityIndicator color={Colors.primary} style={styles.loader} />:<Text style={styles.smsText}>Un code de 6 chiffres a été envoyé sur votre SMS</Text>}
-                  </View>)}
+
+                  </View>
                   
-                  <View style={styles.loginContainer}>
+                  )}
+                  
+                  {!verificationId?<View style={styles.loginContainer}>
                     <Text style={styles.doYouHaveAnAccount}>Avez-vous déjà un compte? </Text>
                     <TouchableOpacity onPress={()=>props.navigation.navigate('Login')}>
                       <Text style={styles.loginText}>Se connecter</Text>
                     </TouchableOpacity>
-                  </View>
+                  </View>:undefined}
               </View>
             
              
@@ -445,7 +467,6 @@ const styles= StyleSheet.create({
   },
   secondContainer:{
     width:'85%',
-    height:'70%',
     alignSelf:'center',
     paddingTop:20
   },
@@ -465,7 +486,7 @@ const styles= StyleSheet.create({
    },
    confirmedButtonStyle:{
     borderColor:'#fd6c57',
-    width:'100%',
+    width:'80%',
     borderRadius:20,
     height:45,
     alignSelf:'center',
@@ -497,12 +518,20 @@ const styles= StyleSheet.create({
   smsText:{
     color:'green',
     fontSize:11,
-    paddingTop:5,
-    alignSelf:'center'
+    paddingTop:10,
+    alignSelf:'center',
+    fontFamily:'poppins-bold'
   },
   phoneNumber:{
     fontSize:15,
     color:Colors.blue,
+  },
+  cofirmResendContainer:{
+    flexDirection:'row',
+    justifyContent:'space-around',
+    alignItems:'center',
+    width:'100%',
+    marginTop:15
   }
    
 });

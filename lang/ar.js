@@ -125,8 +125,10 @@ export default{
     SupportMessage:"إذا واجهت أي مشكلة ، فلا تتردد في الإتصال بنا في أسرع وقت ممكن عبر المعلومات التالية:",
     //EditService Detail screen********************************************************************
     ChooseService:"إختر خدمتك",
+    ServiceType:"نوع الخدمة",
     ServiceName:"إسم الخدمة",
-    Beard:"مثال: لحية",
+    Beard:"لحية",
+    BeardTrace:"مثال: لحية مرسومة",
     Hours:"الساعات",
     Minutes:"الدقائق",
     PriceIn:"السعر ب دج",
