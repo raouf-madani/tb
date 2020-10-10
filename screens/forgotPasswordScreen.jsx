@@ -1,13 +1,10 @@
 import React,{useState,useCallback,useReducer,useRef} from 'react';
-import { StyleSheet,View,KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard,Text,Image,Dimensions,StatusBar,Alert,ActivityIndicator,AsyncStorage,TextInput} from 'react-native';
+import { StyleSheet,View,KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard,Text,Image,Dimensions,StatusBar,Alert,ActivityIndicator,TextInput} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons} from "@expo/vector-icons";
 import {Button } from 'react-native-elements';
 import Colors from '../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import CustomInput from '../components/Input';
-import * as Crypto from 'expo-crypto'; 
-import * as barberActions from '../store/actions/barberActions';
-import {useDispatch} from 'react-redux';
 import * as FirebaseRecaptcha from "expo-firebase-recaptcha";
 import * as firebase from "firebase";
 import Firebaseconfig from '../helpers/Firebaseconfig';
@@ -69,7 +66,6 @@ const [verificationCode, setVerificationCode] = useState("");
 const [confirmError, setConfirmError] = useState(false);
 const [confirmInProgress, setConfirmInProgress] = useState(false);
 const prefix='+213';
-const dispatch= useDispatch();
 
 
 const[formState,disaptchFormState] = useReducer(formReducer,
@@ -90,18 +86,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
 },[disaptchFormState]);
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
 
-  AsyncStorage.setItem('userData',
-                        JSON.stringify({
-                        token:token,
-                        userID:userID,
-                        expiryDate: expirationDate.toISOString(),
-                        gender:gender,
-                        id:id
-                       }) 
-                       );
-        };
 
 const verifyNumber = async ()=>{
 
@@ -173,52 +158,7 @@ const verifyNumber = async ()=>{
       
     };
           
-const login = async()=>{
 
-    if(formState.formIsValid && formState.inputValues.password){
-    try{
-    const hashedPassword = await Crypto.digestStringAsync(
-    Crypto.CryptoDigestAlgorithm.SHA512,
-    formState.inputValues.password
-    );
-
-
-    setIsLogin(true);
-    const result = await fetch(`http://173.212.234.137:3000/phone/${prefix+formState.inputValues.phone}`);
-    const resData= await result.json();
-    const barbers= await fetch('http://173.212.234.137:3000/barber');
-    const barbersData= await barbers.json();
-    setIsLogin(false);
-
-const currentBarberObject= barbersData.find(item=> item.phone===prefix+formState.inputValues.phone && item.password===hashedPassword);
-
-if(currentBarberObject){
-Alert.alert('Erreur!','Votre nouveau mot de passe doit être différent d\'ancien mot de passe.',[{text:"Réessayer"}]);
-return;
-}
-
-const currentBarber= barbersData.find(item=>item.phone===prefix+formState.inputValues.phone);
-
-if(currentBarber){
-    
-    dispatch(barberActions.updateBarberPassword(formState.inputValues.phone,hashedPassword));
-    
-    Alert.alert(`${currentBarber.name} ${currentBarber.surname}`,'Contents de vous revoir!',[{text:"Merci"}]);
-    props.navigation.navigate('Barber',{barberID:currentBarber.id,barberUID:resData.userRecord.uid});
-    saveDataToStorage(resData.token,resData.userRecord.uid,new Date(resData.expirationDate),currentBarber.type,currentBarber.id);
-}
-
-}catch(error){
-    console.log(error);
-    Alert.alert('Oups!','Une erreur est survenue.',[{text:"OK"}]);
-    setIsLogin(false);
-}
-
-}else{
-Alert.alert('Erreur!','Veuillez rentrer votre nouveau mot de passe s\'il vous plait!',[{text:"OK"}]);
-}
-
-};  
 
     return(
       <TouchableWithoutFeedback onPress = {()=>{Keyboard.dismiss()}}>
@@ -228,6 +168,8 @@ Alert.alert('Erreur!','Veuillez rentrer votre nouveau mot de passe s\'il vous pl
          <FirebaseRecaptcha.FirebaseRecaptchaVerifierModal
                 ref={recaptchaVerifier}
                 firebaseConfig={Firebaseconfig}
+                title='Prouvez que vous êtes humain!'
+                cancelLabel='Fermer'
               />
           <View style={styles.backgroundContainer}>
             <Image source={require('../assets/images/loginimage.jpg')} style={{resizeMode:'cover',width:'100%',height:'100%'}}/>
@@ -257,7 +199,7 @@ Alert.alert('Erreur!','Veuillez rentrer votre nouveau mot de passe s\'il vous pl
                  
                  <Button
                     theme={{colors: {primary:'#fd6c57'}}} 
-                    title={"Vérifier"}
+                    title="Vérifier"
                     titleStyle={styles.labelButton}
                     buttonStyle={styles.buttonStyle}
                     ViewComponent={LinearGradient} 
@@ -280,7 +222,7 @@ Alert.alert('Erreur!','Veuillez rentrer votre nouveau mot de passe s\'il vous pl
                         returnKeyType="next"
                         onChangeText={verificationCode=>setVerificationCode(verificationCode)}
                         placeholderTextColor='rgba(50,52,70,0.4)'
-                        style={{color:'#323446'}}
+                        style={{color:'#323446',width:'90%'}}
                       />
               </View>
               <View style={styles.cofirmResendContainer}>
@@ -460,7 +402,7 @@ const styles= StyleSheet.create({
     alignSelf:'center'
   },
   smsText:{
-    color:'green',
+    color:Colors.blue,
     fontSize:11,
     paddingTop:10,
     alignSelf:'center',

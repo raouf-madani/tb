@@ -216,7 +216,7 @@ TestScreen.navigationOptions= ()=>{
       
       />
     ),
-    headerTintColor: '#fff',
+    headerLeft:()=>null,
   
   };
 }

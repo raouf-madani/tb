@@ -19,7 +19,6 @@ const BarberSupportScreen = props =>{
   const facebookURL = "https://www.facebook.com/TahfifaApp";
   const instagramURL = "https://www.instagram.com/tahfifaapp/";
   const linkedinURL = "https://www.linkedin.com/company/tahfifa/";
-  const tiktokURL = "";
   //get the barber's data
   const barber= useSelector(state=>state.barbers.barber);
   const callPhone = ()=>{
@@ -91,9 +90,6 @@ const BarberSupportScreen = props =>{
               <TouchableOpacity style={{marginHorizontal:5}} onPress={linkedinUrl}>
                 <MaterialCommunityIcons name="linkedin" size={32} color="black" /> 
               </TouchableOpacity> 
-              <TouchableOpacity style={{marginHorizontal:5}}>
-                <Image source={require('../../../assets/images/tiktok.png')} style={{width:25,height:25}} /> 
-              </TouchableOpacity>
               <TouchableOpacity style={{marginHorizontal:5}} onPress={callPhone}>
                  <MaterialCommunityIcons name="phone" size={32} color="black" /> 
               </TouchableOpacity> 

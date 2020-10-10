@@ -299,7 +299,12 @@ const BarberServiceScreen = props =>{
           
           <View style={styles.infoContainer}>
              <View style={styles.imageContainer}>
-                 <Image source={require('../../../assets/images/angelina.png')} style={styles.icon} />
+             {barber && barber[0].image===null && barber[0].sex==='Homme'?
+                  <Image source={require('../../../assets/images/man2.jpg')} style={styles.icon} />:
+                  barber && barber[0].image===null && barber[0].sex==='Femme'?
+                  <Image source={require('../../../assets/images/angelina.png')} style={styles.icon} />:
+                  <Image source={require('../../../assets/images/man2.jpg')} style={styles.icon}/>
+                  }
              </View>
            
              <Text style={styles.bname}>{barber[0] && barber[0].b_name!==null?barber[0].b_name:barber && barber[0].lang?polylanfr.BusinessName:polylanar.BusinessName}</Text>
@@ -458,7 +463,12 @@ const BarberServiceScreen = props =>{
            
            <View style={styles.infoContainer}>
               <View style={styles.imageContainer}>
-                  <Image source={require('../../../assets/images/angelina.png')} style={styles.icon} />
+              {barber && barber[0].image===null && barber[0].sex==='Homme'?
+                  <Image source={require('../../../assets/images/man2.jpg')} style={styles.icon} />:
+                  barber && barber[0].image===null && barber[0].sex==='Femme'?
+                  <Image source={require('../../../assets/images/angelina.png')} style={styles.icon} />:
+                  <Image source={require('../../../assets/images/man2.jpg')} style={styles.icon}/>
+                  }
               </View>
             
               <Text style={styles.bname}>{barber[0] && barber[0].b_name!==null?barber[0].b_name:barber && barber[0].lang?polylanfr.BusinessName:polylanar.BusinessName}</Text>

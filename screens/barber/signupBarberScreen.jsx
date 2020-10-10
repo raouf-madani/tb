@@ -246,6 +246,8 @@ const sendCode = async () => {
           <FirebaseRecaptcha.FirebaseRecaptchaVerifierModal
                 ref={recaptchaVerifier}
                 firebaseConfig={Firebaseconfig}
+                title='Prouvez que vous êtes humain!'
+                cancelLabel='Fermer'
               />
           
               <View style={{width:'85%',height:verificationId?'50%':'30%',alignSelf:'center',alignItems:'flex-start',justifyContent:'flex-end'}}>

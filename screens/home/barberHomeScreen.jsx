@@ -393,7 +393,13 @@ async function registerForPushNotificationsAsync() {
            </View>
            <View style={styles.infoContainer}>
                <View style={styles.imageContainer}>
-                  <Image source={require('../../assets/images/man2.jpg')} style={styles.icon} />
+                  {barber && barber.image===null && barber.sex==='Homme'?
+                  <Image source={require('../../assets/images/man2.jpg')} style={styles.icon} />:
+                  barber && barber.image===null && barber.sex==='Femme'?
+                  <Image source={require('../../assets/images/angelina.png')} style={styles.icon} />:
+                  <Image source={require('../../assets/images/man2.jpg')} style={styles.icon}/>
+                  }
+                  
                </View>
                <Text style={styles.bname}>{barber && barber.b_name!==null?barber.b_name:barber && barber.lang?polylanfr.BusinessName:polylanar.BusinessName}</Text>
                <Text style={styles.jobAge}>{barber && (barber.name!==null || barber.surname!==null || barber.age!==null)?`${barber.name} ${barber.surname}, ${barber.age} ${barber && barber.lang?polylanfr.Yo:polylanar.Yo}`:barber && barber.lang?polylanfr.personalInforamtion:polylanar.personalInforamtion}</Text>
