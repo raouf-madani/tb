@@ -299,12 +299,12 @@ const sendCode = async () => {
                       >
                       {sexTypes.map(el=> <Picker.Item label={el} value={el} key={el} />)}
                       </Picker> :
-                      <View style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:17,paddingRight:25}}>
-                      <Text onPress={onPressSex} style={{fontFamily:'poppins',fontSize:12,color:Colors.blue,fontSize:15,fontWeight:'500'}}>
+                      <TouchableOpacity onPress={onPressSex} style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:17,paddingRight:25}}>
+                      <Text  style={{fontFamily:'poppins',fontSize:12,color:Colors.blue,fontSize:15,fontWeight:'500'}}>
                         {sex?sex:sexTypes[0]}
                       </Text>
                       <Ionicons name="ios-arrow-down" size={24} color={Colors.blue} onPress={onPressSex} />
-                      </View>}
+                      </TouchableOpacity>}
                   </View>
                   <View style={{ width:'100%',borderWidth:1,borderRadius:25,backgroundColor:'#d3d3d3',borderColor:wilaya!==wilayas[0]?'#d3d3d3':Colors.primary,marginVertical:3,height:45,justifyContent:'center'}}>
                   {Platform.OS === 'android' ? 
@@ -315,12 +315,12 @@ const sendCode = async () => {
                               >
                               {wilayas.map(el=> <Picker.Item label={el} value={el} key={el} />)}
                               </Picker> :
-                              <View style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:17,paddingRight:25}}>
-                              <Text onPress={onPress} style={{fontFamily:'poppins',fontSize:15,color:Colors.blue,fontWeight:'500'}}>
+                              <TouchableOpacity onPress={onPress} style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:17,paddingRight:25}}>
+                              <Text  style={{fontFamily:'poppins',fontSize:15,color:Colors.blue,fontWeight:'500'}}>
                                 {wilaya?wilaya:wilayas[0]}
                               </Text>
                               <Ionicons name="ios-arrow-down" size={24} color={Colors.blue} onPress={onPress} />
-                              </View>}
+                              </TouchableOpacity>}
                 </View>
                 <CustomInput
                         id='region'

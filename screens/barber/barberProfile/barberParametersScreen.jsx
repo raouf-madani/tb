@@ -341,7 +341,7 @@ if(isLoadingState || barber===undefined){
               </TouchableOpacity>
         </View>
         {isPhone?(<ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-          <KeyboardAvoidingView keyboardVerticalOffset={10}>
+          <KeyboardAvoidingView keyboardVerticalOffset={10} behavior={Platform.OS === "ios" ? "padding" : null}>
               <InputProfile
               id='phone'
               rightIcon={<MaterialIcons title="phone" name ='phone' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
@@ -379,7 +379,7 @@ if(isLoadingState || barber===undefined){
            </KeyboardAvoidingView>
         </ScrollView>):undefined}
         {isPassword?(<ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-          <KeyboardAvoidingView keyboardVerticalOffset={10}>
+          <KeyboardAvoidingView keyboardVerticalOffset={10} behavior={Platform.OS === "ios" ? "padding" : null}>
                 <InputProfile
                 id='password'
                 rightIcon={<MaterialCommunityIcons title="lock" onPress={eye} name ={!isEye?'eye':'eye-off'} color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
@@ -419,7 +419,7 @@ if(isLoadingState || barber===undefined){
            </KeyboardAvoidingView>
         </ScrollView>):undefined}
         {isLang?(<ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-          <KeyboardAvoidingView keyboardVerticalOffset={10}>
+          <KeyboardAvoidingView keyboardVerticalOffset={10} behavior={Platform.OS === "ios" ? "padding" : null}>
             <View style={styles.langContainer}>
               {barber && barber[0].lang?(<View style={styles.langRow}>
                 <Text style={{fontFamily:'poppins',fontSize:15,color:Platform.OS==='android'?Colors.blue:'#fff'}}>Français</Text>

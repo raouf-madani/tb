@@ -7,7 +7,6 @@ import Colors from "../constants/Colors";
 const screen = Dimensions.get('window');
 
 const INPUT_UPDATE = 'INPUT_UPDATE';
-const INPUT_BLUR = 'INPUT_BLUR';
 const inputReducer = (state,action)=>{
      switch(action.type){
          case INPUT_UPDATE:
@@ -17,11 +16,6 @@ const inputReducer = (state,action)=>{
                  isValid:action.isValid
              };
 
-        case INPUT_BLUR:
-            return{
-                ...state,
-                touched:true
-            };
 
          default:
              return state;
@@ -41,9 +35,9 @@ const CustomInput = props =>{
     //forward the value and the information whether it's valid or not to the parent
     const {onInputChange,id} = props;
     useEffect(()=>{
-        if(inputState.touched){
+       
         onInputChange(id,inputState.value,inputState.isValid);
-        }
+       
     },[inputState,onInputChange,id]);
 
         const inputChangeHandler= text=>{
@@ -75,10 +69,7 @@ const CustomInput = props =>{
             dispatchInputState({type:INPUT_UPDATE,value:text,isValid:isValid})
         }
 
-        const lostFocusHandler = ()=>{
-
-            dispatchInputState({type:INPUT_BLUR});
-        }
+        
 
     return(
         <View style={{width:'100%',borderWidth:1, borderRadius:25,backgroundColor:'#d3d3d3',borderColor:!inputState.isValid?Colors.primary:'#d3d3d3',marginVertical:3,height:45,}}>
@@ -86,7 +77,6 @@ const CustomInput = props =>{
                 {...props}
                 value={inputState.value}
                 onChangeText={inputChangeHandler}
-                onBlur={lostFocusHandler}
                 placeholder={props.placeholder}
                 inputContainerStyle={styles.input}
                 placeholderTextColor={props.placeholderTextColor}

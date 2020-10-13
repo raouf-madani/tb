@@ -420,12 +420,12 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                         >
                         {wilayas.map(el=> <Picker.Item label={el} value={el} key={el} />)}
                         </Picker> :
-                        <View style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:17,paddingRight:25}}>
-                        <Text onPress={onPress} style={{fontFamily:'poppins',fontSize:15,fontWeight:'500',color:'#fff'}}>
+                        <TouchableOpacity onPress={onPress} style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:17,paddingRight:25}}>
+                        <Text style={{fontFamily:'poppins',fontSize:15,fontWeight:'500',color:'#fff'}}>
                           {wilaya}
                         </Text>
                         <Ionicons name="ios-arrow-down" size={24} color="#fff" onPress={onPress} />
-                        </View>} 
+                        </TouchableOpacity>} 
             </View>
             
               <InputProfile
@@ -478,6 +478,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 
            </View>
          </ScrollView>)}
+         
     </View>
     </TouchableWithoutFeedback>
      );    
