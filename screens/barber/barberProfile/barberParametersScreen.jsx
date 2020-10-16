@@ -336,7 +336,7 @@ if(isLoadingState || barber===undefined){
               </TouchableOpacity>
               <TouchableOpacity onPress={account} style={{padding:5,width:'25%',backgroundColor:isAccount?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
                   <Text style={{color:isAccount?'#fff':'#fd6c57',fontFamily:'poppins',fontSize:12}}>
-                    Compte
+                  {barber && barber[0].lang?polylanfr.MyAccount:polylanar.MyAccount}
                   </Text>
               </TouchableOpacity>
         </View>
@@ -450,14 +450,14 @@ if(isLoadingState || barber===undefined){
         </ScrollView>):undefined}
         {isAccount?(<ScrollView style={styles.scrollViewAccount} showsVerticalScrollIndicator={false}>
           <View style={styles.noticeContainer}>
-             <Text style={styles.noticeTitle}>Remarque</Text>
-             <Text style={styles.noticeContent}>Soyez prudent! Une fois vous supprimez votre compte, vous n'aurez jamais accès avec les actuelles informations de votre compte.</Text>
-             <Text style={styles.tahfifaSignature}>Equipe Tahfifa.</Text>
+             <Text style={styles.noticeTitle}>{barber && barber[0].lang?polylanfr.Notice:polylanar.Notice}</Text>
+             <Text style={styles.noticeContent}>{barber && barber[0].lang?polylanfr.NoticeMessage:polylanar.NoticeMessage}</Text>
+             <Text style={styles.tahfifaSignature}>{barber && barber[0].lang?polylanfr.TeamTahfifa:polylanar.TeamTahfifa}</Text>
          </View>
             <View style={styles.buttonContainer}>
                <Button
                     theme={{colors: {primary:'#fd6c57'}}} 
-                    title='Supprimer Mon Compte'
+                    title={barber && barber[0].lang?polylanfr.DeleteMyAccount:polylanar.DeleteMyAccount}
                     titleStyle={styles.labelButton}
                     buttonStyle={styles.buttonStyleDelete}
                     ViewComponent={LinearGradient}

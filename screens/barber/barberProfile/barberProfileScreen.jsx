@@ -1,5 +1,5 @@
 import React,{useState,useEffect,useReducer,useCallback} from 'react';
-import { StyleSheet,View,AsyncStorage,Linking,ScrollView,TouchableWithoutFeedback,Keyboard,ImageBackground,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActionSheetIOS,Picker,ActivityIndicator,Platform} from 'react-native';
+import { StyleSheet,View,AsyncStorage,Linking,ScrollView,TouchableWithoutFeedback,Keyboard,ImageBackground,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActionSheetIOS,Picker,ActivityIndicator,Platform,StatusBar} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
 import {useSelector,useDispatch} from 'react-redux';
 import Colors from "../../../constants/Colors";
@@ -263,6 +263,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
     return(
       <TouchableWithoutFeedback onPress = {()=>Keyboard.dismiss()}>  
     <View style={styles.container}>
+    <StatusBar hidden />
         <View style={styles.firstCard}>
           <ImageBackground source={barber[0].sex==='Femme'?require( '../../../assets/images/woman5.jpg'):require('../../../assets/images/loginimage.jpg')} style={styles.backgroundFirstCard} resizeMode='cover'/>
        </View>
@@ -450,9 +451,9 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
        </ScrollView>):
        (<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false}>
            <View style={styles.noticeContainer}>
-             <Text style={styles.noticeTitle}>Saviez-vous?</Text>
-             <Text style={styles.noticeContent}>Visitez-nous sur le lien suivant pour plus d'informations: <Text onPress={url} style={{color:Colors.primary}}>tahfifaapp.com</Text></Text>
-             <Text style={styles.tahfifaSignature} onPress={url2}>Equipe TAHFIFA.</Text>
+             <Text style={styles.noticeTitle}>{barber && barber[0].lang?polylanfr.DoYouKnow:polylanar.DoYouKnow}</Text>
+             <Text style={styles.noticeContent}>{barber && barber[0].lang?polylanfr.DoYouKnowNotice:polylanar.DoYouKnowNotice} <Text onPress={url} style={{color:Colors.primary}}>tahfifaapp.com</Text></Text>
+             <Text style={styles.tahfifaSignature} onPress={url2}>{barber && barber[0].lang?polylanfr.TeamTahfifa:polylanar.TeamTahfifa}</Text>
          </View>
            <View style={styles.buttonContainer}>
                 <View style={styles.cartContainer}>

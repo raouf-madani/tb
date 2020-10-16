@@ -1,5 +1,5 @@
 import React, {useState,useEffect,useCallback} from 'react';
-import { StyleSheet,View,Image, ScrollView,ImageBackground,Text,TouchableOpacity,Switch,Platform,ActivityIndicator,Alert} from 'react-native';
+import { StyleSheet,View,Image, ScrollView,ImageBackground,Text,TouchableOpacity,StatusBar,Platform,ActivityIndicator,Alert} from 'react-native';
 import {Button } from 'react-native-elements';
 import Colors from '../../../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -264,6 +264,7 @@ const BarberServiceScreen = props =>{
    if(error){
       
     return ( <ImageBackground source={require('../../../assets/images/support.png')} style={styles.activityIndicatorContainer}>
+              <StatusBar hidden />
                 <View style={{marginBottom:10,alignSelf:'center'}}>
                   <Text style={styles.noServicesText}>{barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet}</Text>
                 </View>
@@ -284,6 +285,7 @@ const BarberServiceScreen = props =>{
 
     if(isLoading){
       return <ImageBackground source={require('../../../assets/images/support.png')} style={styles.activityIndicatorContainer} >
+              <StatusBar hidden />
               <ActivityIndicator size='large' color={Colors.primary} />
              </ImageBackground>
     };
@@ -292,6 +294,7 @@ const BarberServiceScreen = props =>{
     if(barber[0].services.length === 0){
       return (
         <View style={styles.container}> 
+         <StatusBar hidden />
         <View style={styles.firstContainer}>
           <View style={styles.coverContainer}>
               <ImageBackground source={require('../../../assets/images/barberScreen.png')} style={styles.cover} />
@@ -456,6 +459,7 @@ const BarberServiceScreen = props =>{
    
     return(
         <View style={styles.container}> 
+        <StatusBar hidden />
          <View style={styles.firstContainer}>
            <View style={styles.coverContainer}>
                <ImageBackground source={require('../../../assets/images/barberScreen.png')} style={styles.cover} />

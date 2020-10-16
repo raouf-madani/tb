@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet,View,ImageBackground,TouchableOpacity,Text,Image,Alert,Dimensions,Platform,Linking} from 'react-native';
+import { StyleSheet,View,ImageBackground,TouchableOpacity,Text,Image,Alert,Dimensions,Platform,Linking,StatusBar} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
 import Colors from "../../../constants/Colors";
 import polylanar from "../../../lang/ar";
@@ -69,6 +69,7 @@ const BarberSupportScreen = props =>{
 
     return(
     <View style={styles.container}>
+      <StatusBar hidden />
        <ImageBackground source={require('../../../assets/images/support.png')} style={styles.background}>
          <View style={{alignItems:'center',width:'90%'}}>
             <View style={{marginBottom:15}}>

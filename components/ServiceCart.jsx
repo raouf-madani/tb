@@ -133,7 +133,6 @@ const styles= StyleSheet.create({
     alignItems:'center',
     backgroundColor:Platform.OS==='android'?'#fff':'#f9f9f9',
     paddingVertical:10,
-    paddingHorizontal:10,
     borderTopColor:'#f0F0F0',
     borderTopWidth:1,
     paddingHorizontal:20
