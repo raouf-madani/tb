@@ -1,5 +1,5 @@
 import React,{useState,useReducer,useCallback,useEffect} from 'react';
-import {StyleSheet,View,AsyncStorage,ScrollView,ImageBackground,TouchableWithoutFeedback,Keyboard,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActivityIndicator,Platform} from 'react-native';
+import {StyleSheet,View,AsyncStorage,ScrollView,ImageBackground,TouchableWithoutFeedback,Keyboard,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActivityIndicator,Platform,StatusBar} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons} from "@expo/vector-icons";
 import {Button} from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -113,7 +113,7 @@ const BarberParametersScreen = props =>{
   
 
   const arabic= async()=>{
-     
+     console.log(barber[0].lang);
      try{
         if(barber[0].lang){
            isArabic = false;
@@ -289,11 +289,12 @@ if(error){
       
   return ( <ImageBackground source={require('../../../assets/images/support.png')} style={styles.coverTwo}>
               <View style={{marginBottom:10,alignSelf:'center'}}>
+              <StatusBar hidden />
                 <Text style={styles.noServicesText}>{barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet}</Text>
               </View>
               <Button
                 theme={{colors: {primary:'#fd6c57'}}} 
-                title="Réessayer"
+                title={barber && barber[0].lang?polylanfr.Repeat:polylanar.Repeat}
                 titleStyle={styles.labelButton}
                 buttonStyle={styles.buttonStyle}
                 ViewComponent={LinearGradient}
@@ -308,6 +309,7 @@ if(error){
 if(isLoadingState || barber===undefined){
       
   return ( <ImageBackground source={require('../../../assets/images/support.png')} style={styles.coverTwo}>
+              <StatusBar hidden />
               <ActivityIndicator size='large' color={Colors.primary} />
            </ImageBackground>)
 };
@@ -315,6 +317,7 @@ if(isLoadingState || barber===undefined){
     return(
       <TouchableWithoutFeedback onPress = {()=>Keyboard.dismiss()}>
       <View style={styles.container}>
+      <StatusBar hidden />
          <View style={styles.firstCard}>
           <ImageBackground source={barber[0].sex==='Femme'?require( '../../../assets/images/woman5.jpg'):require('../../../assets/images/loginimage.jpg')} style={styles.backgroundFirstCard} resizeMode='cover'/>
          </View>
@@ -336,7 +339,7 @@ if(isLoadingState || barber===undefined){
               </TouchableOpacity>
               <TouchableOpacity onPress={account} style={{padding:5,width:'25%',backgroundColor:isAccount?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
                   <Text style={{color:isAccount?'#fff':'#fd6c57',fontFamily:'poppins',fontSize:12}}>
-                  {barber && barber[0].lang?polylanfr.MyAccount:polylanar.MyAccount}
+                  {barber && barber[0].lang?polylanfr.Account:polylanar.MyAccount}
                   </Text>
               </TouchableOpacity>
         </View>

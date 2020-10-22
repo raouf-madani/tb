@@ -102,7 +102,7 @@ const EditServiceScreen = props =>{
 
  //picker only iOS service type function 
  const onPressServiceType = () =>{
-  const serviceTypesIOS = ['Barbe','Cheveux'];    
+  const serviceTypesIOS = ['Barbe','Cheveux','Suppléments'];    
   ActionSheetIOS.showActionSheetWithOptions(
     {
       options: serviceTypesIOS,
@@ -260,7 +260,7 @@ useEffect(()=>{
                               (<Picker
                               selectedValue={serviceType}
                               onValueChange={itemValue => setServiceType(itemValue)}
-                              style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}
+                              style={{fontFamily:'poppins',fontSize:15,color:'#323446'}}
                               >
                               {serviceTypes.map(el=> <Picker.Item label={el} value={el} key={el} />)}
                               </Picker>) :
@@ -275,11 +275,11 @@ useEffect(()=>{
                               : 
                               Platform.OS === 'ios' &&  barber.sex === 'Homme' ?
                              
-                              (<Text onPress={onPressServiceType} style={{fontFamily:'poppins',fontSize:12,color:'#fff'}}>
+                              (<Text onPress={onPressServiceType} style={{fontFamily:'poppins',fontSize:15,color:'#fff'}}>
                                 {serviceType}
                               </Text>):
                                Platform.OS === 'ios' &&  barber.sex === 'Femme' ?
-                              (<Text onPress={onPressServiceTypeWoman} style={{fontFamily:'poppins',fontSize:12,color:'#fff'}}>
+                              (<Text onPress={onPressServiceTypeWoman} style={{fontFamily:'poppins',fontSize:15,color:'#fff'}}>
                                {serviceTypeWoman}
                              </Text>):undefined} 
                   </View>
@@ -318,11 +318,11 @@ useEffect(()=>{
                               <Picker
                               selectedValue={hour}
                               onValueChange={itemValue => setHour(itemValue)}
-                              style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}
+                              style={{fontFamily:'poppins',fontSize:15,color:'#323446'}}
                               >
                               {hours.map(el=> <Picker.Item label={el} value={el} key={el} />)}
                               </Picker> :
-                              <Text onPress={onPress} style={{fontFamily:'poppins',fontSize:12,color:'#fff'}}>
+                              <Text onPress={onPress} style={{fontFamily:'poppins',fontSize:15,color:'#fff'}}>
                                 {hour}
                               </Text>} 
                   </View>
@@ -339,11 +339,11 @@ useEffect(()=>{
                               <Picker
                               selectedValue={minute}
                               onValueChange={itemValue => setMinute(itemValue)}
-                              style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}
+                              style={{fontFamily:'poppins',fontSize:15,color:'#323446'}}
                               >
                               {minutes.map(el=> <Picker.Item label={el} value={el} key={el} />)}
                               </Picker> :
-                              <Text onPress={onPressMinute} style={{fontFamily:'poppins',fontSize:12,color:'#fff'}}>
+                              <Text onPress={onPressMinute} style={{fontFamily:'poppins',fontSize:15,color:'#fff'}}>
                                 {minute}
                               </Text>} 
                   </View>
@@ -430,14 +430,14 @@ secondContainer:{
 },
 headerContainer:{
   width:'90%',
-  height:'15%',
+  height:'20%',
   flexDirection:'row',
   justifyContent:'space-between',
   alignItems:'center',
   alignSelf:'center'
 },
 inputsContainer:{
- height:'55%',
+ height:'50%',
  width:'100%',
  alignItems:'center',
 },
@@ -451,7 +451,7 @@ inputContainer:{
 footerContainer:{
  height:'30%',
  width:'100%',
- justifyContent:'flex-end'
+ justifyContent:'center'
 },
 labelButton:{
  color:'#FFF',
@@ -465,7 +465,6 @@ buttonStyle:{
  borderRadius:20,
  height:40,
  alignSelf:'center',
- marginBottom:25
 }
 });
 

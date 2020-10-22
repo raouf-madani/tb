@@ -2,6 +2,7 @@ export default{
     Phone: 'Téléphone',
     Password:"Mot de passe",
     Example : "Ex",
+    Agree:"D'accord",
     Register : "Enregistrer",
     NewPassword : "Nouveau mot de passe",
     Languages : "Langues",
@@ -59,6 +60,7 @@ export default{
     //profile screen********************************************************************
     profileInfo:"Informations",
     MyAccount:"Mon Compte",
+    Account:'Compte',
     Age:"Age",
     Name:"Nom",
     Surname:"Prénom",

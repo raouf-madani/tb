@@ -2,6 +2,7 @@ export default{
     Phone: 'رقم الهاتف',
     Password:"كلمة السر",
     Example : "مثال",
+    Agree:"حسنا",
     Register : "تسجيل",
     NewPassword : "كلمة السر جديدة",
     Languages : "لغات",

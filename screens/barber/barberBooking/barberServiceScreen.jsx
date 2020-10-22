@@ -59,7 +59,6 @@ const BarberServiceScreen = props =>{
       setError(true);
       if(err){
         Alert.alert('Oups!','Votre connexion est trop faible!',[{text:'OK'}]);
-        
     } 
       console.log(err);
       throw err;
@@ -303,10 +302,10 @@ const BarberServiceScreen = props =>{
           <View style={styles.infoContainer}>
              <View style={styles.imageContainer}>
              {barber && barber[0].image===null && barber[0].sex==='Homme'?
-                  <Image source={require('../../../assets/images/man2.jpg')} style={styles.icon} />:
+                  <Image source={require('../../../assets/images/bestbarber.jpg')} style={styles.icon} />:
                   barber && barber[0].image===null && barber[0].sex==='Femme'?
                   <Image source={require('../../../assets/images/angelina.png')} style={styles.icon} />:
-                  <Image source={require('../../../assets/images/man2.jpg')} style={styles.icon}/>
+                  <Image source={require('../../../assets/images/bestbarber.jpg')} style={styles.icon}/>
                   }
              </View>
            
@@ -468,10 +467,10 @@ const BarberServiceScreen = props =>{
            <View style={styles.infoContainer}>
               <View style={styles.imageContainer}>
               {barber && barber[0].image===null && barber[0].sex==='Homme'?
-                  <Image source={require('../../../assets/images/man2.jpg')} style={styles.icon} />:
+                  <Image source={require('../../../assets/images/bestbarber.jpg')} style={styles.icon} />:
                   barber && barber[0].image===null && barber[0].sex==='Femme'?
                   <Image source={require('../../../assets/images/angelina.png')} style={styles.icon} />:
-                  <Image source={require('../../../assets/images/man2.jpg')} style={styles.icon}/>
+                  <Image source={require('../../../assets/images/bestbarber.jpg')} style={styles.icon}/>
                   }
               </View>
             

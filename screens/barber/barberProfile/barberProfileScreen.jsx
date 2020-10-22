@@ -75,14 +75,14 @@ const BarberProfileScreen = props =>{
   const url= ()=>{
     Linking.openURL(URL).catch((err) => {
       if(err){
-        Alert.alert('Oups!','Votre débit internet est trop faible',[{text:'OK'}]);
+        Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
     } 
     });
    };
    const url2= ()=>{
     Linking.openURL(URLAbout).catch((err) => {
       if(err){
-        Alert.alert('Oups!','Votre débit internet est trop faible',[{text:'OK'}]);
+        Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
     } 
     });
    };
@@ -122,7 +122,7 @@ const verifyPermissions= async ()=>{
   if(result.status !== 'granted'){
       Alert.alert('Permissions insuffisantes!',
       'Vous devez accorder les autorisations de la caméra pour utiliser cette application.',
-      [{text:"D'accord"}]);
+      [{text:barber && barber[0].lang?polylanfr.Agree:polylanar.Agree}]);
       return false;
   }
   return true;
@@ -270,7 +270,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
        <View style={styles.secondCard}>
             <View style={styles.secondCardContent}>
                 <View style={styles.imageContainer}>
-                {!pickedImage && barber[0].sex==='Homme' ? <Image source={require('../../../assets/images/man2.jpg')} style={styles.image} />:
+                {!pickedImage && barber[0].sex==='Homme' ? <Image source={require('../../../assets/images/bestbarber.jpg')} style={styles.image} />:
                 !pickedImage && barber[0].sex==='Femme' ? <Image source={require('../../../assets/images/angelina.png')} style={styles.image} />
                 : (<Image style={styles.image} source={{uri:pickedImage.uri}} />)}
                 </View>

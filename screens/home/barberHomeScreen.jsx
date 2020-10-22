@@ -394,10 +394,10 @@ async function registerForPushNotificationsAsync() {
            <View style={styles.infoContainer}>
                <View style={styles.imageContainer}>
                   {barber && barber.image===null && barber.sex==='Homme'?
-                  <Image source={require('../../assets/images/man2.jpg')} style={styles.icon} />:
+                  <Image source={require('../../assets/images/bestbarber.jpg')} style={styles.icon} />:
                   barber && barber.image===null && barber.sex==='Femme'?
                   <Image source={require('../../assets/images/angelina.png')} style={styles.icon} />:
-                  <Image source={require('../../assets/images/man2.jpg')} style={styles.icon}/>
+                  <Image source={require('../../assets/images/bestbarber.jpg')} style={styles.icon}/>
                   }
                   
                </View>
