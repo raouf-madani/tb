@@ -218,7 +218,7 @@ if (isLoading) {
             
             
             }}
-            current = {selectedDate}
+             current = {selectedDate}
              markedDates = {mark}
              onDayPress={(date)=>selectedDateHandler(date)}
              />
