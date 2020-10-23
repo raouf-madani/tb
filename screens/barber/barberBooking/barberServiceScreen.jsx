@@ -469,7 +469,7 @@ const BarberServiceScreen = props =>{
               {barber && barber[0].image===null && barber[0].sex==='Homme'?
                   <Image source={require('../../../assets/images/bestbarber.jpg')} style={styles.icon} />:
                   barber && barber[0].image===null && barber[0].sex==='Femme'?
-                  <Image source={require('../../../assets/images/angelina.png')} style={styles.icon} />:
+                  <Image source={require('../../../assets/images/bestwomanbarber.jpg')} style={styles.icon} />:
                   <Image source={require('../../../assets/images/bestbarber.jpg')} style={styles.icon}/>
                   }
               </View>
@@ -663,7 +663,7 @@ const styles= StyleSheet.create({
     
   firstContainer:{
     width:'100%',
-    height:'40%',
+    height:'35%',
     alignItems:'center',
     backgroundColor:'#f9f9f9'
   },

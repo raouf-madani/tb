@@ -396,7 +396,7 @@ async function registerForPushNotificationsAsync() {
                   {barber && barber.image===null && barber.sex==='Homme'?
                   <Image source={require('../../assets/images/bestbarber.jpg')} style={styles.icon} />:
                   barber && barber.image===null && barber.sex==='Femme'?
-                  <Image source={require('../../assets/images/angelina.png')} style={styles.icon} />:
+                  <Image source={require('../../assets/images/bestwomanbarber.jpg')} style={styles.icon} />:
                   <Image source={require('../../assets/images/bestbarber.jpg')} style={styles.icon}/>
                   }
                   
@@ -526,19 +526,19 @@ async function registerForPushNotificationsAsync() {
                 </View>
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} refreshing={isRefreshing} style={styles.photosContainer} contentContainerStyle={{justifyContent:'space-around'}}>
                   <View style={styles.modelImageContainer}>
-                    <Image source={require('../../assets/images/man1.jpg')} style={styles.modelImage} />
+                    <Image source={require('../../assets/images/woman1.jpg')} style={styles.modelImage} />
                   </View>
                   <View style={styles.modelImageContainer}>
-                    <Image source={require('../../assets/images/man2.jpg')} style={styles.modelImage} />
+                    <Image source={require('../../assets/images/woman2.jpg')} style={styles.modelImage} />
                   </View>
                   <View style={styles.modelImageContainer}>
-                    <Image source={require('../../assets/images/man3.jpg')} style={styles.modelImage} />
+                    <Image source={require('../../assets/images/woman3.jpg')} style={styles.modelImage} />
                   </View>
                   <View style={styles.modelImageContainer}>
-                    <Image source={require('../../assets/images/man4.jpg')} style={styles.modelImage} />
+                    <Image source={require('../../assets/images/woman4.jpg')} style={styles.modelImage} />
                   </View>
                   <View style={styles.modelImageContainer}>
-                    <Image source={require('../../assets/images/man5.jpg')} style={styles.modelImage} />
+                    <Image source={require('../../assets/images/woman5.jpg')} style={styles.modelImage} />
                   </View>
                 </ScrollView>
             </View>
@@ -549,48 +549,25 @@ async function registerForPushNotificationsAsync() {
         {isPortfolio?(<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false} refreshing={isRefreshing} contentContainerStyle={{alignItems:'center'}}>
                <View style={{flexDirection:'row',width:'90%',marginVertical:10}}>
                   <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man1.jpg')} style={styles.modelImage} />
+                    <Image source={require('../../assets/images/woman1.jpg')} style={styles.modelImage} />
                   </View>
                   <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man2.jpg')} style={styles.modelImage} />
+                    <Image source={require('../../assets/images/woman2.jpg')} style={styles.modelImage} />
                   </View>
                   <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man3.jpg')} style={styles.modelImage} />
+                    <Image source={require('../../assets/images/woman3.jpg')} style={styles.modelImage} />
                   </View>
                </View>
                <View style={{flexDirection:'row',width:'90%',marginVertical:10}}>
                   <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man4.jpg')} style={styles.modelImage} />
+                    <Image source={require('../../assets/images/woman4.jpg')} style={styles.modelImage} />
                   </View>
                   <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man5.jpg')} style={styles.modelImage} />
+                    <Image source={require('../../assets/images/woman5.jpg')} style={styles.modelImage} />
                   </View>
-                  <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man1.jpg')} style={styles.modelImage} />
-                  </View>
+                 
                </View>
-               <View style={{flexDirection:'row',width:'90%',marginVertical:10}}>
-                  <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man1.jpg')} style={styles.modelImage} />
-                  </View>
-                  <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man2.jpg')} style={styles.modelImage} />
-                  </View>
-                  <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man3.jpg')} style={styles.modelImage} />
-                  </View>
-               </View>
-               <View style={{flexDirection:'row',width:'90%',marginVertical:10}}>
-                  <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man4.jpg')} style={styles.modelImage} />
-                  </View>
-                  <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man5.jpg')} style={styles.modelImage} />
-                  </View>
-                  <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man1.jpg')} style={styles.modelImage} />
-                  </View>
-               </View>
+               
          </ScrollView>):undefined}
 
          {isFeedback?(<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false} refreshing={isRefreshing} contentContainerStyle={{alignItems:'center'}}>
@@ -644,7 +621,7 @@ const styles= StyleSheet.create({
   },
   firstContainer:{
     width:'100%',
-    height:'50%',
+    height:'40%',
     alignItems:'center',
     backgroundColor:'#f9f9f9'
   },
@@ -758,7 +735,7 @@ const styles= StyleSheet.create({
   firstRow:{
     flexDirection:'row',
     justifyContent:'space-between',
-    marginTop:15,
+    marginTop:30,
     width:'90%',
     alignSelf:'center'
   },
@@ -779,7 +756,7 @@ const styles= StyleSheet.create({
     fontSize:12
   },
   secondRow:{
-    marginTop:15,
+    marginTop:30,
     width:'90%',
     alignSelf:'center'
   },
@@ -798,7 +775,7 @@ const styles= StyleSheet.create({
   },
   thirdRow:{
     flexDirection:'row',
-    marginTop:15,
+    marginTop:30,
     width:'90%',
     alignSelf:'center'
   },
@@ -825,18 +802,19 @@ const styles= StyleSheet.create({
     height:90
   },
   forthRow:{
-    marginTop:15
+    marginTop:25
   },
   forthRowElementsContainer:{
     flexDirection:'row',
     justifyContent:'space-between',
     width:'90%',
-    alignSelf:'center'
+    alignSelf:'center',
+    paddingBottom:5
   },
   photosContainer:{
     flexDirection:'row',
     paddingHorizontal:15,
-    paddingBottom:15
+    paddingBottom:5
   },
   modelImageContainer:{
     borderRadius:20,
