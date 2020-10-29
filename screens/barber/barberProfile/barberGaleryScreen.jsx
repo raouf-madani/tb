@@ -1,9 +1,7 @@
 import React,{useState} from 'react';
-import { StyleSheet,View,Button,Alert,TouchableHighlight,Image,Dimensions,ScrollView,ImageBackground,StatusBar,ActivityIndicator} from 'react-native';
-import {Ionicons,MaterialIcons} from "@expo/vector-icons";
+import { StyleSheet,View,Alert,Dimensions,ScrollView,ImageBackground,StatusBar,ActivityIndicator} from 'react-native';
 import Colors from '../../../constants/Colors';
-import {HeaderButtons,Item} from "react-navigation-header-buttons";
-import HeaderButton from "../../../components/HeaderButton";
+import Portfolio from "../../../components/Portfolio";
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import * as portfolioActions from '../../../store/actions/portfolioActions';
@@ -19,12 +17,17 @@ const windowWidth = Dimensions.get('window').width;
 const BarberGaleryScreen = props =>{
 
   const barberPortfolio=useSelector(state=>state.portfolio.portfolio);
-  console.log(barberPortfolio);
+  
   const barber= useSelector(state=>state.barbers.barber);
   const barberID= props.navigation.getParam('barberID');  //get Barber ID
   const dispatch= useDispatch();
 
   const [pickedImage,setPickedImage]= useState(barberPortfolio[0]?barberPortfolio[0].model:false);
+  const [pickedImage2,setPickedImage2]= useState(barberPortfolio[1]?barberPortfolio[1].model:false);
+  const [pickedImage3,setPickedImage3]= useState(barberPortfolio[2]?barberPortfolio[2].model:false);
+  const [pickedImage4,setPickedImage4]= useState(barberPortfolio[3]?barberPortfolio[3].model:false);
+  const [pickedImage5,setPickedImage5]= useState(barberPortfolio[4]?barberPortfolio[4].model:false);
+  const [pickedImage6,setPickedImage6]= useState(barberPortfolio[5]?barberPortfolio[5].model:false);
   const [isLoading,setIsLoading]= useState(false);
   
 
@@ -41,8 +44,9 @@ const BarberGaleryScreen = props =>{
     return true;
   };
 
-  //Image 1 
+  //////////////////////////****************************************************************************Image 1 
   const takeImageHandler = async ()=>{
+
     try{
     const hasPermissions = await verifyPermissions();
     if(!hasPermissions){
@@ -59,11 +63,11 @@ const BarberGaleryScreen = props =>{
     if (!image.cancelled) {
       const imageSplit= image.uri.split('/');
       const imageName= imageSplit.pop();
-      console.log(imageName);
+      
       setPickedImage(imageName);
       
       setIsLoading(true);
-      await dispatch(portfolioActions.updatePortfolio(image.base64,imageName,barberID));
+      await dispatch(portfolioActions.updatePortfolio(image.base64,imageName,barberID,barberPortfolio[0].id));
       setIsLoading(false);
       }
     }catch(err){
@@ -91,11 +95,336 @@ const BarberGaleryScreen = props =>{
   if (!library.cancelled) {
     const imageSplit= library.uri.split('/');
     const imageName= imageSplit.pop();
-    console.log(imageName);
+    
     setPickedImage(imageName);
     
     setIsLoading(true);
-    await dispatch(portfolioActions.updatePortfolio(library.base64,imageName,barberID));
+    await dispatch(portfolioActions.updatePortfolio(library.base64,imageName,barberID,barberPortfolio[0].id));
+    setIsLoading(false);
+    }
+   }catch(err){
+    console.log(err);
+    Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+    }
+   
+ };
+
+  //////////////////////////****************************************************************************Image 2
+ 
+  const takeImageHandler2 = async ()=>{
+    try{
+    const hasPermissions = await verifyPermissions();
+    if(!hasPermissions){
+        return;
+    }
+    let image = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing:true,
+        aspect:[60,60],
+        quality:0.7,
+        base64: true
+    });
+    
+    if (!image.cancelled) {
+      const imageSplit= image.uri.split('/');
+      const imageName= imageSplit.pop();
+      
+      setPickedImage2(imageName);
+      
+      setIsLoading(true);
+      await dispatch(portfolioActions.updatePortfolio(image.base64,imageName,barberID,barberPortfolio[1].id));
+      setIsLoading(false);
+      }
+    }catch(err){
+      console.log(err);
+    Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+    }
+ };
+
+ const takeLibraryHandler2 = async ()=>{
+
+  try{
+    const hasPermissions = await verifyPermissions();
+    if(!hasPermissions){
+        return;
+    }
+  
+    let library = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsEditing:true,
+    aspect:[60,60],
+    quality:0.7,
+    base64: true
+  });
+
+  if (!library.cancelled) {
+    const imageSplit= library.uri.split('/');
+    const imageName= imageSplit.pop();
+    
+    setPickedImage2(imageName);
+    
+    setIsLoading(true);
+    await dispatch(portfolioActions.updatePortfolio(library.base64,imageName,barberID,barberPortfolio[1].id));
+    setIsLoading(false);
+    }
+   }catch(err){
+    console.log(err);
+    Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+    }
+   
+ };
+ 
+  //////////////////////////****************************************************************************Image 3
+ 
+  const takeImageHandler3 = async ()=>{
+    try{
+    const hasPermissions = await verifyPermissions();
+    if(!hasPermissions){
+        return;
+    }
+    let image = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing:true,
+        aspect:[60,60],
+        quality:0.7,
+        base64: true
+    });
+    
+    if (!image.cancelled) {
+      const imageSplit= image.uri.split('/');
+      const imageName= imageSplit.pop();
+      
+      setPickedImage3(imageName);
+      
+      setIsLoading(true);
+      await dispatch(portfolioActions.updatePortfolio(image.base64,imageName,barberID,barberPortfolio[2].id));
+      setIsLoading(false);
+      }
+    }catch(err){
+      console.log(err);
+    Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+    }
+ };
+
+ const takeLibraryHandler3 = async ()=>{
+
+  try{
+    const hasPermissions = await verifyPermissions();
+    if(!hasPermissions){
+        return;
+    }
+  
+    let library = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsEditing:true,
+    aspect:[60,60],
+    quality:0.7,
+    base64: true
+  });
+
+  if (!library.cancelled) {
+    const imageSplit= library.uri.split('/');
+    const imageName= imageSplit.pop();
+    
+    setPickedImage3(imageName);
+    
+    setIsLoading(true);
+    await dispatch(portfolioActions.updatePortfolio(library.base64,imageName,barberID,barberPortfolio[2].id));
+    setIsLoading(false);
+    }
+   }catch(err){
+    console.log(err);
+    Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+    }
+   
+ };
+
+  //////////////////////////****************************************************************************Image 4
+ 
+  const takeImageHandler4 = async ()=>{
+    try{
+    const hasPermissions = await verifyPermissions();
+    if(!hasPermissions){
+        return;
+    }
+    let image = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing:true,
+        aspect:[60,60],
+        quality:0.7,
+        base64: true
+    });
+    
+    if (!image.cancelled) {
+      const imageSplit= image.uri.split('/');
+      const imageName= imageSplit.pop();
+      
+      setPickedImage4(imageName);
+      
+      setIsLoading(true);
+      await dispatch(portfolioActions.updatePortfolio(image.base64,imageName,barberID,barberPortfolio[3].id));
+      setIsLoading(false);
+      }
+    }catch(err){
+      console.log(err);
+    Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+    }
+ };
+
+ const takeLibraryHandler4 = async ()=>{
+
+  try{
+    const hasPermissions = await verifyPermissions();
+    if(!hasPermissions){
+        return;
+    }
+  
+    let library = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsEditing:true,
+    aspect:[60,60],
+    quality:0.7,
+    base64: true
+  });
+
+  if (!library.cancelled) {
+    const imageSplit= library.uri.split('/');
+    const imageName= imageSplit.pop();
+    
+    setPickedImage4(imageName);
+    
+    setIsLoading(true);
+    await dispatch(portfolioActions.updatePortfolio(library.base64,imageName,barberID,barberPortfolio[3].id));
+    setIsLoading(false);
+    }
+   }catch(err){
+    console.log(err);
+    Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+    }
+   
+ };
+
+  //////////////////////////****************************************************************************Image 5
+ 
+  const takeImageHandler5 = async ()=>{
+    try{
+    const hasPermissions = await verifyPermissions();
+    if(!hasPermissions){
+        return;
+    }
+    let image = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing:true,
+        aspect:[60,60],
+        quality:0.7,
+        base64: true
+    });
+    
+    if (!image.cancelled) {
+      const imageSplit= image.uri.split('/');
+      const imageName= imageSplit.pop();
+      
+      setPickedImage5(imageName);
+      
+      setIsLoading(true);
+      await dispatch(portfolioActions.updatePortfolio(image.base64,imageName,barberID,barberPortfolio[4].id));
+      setIsLoading(false);
+      }
+    }catch(err){
+      console.log(err);
+    Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+    }
+ };
+
+ const takeLibraryHandler5 = async ()=>{
+
+  try{
+    const hasPermissions = await verifyPermissions();
+    if(!hasPermissions){
+        return;
+    }
+  
+    let library = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsEditing:true,
+    aspect:[60,60],
+    quality:0.7,
+    base64: true
+  });
+
+  if (!library.cancelled) {
+    const imageSplit= library.uri.split('/');
+    const imageName= imageSplit.pop();
+    
+    setPickedImage5(imageName);
+    
+    setIsLoading(true);
+    await dispatch(portfolioActions.updatePortfolio(library.base64,imageName,barberID,barberPortfolio[4].id));
+    setIsLoading(false);
+    }
+   }catch(err){
+    console.log(err);
+    Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+    }
+   
+ };
+
+  //////////////////////////****************************************************************************Image 6
+ 
+  const takeImageHandler6 = async ()=>{
+    try{
+    const hasPermissions = await verifyPermissions();
+    if(!hasPermissions){
+        return;
+    }
+    let image = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing:true,
+        aspect:[60,60],
+        quality:0.7,
+        base64: true
+    });
+    
+    if (!image.cancelled) {
+      const imageSplit= image.uri.split('/');
+      const imageName= imageSplit.pop();
+      
+      setPickedImage6(imageName);
+      
+      setIsLoading(true);
+      await dispatch(portfolioActions.updatePortfolio(image.base64,imageName,barberID,barberPortfolio[5].id));
+      setIsLoading(false);
+      }
+    }catch(err){
+      console.log(err);
+    Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+    }
+ };
+
+ const takeLibraryHandler6 = async ()=>{
+
+  try{
+    const hasPermissions = await verifyPermissions();
+    if(!hasPermissions){
+        return;
+    }
+  
+    let library = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsEditing:true,
+    aspect:[60,60],
+    quality:0.7,
+    base64: true
+  });
+
+  if (!library.cancelled) {
+    const imageSplit= library.uri.split('/');
+    const imageName= imageSplit.pop();
+    
+    setPickedImage6(imageName);
+    
+    setIsLoading(true);
+    await dispatch(portfolioActions.updatePortfolio(library.base64,imageName,barberID,barberPortfolio[5].id));
     setIsLoading(false);
     }
    }catch(err){
@@ -117,29 +446,42 @@ const BarberGaleryScreen = props =>{
     <View style={styles.container}>
       <StatusBar hidden />
       <ScrollView style={styles.grid} contentContainerStyle={{ alignItems:'center'}} showsVerticalScrollIndicator={false}>
-        <View style={styles.row}>
-            <View style={styles.imageConainer}>
-              {barberPortfolio && barberPortfolio.length===0?<Image source={{uri:'http://173.212.234.137/uploads/out.png'}} style={styles.modelImage} />:
-              <Image source={{uri:`http://173.212.234.137/uploads/${barberPortfolio[0].model}`}} style={styles.modelImage} />}
-              <View style={{width:'100%',flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
-              <TouchableHighlight style={styles.iconContainer} onPress={takeImageHandler}>
-                <Ionicons title = "add" 
-                name ={'ios-camera'}
-                color='#fff' 
-                size={23}
-                />
-              </TouchableHighlight>
-              <TouchableHighlight style={styles.iconContainer2} onPress={takeLibraryHandler}>
-              <MaterialIcons 
-                title = "library" 
-                name ='photo-library' 
-                color='#FFF' 
-                size={21} />
-              </TouchableHighlight>
-              </View>
-            </View>
-     
-        </View>
+       <View style={styles.row}>
+          <Portfolio
+          modelName={barberPortfolio && pickedImage?pickedImage:'ayoungleaderportfolio.jpg'}
+          cameraImage={takeImageHandler}
+          libraryImage={takeLibraryHandler}
+          />
+            <Portfolio
+          modelName={barberPortfolio && pickedImage2?pickedImage2:'ayoungleaderportfolio.jpg'}
+          cameraImage={takeImageHandler2}
+          libraryImage={takeLibraryHandler2}
+          />
+      </View>
+      <View style={styles.row}>
+       <Portfolio
+        modelName={barberPortfolio && pickedImage3?pickedImage3:'ayoungleaderportfolio.jpg'}
+        cameraImage={takeImageHandler3}
+        libraryImage={takeLibraryHandler3}
+       />
+         <Portfolio
+        modelName={barberPortfolio && pickedImage4?pickedImage4:'ayoungleaderportfolio.jpg'}
+        cameraImage={takeImageHandler4}
+        libraryImage={takeLibraryHandler4}
+       />
+    </View>
+    <View style={styles.row}>
+       <Portfolio
+        modelName={barberPortfolio && pickedImage5?pickedImage5:'ayoungleaderportfolio.jpg'}
+        cameraImage={takeImageHandler5}
+        libraryImage={takeLibraryHandler5}
+       />
+         <Portfolio
+        modelName={barberPortfolio && pickedImage6?pickedImage6:'ayoungleaderportfolio.jpg'}
+        cameraImage={takeImageHandler6}
+        libraryImage={takeLibraryHandler6}
+       />
+    </View>
       </ScrollView> 
     </View>
     

@@ -177,10 +177,9 @@ useEffect(() => {
           ]);
           return;
       }
-      console.log(hour);
-      console.log(minute);
+   
       const duration= parseInt(hour)*60 + parseInt(minute);
-      console.log(duration);
+      
        
       setError(null);
       setIsLoading(true);

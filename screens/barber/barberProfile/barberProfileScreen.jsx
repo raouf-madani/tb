@@ -270,9 +270,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
        <View style={styles.secondCard}>
             <View style={styles.secondCardContent}>
                 <View style={styles.imageContainer}>
-                {!pickedImage && barber[0].sex==='Homme' ? <Image source={require('../../../assets/images/bestbarber.jpg')} style={styles.image} />:
-                !pickedImage && barber[0].sex==='Femme' ? <Image source={require('../../../assets/images/bestwomanbarber.jpg')} style={styles.image} />
-                : (<Image style={styles.image} source={{uri:pickedImage.uri}} />)}
+                <Image source={require('../../../assets/images/unknown.jpeg')} style={styles.image} />
                 </View>
                 <View style={styles.detailsContainer}>
                   <View style={{width:'30%'}}>
