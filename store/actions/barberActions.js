@@ -150,7 +150,6 @@ export const setBarber= id => {
                     if(!servicesIDS.includes(e.id)){
                         barber.services.push(service);
                         servicesIDS.push(e.id);
-                        console.log(servicesIDS);
                     }
 
                     
@@ -270,20 +269,7 @@ export const updateBarber= (id,name,surname,b_name,age,email,address,wilaya,regi
     return async dispatch => {
 
          try{
-           /*const data = new FormData();
-           const body= {id:'123'};
-
-            data.append('avatar', {
-            name: image.fileName,
-            type: image.type,
-            uri:
-                Platform.OS === 'android' ? image.uri : image.uri.replace('file://', ''),
-            });
-        
-            Object.keys(body).forEach((key) => {
-            data.append(key, body[key]);
-            });
-           const uri= image.uri;*/
+           
            const response = await fetch(`http://173.212.234.137:3000/barber/updateBarber/${id}`,{
 
               method:'PATCH',
@@ -296,8 +282,7 @@ export const updateBarber= (id,name,surname,b_name,age,email,address,wilaya,regi
            if(!response.ok){
                throw new Error('Oups! Une erreur est survenue.');
            }
-           //console.log(data);
-           //console.log(uri);
+          
            dispatch({type:UPDATE_BARBER,id,barberData:{name,surname,b_name,age,email,address,wilaya,region,image}});
            
          }catch(err){

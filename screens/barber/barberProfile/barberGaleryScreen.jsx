@@ -1,10 +1,15 @@
 import React,{useState} from 'react';
-import { StyleSheet,View,Button,Text,TouchableHighlight,Image,Dimensions,ScrollView} from 'react-native';
-import {Ionicons} from "@expo/vector-icons";
+import { StyleSheet,View,Button,Alert,TouchableHighlight,Image,Dimensions,ScrollView,ImageBackground,StatusBar,ActivityIndicator} from 'react-native';
+import {Ionicons,MaterialIcons} from "@expo/vector-icons";
+import Colors from '../../../constants/Colors';
 import {HeaderButtons,Item} from "react-navigation-header-buttons";
 import HeaderButton from "../../../components/HeaderButton";
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
+import * as portfolioActions from '../../../store/actions/portfolioActions';
+import { useDispatch,useSelector } from 'react-redux';
+import polylanar from "../../../lang/ar";
+import polylanfr from "../../../lang/fr";
 
 //responsivity (Dimensions get method)
 const screen = Dimensions.get('window');
@@ -12,8 +17,17 @@ const windowHeight = Dimensions.get('window').height;
 const windowWidth = Dimensions.get('window').width;
 
 const BarberGaleryScreen = props =>{
-     
-  const [pickedImage,setPickedImage]= useState();
+
+  const barberPortfolio=useSelector(state=>state.portfolio.portfolio);
+  console.log(barberPortfolio);
+  const barber= useSelector(state=>state.barbers.barber);
+  const barberID= props.navigation.getParam('barberID');  //get Barber ID
+  const dispatch= useDispatch();
+
+  const [pickedImage,setPickedImage]= useState(barberPortfolio[0]?barberPortfolio[0].model:false);
+  const [isLoading,setIsLoading]= useState(false);
+  
+
 
   //Permissions 
   const verifyPermissions= async ()=>{
@@ -29,150 +43,102 @@ const BarberGaleryScreen = props =>{
 
   //Image 1 
   const takeImageHandler = async ()=>{
+    try{
     const hasPermissions = await verifyPermissions();
     if(!hasPermissions){
         return;
     }
-    const image = await ImagePicker.launchCameraAsync({
+    let image = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
         allowsEditing:true,
         aspect:[60,60],
-        quality:0.7
+        quality:0.7,
+        base64: true
     });
     
-    setPickedImage(image.uri);
+    if (!image.cancelled) {
+      const imageSplit= image.uri.split('/');
+      const imageName= imageSplit.pop();
+      console.log(imageName);
+      setPickedImage(imageName);
+      
+      setIsLoading(true);
+      await dispatch(portfolioActions.updatePortfolio(image.base64,imageName,barberID));
+      setIsLoading(false);
+      }
+    }catch(err){
+      console.log(err);
+    Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+    }
  };
+
+ const takeLibraryHandler = async ()=>{
+
+  try{
+    const hasPermissions = await verifyPermissions();
+    if(!hasPermissions){
+        return;
+    }
+  
+    let library = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsEditing:true,
+    aspect:[60,60],
+    quality:0.7,
+    base64: true
+  });
+
+  if (!library.cancelled) {
+    const imageSplit= library.uri.split('/');
+    const imageName= imageSplit.pop();
+    console.log(imageName);
+    setPickedImage(imageName);
+    
+    setIsLoading(true);
+    await dispatch(portfolioActions.updatePortfolio(library.base64,imageName,barberID));
+    setIsLoading(false);
+    }
+   }catch(err){
+    console.log(err);
+    Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+    }
+   
+ };
+
+ if(isLoading){
+  return <ImageBackground source={require('../../../assets/images/support.png')} style={styles.activityIndicatorContainer} >
+          <StatusBar hidden />
+          <ActivityIndicator size='large' color={Colors.primary} />
+         </ImageBackground>
+};
   
     return(
    
     <View style={styles.container}>
+      <StatusBar hidden />
       <ScrollView style={styles.grid} contentContainerStyle={{ alignItems:'center'}} showsVerticalScrollIndicator={false}>
         <View style={styles.row}>
             <View style={styles.imageConainer}>
-              <Image source={!pickedImage? require('../../../assets/images/man1.jpg'):{uri:pickedImage}} style={styles.modelImage} />
-              <TouchableHighlight style={styles.iconContainer} onPress={!pickedImage? takeImageHandler:()=>setPickedImage(false)}>
+              {barberPortfolio && barberPortfolio.length===0?<Image source={{uri:'http://173.212.234.137/uploads/out.png'}} style={styles.modelImage} />:
+              <Image source={{uri:`http://173.212.234.137/uploads/${barberPortfolio[0].model}`}} style={styles.modelImage} />}
+              <View style={{width:'100%',flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
+              <TouchableHighlight style={styles.iconContainer} onPress={takeImageHandler}>
                 <Ionicons title = "add" 
-                name ={!pickedImage?'ios-camera':'ios-remove'}
+                name ={'ios-camera'}
                 color='#fff' 
                 size={23}
                 />
               </TouchableHighlight>
-            </View>
-            <View style={styles.imageConainer}>
-              <Image source={!pickedImage? require('../../../assets/images/man1.jpg'):{uri:pickedImage}} style={styles.modelImage} />
-              <TouchableHighlight style={styles.iconContainer} onPress={!pickedImage? takeImageHandler:()=>setPickedImage(false)}>
-                <Ionicons title = "add" 
-                name ={!pickedImage?'ios-camera':'ios-remove'}
-                color='#fff' 
-                size={23}
-                />
+              <TouchableHighlight style={styles.iconContainer2} onPress={takeLibraryHandler}>
+              <MaterialIcons 
+                title = "library" 
+                name ='photo-library' 
+                color='#FFF' 
+                size={21} />
               </TouchableHighlight>
+              </View>
             </View>
-            <View style={styles.imageConainer}>
-              <Image source={!pickedImage? require('../../../assets/images/man1.jpg'):{uri:pickedImage}} style={styles.modelImage} />
-              <TouchableHighlight style={styles.iconContainer} onPress={!pickedImage? takeImageHandler:()=>setPickedImage(false)}>
-                <Ionicons title = "add" 
-                name ={!pickedImage?'ios-camera':'ios-remove'}
-                color='#fff' 
-                size={23}
-                />
-              </TouchableHighlight>
-            </View>
-        </View>
-        <View style={styles.row}>
-            <View style={styles.imageConainer}>
-              <Image source={!pickedImage? require('../../../assets/images/man1.jpg'):{uri:pickedImage}} style={styles.modelImage} />
-              <TouchableHighlight style={styles.iconContainer} onPress={!pickedImage? takeImageHandler:()=>setPickedImage(false)}>
-                <Ionicons title = "add" 
-                name ={!pickedImage?'ios-camera':'ios-remove'}
-                color='#fff' 
-                size={23}
-                />
-              </TouchableHighlight>
-            </View>
-            <View style={styles.imageConainer}>
-              <Image source={!pickedImage? require('../../../assets/images/man1.jpg'):{uri:pickedImage}} style={styles.modelImage} />
-              <TouchableHighlight style={styles.iconContainer} onPress={!pickedImage? takeImageHandler:()=>setPickedImage(false)}>
-                <Ionicons title = "add" 
-                name ={!pickedImage?'ios-camera':'ios-remove'}
-                color='#fff' 
-                size={23}
-                />
-              </TouchableHighlight>
-            </View>
-            <View style={styles.imageConainer}>
-              <Image source={!pickedImage? require('../../../assets/images/man1.jpg'):{uri:pickedImage}} style={styles.modelImage} />
-              <TouchableHighlight style={styles.iconContainer} onPress={!pickedImage? takeImageHandler:()=>setPickedImage(false)}>
-                <Ionicons title = "add" 
-                name ={!pickedImage?'ios-camera':'ios-remove'}
-                color='#fff' 
-                size={23}
-                />
-              </TouchableHighlight>
-            </View>
-        </View>
-        <View style={styles.row}>
-            <View style={styles.imageConainer}>
-              <Image source={!pickedImage? require('../../../assets/images/man1.jpg'):{uri:pickedImage}} style={styles.modelImage} />
-              <TouchableHighlight style={styles.iconContainer} onPress={!pickedImage? takeImageHandler:()=>setPickedImage(false)}>
-                <Ionicons title = "add" 
-                name ={!pickedImage?'ios-camera':'ios-remove'}
-                color='#fff' 
-                size={23}
-                />
-              </TouchableHighlight>
-            </View>
-            <View style={styles.imageConainer}>
-              <Image source={!pickedImage? require('../../../assets/images/man1.jpg'):{uri:pickedImage}} style={styles.modelImage} />
-              <TouchableHighlight style={styles.iconContainer} onPress={!pickedImage? takeImageHandler:()=>setPickedImage(false)}>
-                <Ionicons title = "add" 
-                name ={!pickedImage?'ios-camera':'ios-remove'}
-                color='#fff' 
-                size={23}
-                />
-              </TouchableHighlight>
-            </View>
-            <View style={styles.imageConainer}>
-              <Image source={!pickedImage? require('../../../assets/images/man1.jpg'):{uri:pickedImage}} style={styles.modelImage} />
-              <TouchableHighlight style={styles.iconContainer} onPress={!pickedImage? takeImageHandler:()=>setPickedImage(false)}>
-                <Ionicons title = "add" 
-                name ={!pickedImage?'ios-camera':'ios-remove'}
-                color='#fff' 
-                size={23}
-                />
-              </TouchableHighlight>
-            </View>
-        </View>
-        <View style={styles.row}>
-            <View style={styles.imageConainer}>
-              <Image source={!pickedImage? require('../../../assets/images/man1.jpg'):{uri:pickedImage}} style={styles.modelImage} />
-              <TouchableHighlight style={styles.iconContainer} onPress={!pickedImage? takeImageHandler:()=>setPickedImage(false)}>
-                <Ionicons title = "add" 
-                name ={!pickedImage?'ios-camera':'ios-remove'}
-                color='#fff' 
-                size={23}
-                />
-              </TouchableHighlight>
-            </View>
-            <View style={styles.imageConainer}>
-              <Image source={!pickedImage? require('../../../assets/images/man1.jpg'):{uri:pickedImage}} style={styles.modelImage} />
-              <TouchableHighlight style={styles.iconContainer} onPress={!pickedImage? takeImageHandler:()=>setPickedImage(false)}>
-                <Ionicons title = "add" 
-                name ={!pickedImage?'ios-camera':'ios-remove'}
-                color='#fff' 
-                size={23}
-                />
-              </TouchableHighlight>
-            </View>
-            <View style={styles.imageConainer}>
-              <Image source={!pickedImage? require('../../../assets/images/man1.jpg'):{uri:pickedImage}} style={styles.modelImage} />
-              <TouchableHighlight style={styles.iconContainer} onPress={!pickedImage? takeImageHandler:()=>setPickedImage(false)}>
-                <Ionicons title = "add" 
-                name ={!pickedImage?'ios-camera':'ios-remove'}
-                color='#fff' 
-                size={23}
-                />
-              </TouchableHighlight>
-            </View>
+     
         </View>
       </ScrollView> 
     </View>
@@ -191,16 +157,6 @@ BarberGaleryScreen.navigationOptions= navData => {
         fontFamily:'poppins-bold',
         marginTop:5
       },
-      headerRight : () =>(
-        <HeaderButtons HeaderButtonComponent = {HeaderButton}> 
-          <Item title = "save" 
-            iconName ='md-checkmark'
-            color='#323446'
-            size={23} 
-            style={{paddingRight:10}}       
-            onPress={()=>navData.navigation.navigate('BarberGalery')}      
-          />
-        </HeaderButtons>)
      
      };
  
@@ -228,13 +184,13 @@ const styles= StyleSheet.create({
     justifyContent:'center'
     },
   imageConainer:{
-    width:'30%',
+    width:'45%',
     marginHorizontal:15,
     alignItems:'center'
   },
    modelImage:{ 
-     width:windowWidth*0.3,
-     height:windowHeight*0.18
+     width:windowWidth*0.4,
+     height:windowHeight*0.25
     },
   iconContainer:{
     height:30,
@@ -244,7 +200,24 @@ const styles= StyleSheet.create({
     justifyContent:'center',
     alignItems:'center',
     marginVertical:5
-   }
+   },
+   iconContainer2:{
+    height:30,
+    width:30,
+    borderRadius:30/2,
+    backgroundColor:'#FE457C',
+    justifyContent:'center',
+    alignItems:'center',
+    marginVertical:5
+   },
+   activityIndicatorContainer:{
+    flex:1,
+    resizeMode:'cover',
+    width:'100%',
+    height:'100%',
+    justifyContent:'center',
+    alignItems:'center' 
+  },
 });
 
 export default BarberGaleryScreen;

@@ -11,7 +11,7 @@ import barbersReducer from './store/reducers/barber';
 import bookingsReducer from "./store/reducers/bookingsReducer" ;
 import feedbacksReducer from "./store/reducers/feedback";
 import tokenReducer from './store/reducers/tokenReducer';
-
+import portfolioReducer from './store/reducers/portfolio';
 
 enableScreens();
 
@@ -20,7 +20,8 @@ const rootReducer = combineReducers({
   barbers:barbersReducer,
   bookings : bookingsReducer,
   feedbacks:feedbacksReducer,
-  tokens : tokenReducer
+  tokens : tokenReducer,
+  portfolio:portfolioReducer
   });
   
   const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

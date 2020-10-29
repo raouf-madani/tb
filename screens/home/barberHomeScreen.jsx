@@ -7,6 +7,7 @@ import Colors from "../../constants/Colors";
 import { useDispatch,useSelector } from 'react-redux';
 import * as barberActions from '../../store/actions/barberActions';
 import * as feedbackActions from '../../store/actions/feedbackActions';
+import * as portfolioActions from '../../store/actions/portfolioActions';
 import Feedback from '../../components/Feedback';
 import moment from 'moment';
 import { getTokens ,addtoken ,currentToken} from '../../store/actions/tokenActions';
@@ -40,7 +41,6 @@ const BarberHomeScreen = props =>{
 const [expoPushToken, setExpoPushToken] = useState('');
 const [notification, setNotification] = useState(false);
 const notificationListener = useRef();
-const [visible, setVisible] = useState(false);
 const responseListener = useRef();
 
   const barberID= props.navigation.getParam('barberID');  //get Barber ID
@@ -66,11 +66,12 @@ const responseListener = useRef();
     setIsLoading(true);
 
     await dispatch(getTokens(barberID));
-
+    
     setIsRefreshing(true);
 
     await dispatch(barberActions.setBarber(barberID));
     await dispatch(feedbackActions.setFeedbacks(barberID));
+    await dispatch(portfolioActions.setPortfolio(barberID));
     await dispatch(getBarberBookings(barberID));
     setIsLoading(false);
     setIsRefreshing(false);
@@ -92,7 +93,8 @@ const responseListener = useRef();
   },[getBarber]);
 
    const barber=useSelector(state=>state.barbers.barber[0]);
-
+   const barberPortfolio=useSelector(state=>state.portfolio.portfolio);
+   
   //console.log(barber);
 
    const feedbacks=useSelector(state=>state.feedbacks.feedbacks);
@@ -100,8 +102,7 @@ const responseListener = useRef();
   
    //A Voir
    const myBarber=useSelector(state=>state.barbers.barber);
-  
-
+   
   const [isAbout,setIsAbout]= useState(true);
   const [isPortfolio,setIsPortfolio]= useState(false);
   const [isFeedback,setIsFeedback]= useState(false);
@@ -397,7 +398,7 @@ async function registerForPushNotificationsAsync() {
                   {barber && barber.image===null && barber.sex==='Homme'?
                   <Image source={require('../../assets/images/bestbarber.jpg')} style={styles.icon} />:
                   barber && barber.image===null && barber.sex==='Femme'?
-                  <Image source={require('../../assets/images/angelina.png')} style={styles.icon} />:
+                  <Image source={require('../../assets/images/bestwomanbarber.jpg')} style={styles.icon} />:
                   <Image source={require('../../assets/images/bestbarber.jpg')} style={styles.icon}/>
                   }
                   
@@ -523,24 +524,20 @@ async function registerForPushNotificationsAsync() {
             <View style={styles.forthRow}>
                 <View style={styles.forthRowElementsContainer}>
                   <Text style={styles.title}>{barber && barber.lang?polylanfr.Models:polylanar.Models}</Text>
+                  <TouchableOpacity onPress={()=>{setIsAbout(false); setIsPortfolio(true);}}>
                   <Text style={styles.detail}>{barber && barber.lang?polylanfr.DisplayAll:polylanar.DisplayAll}</Text>
+                  </TouchableOpacity>
                 </View>
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} refreshing={isRefreshing} style={styles.photosContainer} contentContainerStyle={{justifyContent:'space-around'}}>
-                  <View style={styles.modelImageContainer}>
-                    <Image source={require('../../assets/images/man1.jpg')} style={styles.modelImage} />
-                  </View>
-                  <View style={styles.modelImageContainer}>
-                    <Image source={require('../../assets/images/man2.jpg')} style={styles.modelImage} />
-                  </View>
-                  <View style={styles.modelImageContainer}>
-                    <Image source={require('../../assets/images/man3.jpg')} style={styles.modelImage} />
-                  </View>
-                  <View style={styles.modelImageContainer}>
-                    <Image source={require('../../assets/images/man4.jpg')} style={styles.modelImage} />
-                  </View>
-                  <View style={styles.modelImageContainer}>
-                    <Image source={require('../../assets/images/man5.jpg')} style={styles.modelImage} />
-                  </View>
+                 {barberPortfolio.length===0?(<View style={{width:'100%',paddingBottom:20}}>
+                   <Text style={{fontFamily:'poppins',fontSize:13,color:Colors.blue}}>Aucune photo n'éxiste dans votre modèle!</Text>
+                 </View>):
+                barberPortfolio.map(picture=>(<View 
+                  key={picture.id}
+                  style={styles.modelImageContainer}>
+                  <Image source={{uri:`http://173.212.234.137/uploads/${picture.model}`}} style={styles.modelImage} />
+                </View>))}
+                 
                 </ScrollView>
             </View>
 
@@ -548,50 +545,29 @@ async function registerForPushNotificationsAsync() {
          </ScrollView>):undefined}
 
         {isPortfolio?(<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false} refreshing={isRefreshing} contentContainerStyle={{alignItems:'center'}}>
-               <View style={{flexDirection:'row',width:'90%',marginVertical:10}}>
-                  <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man1.jpg')} style={styles.modelImage} />
-                  </View>
-                  <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man2.jpg')} style={styles.modelImage} />
-                  </View>
-                  <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man3.jpg')} style={styles.modelImage} />
-                  </View>
+        <View style={{flexDirection:'row',width:'90%',marginVertical:10}}>
+               {barberPortfolio.length===0?(<View style={{marginTop:height*0.2,width:'100%',justifyContent:'center',alignItems:'center'}}>
+                   <Text style={{fontFamily:'poppins',fontSize:13,color:Colors.blue,alignSelf:'center'}}>Aucune photo n'éxiste dans votre modèle!</Text>
+                 </View>):
+                  barberPortfolio.slice(0,3).map(picture=>(<View 
+                    key={picture.id}
+                    style={{width:'33.3%',alignItems:'center'}}>
+                    <Image source={{uri:`http://173.212.234.137/uploads/${picture.model}`}} style={styles.modelImage} />
+                  </View>)
+                 )}
+                 
                </View>
                <View style={{flexDirection:'row',width:'90%',marginVertical:10}}>
-                  <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man4.jpg')} style={styles.modelImage} />
-                  </View>
-                  <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man5.jpg')} style={styles.modelImage} />
-                  </View>
-                  <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man1.jpg')} style={styles.modelImage} />
-                  </View>
+               {barberPortfolio.length===0? undefined:
+                  barberPortfolio.slice(3,6).map(picture=>(<View 
+                    key={picture.id}
+                    style={{width:'33.3%',alignItems:'center'}}>
+                    <Image source={{uri:`http://173.212.234.137/uploads/${picture.model}`}} style={styles.modelImage} />
+                  </View>))}
+                  
+                 
                </View>
-               <View style={{flexDirection:'row',width:'90%',marginVertical:10}}>
-                  <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man1.jpg')} style={styles.modelImage} />
-                  </View>
-                  <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man2.jpg')} style={styles.modelImage} />
-                  </View>
-                  <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man3.jpg')} style={styles.modelImage} />
-                  </View>
-               </View>
-               <View style={{flexDirection:'row',width:'90%',marginVertical:10}}>
-                  <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man4.jpg')} style={styles.modelImage} />
-                  </View>
-                  <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man5.jpg')} style={styles.modelImage} />
-                  </View>
-                  <View style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={require('../../assets/images/man1.jpg')} style={styles.modelImage} />
-                  </View>
-               </View>
+               
          </ScrollView>):undefined}
 
          {isFeedback?(<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false} refreshing={isRefreshing} contentContainerStyle={{alignItems:'center'}}>
@@ -832,12 +808,13 @@ const styles= StyleSheet.create({
     flexDirection:'row',
     justifyContent:'space-between',
     width:'90%',
-    alignSelf:'center'
+    alignSelf:'center',
+    paddingBottom:5
   },
   photosContainer:{
     flexDirection:'row',
     paddingHorizontal:15,
-    paddingBottom:15
+    paddingBottom:5
   },
   modelImageContainer:{
     borderRadius:20,

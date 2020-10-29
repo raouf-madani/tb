@@ -22,6 +22,7 @@ const BarberServiceScreen = props =>{
   const [isDisponible,setIsDisponible]= useState(false);
 
   const barberID= props.navigation.getParam('barberID');  //get Barber ID
+  console.log(barberID);
   const [error, setError] = useState();
   const [isLoading,setIsLoading]= useState(false);//ActivityIndicator handling
   const [isUpdating,setIsUpdating]= useState(false);//ActivityIndicator handling for worktime update
@@ -77,7 +78,7 @@ const BarberServiceScreen = props =>{
   },[getBarber]);
 
   const barber= useSelector(state=>state.barbers.barber);
-  console.log(barber);
+  
     const services = ()=>{
       setIsServices(true);
       setIsDisponible(false);
@@ -317,9 +318,9 @@ const BarberServiceScreen = props =>{
                  </View>
                  <Text style={styles.iconText}>{barber && barber[0].lang?polylanfr.AddSerivce:polylanar.AddSerivce}</Text>
                </TouchableOpacity>
-               <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberGalery')}>
+               <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberGalery',{barberID:barberID})}>
                <View style={styles.iconFormCircle1}>
-                       <MaterialIcons title = "portfolio" name ='linked-camera' color='#fff' size={23} onPress={()=>props.navigation.navigate('EditService')} />
+                       <MaterialIcons title = "portfolio" name ='linked-camera' color='#fff' size={23} onPress={()=>props.navigation.navigate('BarberGalery',{barberID:barberID})} />
                </View>
                <Text style={styles.iconText}>{barber && barber[0].lang?polylanfr.AddPortfolio:polylanar.AddPortfolio}</Text>
                </TouchableOpacity>
@@ -336,11 +337,11 @@ const BarberServiceScreen = props =>{
         </View>
         {isServices ? (<View style={styles.noServicesContainer}>
             <View style={{marginBottom:10,alignSelf:'center'}}>
-              <Text style={styles.noServicesText}>{barber && barber.lang?polylanfr.NoServices:polylanar.NoServices}</Text>
+              <Text style={styles.noServicesText}>{barber && barber[0].lang?polylanfr.NoServices:polylanar.NoServices}</Text>
             </View>
             <Button
               theme={{colors: {primary:'#fd6c57'}}} 
-              title={barber && barber.lang?polylanfr.Add:polylanar.Add}
+              title={barber && barber[0].lang?polylanfr.Add:polylanar.Add}
               titleStyle={styles.labelButton}
               buttonStyle={styles.buttonStyle}
               ViewComponent={LinearGradient} 
@@ -469,7 +470,7 @@ const BarberServiceScreen = props =>{
               {barber && barber[0].image===null && barber[0].sex==='Homme'?
                   <Image source={require('../../../assets/images/bestbarber.jpg')} style={styles.icon} />:
                   barber && barber[0].image===null && barber[0].sex==='Femme'?
-                  <Image source={require('../../../assets/images/angelina.png')} style={styles.icon} />:
+                  <Image source={require('../../../assets/images/bestwomanbarber.jpg')} style={styles.icon} />:
                   <Image source={require('../../../assets/images/bestbarber.jpg')} style={styles.icon}/>
                   }
               </View>
@@ -482,9 +483,9 @@ const BarberServiceScreen = props =>{
                   </View>
                   <Text style={styles.iconText}>{barber && barber[0].lang?polylanfr.AddSerivce:polylanar.AddSerivce}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberGalery')}>
+                <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberGalery',{barberID:barberID})}>
                 <View style={styles.iconFormCircle1}>
-                        <MaterialIcons title = "portfolio" name ='linked-camera' color='#fff' size={23} onPress={()=>props.navigation.navigate('EditService')} />
+                        <MaterialIcons title = "portfolio" name ='linked-camera' color='#fff' size={23} onPress={()=>props.navigation.navigate('BarberGalery',{barberID:barberID})} />
                 </View>
                 <Text style={styles.iconText}>{barber && barber[0].lang?polylanfr.AddPortfolio:polylanar.AddPortfolio}</Text>
                 </TouchableOpacity>
@@ -663,7 +664,7 @@ const styles= StyleSheet.create({
     
   firstContainer:{
     width:'100%',
-    height:'40%',
+    height:'45%',
     alignItems:'center',
     backgroundColor:'#f9f9f9'
   },

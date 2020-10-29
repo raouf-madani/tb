@@ -9,6 +9,7 @@ import * as firebase from "firebase";
 import Firebaseconfig from '../../helpers/Firebaseconfig';
 import * as barberActions from '../../store/actions/barberActions';
 import * as worktimeActions from '../../store/actions/worktimeActions';
+import * as portfolioActions from '../../store/actions/portfolioActions';
 import {useDispatch} from 'react-redux';
 import * as Crypto from 'expo-crypto'; 
 import CustomInput from '../../components/Input';
@@ -217,7 +218,7 @@ const sendCode = async () => {
       await dispatch(barberActions.createBarber(formState.inputValues.phone, prefix+formState.inputValues.phone,
         hashedPassword,sex,wilaya,formState.inputValues.region));
       await dispatch(worktimeActions.createWorktime(formState.inputValues.phone));
-
+      await dispatch(portfolioActions.createPortfolio(formState.inputValues.phone));
       setConfirmInProgress(false);
       setVerificationId("");
       setVerificationCode("");
