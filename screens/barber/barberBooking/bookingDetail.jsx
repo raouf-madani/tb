@@ -12,6 +12,7 @@ import polylanfr from "../../../lang/fr";
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 
+
 const screen = Dimensions.get("window");
 
 const BookingDetail = props =>{
@@ -76,9 +77,9 @@ async function sendPushNotification(type,alert1,alert2) {
   )
   
   })
-  
 
-  allMessages.map(async (e)=>{
+console.log(allMessages);
+  allMessages.map(async (message)=>{
      await fetch('https://exp.host/--/api/v2/push/send', {
        method: 'POST',
        headers: {
@@ -86,7 +87,7 @@ async function sendPushNotification(type,alert1,alert2) {
          'Accept-encoding': 'gzip, deflate',
          'Content-Type': 'application/json',
        },
-       body: JSON.stringify(e),
+       body: JSON.stringify(message),
      });
    
    
@@ -117,7 +118,6 @@ const dispatch = useDispatch();
 const bookingHandler = (type,alert1,alert2) =>{
 
 
-
 //ALERT BEFORE CANCEL A BOOKING
 // Works on both Android and iOS
 Alert.alert(
@@ -138,7 +138,7 @@ Alert.alert(
                        
             await dispatch(changeBookingState(props.navigation.getParam("id"),type));
             await sendPushNotification(type,alert1,alert2);
-            console.log(type);
+     
             props.navigation.navigate( "Barber");
             }      
             setLoading(false);  
@@ -254,7 +254,7 @@ if (isLoading) {
 }
 
         { conditionAnnuler &&
-          <TouchableOpacity style = {{alignItems : "center"}} >
+          <TouchableOpacity style = {{alignItems : "center"}} onPress = {()=>bookingHandler("annulée","Annuler","annuler")} >
           
           <Ionicons name="ios-close-circle-outline" 
                       size={28} 
@@ -268,7 +268,7 @@ if (isLoading) {
 
 
         {conditionConfirmer && 
-                  <TouchableOpacity style = {{alignItems : "center"}}>
+                  <TouchableOpacity style = {{alignItems : "center"}} onPress = {()=>bookingHandler("confirmée","Confirmer","confirmer")} >
                     
                   <Ionicons 
                   name="ios-checkbox-outline" 

@@ -101,6 +101,7 @@ const responseListener = useRef();
    //A Voir
    const myBarber=useSelector(state=>state.barbers.barber);
   
+
   const [isAbout,setIsAbout]= useState(true);
   const [isPortfolio,setIsPortfolio]= useState(false);
   const [isFeedback,setIsFeedback]= useState(false);
