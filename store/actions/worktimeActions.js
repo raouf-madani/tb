@@ -5,7 +5,7 @@ export const createWorktime=(barber_id)=>{
   
     return async () =>{
         const worktimeData={barber_id};
-         console.log(barber_id);
+         
         try{
             const response= await fetch('http://173.212.234.137:3000/worktime/addWorktime',{
                 method : "POST",

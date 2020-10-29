@@ -43,7 +43,7 @@ export default{
     NoAvailable:"Non disponible",
     Address:"Adresse",
     Models:"Modèles",
-    DisplayAll:"Affichez tout",
+    DisplayAll:"Afficher tout",
     BusinessName:"Nom business",
     personalInforamtion:"Nom, prénom et votre âge",
     YourFullName:"Votre nom complet",
