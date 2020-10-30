@@ -25,7 +25,6 @@
     "express": "^4.17.1",
     "firebase": "7.9.0",
     "firebase-admin": "^9.0.0",
-    "multer": "^1.4.2",
     "mysql": "^2.18.1",
     "react": "16.13.1",
     "react-dom": "16.13.1",
@@ -35,6 +34,7 @@
     "react-native-gesture-handler": "~1.7.0",
     "react-native-modal-datetime-picker": "^8.7.1",
     "react-native-reanimated": "~1.13.0",
+    "react-native-safe-area-context": "3.1.4",
     "react-native-screens": "~2.10.1",
     "react-native-web": "~0.13.7",
     "react-native-webview": "10.7.0",
@@ -44,8 +44,7 @@
     "react-navigation-stack": "^2.8.2",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0",
-    "react-native-safe-area-context": "3.1.4"
+    "redux-thunk": "^2.3.0"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

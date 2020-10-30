@@ -38,7 +38,7 @@ const BarberGaleryScreen = props =>{
     if(result.status !== 'granted'){
         Alert.alert('Permissions insuffisantes!',
         'Vous devez autoriser votre caméra pour utiliser cette application.',
-        [{text:"D'accord"}]);
+        [{text:barber && barber[0].lang?polylanfr.Agree:polylanar.Agree}]);
         return false;
     }
     return true;

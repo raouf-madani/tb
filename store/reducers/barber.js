@@ -47,7 +47,7 @@ const barbersReducer=(state=initialState,action)=>{
           action.barberData.address,
           action.barberData.wilaya,
           action.barberData.region,
-          action.barberData.image,
+          state.barber[barberindex].image,
           state.barber[barberindex].long,
           state.barber[barberindex].lat,
           state.barber[barberindex].mark,

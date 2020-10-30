@@ -450,7 +450,8 @@ inputContainer:{
 footerContainer:{
  height:'30%',
  width:'100%',
- justifyContent:'center'
+ justifyContent:'flex-end',
+ paddingBottom:25
 },
 labelButton:{
  color:'#FFF',

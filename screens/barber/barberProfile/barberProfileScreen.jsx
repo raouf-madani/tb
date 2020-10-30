@@ -53,6 +53,7 @@ const BarberProfileScreen = props =>{
     const [isLocalisation,setIsLocalisation]= useState(false);
     //State for update loading 
     const [isLoading,setIsLoading]=useState(false);
+    const [isLoadingImage,setIsLoadingImage]=useState(false);
     const [error,setError]=useState();
     
     //bring firebase user id
@@ -114,7 +115,7 @@ const BarberProfileScreen = props =>{
 ///ImagePicker
 
 //state for image
-const [pickedImage,setPickedImage]= useState(barber[0]?barber[0].image : undefined);
+const [pickedImage,setPickedImage]= useState(barber[0]?barber[0].image : false);
 
 
 const verifyPermissions= async ()=>{
@@ -128,44 +129,70 @@ const verifyPermissions= async ()=>{
   return true;
 };
 
-const takeImageHandler = async ()=>{
- const hasPermissions = await verifyPermissions();
- if(!hasPermissions){
-     return;
- }
- const image = await ImagePicker.launchCameraAsync({
-  mediaTypes: ImagePicker.MediaTypeOptions.All,
-     allowsEditing:true,
-     aspect:[60,60],
-     quality:0.7
- });
-  
-  setPickedImage(image);
-  
-};
+//////////////////////////****************************************************************************Image 1 
+    const takeImageHandler = async ()=>{
 
+      try{
+      const hasPermissions = await verifyPermissions();
+      if(!hasPermissions){
+          return;
+      }
+      let image = await ImagePicker.launchCameraAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
+          allowsEditing:true,
+          aspect:[60,60],
+          quality:0.7,
+          base64: true
+      });
+      
+      if (!image.cancelled) {
+        const imageSplit= image.uri.split('/');
+        const imageName= imageSplit.pop();
+        
+        setPickedImage(imageName);
+        
+        setIsLoadingImage(true);
+        await dispatch(barberActions.updateBarberImage(barberID,image.base64,imageName));
+        setIsLoadingImage(false);
+        }
+      }catch(err){
+        console.log(err);
+      Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+      }
+    };
 
+      const takeLibraryHandler = async ()=>{
 
-const takeLibraryHandler = async ()=>{
-  const hasPermissions = await verifyPermissions();
-  if(!hasPermissions){
-      return;
-  }
- 
-  const library = await ImagePicker.launchImageLibraryAsync({
-   mediaTypes: ImagePicker.MediaTypeOptions.All,
-   allowsEditing:true,
-   aspect:[60,60],
-   quality:0.7
- });
-  
-  
-  if(library){
-   setPickedImage(library);
-  }
-  
-  
- };
+      try{
+        const hasPermissions = await verifyPermissions();
+        if(!hasPermissions){
+            return;
+        }
+
+        let library = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsEditing:true,
+        aspect:[60,60],
+        quality:0.7,
+        base64: true
+      });
+
+      if (!library.cancelled) {
+        const imageSplit= library.uri.split('/');
+        const imageName= imageSplit.pop();
+        
+        setPickedImage(imageName);
+        
+        setIsLoadingImage(true);
+        await dispatch(barberActions.updateBarberImage(barberID,library.base64,imageName));
+        setIsLoadingImage(false);
+        }
+      }catch(err){
+        console.log(err);
+        Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+        }
+      
+      };
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -257,7 +284,12 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
    },[saveHandler,isLoading]);
 
 
-  
+   if(isLoadingImage){
+    return <ImageBackground source={require('../../../assets/images/support.png')} style={styles.activityIndicatorContainer} >
+            <StatusBar hidden />
+            <ActivityIndicator size='large' color={Colors.primary} />
+           </ImageBackground>
+  };
 
   
     return(
@@ -270,7 +302,8 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
        <View style={styles.secondCard}>
             <View style={styles.secondCardContent}>
                 <View style={styles.imageContainer}>
-                <Image source={require('../../../assets/images/unknown.jpeg')} style={styles.image} />
+                {barber && pickedImage?<Image source={{uri:`http://173.212.234.137/profileImages/barber/${pickedImage}`}} style={styles.image} />:
+                <Image source={require('../../../assets/images/unknown.jpeg')} style={styles.image} />}
                 </View>
                 <View style={styles.detailsContainer}>
                   <View style={{width:'30%'}}>
@@ -735,6 +768,14 @@ const styles= StyleSheet.create({
        color:'#fd6c57',
        paddingTop:5
      },
+     activityIndicatorContainer:{
+      flex:1,
+      resizeMode:'cover',
+      width:'100%',
+      height:'100%',
+      justifyContent:'center',
+      alignItems:'center' 
+    }
 });
 
 export default BarberProfileScreen;

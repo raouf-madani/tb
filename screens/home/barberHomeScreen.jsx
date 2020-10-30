@@ -95,10 +95,10 @@ const responseListener = useRef();
    const barber=useSelector(state=>state.barbers.barber[0]);
    const barberPortfolio=useSelector(state=>state.portfolio.portfolio);
    
-  //console.log(barber);
+  
 
    const feedbacks=useSelector(state=>state.feedbacks.feedbacks);
-  //  console.log(feedbacks);
+  
   
    //A Voir
    const myBarber=useSelector(state=>state.barbers.barber);
@@ -230,32 +230,7 @@ const notificationDataHandler = (list,sender) =>{
   
    toggleOverlay();
    Notifications.dismissNotificationAsync(list);
- 
-
  }
-
-
-
-// Can use this function below, OR use Expo's Push Notification Tool-> https://expo.io/dashboard/notifications
-async function sendPushNotification(expoPushToken) {
-  const message = {
-    to: expoPushToken,
-    sound: 'default',
-    title: 'This is a message from Tahfifa ',
-    body: 'And here is the body!',
-    data: { data: 'goes here' },
-  };
-
-  await fetch('https://exp.host/--/api/v2/push/send', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Accept-encoding': 'gzip, deflate',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(message),
-  });
-}
 
 async function registerForPushNotificationsAsync() {
   let token;
@@ -395,7 +370,8 @@ async function registerForPushNotificationsAsync() {
            </View>
            <View style={styles.infoContainer}>
                <View style={styles.imageContainer}>
-               <Image source={require('../../assets/images/unknown.jpeg')} style={styles.icon} />
+               {barber && barber.image ? <Image source={{uri:`http://173.212.234.137/profileImages/barber/${barber.image}`}} style={styles.icon} />:
+               <Image source={require('../../assets/images/unknown.jpeg')} style={styles.icon} />}
                   
                </View>
                <Text style={styles.bname}>{barber && barber.b_name!==null?barber.b_name:barber && barber.lang?polylanfr.BusinessName:polylanar.BusinessName}</Text>
