@@ -241,7 +241,7 @@ const sendCode = async () => {
 
     return(
       <TouchableWithoutFeedback onPress = {()=>{Keyboard.dismiss()}}>
-        <ImageBackground source={require('../../assets/images/chica4.jpg')} style={styles.container}>
+        <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/chica4.jpg'}} style={styles.container}>
           <KeyboardAvoidingView keyboardVerticalOffset={10}>
           <StatusBar hidden />
           <FirebaseRecaptcha.FirebaseRecaptchaVerifierModal
@@ -252,7 +252,7 @@ const sendCode = async () => {
               />
           
               <View style={{width:'85%',height:verificationId?'50%':'30%',alignSelf:'center',alignItems:'flex-start',justifyContent:'flex-end'}}>
-                 <Image source={require('../../assets/images/icon.png')} style={styles.icon}/>
+                 <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/icon.png'}} style={styles.icon}/>
                  <Text style={styles.slogan}>Allez chez votre client ou recevez-le au salon</Text>
               </View>
               <View style={styles.secondContainer}>
@@ -260,7 +260,7 @@ const sendCode = async () => {
                 <CustomInput
                     id='phone'
                     rightIcon={<MaterialIcons title = "phone" name ='phone' color='#323446' size={23} />}
-                    leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Colors.blue,paddingRight:5}}><Image source={require('../../assets/images/algeriaFlag.png')} style={{width:24,height:28,marginRight:5}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
+                    leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Colors.blue,paddingRight:5}}><Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/algeriaFlag.png'}} style={{width:24,height:28,marginRight:5}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
                     placeholder='555555555'
                     keyboardType="phone-pad"
                     returnKeyType="next"

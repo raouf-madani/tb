@@ -172,18 +172,18 @@ const verifyNumber = async ()=>{
                 cancelLabel='Fermer'
               />
           <View style={styles.backgroundContainer}>
-            <Image source={require('../assets/images/loginimage.jpg')} style={{resizeMode:'cover',width:'100%',height:'100%'}}/>
+            <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/loginimage.jpg'}} style={{resizeMode:'cover',width:'100%',height:'100%'}}/>
           </View>
           <View style={styles.secondContainer}>
              <View style={styles.logoContainer}>
-                 <Image source={require('../assets/images/logo.png')} style={styles.logo}/>
+                 <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/logo.png'}} style={styles.logo}/>
                  <Text style={styles.callToAction}>Exercez votre métier et gagnez plus d'argent</Text>
              </View>
              {!verificationId ? (<View style={styles.inputsContainer}>
                   <CustomInput
                     id={'phone'}
                     rightIcon={<MaterialIcons title = "phone" name ='phone' color='#323446' size={23} />}
-                    leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Colors.blue,paddingRight:5}}><Image source={require('../assets/images/algeriaFlag.png')} style={{width:24,height:28,marginRight:5}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
+                    leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Colors.blue,paddingRight:5}}><Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/algeriaFlag.png'}} style={{width:24,height:28,marginRight:5}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
                     placeholder='555555555'
                     keyboardType="phone-pad"
                     returnKeyType="next"

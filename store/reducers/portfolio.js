@@ -1,4 +1,4 @@
-import {SET_PORTFOLIO,CREATE_PORTFOLIO,UPDATE_PORTFOLIO,DELETE_PORTFOLIO} from '../actions/portfolioActions';
+import {SET_PORTFOLIO} from '../actions/portfolioActions';
 
 
 const initialState={

@@ -285,7 +285,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
 
 
    if(isLoadingImage){
-    return <ImageBackground source={require('../../../assets/images/support.png')} style={styles.activityIndicatorContainer} >
+    return <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/support.png'}} style={styles.activityIndicatorContainer} >
             <StatusBar hidden />
             <ActivityIndicator size='large' color={Colors.primary} />
            </ImageBackground>
@@ -297,13 +297,13 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
     <View style={styles.container}>
     <StatusBar hidden />
         <View style={styles.firstCard}>
-          <ImageBackground source={barber[0].sex==='Femme'?require( '../../../assets/images/woman5.jpg'):require('../../../assets/images/loginimage.jpg')} style={styles.backgroundFirstCard} resizeMode='cover'/>
+          <ImageBackground source={barber[0].sex==='Femme'?{uri:'http://173.212.234.137/assets/tahfifabarber/woman5.jpg'}:{uri:'http://173.212.234.137/assets/tahfifabarber/loginimage.jpg'}} style={styles.backgroundFirstCard} resizeMode='cover'/>
        </View>
        <View style={styles.secondCard}>
             <View style={styles.secondCardContent}>
                 <View style={styles.imageContainer}>
                 {barber && pickedImage?<Image source={{uri:`http://173.212.234.137/profileImages/barber/${pickedImage}`}} style={styles.image} />:
-                <Image source={require('../../../assets/images/unknown.jpeg')} style={styles.image} />}
+                <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/unknown.jpeg'}} style={styles.image} />}
                 </View>
                 <View style={styles.detailsContainer}>
                   <View style={{width:'30%'}}>

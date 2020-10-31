@@ -19,7 +19,7 @@ const Feedback = props =>{
        <View style={styles.feedbackContainer}>
             <View style={styles.photoContainer}>
                 <View style={styles.photoCircle}>
-                    <Image source={require('../assets/images/avatarman.jpg')} style={styles.photo} />
+                    <Image source={{uri:`http://173.212.234.137/profileImages/client/${props.image}`}} style={styles.photo} />
                 </View>
             </View>
             <View style={styles.commentRatingContainer}>
