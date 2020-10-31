@@ -177,10 +177,9 @@ useEffect(() => {
           ]);
           return;
       }
-      console.log(hour);
-      console.log(minute);
+   
       const duration= parseInt(hour)*60 + parseInt(minute);
-      console.log(duration);
+      
        
       setError(null);
       setIsLoading(true);
@@ -451,7 +450,8 @@ inputContainer:{
 footerContainer:{
  height:'30%',
  width:'100%',
- justifyContent:'center'
+ justifyContent:'flex-end',
+ paddingBottom:25
 },
 labelButton:{
  color:'#FFF',

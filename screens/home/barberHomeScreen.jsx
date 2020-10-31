@@ -95,10 +95,10 @@ const responseListener = useRef();
    const barber=useSelector(state=>state.barbers.barber[0]);
    const barberPortfolio=useSelector(state=>state.portfolio.portfolio);
    
-  //console.log(barber);
+  
 
    const feedbacks=useSelector(state=>state.feedbacks.feedbacks);
-  //  console.log(feedbacks);
+  
   
    //A Voir
    const myBarber=useSelector(state=>state.barbers.barber);
@@ -230,32 +230,7 @@ const notificationDataHandler = (list,sender) =>{
   
    toggleOverlay();
    Notifications.dismissNotificationAsync(list);
- 
-
  }
-
-
-
-// Can use this function below, OR use Expo's Push Notification Tool-> https://expo.io/dashboard/notifications
-async function sendPushNotification(expoPushToken) {
-  const message = {
-    to: expoPushToken,
-    sound: 'default',
-    title: 'This is a message from Tahfifa ',
-    body: 'And here is the body!',
-    data: { data: 'goes here' },
-  };
-
-  await fetch('https://exp.host/--/api/v2/push/send', {
-    method: 'POST',
-    headers: {
-      Accept: 'application/json',
-      'Accept-encoding': 'gzip, deflate',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(message),
-  });
-}
 
 async function registerForPushNotificationsAsync() {
   let token;
@@ -395,12 +370,8 @@ async function registerForPushNotificationsAsync() {
            </View>
            <View style={styles.infoContainer}>
                <View style={styles.imageContainer}>
-                  {barber && barber.image===null && barber.sex==='Homme'?
-                  <Image source={require('../../assets/images/bestbarber.jpg')} style={styles.icon} />:
-                  barber && barber.image===null && barber.sex==='Femme'?
-                  <Image source={require('../../assets/images/bestwomanbarber.jpg')} style={styles.icon} />:
-                  <Image source={require('../../assets/images/bestbarber.jpg')} style={styles.icon}/>
-                  }
+               {barber && barber.image ? <Image source={{uri:`http://173.212.234.137/profileImages/barber/${barber.image}`}} style={styles.icon} />:
+               <Image source={require('../../assets/images/unknown.jpeg')} style={styles.icon} />}
                   
                </View>
                <Text style={styles.bname}>{barber && barber.b_name!==null?barber.b_name:barber && barber.lang?polylanfr.BusinessName:polylanar.BusinessName}</Text>
@@ -529,14 +500,15 @@ async function registerForPushNotificationsAsync() {
                   </TouchableOpacity>
                 </View>
                 <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} refreshing={isRefreshing} style={styles.photosContainer} contentContainerStyle={{justifyContent:'space-around'}}>
-                 {barberPortfolio.length===0?(<View style={{width:'100%',paddingBottom:20}}>
-                   <Text style={{fontFamily:'poppins',fontSize:13,color:Colors.blue}}>Aucune photo n'éxiste dans votre modèle!</Text>
-                 </View>):
-                barberPortfolio.map(picture=>(<View 
+                 
+                {barberPortfolio.slice(0,4).map(picture=>
+
+                (<View 
                   key={picture.id}
                   style={styles.modelImageContainer}>
-                  <Image source={{uri:`http://173.212.234.137/uploads/${picture.model}`}} style={styles.modelImage} />
-                </View>))}
+                  <Image source={{uri:picture.model===null?`http://173.212.234.137/uploads/ayoungleaderportfolio.jpg` :`http://173.212.234.137/uploads/${picture.model}`}} style={styles.modelImage} />
+                </View>)
+              )}
                  
                 </ScrollView>
             </View>
@@ -546,23 +518,19 @@ async function registerForPushNotificationsAsync() {
 
         {isPortfolio?(<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false} refreshing={isRefreshing} contentContainerStyle={{alignItems:'center'}}>
         <View style={{flexDirection:'row',width:'90%',marginVertical:10}}>
-               {barberPortfolio.length===0?(<View style={{marginTop:height*0.2,width:'100%',justifyContent:'center',alignItems:'center'}}>
-                   <Text style={{fontFamily:'poppins',fontSize:13,color:Colors.blue,alignSelf:'center'}}>Aucune photo n'éxiste dans votre modèle!</Text>
-                 </View>):
-                  barberPortfolio.slice(0,3).map(picture=>(<View 
+               {barberPortfolio.slice(0,3).map(picture=>(<View 
                     key={picture.id}
                     style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={{uri:`http://173.212.234.137/uploads/${picture.model}`}} style={styles.modelImage} />
+                    <Image source={{uri:picture.model===null?`http://173.212.234.137/uploads/ayoungleaderportfolio.jpg` :`http://173.212.234.137/uploads/${picture.model}`}} style={styles.modelImage} />
                   </View>)
                  )}
                  
                </View>
                <View style={{flexDirection:'row',width:'90%',marginVertical:10}}>
-               {barberPortfolio.length===0? undefined:
-                  barberPortfolio.slice(3,6).map(picture=>(<View 
+               {barberPortfolio.slice(3,6).map(picture=>(<View 
                     key={picture.id}
                     style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={{uri:`http://173.212.234.137/uploads/${picture.model}`}} style={styles.modelImage} />
+                    <Image source={{uri:picture.model===null?`http://173.212.234.137/uploads/ayoungleaderportfolio.jpg` :`http://173.212.234.137/uploads/${picture.model}`}} style={styles.modelImage} />
                   </View>))}
                   
                  
@@ -809,7 +777,7 @@ const styles= StyleSheet.create({
     justifyContent:'space-between',
     width:'90%',
     alignSelf:'center',
-    paddingBottom:5
+    paddingBottom:5,
   },
   photosContainer:{
     flexDirection:'row',

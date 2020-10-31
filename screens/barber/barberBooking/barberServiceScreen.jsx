@@ -302,12 +302,8 @@ const BarberServiceScreen = props =>{
           
           <View style={styles.infoContainer}>
              <View style={styles.imageContainer}>
-             {barber && barber[0].image===null && barber[0].sex==='Homme'?
-                  <Image source={require('../../../assets/images/bestbarber.jpg')} style={styles.icon} />:
-                  barber && barber[0].image===null && barber[0].sex==='Femme'?
-                  <Image source={require('../../../assets/images/angelina.png')} style={styles.icon} />:
-                  <Image source={require('../../../assets/images/bestbarber.jpg')} style={styles.icon}/>
-                  }
+             {barber[0] && barber[0].image ? <Image source={{uri:`http://173.212.234.137/profileImages/barber/${barber[0].image}`}} style={styles.icon} />:
+               <Image source={require('../../../assets/images/unknown.jpeg')} style={styles.icon} />}
              </View>
            
              <Text style={styles.bname}>{barber[0] && barber[0].b_name!==null?barber[0].b_name:barber && barber[0].lang?polylanfr.BusinessName:polylanar.BusinessName}</Text>
@@ -467,12 +463,8 @@ const BarberServiceScreen = props =>{
            
            <View style={styles.infoContainer}>
               <View style={styles.imageContainer}>
-              {barber && barber[0].image===null && barber[0].sex==='Homme'?
-                  <Image source={require('../../../assets/images/bestbarber.jpg')} style={styles.icon} />:
-                  barber && barber[0].image===null && barber[0].sex==='Femme'?
-                  <Image source={require('../../../assets/images/bestwomanbarber.jpg')} style={styles.icon} />:
-                  <Image source={require('../../../assets/images/bestbarber.jpg')} style={styles.icon}/>
-                  }
+              {barber[0] && barber[0].image ? <Image source={{uri:`http://173.212.234.137/profileImages/barber/${barber[0].image}`}} style={styles.icon} />:
+               <Image source={require('../../../assets/images/unknown.jpeg')} style={styles.icon} />}
               </View>
             
               <Text style={styles.bname}>{barber[0] && barber[0].b_name!==null?barber[0].b_name:barber && barber[0].lang?polylanfr.BusinessName:polylanar.BusinessName}</Text>

@@ -209,7 +209,7 @@ export const updateBarberPassword= (id,password) => {
 export const updateBarberLang= (id,lang) => {
 
     return async dispatch => {
-           console.log(id,lang);
+           
          try{
 
            const response = await fetch(`http://173.212.234.137:3000/barber/updateLang/${id}`,{
@@ -225,6 +225,38 @@ export const updateBarberLang= (id,lang) => {
            }
            
            dispatch({type:UPDATE_BARBER_LANG,id,barberData:{lang}});
+          
+         }catch(err){
+             console.log(err);
+             throw err;
+         }
+    };
+
+};
+
+export const updateBarberImage= (id,imgsource,image) => {
+
+    return async () => {
+
+        const barberImageData={imgsource,image};
+           console.log(imgsource,image);
+         try{
+
+           const response = await fetch(`http://173.212.234.137:3000/barber/profileimage/${id}`,{
+
+              method:'PATCH',
+              headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body : JSON.stringify(barberImageData)
+        } 
+        );
+        if(!response.ok){
+            throw new Error('Oups! Une erreur est survenue.');
+        }
+
+          
           
          }catch(err){
              console.log(err);
@@ -264,7 +296,7 @@ export const updateBarberPhone= (id,phone,barberid) => {
 
 
 
-export const updateBarber= (id,name,surname,b_name,age,email,address,wilaya,region,image) => {
+export const updateBarber= (id,name,surname,b_name,age,email,address,wilaya,region) => {
 
     return async dispatch => {
 
@@ -276,14 +308,14 @@ export const updateBarber= (id,name,surname,b_name,age,email,address,wilaya,regi
               headers: {
                 'Content-Type': 'application/json'
             },
-            body : JSON.stringify({name,surname,b_name,age,email,address,wilaya,region,image})
+            body : JSON.stringify({name,surname,b_name,age,email,address,wilaya,region})
            });
            
            if(!response.ok){
                throw new Error('Oups! Une erreur est survenue.');
            }
           
-           dispatch({type:UPDATE_BARBER,id,barberData:{name,surname,b_name,age,email,address,wilaya,region,image}});
+           dispatch({type:UPDATE_BARBER,id,barberData:{name,surname,b_name,age,email,address,wilaya,region}});
            
          }catch(err){
              console.log(err);
