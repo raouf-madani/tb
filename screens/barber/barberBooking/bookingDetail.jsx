@@ -297,7 +297,7 @@ if (isLoading) {
                     <Text key = {index} style={styles.serviceText}>
                     {service.name +" / "+ 
                     service.serviceDuration +" Min / "+ 
-                    service.price + " دج "
+                    service.price + " دج"
                     }
                     </Text>
                    
