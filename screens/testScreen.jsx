@@ -185,9 +185,9 @@ const login = async()=>{
              
              
             <View style={styles.signupContainer}>
-                <Text style={{color:'#A8A8A8',fontFamily:'poppins',fontSize:12,alignSelf:'center',}}>1- Vérifiez votre numéro de téléphone.</Text>
-                <Text style={{color:'#A8A8A8',fontFamily:'poppins',fontSize:12,alignSelf:'center',}}>2- Entrez le code sms.</Text>
-                <Text style={{color:Colors.primary,fontFamily:'poppins',fontSize:12,alignSelf:'center',}}>3- Réinitialisez votre mot de passe.</Text>
+                <Text style={{color:'#A8A8A8',fontFamily:'poppins',fontSize:screen.width/30,alignSelf:'center',}}>1- Vérifiez votre numéro de téléphone.</Text>
+                <Text style={{color:'#A8A8A8',fontFamily:'poppins',fontSize:screen.width/30,alignSelf:'center',}}>2- Entrez le code sms.</Text>
+                <Text style={{color:Colors.primary,fontFamily:'poppins',fontSize:screen.width/30,alignSelf:'center',}}>3- Réinitialisez votre mot de passe.</Text>
             </View>
                   
              

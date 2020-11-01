@@ -241,14 +241,14 @@ const verifyNumber = async ()=>{
                   }}
                 />
                 <Button
-                  theme={{colors: {primary:'#fd6c57'}}} 
+                  theme={{colors: {primary:'#4C9F70'}}} 
                   title="Renvoyer"
                   titleStyle={styles.labelButton}
                   buttonStyle={styles.confirmedButtonStyle}
                   onPress={verifyNumber}
                   ViewComponent={LinearGradient} 
                   linearGradientProps={{
-                      colors: ['#4C9F70', '##83B692'],
+                      colors: ['#4C9F70', '##4C9F70'],
                       start: {x: 0, y: 0} ,
                       end:{x: 1, y: 0}
                       
@@ -263,9 +263,9 @@ const verifyNumber = async ()=>{
              
              
             <View style={styles.signupContainer}>
-                <Text style={{color:!verificationId ?Colors.primary:'#A8A8A8',fontFamily:'poppins',fontSize:12,alignSelf:'center',}}>1- Vérifiez votre numéro de téléphone.</Text>
-                <Text style={{color:verificationId?Colors.primary:Colors.blue,fontFamily:'poppins',fontSize:12,alignSelf:'center',}}>2- Entrez le code sms.</Text>
-                <Text style={{color:Colors.blue,fontFamily:'poppins',fontSize:12,alignSelf:'center',}}>3- Réinitialisez votre mot de passe.</Text>
+                <Text style={{color:!verificationId ?Colors.primary:'#A8A8A8',fontFamily:'poppins',fontSize:screen.width/30,alignSelf:'center',}}>1- Vérifiez votre numéro de téléphone.</Text>
+                <Text style={{color:verificationId?Colors.primary:Colors.blue,fontFamily:'poppins',fontSize:screen.width/30,alignSelf:'center',}}>2- Entrez le code sms.</Text>
+                <Text style={{color:Colors.blue,fontFamily:'poppins',fontSize:screen.width/30,alignSelf:'center',}}>3- Réinitialisez votre mot de passe.</Text>
             </View>
                   
              
@@ -386,6 +386,7 @@ const styles= StyleSheet.create({
     justifyContent:'space-around',
     alignItems:'center',
     width:'100%',
+    paddingTop:screen.width/28
   },
   confirmedButtonStyle:{
     borderColor:'#fd6c57',
@@ -397,12 +398,12 @@ const styles= StyleSheet.create({
    },
    confirmErrorText:{
     color:Colors.primary,
-    fontSize:13,
+    fontSize:screen.width/28,
     alignSelf:'center'
   },
   smsText:{
     color:Colors.blue,
-    fontSize:11,
+    fontSize:screen.width/32,
     paddingTop:10,
     alignSelf:'center',
     fontFamily:'poppins-bold'
