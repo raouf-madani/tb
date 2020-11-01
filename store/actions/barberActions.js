@@ -67,7 +67,7 @@ export const setBarbers= ()=>{
 export const setBarber= id => {
     return async dispatch=>{
         try{
-
+          
             const response= await fetch(`http://173.212.234.137:3000/barber/${id}`);
 
             if(!response.ok){
@@ -167,7 +167,7 @@ export const setBarber= id => {
                 });
                 
             dispatch({type:SET_BARBER,barberData:allBarbers});
-      
+           
        }catch(err){
            console.log(err);
            throw err;

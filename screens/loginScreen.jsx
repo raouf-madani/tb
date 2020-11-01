@@ -9,7 +9,7 @@ import * as Crypto from 'expo-crypto';
 
 //responsivity (Dimensions get method)
 const screen = Dimensions.get('window');
-
+console.log(screen);
 //UseReducer Input Management//////////////////////////////////////////////////////////////////////////////////
 const Form_Input_Update = 'Form_Input_Update';
 const formReducer=(state,action) =>{
@@ -254,12 +254,12 @@ const styles= StyleSheet.create({
     alignItems:'center'
   },
   logo:{
-    width:180,
-    height:42,
-    marginVertical:10
+    width:screen.width/1.9,
+    height:screen.height/14,
+    marginVertical:screen.width/24
   },
   callToAction:{
-    fontSize:13,
+    fontSize:screen.width/28,
     fontFamily:'poppins',
     color:'#323446'
   },
@@ -287,11 +287,11 @@ const styles= StyleSheet.create({
     alignSelf:'center'
    },
   forgotPassword:{
-    fontSize:14,
+    fontSize:screen.width/26,
     fontFamily:'poppins',
     color:'#323446',
     alignSelf:'center',
-    paddingTop:10
+    paddingTop:screen.width/24
   },
   signupContainer:{
     flexDirection:'row',
@@ -299,12 +299,12 @@ const styles= StyleSheet.create({
     alignSelf:'center'
   },
   doYouHaveAnAccount:{
-    fontSize:14,
+    fontSize:screen.width/28,
     fontFamily:'poppins',
     color:'grey'
   },
   signupText:{
-    fontSize:14,
+    fontSize:screen.width/28,
     fontFamily:'poppins-bold',
     color:'#fd6c57'
   }

@@ -248,7 +248,7 @@ const verifyNumber = async ()=>{
                   onPress={verifyNumber}
                   ViewComponent={LinearGradient} 
                   linearGradientProps={{
-                      colors: ['#fd6d57', '#fd9054'],
+                      colors: ['#4C9F70', '##83B692'],
                       start: {x: 0, y: 0} ,
                       end:{x: 1, y: 0}
                       
@@ -323,12 +323,12 @@ const styles= StyleSheet.create({
     alignItems:'center'
   },
   logo:{
-    width:180,
-    height:42,
-    marginVertical:10
+    width:screen.width/1.9,
+    height:screen.height/14,
+    marginVertical:screen.width/24
   },
   callToAction:{
-    fontSize:13,
+    fontSize:screen.width/28,
     fontFamily:'poppins',
     color:'#323446'
   },
@@ -386,7 +386,6 @@ const styles= StyleSheet.create({
     justifyContent:'space-around',
     alignItems:'center',
     width:'100%',
-    marginTop:15
   },
   confirmedButtonStyle:{
     borderColor:'#fd6c57',
