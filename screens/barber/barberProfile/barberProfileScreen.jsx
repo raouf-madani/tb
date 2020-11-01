@@ -14,6 +14,7 @@ import * as authActions from '../../../store/actions/authActions';
 
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
+import { deleteToken } from '../../../store/actions/tokenActions';
 
 //responsivity (Dimensions get method)
 const screen = Dimensions.get('window');
@@ -61,6 +62,7 @@ const BarberProfileScreen = props =>{
     const barberID=props.navigation.getParam('barberID');
     //get the barber's data
     const barber= useSelector(state=>state.barbers.barber);
+    const myToken = useSelector(state=>state.tokens.currentToken);
 
     const info = ()=>{
       setIsInfo(true);
@@ -228,7 +230,8 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //logout handler
-    const logout = ()=>{
+    const logout = async ()=>{
+      await  dispatch(deleteToken(myToken));
       dispatch(authActions.logout());
       AsyncStorage.clear();
       props.navigation.navigate('Auth');

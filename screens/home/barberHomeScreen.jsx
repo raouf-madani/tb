@@ -10,7 +10,7 @@ import * as feedbackActions from '../../store/actions/feedbackActions';
 import * as portfolioActions from '../../store/actions/portfolioActions';
 import Feedback from '../../components/Feedback';
 import moment from 'moment';
-import { getTokens ,addtoken } from '../../store/actions/tokenActions';
+import { getTokens ,addtoken ,currentToken} from '../../store/actions/tokenActions';
 
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
@@ -278,7 +278,7 @@ async function registerForPushNotificationsAsync() {
       lightColor: '#FF231F7C',
     });
   }
-
+  dispatch(currentToken({token}))
   return token;
 }
 
