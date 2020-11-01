@@ -70,10 +70,10 @@ const BarberSupportScreen = props =>{
     return(
     <View style={styles.container}>
       <StatusBar hidden />
-       <ImageBackground source={require('../../../assets/images/support.png')} style={styles.background}>
+       <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/support.png'}} style={styles.background}>
          <View style={{alignItems:'center',width:'90%'}}>
             <View style={{marginBottom:15}}>
-               <Image source={require('../../../assets/images/icon.png')} style={{width:80,height:80}} />
+               <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/icon.png'}} style={{width:80,height:80}} />
             </View>
             <View style={{width:'100%',marginBottom:15}}>
               <Text style={{fontFamily:'poppins',fontSize:13,color:Colors.blue,alignSelf:'center'}}>

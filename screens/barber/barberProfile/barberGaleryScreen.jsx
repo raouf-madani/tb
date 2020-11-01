@@ -435,7 +435,7 @@ const BarberGaleryScreen = props =>{
  };
 
  if(isLoading){
-  return <ImageBackground source={require('../../../assets/images/support.png')} style={styles.activityIndicatorContainer} >
+  return <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/support.png'}} style={styles.activityIndicatorContainer} >
           <StatusBar hidden />
           <ActivityIndicator size='large' color={Colors.primary} />
          </ImageBackground>

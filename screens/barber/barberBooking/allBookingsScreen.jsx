@@ -178,7 +178,7 @@ setSelectedDate(moment(date.dateString).format());
 //IF IS LOADING
 if (isLoading) {
     return (
-      <ImageBackground style= {styles.centered} source={require('../../../assets/images/support.png')}>
+      <ImageBackground style= {styles.centered} source={{uri:'http://173.212.234.137/assets/tahfifabarber/support.png'}}>
         <ActivityIndicator size="large" color= {Colors.primary} />
 
       </ImageBackground>

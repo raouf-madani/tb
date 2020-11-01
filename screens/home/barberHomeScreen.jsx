@@ -288,13 +288,13 @@ async function registerForPushNotificationsAsync() {
 
     if(error){
       
-      return ( <ImageBackground source={require('../../assets/images/support.png')} style={styles.coverTwo}>
+      return ( <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/support.png'}} style={styles.coverTwo}>
                   <View style={{marginBottom:10,alignSelf:'center'}}>
-                    <Text style={styles.noServicesText}>{barber && barber.lang?polylanfr.WeakInternet:polylanar.WeakInternet} </Text>
+                    <Text style={styles.noServicesText}>{polylanfr.WeakInternet} </Text>
                   </View>
                   <Button
                     theme={{colors: {primary:'#fd6c57'}}} 
-                    title={barber && barber.lang?polylanfr.Repeat:polylanar.Repeat} 
+                    title={polylanfr.Repeat} 
                     titleStyle={styles.labelButton}
                     buttonStyle={styles.buttonStyle}
                     ViewComponent={LinearGradient}
@@ -310,7 +310,7 @@ async function registerForPushNotificationsAsync() {
 
     if(isLoading || barber===undefined){
       
-      return ( <ImageBackground source={require('../../assets/images/support.png')} style={styles.coverTwo}>
+      return ( <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/support.png'}} style={styles.coverTwo}>
                   <ActivityIndicator size='large' color={Colors.primary} />
                </ImageBackground>)
     };
@@ -366,12 +366,12 @@ async function registerForPushNotificationsAsync() {
 
          <View style={styles.firstContainer}>
            <View style={styles.coverContainer}>
-               <ImageBackground source={require('../../assets/images/barberScreen.png')} style={styles.cover} />
+               <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/barberScreen.png'}} style={styles.cover} />
            </View>
            <View style={styles.infoContainer}>
                <View style={styles.imageContainer}>
                {barber && barber.image ? <Image source={{uri:`http://173.212.234.137/profileImages/barber/${barber.image}`}} style={styles.icon} />:
-               <Image source={require('../../assets/images/unknown.jpeg')} style={styles.icon} />}
+               <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/unknown.jpeg'}} style={styles.icon} />}
                   
                </View>
                <Text style={styles.bname}>{barber && barber.b_name!==null?barber.b_name:barber && barber.lang?polylanfr.BusinessName:polylanar.BusinessName}</Text>
@@ -488,7 +488,7 @@ async function registerForPushNotificationsAsync() {
                   
                 </View>
                 <View  style={styles.rightColumn}>
-                    <Image source={require('../../assets/images/localisation.jpg')} style={styles.mapImage} />
+                    <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/localisation.jpg'}} style={styles.mapImage} />
                 </View>
             </View>
             
@@ -551,6 +551,7 @@ async function registerForPushNotificationsAsync() {
                name={feed.name}
                surname={feed.surname}
                feedbacks={feedbacks}
+               image={feed.image!==null?feed.image:'unknown.jpeg'}
               />)}
            </View>)}
          </ScrollView>):undefined}

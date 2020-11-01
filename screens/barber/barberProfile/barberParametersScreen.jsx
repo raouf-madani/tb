@@ -287,7 +287,7 @@ const alertDelete = ()=>{
 
 if(error){
       
-  return ( <ImageBackground source={require('../../../assets/images/support.png')} style={styles.coverTwo}>
+  return ( <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/support.png'}} style={styles.coverTwo}>
               <View style={{marginBottom:10,alignSelf:'center'}}>
               <StatusBar hidden />
                 <Text style={styles.noServicesText}>{barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet}</Text>
@@ -308,7 +308,7 @@ if(error){
 };
 if(isLoadingState || barber===undefined){
       
-  return ( <ImageBackground source={require('../../../assets/images/support.png')} style={styles.coverTwo}>
+  return ( <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/support.png'}} style={styles.coverTwo}>
               <StatusBar hidden />
               <ActivityIndicator size='large' color={Colors.primary} />
            </ImageBackground>)
@@ -319,7 +319,7 @@ if(isLoadingState || barber===undefined){
       <View style={styles.container}>
       <StatusBar hidden />
          <View style={styles.firstCard}>
-          <ImageBackground source={barber[0].sex==='Femme'?require( '../../../assets/images/woman5.jpg'):require('../../../assets/images/loginimage.jpg')} style={styles.backgroundFirstCard} resizeMode='cover'/>
+          <ImageBackground source={barber[0].sex==='Femme'?{uri:'http://173.212.234.137/assets/tahfifabarber/woman5.jpg'}:{uri:'http://173.212.234.137/assets/tahfifabarber/loginimage.jpg'}} style={styles.backgroundFirstCard} resizeMode='cover'/>
          </View>
          <View style={styles.menuContainer}>
               <TouchableOpacity onPress={phone} style={{padding:5,width:'25%',backgroundColor:isPhone?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
@@ -348,7 +348,7 @@ if(isLoadingState || barber===undefined){
               <InputProfile
               id='phone'
               rightIcon={<MaterialIcons title="phone" name ='phone' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
-              leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Platform.OS==='android'?'#323446':'#fff',paddingRight:5}}><Image source={require('../../../assets/images/algeriaFlag.png')} style={{width:24,height:28,marginRight:5}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
+              leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Platform.OS==='android'?'#323446':'#fff',paddingRight:5}}><Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/algeriaFlag.png'}} style={{width:24,height:28,marginRight:5}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
               placeholder='555555555'
               keyboardType="phone-pad"
               returnKeyType="next"
@@ -426,10 +426,10 @@ if(isLoadingState || barber===undefined){
             <View style={styles.langContainer}>
               {barber && barber[0].lang?(<View style={styles.langRow}>
                 <Text style={{fontFamily:'poppins',fontSize:15,color:Platform.OS==='android'?Colors.blue:'#fff'}}>Français</Text>
-                <Image source={require('../../../assets/images/france.png')} style={{width:24,height:24}}/>
+                <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/france.png'}} style={{width:24,height:24}}/>
               </View>):(<View style={styles.langRow}>
                 <Text style={{fontFamily:'poppins',fontSize:15,color:Platform.OS==='android'?Colors.blue:'#fff'}}>العربية</Text>
-                <Image source={require('../../../assets/images/algeria.png')} style={{width:24,height:24}}/>
+                <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/algeria.png'}} style={{width:24,height:24}}/>
               </View>)}
             </View>
             <View style={styles.buttonContainer}>

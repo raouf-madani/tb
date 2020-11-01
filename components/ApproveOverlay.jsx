@@ -17,7 +17,7 @@ const date = moment(props.booking.bookingDate).format("LLLL").slice(0,-5);
         >
     <View style = {styles.contentContainer}>
                 <View style = {styles.imageContainer}>
-                <Image style={styles.image} source={require('../assets/images/true.png')}/>
+                <Image style={styles.image} source={{uri:'http://173.212.234.137/assets/tahfifabarber/true.png'}}/>
                 </View>
 
 
