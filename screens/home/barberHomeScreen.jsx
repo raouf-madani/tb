@@ -34,6 +34,8 @@ Notifications.setNotificationHandler({
 
 const height = Dimensions.get('window').height;
 
+const screen = Dimensions.get('window');
+console.log(screen);
 const BarberHomeScreen = props =>{
   
 
@@ -289,7 +291,7 @@ async function registerForPushNotificationsAsync() {
     if(error){
       
       return ( <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/support.png'}} style={styles.coverTwo}>
-                  <View style={{marginBottom:10,alignSelf:'center'}}>
+                  <View style={{marginBottom:screen.width/36,alignSelf:'center'}}>
                     <Text style={styles.noServicesText}>{polylanfr.WeakInternet} </Text>
                   </View>
                   <Button
@@ -380,48 +382,49 @@ async function registerForPushNotificationsAsync() {
                 <Rating
                       type='custom'
                       startingValue={barber && feedbacks.length===0?2.5:barber.mark}
-                      imageSize={20}
+                      imageSize={screen.width/18}
                       ratingBackgroundColor={'#323446'}
                       ratingColor='#fd6c57'
                       tintColor='#f9f9f9'
+                      readonly = {true}
                     />
                  <Text style={styles.commentsNumber}>{feedbacks.length!==0 ? ` (${feedbacks.length} ${barber && barber.lang?polylanfr.Comments:polylanar.Comments})`:barber && barber.lang?polylanfr.NoComments:polylanar.NoComments}</Text>   
                 </View>
                 <View style={styles.iconsContainer}>
                   <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberProfile',{barberUID:barberUID,barberID:barberID})}>
                     <View style={styles.iconFormCircle}>
-                        <MaterialCommunityIcons title = "map-marker-radius" name ='map-marker-radius' color='#fff' size={23} />
+                        <MaterialCommunityIcons title = "map-marker-radius" name ='map-marker-radius' color='#fff' size={screen.width/15} />
                     </View>
                     <Text style={styles.iconText}>{barber && barber.lang?polylanfr.Information:polylanar.Information}</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberService',{barberID:barberID})}>
                     <View style={styles.iconFormCircle1}>
-                       <Entypo title = "scissors" name ='scissors' color='#fff' size={23} />
+                       <Entypo title = "scissors" name ='scissors' color='#fff' size={screen.width/15} />
                     </View>
                     <Text style={styles.iconText}>{barber && barber.lang?polylanfr.Services:polylanar.Services}</Text>
                   </TouchableOpacity> 
                   <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('AllBookingsScreen',{barberID:barberID,tokens})} >
                     <View style={styles.iconFormCircle2}>
-                       <MaterialCommunityIcons title = "calendar-check" name ='calendar-check' color='#fff' size={23} />
+                       <MaterialCommunityIcons title = "calendar-check" name ='calendar-check' color='#fff' size={screen.width/15} />
                     </View>
                     <Text style={styles.iconText}>{barber && barber.lang?polylanfr.Bookings:polylanar.Bookings}</Text>
                   </TouchableOpacity> 
                   <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberSupport')}>
                     <View style={styles.iconFormCircle3}>
-                      <MaterialIcons title = "support" name ='menu' color='#fff' size={23} />
+                      <MaterialIcons title = "support" name ='menu' color='#fff' size={screen.width/15} />
                     </View>
                     <Text style={styles.iconText}>{barber && barber.lang?polylanfr.Support:polylanar.Support}</Text>
                   </TouchableOpacity>    
                 </View>
            </View>
            <View style={styles.menu}>
-              <TouchableOpacity style={{borderBottomWidth:2,borderBottomColor:isAbout ?'#fd6c57':'#f9f9f9',paddingBottom:3}} onPress={about}>
+              <TouchableOpacity style={{borderBottomWidth:2,borderBottomColor:isAbout ?'#fd6c57':'#f9f9f9',paddingBottom:screen.width/120}} onPress={about}>
                <Text style={styles.itemText}>{barber && barber.lang?polylanfr.About:polylanar.About}</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={{borderBottomWidth:2,borderBottomColor:isPortfolio?'#fd6c57':'#f9f9f9',paddingBottom:3}} onPress={portfolio}>
+              <TouchableOpacity style={{borderBottomWidth:2,borderBottomColor:isPortfolio?'#fd6c57':'#f9f9f9',paddingBottom:screen.width/120}} onPress={portfolio}>
                <Text style={styles.itemText}>{barber && barber.lang?polylanfr.Portfolio:polylanar.Portfolio}</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={{borderBottomWidth:2,borderBottomColor:isFeedback?'#fd6c57':'#f9f9f9',paddingBottom:3}} onPress={feedback}>
+              <TouchableOpacity style={{borderBottomWidth:2,borderBottomColor:isFeedback?'#fd6c57':'#f9f9f9',paddingBottom:screen.width/120}} onPress={feedback}>
                 <Text style={styles.itemText}>{barber && barber.lang?polylanfr.Feedback:polylanar.Feedback}</Text>
               </TouchableOpacity>  
            </View>
@@ -482,7 +485,7 @@ async function registerForPushNotificationsAsync() {
                   <Text style={styles.title}>{barber && barber.lang?polylanfr.TheAddress:polylanar.TheAddress}</Text>
                   <Text style={styles.detail}>{barber && barber.address!==null?barber.address:barber && barber.lang?polylanfr.YourPersonalAddress:polylanar.YourPersonalAddress}</Text>
                   <View style={styles.cityContainer}>
-                    <MaterialCommunityIcons title="city" name ='city' color='#fd6c57' size={20} />
+                    <MaterialCommunityIcons title="city" name ='city' color='#fd6c57' size={screen.width/18} />
                     <Text style={styles.cityText}>{barber && (barber.wilaya!==null || barber.region!==null)?`${barber.region}, ${barber.wilaya}`:barber && barber.lang?polylanfr.Location:polylanar.Location}</Text>
                   </View>
                   
@@ -517,7 +520,7 @@ async function registerForPushNotificationsAsync() {
          </ScrollView>):undefined}
 
         {isPortfolio?(<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false} refreshing={isRefreshing} contentContainerStyle={{alignItems:'center'}}>
-        <View style={{flexDirection:'row',width:'90%',marginVertical:10}}>
+        <View style={{flexDirection:'row',width:'90%',marginVertical:screen.width/36}}>
                {barberPortfolio.slice(0,3).map(picture=>(<View 
                     key={picture.id}
                     style={{width:'33.3%',alignItems:'center'}}>
@@ -526,7 +529,7 @@ async function registerForPushNotificationsAsync() {
                  )}
                  
                </View>
-               <View style={{flexDirection:'row',width:'90%',marginVertical:10}}>
+               <View style={{flexDirection:'row',width:'90%',marginVertical:screen.width/36}}>
                {barberPortfolio.slice(3,6).map(picture=>(<View 
                     key={picture.id}
                     style={{width:'33.3%',alignItems:'center'}}>
@@ -614,66 +617,67 @@ const styles= StyleSheet.create({
     alignItems:'center'
   },
   imageContainer:{
-    width:90,
-    height:90,
-    borderRadius:50,
-    marginTop:-55,
+    width:screen.width/4,
+    height:screen.width/4,
+    borderRadius:screen.width/7.2,
+    marginTop:-(screen.width/6.5),
     overflow:'hidden'
   },
   bname:{
     fontFamily:'poppins-bold',
-    fontSize:17,color:'#323446',
-    paddingTop:3
+    fontSize:screen.width/20,
+    color:'#323446',
+    paddingTop:screen.width/120
   },
   jobAge:{
     fontFamily:'poppins',
     color:'#fd6c57',
-    paddingBottom:3,
-    fontSize:11
+    paddingBottom:screen.width/120,
+    fontSize:screen.width/32.5
   },
   commentsNumber:{
     fontFamily:'poppins',
     color:'#323446',
-    paddingBottom:3,
-    fontSize:10,
-    marginTop:5
+    paddingBottom:screen.width/120,
+    fontSize:screen.width/36,
+    marginTop:screen.width/72
   },
   iconsContainer:{
     flexDirection:'row',
-    paddingTop:10
+    paddingTop:screen.width/36
   },
   iconContainer:{
-    marginHorizontal:13,
+    marginHorizontal:screen.width/27.69,
     alignItems:'center'
   },
   iconFormCircle:{
-    width:40,
-    height:40,
-    borderRadius:20,
+    width:screen.width/9,
+    height:screen.width/9,
+    borderRadius:screen.width/18,
     backgroundColor:'#56A7FF',
     justifyContent:'center',
     alignItems:'center'
   },
   iconFormCircle1:{
     backgroundColor:'#FD6C57',
-    width:40,
-    height:40,
-    borderRadius:20,
+    width:screen.width/9,
+    height:screen.width/9,
+    borderRadius:screen.width/18,
     justifyContent:'center',
     alignItems:'center'
   },
   iconFormCircle2:{
     backgroundColor:'#FE457C',
-    width:40,
-    height:40,
-    borderRadius:20,
+    width:screen.width/9,
+    height:screen.width/9,
+    borderRadius:screen.width/18,
     justifyContent:'center',
     alignItems:'center'
   },
   iconFormCircle3:{
-    width:40,
-    height:40,
-    borderRadius:20,
+    width:screen.width/9,
+    height:screen.width/9,
+    borderRadius:screen.width/18,
     backgroundColor:'#BA55D3',
     justifyContent:'center',
     alignItems:'center'
@@ -681,8 +685,8 @@ const styles= StyleSheet.create({
   iconText:{
     fontFamily:'poppins',
     color:'grey',
-    paddingTop:3,
-    fontSize:10
+    paddingTop:screen.width/120,
+    fontSize:screen.width/36
   },
   menu:{
     width:'90%',
@@ -692,41 +696,41 @@ const styles= StyleSheet.create({
     alignItems:'flex-end'
   },
   itemContainer:{
-    borderBottomWidth:2,
+    borderBottomWidth:screen.width/180,
     borderBottomColor:'#fd6c57',
-    paddingBottom:3
+    paddingBottom:screen.width/120
   },
   itemText:{
     fontFamily:'poppins',
     color:'grey',
-    fontSize:12
+    fontSize:screen.width/30
   },
   firstRow:{
     flexDirection:'row',
     justifyContent:'space-between',
-    marginTop:15,
+    marginTop:screen.width/24,
     width:'90%',
     alignSelf:'center'
   },
   title:{
     fontFamily:'poppins-bold',
     color:'#323446',
-    fontSize:13,
+    fontSize:screen.width/27.7,
     alignSelf:'flex-start'
   },
   detail:{
     fontFamily:'poppins',
     color:'grey',
-    fontSize:12,
+    fontSize:screen.width/30,
     alignSelf:'flex-start'
   },
   price:{
     fontFamily:'poppins',
     color:'#fd6c57',
-    fontSize:12
+    fontSize:screen.width/30
   },
   secondRow:{
-    marginTop:15,
+    marginTop:screen.width/27.7,
     width:'90%',
     alignSelf:'center'
   },
@@ -736,16 +740,16 @@ const styles= StyleSheet.create({
   },
   dayContainer:{
     alignItems:'center',
-    marginHorizontal:10
+    marginHorizontal:screen.width/36
   },
   dayText:{
     fontFamily:'poppins',
     color:'grey',
-    fontSize:13
+    fontSize:screen.width/27.7
   },
   thirdRow:{
     flexDirection:'row',
-    marginTop:15,
+    marginTop:screen.width/24,
     width:'90%',
     alignSelf:'center'
   },
@@ -760,40 +764,40 @@ const styles= StyleSheet.create({
   cityText:{
     fontFamily:'poppins',
     color:'#fd6c57',
-    fontSize:12,
-    marginTop:5
+    fontSize:screen.width/30,
+    marginTop:screen.width/72
   },
   rightColumn:{
     width:'40%',
     alignItems:'flex-end'
   },
   mapImage:{
-    width:90,
-    height:90
+    width:screen.width/4,
+    height:screen.width/4
   },
   forthRow:{
-    marginTop:15
+    marginTop:screen.width/24
   },
   forthRowElementsContainer:{
     flexDirection:'row',
     justifyContent:'space-between',
     width:'90%',
     alignSelf:'center',
-    paddingBottom:5,
+    paddingBottom:screen.width/72,
   },
   photosContainer:{
     flexDirection:'row',
-    paddingHorizontal:15,
-    paddingBottom:5
+    paddingHorizontal:screen.width/24,
+    paddingBottom:screen.width/72
   },
   modelImageContainer:{
-    borderRadius:20,
+    borderRadius:screen.width/18,
     overflow:'hidden',
-    marginRight:7
+    marginRight:screen.width/51.5
   },
   modelImage:{
-    width:90,
-    height:90
+    width:screen.width/4,
+    height:screen.width/4
   },
  coverTwo:{
    flex:1,
@@ -804,20 +808,20 @@ const styles= StyleSheet.create({
  },
  noServicesText:{
   fontFamily:'poppins',
-  fontSize:14,
+  fontSize:screen.width/25.7,
   color:Colors.blue
 },
 labelButton:{
   color:'#FFF',
   fontFamily:'poppins',
-  fontSize:16,
+  fontSize:screen.width/22.5,
   textTransform:null,
  },
  buttonStyle:{
   borderColor:'#fd6c57',
   width:'50%',
-  borderRadius:20,
-  height:45,
+  borderRadius:screen.width/18,
+  height:screen.width/8,
   alignSelf:'center'
  },
  noFeedbacksContainer:{
@@ -828,7 +832,7 @@ labelButton:{
 },
 noFeedbacksText:{
   fontFamily:'poppins',
-  fontSize:13,
+  fontSize:screen.width/27.7,
   color:Colors.blue
 },  
 });

@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet,View,ImageBackground,TouchableOpacity,Text,Image,Alert,Dimensions,Platform,Linking,StatusBar} from 'react-native';
-import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
+import {MaterialIcons,MaterialCommunityIcons,Ionicons,FontAwesome5} from "@expo/vector-icons";
 import Colors from "../../../constants/Colors";
 import polylanar from "../../../lang/ar";
 import polylanfr from "../../../lang/fr";
@@ -72,30 +72,30 @@ const BarberSupportScreen = props =>{
       <StatusBar hidden />
        <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/support.png'}} style={styles.background}>
          <View style={{alignItems:'center',width:'90%'}}>
-            <View style={{marginBottom:15}}>
-               <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/icon.png'}} style={{width:80,height:80}} />
+            <View style={{marginBottom:screen.width/24}}>
+               <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/icon.png'}} style={{width:screen.width/4.5,height:screen.width/4.5}} />
             </View>
-            <View style={{width:'100%',marginBottom:15}}>
-              <Text style={{fontFamily:'poppins',fontSize:13,color:Colors.blue,alignSelf:'center'}}>
+            <View style={{width:'100%',marginBottom:screen.width/24}}>
+              <Text style={{fontFamily:'poppins',fontSize:screen.width/27.7,color:Colors.blue,alignSelf:'center'}}>
               {barber && barber[0].lang?polylanfr.SupportMessage:polylanar.SupportMessage}
               </Text>
             </View>
            
             <View style={{flexDirection:'row',alignItems:'center',alignSelf:'center'}}>
-              <TouchableOpacity  style={{marginHorizontal:5}} onPress={instagramUrl}>
-                 <MaterialCommunityIcons name="instagram" size={32} color="black" />
+              <TouchableOpacity  style={{marginHorizontal:screen.width/72}} onPress={instagramUrl}>
+                 <MaterialCommunityIcons name="instagram" size={screen.width/11.25} color="black" />
               </TouchableOpacity>
-              <TouchableOpacity style={{marginHorizontal:5}} onPress={facebookUrl}>
-                <MaterialCommunityIcons name="facebook-box" size={32} color="black" /> 
+              <TouchableOpacity style={{marginHorizontal:screen.width/72}} onPress={facebookUrl}>
+                <MaterialCommunityIcons name="facebook-box" size={screen.width/11.25} color="black" /> 
               </TouchableOpacity>
-              <TouchableOpacity style={{marginHorizontal:5}} onPress={linkedinUrl}>
-                <MaterialCommunityIcons name="linkedin" size={32} color="black" /> 
+              <TouchableOpacity style={{marginHorizontal:screen.width/72}} onPress={linkedinUrl}>
+                <MaterialCommunityIcons name="linkedin" size={screen.width/11.25} color="black" /> 
               </TouchableOpacity> 
-              <TouchableOpacity style={{marginHorizontal:5}} onPress={callPhone}>
-                 <MaterialCommunityIcons name="phone" size={32} color="black" /> 
+              <TouchableOpacity style={{marginHorizontal:screen.width/72}} onPress={callPhone}>
+                 <MaterialCommunityIcons name="phone" size={screen.width/11.25} color="black" /> 
               </TouchableOpacity> 
-              <TouchableOpacity style={{marginHorizontal:5}} onPress={url}>
-                 <MaterialCommunityIcons name="web-box" size={32} color="black"  />
+              <TouchableOpacity style={{marginHorizontal:screen.width/72}} onPress={url}>
+                 <MaterialCommunityIcons name="web-box" size={screen.width/11.25} color="black"  />
               </TouchableOpacity>
               
             </View>
@@ -107,7 +107,7 @@ const BarberSupportScreen = props =>{
 };
 
 
-BarberSupportScreen.navigationOptions = () => {
+BarberSupportScreen.navigationOptions = (navData) => {
  
     
     return {
@@ -120,14 +120,15 @@ BarberSupportScreen.navigationOptions = () => {
         <Image 
         resizeMode="cover"
         style={{
-          width:150,
-          height:40,
+          width:screen.width/2.4,
+          height:screen.width/9,
           resizeMode:'contain',
           alignSelf: 'center'}}
         
         />
       ),
-      headerTintColor: Colors.primary,
+      headerTintColor: Colors.blue,
+      headerLeft:()=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color={Colors.blue} style={{marginLeft:screen.width/36}} />)
         };
 };
 

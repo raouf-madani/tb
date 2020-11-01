@@ -1,5 +1,5 @@
 import React,{useState,useCallback,useReducer} from 'react';
-import { StyleSheet,View,KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard,Text,Image,Dimensions,TouchableOpacity, StatusBar,Alert,ActivityIndicator,AsyncStorage} from 'react-native';
+import { StyleSheet,View,KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard,Text,Image,Dimensions,TouchableOpacity, StatusBar,Alert,ActivityIndicator,AsyncStorage,Platform} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons} from "@expo/vector-icons";
 import {Button } from 'react-native-elements';
 import Colors from '../constants/Colors';
@@ -99,7 +99,7 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
 
         const result = await fetch(`http://173.212.234.137:3000/phone/${prefix+formState.inputValues.phone}`);
         const resData= await result.json();
-        console.log(resData)
+   
         const barbers= await fetch('http://173.212.234.137:3000/barber');
         const barbersData= await barbers.json();
         
@@ -132,7 +132,7 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
     return(
       <TouchableWithoutFeedback onPress = {()=>Keyboard.dismiss()}>
       <View style={styles.container}>
-       <KeyboardAvoidingView  keyboardVerticalOffset={10}>
+       <KeyboardAvoidingView  keyboardVerticalOffset={screen.width/36}  behavior={Platform.OS === "ios" ? "padding" : null}>
          <StatusBar hidden />
           <View style={styles.backgroundContainer}>
             <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/loginimage.jpg'}} style={{resizeMode:'cover',width:'100%',height:'100%'}}/>
@@ -145,8 +145,8 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
               <View style={styles.inputsContainer}>
                   <CustomInput
                     id='phone'
-                    rightIcon={<MaterialIcons title = "phone" name ='phone' color='#323446' size={23} />}
-                    leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Colors.blue,paddingRight:5}}><Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/algeriaFlag.png'}} style={{width:24,height:28,marginRight:5}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
+                    rightIcon={<MaterialIcons title = "phone" name ='phone' color='#323446' size={screen.width/15.7} />}
+                    leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Colors.blue,paddingRight:screen.width/72}}><Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/algeriaFlag.png'}} style={{width:screen.width/15,height:screen.width/12.85,marginRight:screen.width/72}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
                     placeholder='555555555'
                     returnKeyType="next"
                     keyboardType="phone-pad"
@@ -156,11 +156,10 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
                     phone
                     required
                     placeholderTextColor='rgba(50,52,70,0.4)'
-                    inputStyle={{fontSize:15}}
                   />
                   <CustomInput
                     id='password'
-                    rightIcon={<MaterialCommunityIcons title="lock" onPress={eye} name ={!isEye?'eye':'eye-off'} color='#323446' size={23} />}
+                    rightIcon={<MaterialCommunityIcons title="lock" onPress={eye} name ={!isEye?'eye':'eye-off'} color='#323446' size={screen.width/15.7} />}
                     placeholder='Mot de Passe'
                     keyboardType="default"
                     secureTextEntry={!isEye?true:false}
@@ -171,7 +170,6 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
                     initiallyValid={true}
                     required
                     placeholderTextColor='rgba(50,52,70,0.4)'
-                    inputStyle={{fontSize:15}}
                   />
               </View>
              <View style={styles.footerContainer}>
@@ -218,8 +216,8 @@ LoginScreen.navigationOptions= ()=>{
       <Image 
       resizeMode="cover"
       style={{
-        width:150,
-        height:40,
+        width:screen.width/2.4,
+        height:screen.width/9,
         resizeMode:'contain',
         alignSelf: 'center'}}
       
@@ -243,8 +241,8 @@ const styles= StyleSheet.create({
     height:'65%',
     width:'100%',
     backgroundColor:'#fff',
-    borderTopLeftRadius:30,
-    borderTopRightRadius:30,
+    borderTopLeftRadius:screen.width/12,
+    borderTopRightRadius:screen.width/12,
     overflow:'hidden'
   },
   logoContainer:{
@@ -254,8 +252,8 @@ const styles= StyleSheet.create({
     alignItems:'center'
   },
   logo:{
-    width:screen.width/1.9,
-    height:screen.height/14,
+    width:screen.width/2,
+    height:screen.width/8.6,
     marginVertical:screen.width/24
   },
   callToAction:{
@@ -276,14 +274,14 @@ const styles= StyleSheet.create({
   labelButton:{
     color:'#FFF',
     fontFamily:'poppins',
-    fontSize:16,
+    fontSize:screen.width/22.5,
     textTransform:null,
    },
    buttonStyle:{
     borderColor:'#fd6c57',
     width:'90%',
-    borderRadius:20,
-    height:45,
+    borderRadius:screen.width/18,
+    height:screen.width/8,
     alignSelf:'center'
    },
   forgotPassword:{
@@ -295,7 +293,7 @@ const styles= StyleSheet.create({
   },
   signupContainer:{
     flexDirection:'row',
-    paddingTop:10,
+    paddingTop:screen.width/36,
     alignSelf:'center'
   },
   doYouHaveAnAccount:{

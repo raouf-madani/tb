@@ -1,6 +1,7 @@
 import React,{useState} from 'react';
 import { StyleSheet,View,Alert,Dimensions,ScrollView,ImageBackground,StatusBar,ActivityIndicator} from 'react-native';
 import Colors from '../../../constants/Colors';
+import {FontAwesome5} from "@expo/vector-icons";
 import Portfolio from "../../../components/Portfolio";
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
@@ -497,9 +498,9 @@ BarberGaleryScreen.navigationOptions= navData => {
       headerTintColor: '#323446',
       headerTitleStyle:{
         fontFamily:'poppins-bold',
-        marginTop:5
+        marginTop:screen.width/72
       },
-     
+      headerLeft:()=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color={Colors.blue} style={{marginLeft:screen.width/36}} />)
      };
  
   };
@@ -516,18 +517,19 @@ const styles= StyleSheet.create({
    grid:{
      width:'100%',
      backgroundColor:'#f9f9f9',
-     paddingHorizontal:15,
-     borderRadius:10,
+     paddingHorizontal:screen.width/24,
+     borderRadius:screen.width/36,
      marginTop:windowHeight*0.1
     },
    row:{
     flexDirection:'row',
-    width:'90%',marginVertical:10,
+    width:'90%',
+    marginVertical:screen.width/36,
     justifyContent:'center'
     },
   imageConainer:{
     width:'45%',
-    marginHorizontal:15,
+    marginHorizontal:screen.width/24,
     alignItems:'center'
   },
    modelImage:{ 
@@ -535,22 +537,22 @@ const styles= StyleSheet.create({
      height:windowHeight*0.25
     },
   iconContainer:{
-    height:30,
-    width:30,
-    borderRadius:30/2,
+    height:screen.width/12,
+    width:screen.width/12,
+    borderRadius:screen.width/24,
     backgroundColor:'#323446',
     justifyContent:'center',
     alignItems:'center',
-    marginVertical:5
+    marginVertical:screen.width/72
    },
    iconContainer2:{
-    height:30,
-    width:30,
-    borderRadius:30/2,
+    height:screen.width/12,
+    width:screen.width/12,
+    borderRadius:screen.width/24,
     backgroundColor:'#FE457C',
     justifyContent:'center',
     alignItems:'center',
-    marginVertical:5
+    marginVertical:screen.width/72
    },
    activityIndicatorContainer:{
     flex:1,

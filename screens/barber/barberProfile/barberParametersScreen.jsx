@@ -1,6 +1,6 @@
 import React,{useState,useReducer,useCallback,useEffect} from 'react';
 import {StyleSheet,View,AsyncStorage,ScrollView,ImageBackground,TouchableWithoutFeedback,Keyboard,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActivityIndicator,Platform,StatusBar} from 'react-native';
-import {MaterialIcons,MaterialCommunityIcons} from "@expo/vector-icons";
+import {MaterialIcons,MaterialCommunityIcons,FontAwesome5} from "@expo/vector-icons";
 import {Button} from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import polylanar from "../../../lang/ar";
@@ -332,33 +332,33 @@ if(isLoadingState || barber===undefined){
           <ImageBackground source={barber[0].sex==='Femme'?{uri:'http://173.212.234.137/assets/tahfifabarber/woman5.jpg'}:{uri:'http://173.212.234.137/assets/tahfifabarber/loginimage.jpg'}} style={styles.backgroundFirstCard} resizeMode='cover'/>
          </View>
          <View style={styles.menuContainer}>
-              <TouchableOpacity onPress={phone} style={{padding:5,width:'25%',backgroundColor:isPhone?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
-                <Text style={{color:isPhone?'#fff':'#fd6c57',fontFamily:'poppins',fontSize:12}}>
+              <TouchableOpacity onPress={phone} style={{padding:screen.width/72,width:'25%',backgroundColor:isPhone?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
+                <Text style={{color:isPhone?'#fff':'#fd6c57',fontFamily:'poppins',fontSize:screen.width/30}}>
                   {barber && barber[0].lang? polylanfr.Phone:polylanar.Phone}
                 </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={password} style={{borderRightWidth:1,borderRightColor:'#fd6c57',borderLeftWidth:1,borderLeftColor:'#fd6c57',padding:5,width:'25%',backgroundColor:isPassword?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
-                  <Text style={{color:isPassword?'#fff':'#fd6c57',fontFamily:'poppins',fontSize:10}}>
+              <TouchableOpacity onPress={password} style={{borderRightWidth:1,borderRightColor:'#fd6c57',borderLeftWidth:1,borderLeftColor:'#fd6c57',padding:screen.width/72,width:'25%',backgroundColor:isPassword?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
+                  <Text style={{color:isPassword?'#fff':'#fd6c57',fontFamily:'poppins',fontSize:screen.width/36}}>
                     {barber && barber[0].lang?polylanfr.Password:polylanar.Password}
                   </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={lang} style={{padding:5,width:'25%',backgroundColor:isLang?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center',borderRightWidth:1,borderRightColor:'#fd6c57'}}>
-                  <Text style={{color:isLang?'#fff':'#fd6c57',fontFamily:'poppins',fontSize:12}}>
+              <TouchableOpacity onPress={lang} style={{padding:screen.width/72,width:'25%',backgroundColor:isLang?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center',borderRightWidth:1,borderRightColor:'#fd6c57'}}>
+                  <Text style={{color:isLang?'#fff':'#fd6c57',fontFamily:'poppins',fontSize:screen.width/30}}>
                     {barber && barber[0].lang?polylanfr.Languages:polylanar.Languages}
                   </Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={account} style={{padding:5,width:'25%',backgroundColor:isAccount?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
-                  <Text style={{color:isAccount?'#fff':'#fd6c57',fontFamily:'poppins',fontSize:12}}>
+              <TouchableOpacity onPress={account} style={{padding:screen.width/72,width:'25%',backgroundColor:isAccount?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
+                  <Text style={{color:isAccount?'#fff':'#fd6c57',fontFamily:'poppins',fontSize:screen.width/30}}>
                   {barber && barber[0].lang?polylanfr.Account:polylanar.MyAccount}
                   </Text>
               </TouchableOpacity>
         </View>
         {isPhone?(<ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-          <KeyboardAvoidingView keyboardVerticalOffset={10} behavior={Platform.OS === "ios" ? "padding" : null}>
+          <KeyboardAvoidingView keyboardVerticalOffset={screen.width/36} behavior={Platform.OS === "ios" ? "padding" : null}>
               <InputProfile
               id='phone'
-              rightIcon={<MaterialIcons title="phone" name ='phone' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
-              leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Platform.OS==='android'?'#323446':'#fff',paddingRight:5}}><Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/algeriaFlag.png'}} style={{width:24,height:28,marginRight:5}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
+              rightIcon={<MaterialIcons title="phone" name ='phone' color={Platform.OS==='android'?'#323446':'#fff'} size={screen.width/15.7} />}
+              leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Platform.OS==='android'?'#323446':'#fff',paddingRight:screen.width/72}}><Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/algeriaFlag.png'}} style={{width:screen.width/15,height:screen.width/12.85,marginRight:screen.width/72}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
               placeholder='555555555'
               keyboardType="phone-pad"
               returnKeyType="next"
@@ -370,7 +370,7 @@ if(isLoadingState || barber===undefined){
               placeholderTextColor={Platform.OS==='android'?'rgba(50,52,70,0.4)':'#f9f9f9'}
               widthView='80%'
               backgroundColor={Platform.OS==='android'?'#fff':Colors.blue}
-              height={50}
+              height={screen.width/7.2}
               />
               <View style={styles.buttonContainer}>
               {!isLoading ?<Button
@@ -392,10 +392,10 @@ if(isLoadingState || barber===undefined){
            </KeyboardAvoidingView>
         </ScrollView>):undefined}
         {isPassword?(<ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-          <KeyboardAvoidingView keyboardVerticalOffset={10} behavior={Platform.OS === "ios" ? "padding" : null}>
+          <KeyboardAvoidingView keyboardVerticalOffset={screen.width/36} behavior={Platform.OS === "ios" ? "padding" : null}>
                 <InputProfile
                 id='password'
-                rightIcon={<MaterialCommunityIcons title="lock" onPress={eye} name ={!isEye?'eye':'eye-off'} color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
+                rightIcon={<MaterialCommunityIcons title="lock" onPress={eye} name ={!isEye?'eye':'eye-off'} color={Platform.OS==='android'?'#323446':'#fff'} size={screen.width/15.7} />}
                 placeholder={barber && barber[0].lang?polylanfr.NewPassword:polylanar.NewPassword}
                 keyboardType="default"
                 returnKeyType="next"
@@ -407,10 +407,10 @@ if(isLoadingState || barber===undefined){
                 initiallyValid={true}
                 required
                 placeholderTextColor={Platform.OS==='android'?'rgba(50,52,70,0.4)':'#f9f9f9'}
-                inputStyle={{fontSize:15}}
+                inputStyle={{fontSize:screen.width/24}}
                 widthView='80%'
                 backgroundColor={Platform.OS==='android'?'#fff':Colors.blue}
-                height={50}
+                height={screen.width/7.2}
               />
               <View style={styles.buttonContainer}>
               {!isLoadingPassword ?<Button
@@ -432,14 +432,14 @@ if(isLoadingState || barber===undefined){
            </KeyboardAvoidingView>
         </ScrollView>):undefined}
         {isLang?(<ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-          <KeyboardAvoidingView keyboardVerticalOffset={10} behavior={Platform.OS === "ios" ? "padding" : null}>
+          <KeyboardAvoidingView keyboardVerticalOffset={screen.width/36} behavior={Platform.OS === "ios" ? "padding" : null}>
             <View style={styles.langContainer}>
               {barber && barber[0].lang?(<View style={styles.langRow}>
-                <Text style={{fontFamily:'poppins',fontSize:15,color:Platform.OS==='android'?Colors.blue:'#fff'}}>Français</Text>
-                <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/france.png'}} style={{width:24,height:24}}/>
+                <Text style={{fontFamily:'poppins',fontSize:screen.width/24,color:Platform.OS==='android'?Colors.blue:'#fff'}}>Français</Text>
+                <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/france.png'}} style={{width:screen.width/15,height:screen.width/15}}/>
               </View>):(<View style={styles.langRow}>
-                <Text style={{fontFamily:'poppins',fontSize:15,color:Platform.OS==='android'?Colors.blue:'#fff'}}>العربية</Text>
-                <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/algeria.png'}} style={{width:24,height:24}}/>
+                <Text style={{fontFamily:'poppins',fontSize:screen.width/24,color:Platform.OS==='android'?Colors.blue:'#fff'}}>العربية</Text>
+                <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/algeria.png'}} style={{width:screen.width/15,height:screen.width/15}}/>
               </View>)}
             </View>
             <View style={styles.buttonContainer}>
@@ -500,7 +500,7 @@ BarberParametersScreen.navigationOptions= navData => {
         fontFamily:'poppins-bold',
         marginTop:5,
       },
-      
+      headerLeft:()=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color="white" style={{marginLeft:screen.width/36}} />)
      
      };
  
@@ -517,12 +517,12 @@ const styles= StyleSheet.create({
    firstCard:{
     width:'95%',
     height:'40%',
-    borderTopLeftRadius:30,
-    borderTopRightRadius:30,
+    borderTopLeftRadius:screen.width/12,
+    borderTopRightRadius:screen.width/12,
     shadowColor: 'black',
     shadowOpacity: 0.96,
     shadowOffset: {width: 0, height:2},
-    shadowRadius: 10,
+    shadowRadius: screen.width/36,
     elevation: 5,
     backgroundColor:'red'
    },
@@ -532,10 +532,10 @@ const styles= StyleSheet.create({
      alignItems:'center',
    },
   menuContainer:{
-    marginTop:25,
+    marginTop:screen.width/14.4,
     width:'90%',
     backgroundColor:'#f9f9f9',
-    borderRadius:5,
+    borderRadius:screen.width/72,
     borderColor:'#fd6c57',
     borderWidth:1,
     flexDirection:'row',
@@ -545,15 +545,15 @@ const styles= StyleSheet.create({
   langContainer:{
     width:'80%',
     borderWidth:1,
-    borderRadius:20,
+    borderRadius:screen.width/18,
     backgroundColor:Platform.OS==='android'?'#fff':Colors.blue,
     borderColor:Platform.OS==='android'?'#fff':Colors.blue,
-    marginVertical:5,
+    marginVertical:screen.width/72,
     alignSelf:'center',
     shadowColor: 'black',
     shadowOpacity: 0.96,
     shadowOffset: {width: 0, height:2},
-    shadowRadius: 10,
+    shadowRadius: screen.width/36,
     elevation: 3,
     overflow:'hidden',
     
@@ -562,47 +562,47 @@ const styles= StyleSheet.create({
     flexDirection:'row',
     justifyContent:'space-between',
     width:'100%',
-    paddingVertical:10,
-    paddingHorizontal:15,
+    paddingVertical:screen.width/36,
+    paddingHorizontal:screen.width/24,
     alignItems:'center'
   },
   scrollView:{
     width:'100%',
-    marginTop:80
+    marginTop:screen.width/4.5
   },
   scrollViewAccount:{
     width:'100%',
-    marginTop:50
+    marginTop:screen.width/7.2
   },
   buttonContainer:{
     width:'90%',
     alignSelf:'center',
-    marginVertical:20,
+    marginVertical:screen.width/18,
   },
  labelButton:{
   color:'#FFF',
   fontFamily:'poppins',
-  fontSize:16,
+  fontSize:screen.width/22.5,
   textTransform:null,
  },
  buttonStyle:{
   borderColor:'#fd6c57',
   width:'50%',
-  borderRadius:20,
-  height:40,
+  borderRadius:screen.width/18,
+  height:screen.width/9,
   alignSelf:'center'
  },
  buttonStyleDelete:{
   borderColor:'#fd6c57',
   width:'80%',
-  borderRadius:20,
-  height:40,
+  borderRadius:screen.width/18,
+  height:screen.width/9,
   alignSelf:'center',
-  marginTop:20
+  marginTop:screen.width/18
  },
  phoneNumber:{
  color:Platform.OS==='android'?'#323446':'#fff',
- fontSize:15
+ fontSize:screen.width/24
 },
 coverTwo:{
   flex:1,
@@ -613,7 +613,7 @@ coverTwo:{
 },
 noServicesText:{
   fontFamily:'poppins',
-  fontSize:14,
+  fontSize:screen.width/25.7,
   color:Colors.blue
 },
 noticeContainer:{
@@ -622,19 +622,19 @@ noticeContainer:{
  },
  noticeTitle:{
    fontFamily:'poppins-bold',
-   fontSize:13,
+   fontSize:screen.width/27.7,
    color:'#323446'
  },
  noticeContent:{
    fontFamily:'poppins',
-   fontSize:12,
+   fontSize:screen.width/30,
    color:'#323446'
  },
  tahfifaSignature:{
    fontFamily:'poppins',
-   fontSize:12,
+   fontSize:screen.width/30,
    color:'#fd6c57',
-   paddingTop:5
+   paddingTop:screen.width/72
  },
 });
 

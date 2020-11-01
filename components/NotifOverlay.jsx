@@ -3,7 +3,11 @@ import { StyleSheet, Text, View,Image, ImageBackground,Dimensions,TouchableOpaci
 import Colors from "../constants/Colors";
 import { Button ,Overlay} from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
+
+
+
 const screen = Dimensions.get("window");
+
 const NotifOverlay = props =>{
 const url = props.type === "confirmée" ? {uri:'http://173.212.234.137/assets/tahfifabarber/true.png'} : props.type === "annulée" ?  {uri:'http://173.212.234.137/assets/tahfifabarber/false.png'} : {uri:'http://173.212.234.137/assets/tahfifabarber/expired.png'} ; 
     const buttonColors = props.type ==="confirmée" ?['#0DA598', '#11998e'] : ['#fd6d57', '#fd9054'] ;
@@ -70,8 +74,8 @@ const url = props.type === "confirmée" ? {uri:'http://173.212.234.137/assets/ta
     
     const styles= StyleSheet.create({
     
-      overlayContainer:
-      {width :"100%",
+   overlayContainer:{
+    width :"100%",
     height :"100%",
     backgroundColor:"rgba(25,25,25,0.8)",
     overflow:"hidden",
@@ -80,13 +84,12 @@ const url = props.type === "confirmée" ? {uri:'http://173.212.234.137/assets/ta
     justifyContent:"center",
     alignItems:"center"
   } ,
-   contentContainer : 
-      {
-           width:"90%",
-          height:"80%",
-          backgroundColor:"#fff",
-          justifyContent:"center",
-          borderRadius:25
+   contentContainer :{
+        width:"90%",
+        height:"80%",
+        backgroundColor:"#fff",
+        justifyContent:"center",
+        borderRadius:screen.width/14.4
       },
       imageContainer : {
           height : "20%",
@@ -102,10 +105,7 @@ const url = props.type === "confirmée" ? {uri:'http://173.212.234.137/assets/ta
           alignItems:"center",
           marginBottom:"10%",
           marginTop : "2%",
-         
           justifyContent:"space-between",
-          
-
       },
       secondTextContainer :{
           alignSelf :"center",
@@ -124,16 +124,14 @@ const url = props.type === "confirmée" ? {uri:'http://173.212.234.137/assets/ta
           justifyContent:"space-around"
       },
       buttonStyle : {
-          borderRadius : 5,
           paddingHorizontal : "5%",
-      
-          borderRadius:25
+          borderRadius:screen.width/14.4
   },
-  buttonText :{
-      color :"#fff",
-      fontSize :screen.width/30,
-      fontFamily:"poppins"
-  }
+    buttonText :{
+        color :"#fff",
+        fontSize :screen.width/30,
+        fontFamily:"poppins"
+    }
 
 
    

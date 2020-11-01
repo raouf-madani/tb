@@ -1,7 +1,8 @@
 import React, {useState,useReducer,useEffect,useCallback} from 'react';
-import { StyleSheet,View,KeyboardAvoidingView,Text,Image,Dimensions,TouchableWithoutFeedback,Keyboard,ActionSheetIOS, StatusBar,Picker,ActivityIndicator,Alert} from 'react-native';
+import { StyleSheet,View,KeyboardAvoidingView,Text,Image,Dimensions,TouchableWithoutFeedback,Keyboard,ActionSheetIOS, StatusBar,Picker,ActivityIndicator,Alert,Platform} from 'react-native';
 import {Button } from 'react-native-elements';
 import InputProfile from '../../../components/InputProfile';
+import {FontAwesome5} from "@expo/vector-icons";
 import Colors from '../../../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as servicesActions from '../../../store/actions/serviceActions';
@@ -230,7 +231,7 @@ useEffect(()=>{
     return(
     <TouchableWithoutFeedback onPress = {()=>Keyboard.dismiss()}>      
     <View style={styles.container}>
-      <KeyboardAvoidingView  keyboardVerticalOffset={10}>
+      <KeyboardAvoidingView  keyboardVerticalOffset={screen.width/36}  behavior={Platform.OS === "ios" ? "padding" : null}>
          <StatusBar hidden />
           <View style={styles.backgroundContainer}>
             <Image source={barber.sex==='Femme'?{uri:'http://173.212.234.137/assets/tahfifabarber/woman5.jpg'}:{uri:'http://173.212.234.137/assets/tahfifabarber/loginimage.jpg'}} style={{resizeMode:'cover',width:'100%',height:'100%'}}/>
@@ -238,28 +239,28 @@ useEffect(()=>{
           <View style={styles.secondContainer}>
              <View style={styles.headerContainer}>
                    <View>
-                     <Text style={{fontFamily:'poppins-bold',fontSize:13,color:'#323446'}}>{barber && barber.lang?polylanfr.ChooseService:polylanar.ChooseService}</Text>
+                     <Text style={{fontFamily:'poppins-bold',fontSize:screen.width/27.7,color:'#323446'}}>{barber && barber.lang?polylanfr.ChooseService:polylanar.ChooseService}</Text>
                    </View>
                    <View>
-                     <Text style={{fontFamily:'poppins-bold',fontSize:13,color:'#fd6c57'}}>{barber && currentUserService?currentUserService.price.toString()+' دج':'0 دج'}</Text>
+                     <Text style={{fontFamily:'poppins-bold',fontSize:screen.width/27.7,color:'#fd6c57'}}>{barber && currentUserService?currentUserService.price.toString()+' دج':'0 دج'}</Text>
                    </View>
              </View>
 
              <View style={styles.inputsContainer}>
             
-             <View style={{flexDirection:'row',width:'90%',marginVertical:5,alignItems:'center'}}>
+             <View style={{flexDirection:'row',width:'90%',marginVertical:screen.width/72,alignItems:'center'}}>
                    <View style={{width:'50%'}}>
-                    <Text style={{fontFamily:'poppins',fontSize:12,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.ServiceType:polylanar.ServiceType}</Text>
+                    <Text style={{fontFamily:'poppins',fontSize:screen.width/30,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.ServiceType:polylanar.ServiceType}</Text>
                    </View>
-                   <View style={{ width:'50%',borderWidth:1,paddingHorizontal:12,borderRadius:25,backgroundColor:Platform.OS=='ios'?Colors.blue:'#d3d3d3',
-                                  borderColor:'#d3d3d3',height:45,
+                   <View style={{ width:'50%',borderWidth:1,paddingHorizontal:screen.width/30,borderRadius:screen.width/14.4,backgroundColor:Platform.OS=='ios'?Colors.blue:'#d3d3d3',
+                                  borderColor:'#d3d3d3',height:screen.width/8,
                                   justifyContent:'center',alignSelf:'center'}}>
                    {Platform.OS === 'android' &&  barber.sex === 'Homme' ? 
                     
                               (<Picker
                               selectedValue={serviceType}
                               onValueChange={itemValue => setServiceType(itemValue)}
-                              style={{fontFamily:'poppins',fontSize:15,color:'#323446'}}
+                              style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#323446'}}
                               >
                               {serviceTypes.map(el=> <Picker.Item label={el} value={el} key={el} />)}
                               </Picker>) :
@@ -274,18 +275,18 @@ useEffect(()=>{
                               : 
                               Platform.OS === 'ios' &&  barber.sex === 'Homme' ?
                              
-                              (<Text onPress={onPressServiceType} style={{fontFamily:'poppins',fontSize:15,color:'#fff'}}>
+                              (<Text onPress={onPressServiceType} style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#fff'}}>
                                 {serviceType}
                               </Text>):
                                Platform.OS === 'ios' &&  barber.sex === 'Femme' ?
-                              (<Text onPress={onPressServiceTypeWoman} style={{fontFamily:'poppins',fontSize:15,color:'#fff'}}>
+                              (<Text onPress={onPressServiceTypeWoman} style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#fff'}}>
                                {serviceTypeWoman}
                              </Text>):undefined} 
                   </View>
                  </View>
-                 <View style={{flexDirection:'row',width:'90%',marginVertical:5,alignItems:'center'}}>
+                 <View style={{flexDirection:'row',width:'90%',marginVertical:screen.width/72,alignItems:'center'}}>
                    <View style={{width:'50%'}}>
-                    <Text style={{fontFamily:'poppins',fontSize:12,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.ServiceName:polylanar.ServiceName}</Text>
+                    <Text style={{fontFamily:'poppins',fontSize:screen.width/30,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.ServiceName:polylanar.ServiceName}</Text>
                    </View>
                   
                     <InputProfile
@@ -301,56 +302,56 @@ useEffect(()=>{
                         autoCapitalize='sentences'
                         widthView='50%'
                         backgroundColor={Platform.OS=='ios'?Colors.blue:'#d3d3d3'}
-                        height={40}
+                        height={screen.width/9}
                         /> 
                   
                  </View>
 
-                 <View style={{flexDirection:'row',width:'90%',marginVertical:5,alignItems:'center'}}>
+                 <View style={{flexDirection:'row',width:'90%',marginVertical:screen.width/72,alignItems:'center'}}>
                    <View style={{width:'50%'}}>
-                    <Text style={{fontFamily:'poppins',fontSize:12,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.Hours:polylanar.Hours}</Text>
+                    <Text style={{fontFamily:'poppins',fontSize:screen.width/30,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.Hours:polylanar.Hours}</Text>
                    </View>
-                   <View style={{ width:'50%',borderWidth:1,paddingHorizontal:12,borderRadius:25,backgroundColor:Platform.OS=='ios'?Colors.blue:'#d3d3d3',
-                                  borderColor:hour!=='0'||minute!=='0'?'#d3d3d3':Colors.primary,height:45,
+                   <View style={{ width:'50%',borderWidth:1,paddingHorizontal:screen.width/72,borderRadius:screen.width/14.4,backgroundColor:Platform.OS=='ios'?Colors.blue:'#d3d3d3',
+                                  borderColor:hour!=='0'||minute!=='0'?'#d3d3d3':Colors.primary,height:screen.width/8,
                                   justifyContent:'center',alignSelf:'center'}}>
                    {Platform.OS === 'android' ? 
                               <Picker
                               selectedValue={hour}
                               onValueChange={itemValue => setHour(itemValue)}
-                              style={{fontFamily:'poppins',fontSize:15,color:'#323446'}}
+                              style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#323446'}}
                               >
                               {hours.map(el=> <Picker.Item label={el} value={el} key={el} />)}
                               </Picker> :
-                              <Text onPress={onPress} style={{fontFamily:'poppins',fontSize:15,color:'#fff'}}>
+                              <Text onPress={onPress} style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#fff'}}>
                                 {hour}
                               </Text>} 
                   </View>
                  </View>
                  
-                 <View style={{flexDirection:'row',width:'90%',marginVertical:5,alignItems:'center'}}>
+                 <View style={{flexDirection:'row',width:'90%',marginVertical:screen.width/72,alignItems:'center'}}>
                    <View style={{width:'50%'}}>
-                    <Text style={{fontFamily:'poppins',fontSize:12,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.Minutes:polylanar.Minutes}</Text>
+                    <Text style={{fontFamily:'poppins',fontSize:screen.width/30,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.Minutes:polylanar.Minutes}</Text>
                    </View>
-                   <View style={{ width:'50%',borderWidth:1,paddingHorizontal:12,borderRadius:25,backgroundColor:Platform.OS=='ios'?Colors.blue:'#d3d3d3',
-                                  borderColor:hour!=='0'||minute!=='0'?'#d3d3d3':Colors.primary,height:45,
+                   <View style={{ width:'50%',borderWidth:1,paddingHorizontal:screen.width/30,borderRadius:screen.width/14.4,backgroundColor:Platform.OS=='ios'?Colors.blue:'#d3d3d3',
+                                  borderColor:hour!=='0'||minute!=='0'?'#d3d3d3':Colors.primary,height:screen.width/8,
                                   justifyContent:'center',alignSelf:'center'}}>
                    {Platform.OS === 'android' ? 
                               <Picker
                               selectedValue={minute}
                               onValueChange={itemValue => setMinute(itemValue)}
-                              style={{fontFamily:'poppins',fontSize:15,color:'#323446'}}
+                              style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#323446'}}
                               >
                               {minutes.map(el=> <Picker.Item label={el} value={el} key={el} />)}
                               </Picker> :
-                              <Text onPress={onPressMinute} style={{fontFamily:'poppins',fontSize:15,color:'#fff'}}>
+                              <Text onPress={onPressMinute} style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#fff'}}>
                                 {minute}
                               </Text>} 
                   </View>
                  </View>
 
-                 <View style={{flexDirection:'row',width:'90%',marginVertical:5,alignItems:'center'}}>
+                 <View style={{flexDirection:'row',width:'90%',marginVertical:screen.width/72,alignItems:'center'}}>
                    <View style={{width:'50%'}}>
-                    <Text style={{fontFamily:'poppins',fontSize:12,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.PriceIn:polylanar.PriceIn}</Text>
+                    <Text style={{fontFamily:'poppins',fontSize:screen.width/30,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.PriceIn:polylanar.PriceIn}</Text>
                    </View>
                    <InputProfile
                       id='price'
@@ -361,10 +362,10 @@ useEffect(()=>{
                       initiallyValid={true}
                       required
                       placeholderTextColor={Platform.OS=='android'?'rgba(50,52,70,0.4)':'#d3d3d3'}
-                      style={{height:20}}
+                      style={{height:screen.width/18}}
                       widthView='50%'
                       backgroundColor={Platform.OS=='ios'?Colors.blue:'#d3d3d3'}
-                      height={40}
+                      height={screen.width/9}
                       inputStyle={{color:'white'}}
                     />
                  </View>
@@ -383,7 +384,7 @@ useEffect(()=>{
                         end:{x: 1, y: 0}
                         
                     }}
-                  />: <ActivityIndicator style={{marginBottom:25}} color={Colors.primary}/>}
+                  />: <ActivityIndicator style={{marginBottom:screen.width/14.4}} color={Colors.primary}/>}
              </View>
           </View>
        </KeyboardAvoidingView>
@@ -403,8 +404,9 @@ useEffect(()=>{
             headerTintColor: '#fff',
             headerTitleStyle:{
               fontFamily:'poppins-bold',
-              marginTop:5
-            }
+              marginTop:screen.width/72
+            },
+            headerLeft:()=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color="white" style={{marginLeft:screen.width/36}} />)
     };
 
  };
@@ -422,8 +424,8 @@ secondContainer:{
  height:'75%',
  width:'100%',
  backgroundColor:'#fff',
- borderTopLeftRadius:30,
- borderTopRightRadius:30,
+ borderTopLeftRadius:screen.width/12,
+ borderTopRightRadius:screen.width/12,
  overflow:'hidden',
  
 },
@@ -443,7 +445,7 @@ inputsContainer:{
 inputContainer:{
  width:'50%',
  borderWidth:1,
- borderRadius:20,
+ borderRadius:screen.width/18,
  backgroundColor:'#d3d3d3',
  borderColor:'#d3d3d3'
 },
@@ -451,19 +453,19 @@ footerContainer:{
  height:'30%',
  width:'100%',
  justifyContent:'flex-end',
- paddingBottom:25
+ paddingBottom:screen.width/14.4
 },
 labelButton:{
  color:'#FFF',
  fontFamily:'poppins',
- fontSize:16,
+ fontSize:screen.width/22.5,
  textTransform:null,
 },
 buttonStyle:{
  borderColor:'#fd6c57',
  width:'90%',
- borderRadius:20,
- height:40,
+ borderRadius:screen.width/18,
+ height:screen.width/9,
  alignSelf:'center',
 }
 });

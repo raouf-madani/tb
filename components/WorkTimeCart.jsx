@@ -27,7 +27,7 @@ const WorkTimeCart = props =>{
     return(
         <View style={styles.disponibilityContainer}>
               <View style={styles.dayContainer}>
-                    <Text style={{fontFamily:'poppins-bold',fontSize:12,color:props.switchDay ? Colors.primary:Colors.blue}}>{props.day}</Text>
+                    <Text style={{fontFamily:'poppins-bold',fontSize:screen.width/30,color:props.switchDay ? Colors.primary:Colors.blue}}>{props.day}</Text>
                     <Switch style={switchIOS} value={props.value} onValueChange={props.onValueChange} trackColor={{true:'rgba(253,108,87,0.7)'}} thumbColor={props.switchDay? Colors.primary: 'white'}/>
               </View>
               <View>
@@ -49,11 +49,11 @@ disponibilityContainer:{
   shadowOffset:{width:0,height:2},
   shadowRadius:2,
   shadowColor:"#000",
-  borderRadius:10,
+  borderRadius:screen.width/36,
   elevation:5,
-  paddingHorizontal:10,
-  paddingVertical:15,
-  marginVertical:10,
+  paddingHorizontal:screen.width/36,
+  paddingVertical:screen.width/24,
+  marginVertical:screen.width/36,
   width:'90%',
   alignSelf:'center',
   backgroundColor:'#f9f9f9',
@@ -67,8 +67,8 @@ dayContainer:{
 },  
 debutEndText:{
     fontFamily:'poppins',
-    color:'#323446',
-    fontSize:12
+    color:Colors.blue,
+    fontSize:screen.width/30
   },
  
 });

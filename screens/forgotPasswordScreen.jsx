@@ -1,6 +1,6 @@
 import React,{useState,useCallback,useReducer,useRef} from 'react';
-import { StyleSheet,View,KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard,Text,Image,Dimensions,StatusBar,Alert,ActivityIndicator,TextInput} from 'react-native';
-import {MaterialIcons,MaterialCommunityIcons} from "@expo/vector-icons";
+import { StyleSheet,View,KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard,Text,Image,Dimensions,StatusBar,Alert,ActivityIndicator,TextInput,Platform} from 'react-native';
+import {MaterialIcons,MaterialCommunityIcons,FontAwesome5} from "@expo/vector-icons";
 import {Button } from 'react-native-elements';
 import Colors from '../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -163,7 +163,7 @@ const verifyNumber = async ()=>{
     return(
       <TouchableWithoutFeedback onPress = {()=>{Keyboard.dismiss()}}>
       <View style={styles.container}>
-       <KeyboardAvoidingView  keyboardVerticalOffset={10}>
+       <KeyboardAvoidingView  keyboardVerticalOffset={screen.width/36}  behavior={Platform.OS === "ios" ? "padding" : null}>
          <StatusBar hidden />
          <FirebaseRecaptcha.FirebaseRecaptchaVerifierModal
                 ref={recaptchaVerifier}
@@ -182,8 +182,8 @@ const verifyNumber = async ()=>{
              {!verificationId ? (<View style={styles.inputsContainer}>
                   <CustomInput
                     id={'phone'}
-                    rightIcon={<MaterialIcons title = "phone" name ='phone' color='#323446' size={23} />}
-                    leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Colors.blue,paddingRight:5}}><Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/algeriaFlag.png'}} style={{width:24,height:28,marginRight:5}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
+                    rightIcon={<MaterialIcons title = "phone" name ='phone' color='#323446' size={screen.width/15.7} />}
+                    leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Colors.blue,paddingRight:screen.width/72}}><Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/algeriaFlag.png'}} style={{width:screen.width/15,height:screen.width/12.85,marginRight:screen.width/72}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
                     placeholder='555555555'
                     keyboardType="phone-pad"
                     returnKeyType="next"
@@ -193,7 +193,7 @@ const verifyNumber = async ()=>{
                     phone
                     required
                     placeholderTextColor='rgba(50,52,70,0.4)'
-                    inputStyle={{fontSize:15}}
+                    inputStyle={{fontSize:screen.width/24}}
                     editable={!verificationId}
                   />
                  
@@ -214,7 +214,7 @@ const verifyNumber = async ()=>{
                    {verifyInProgress && <ActivityIndicator color={Colors.primary} style={styles.loader} />}
               </View>): 
               (<View style={styles.inputsContainer}>
-              <View style={{width:'100%',borderWidth:1, borderRadius:25,backgroundColor:'#d3d3d3',borderColor:confirmError?Colors.primary:'#d3d3d3',marginVertical:3,height:45,alignItems:'center',justifyContent:'center'}}>
+              <View style={{width:'100%',borderWidth:1, borderRadius:screen.width/14.4,backgroundColor:'#d3d3d3',borderColor:confirmError?Colors.primary:'#d3d3d3',marginVertical:screen.width/120,height:screen.width/8,alignItems:'center',justifyContent:'center'}}>
                 <TextInput
                         placeholder='Entrez les 6 chiffres'
                         keyboardType='number-pad'
@@ -276,7 +276,7 @@ const verifyNumber = async ()=>{
      );    
 };
 
-ForgotPasswordScreen.navigationOptions= ()=>{
+ForgotPasswordScreen.navigationOptions= navData=>{
   return {
     headerTransparent : true ,
     headerStyle:{
@@ -287,15 +287,15 @@ ForgotPasswordScreen.navigationOptions= ()=>{
       <Image 
       resizeMode="cover"
       style={{
-        width:150,
-        height:40,
+        width:screen.width/2.4,
+        height:screen.width/9,
         resizeMode:'contain',
         alignSelf: 'center'}}
       
       />
     ),
     headerTintColor: '#fff',
-  
+    headerLeft:()=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color="white" style={{marginLeft:screen.width/36}} />)
   };
 }
 
@@ -312,8 +312,8 @@ const styles= StyleSheet.create({
     height:'65%',
     width:'100%',
     backgroundColor:'#fff',
-    borderTopLeftRadius:30,
-    borderTopRightRadius:30,
+    borderTopLeftRadius:screen.width/12,
+    borderTopRightRadius:screen.width/12,
     overflow:'hidden'
   },
   logoContainer:{
@@ -323,8 +323,8 @@ const styles= StyleSheet.create({
     alignItems:'center'
   },
   logo:{
-    width:screen.width/1.9,
-    height:screen.height/14,
+    width:screen.width/2,
+    height:screen.width/8.6,
     marginVertical:screen.width/24
   },
   callToAction:{
@@ -341,37 +341,37 @@ const styles= StyleSheet.create({
   inputPhoneContainer:{
     width:'90%',
     borderWidth:1,
-    borderRadius:25,
+    borderRadius:screen.width/14.4,
     backgroundColor:'#d3d3d3',
     borderColor:'#d3d3d3',
-    height:45
+    height:screen.width/8
   },
   input:{
     borderBottomWidth:0,
-    paddingHorizontal:10
+    paddingHorizontal:screen.width/36
   },
   inputPasswordContainer:{
     width:'90%',
     borderWidth:1,
-    borderRadius:25,
-    height:50,
-    marginTop:10,
+    borderRadius:screen.width/14.4,
+    height:screen.width/7.2,
+    marginTop:screen.width/36,
     backgroundColor:'#d3d3d3',
     borderColor:'#d3d3d3'
   },
   labelButton:{
     color:'#FFF',
     fontFamily:'poppins',
-    fontSize:16,
+    fontSize:screen.width/22.5,
     textTransform:null,
    },
    buttonStyle:{
     borderColor:'#fd6c57',
     width:'100%',
-    borderRadius:20,
-    height:45,
+    borderRadius:screen.width/18,
+    height:screen.width/8,
     alignSelf:'center',
-    marginTop:15
+    marginTop:screen.width/24
    },
   signupContainer:{
     alignSelf:'center',
@@ -379,7 +379,7 @@ const styles= StyleSheet.create({
     
   },
   loader: {
-    marginTop: 10,
+    marginTop: screen.width/36,
   },
   cofirmResendContainer:{
     flexDirection:'row',
@@ -391,10 +391,10 @@ const styles= StyleSheet.create({
   confirmedButtonStyle:{
     borderColor:'#fd6c57',
     width:'80%',
-    borderRadius:20,
-    height:45,
+    borderRadius:screen.width/18,
+    height:screen.width/8,
     alignSelf:'center',
-    marginTop:3
+    marginTop:screen.width/120
    },
    confirmErrorText:{
     color:Colors.primary,
@@ -404,7 +404,7 @@ const styles= StyleSheet.create({
   smsText:{
     color:Colors.blue,
     fontSize:screen.width/32,
-    paddingTop:10,
+    paddingTop:screen.width/36,
     alignSelf:'center',
     fontFamily:'poppins-bold'
   },

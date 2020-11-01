@@ -1,10 +1,10 @@
 import React, {useState,useEffect,useCallback} from 'react';
-import { StyleSheet,View,Image, ScrollView,ImageBackground,Text,TouchableOpacity,StatusBar,Platform,ActivityIndicator,Alert} from 'react-native';
+import { StyleSheet,View,Image, ScrollView,ImageBackground,Text,TouchableOpacity,StatusBar,Platform,ActivityIndicator,Alert,Dimensions} from 'react-native';
 import {Button } from 'react-native-elements';
 import Colors from '../../../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import ServiceCart from '../../../components/ServiceCart';
-import {MaterialIcons} from "@expo/vector-icons";
+import {MaterialIcons,FontAwesome5} from "@expo/vector-icons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {HeaderButtons,Item} from "react-navigation-header-buttons";
 import HeaderButton from "../../../components/HeaderButton";
@@ -15,6 +15,10 @@ import * as servicesActions from '../../../store/actions/serviceActions';
 import * as worktimeActions from '../../../store/actions/worktimeActions';
 import polylanar from "../../../lang/ar";
 import polylanfr from "../../../lang/fr";
+
+
+
+const screen = Dimensions.get("window");
  
 const BarberServiceScreen = props =>{
   
@@ -265,7 +269,7 @@ const BarberServiceScreen = props =>{
       
     return ( <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/support.png'}} style={styles.activityIndicatorContainer}>
               <StatusBar hidden />
-                <View style={{marginBottom:10,alignSelf:'center'}}>
+                <View style={{marginBottom:screen.width /36,alignSelf:'center'}}>
                   <Text style={styles.noServicesText}>{barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet}</Text>
                 </View>
                 <Button
@@ -310,29 +314,29 @@ const BarberServiceScreen = props =>{
              <View style={styles.iconsMenuContainer}>
                <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('EditService')}>
                  <View style={styles.iconFormCircle}>
-                         <MaterialIcons title = "service" name ='add-shopping-cart' color='#fff' size={23} onPress={()=>props.navigation.navigate('EditService')} />
+                         <MaterialIcons title = "service" name ='add-shopping-cart' color='#fff' size={screen.width/15.7} onPress={()=>props.navigation.navigate('EditService')} />
                  </View>
                  <Text style={styles.iconText}>{barber && barber[0].lang?polylanfr.AddSerivce:polylanar.AddSerivce}</Text>
                </TouchableOpacity>
                <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberGalery',{barberID:barberID})}>
                <View style={styles.iconFormCircle1}>
-                       <MaterialIcons title = "portfolio" name ='linked-camera' color='#fff' size={23} onPress={()=>props.navigation.navigate('BarberGalery',{barberID:barberID})} />
+                       <MaterialIcons title = "portfolio" name ='linked-camera' color='#fff' size={screen.width/15.7} onPress={()=>props.navigation.navigate('BarberGalery',{barberID:barberID})} />
                </View>
                <Text style={styles.iconText}>{barber && barber[0].lang?polylanfr.AddPortfolio:polylanar.AddPortfolio}</Text>
                </TouchableOpacity>
              </View>
           </View>
           <View style={styles.menu}>
-             <TouchableOpacity style={{borderBottomWidth:2,borderBottomColor:isServices ?'#fd6c57':'#f9f9f9',paddingBottom:3}} onPress={services}>
+             <TouchableOpacity style={{borderBottomWidth:screen.width/180,borderBottomColor:isServices ?'#fd6c57':'#f9f9f9',paddingBottom:screen.width/120}} onPress={services}>
               <Text style={styles.itemText}>{barber && barber[0].lang?polylanfr.MyServices:polylanar.MyServices}</Text>
              </TouchableOpacity>
-             <TouchableOpacity style={{borderBottomWidth:2,borderBottomColor:isDisponible?'#fd6c57':'#f9f9f9',paddingBottom:3}} onPress={disponibility}>
+             <TouchableOpacity style={{borderBottomWidth:screen.width/180,borderBottomColor:isDisponible?'#fd6c57':'#f9f9f9',paddingBottom:screen.width/120}} onPress={disponibility}>
               <Text style={styles.itemText}>{barber && barber[0].lang?polylanfr.Available:polylanar.Available}</Text>
              </TouchableOpacity>
           </View>
         </View>
         {isServices ? (<View style={styles.noServicesContainer}>
-            <View style={{marginBottom:10,alignSelf:'center'}}>
+            <View style={{marginBottom:screen.width/36,alignSelf:'center'}}>
               <Text style={styles.noServicesText}>{barber && barber[0].lang?polylanfr.NoServices:polylanar.NoServices}</Text>
             </View>
             <Button
@@ -471,23 +475,23 @@ const BarberServiceScreen = props =>{
               <View style={styles.iconsMenuContainer}>
                 <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('EditService')}>
                   <View style={styles.iconFormCircle}>
-                          <MaterialIcons title = "service" name ='add-shopping-cart' color='#fff' size={23} onPress={()=>props.navigation.navigate('EditService')} />
+                          <MaterialIcons title = "service" name ='add-shopping-cart' color='#fff' size={screen.width/15.7} onPress={()=>props.navigation.navigate('EditService')} />
                   </View>
                   <Text style={styles.iconText}>{barber && barber[0].lang?polylanfr.AddSerivce:polylanar.AddSerivce}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberGalery',{barberID:barberID})}>
                 <View style={styles.iconFormCircle1}>
-                        <MaterialIcons title = "portfolio" name ='linked-camera' color='#fff' size={23} onPress={()=>props.navigation.navigate('BarberGalery',{barberID:barberID})} />
+                        <MaterialIcons title = "portfolio" name ='linked-camera' color='#fff' size={screen.width/15.7} onPress={()=>props.navigation.navigate('BarberGalery',{barberID:barberID})} />
                 </View>
                 <Text style={styles.iconText}>{barber && barber[0].lang?polylanfr.AddPortfolio:polylanar.AddPortfolio}</Text>
                 </TouchableOpacity>
               </View>
            </View>
            <View style={styles.menu}>
-              <TouchableOpacity style={{borderBottomWidth:2,borderBottomColor:isServices ?'#fd6c57':'#f9f9f9',paddingBottom:3}} onPress={services}>
+              <TouchableOpacity style={{borderBottomWidth:screen.width/180,borderBottomColor:isServices ?'#fd6c57':'#f9f9f9',paddingBottom:screen.width/120}} onPress={services}>
                <Text style={styles.itemText}>{barber && barber[0].lang?polylanfr.MyServices:polylanar.MyServices}</Text>
               </TouchableOpacity>
-              <TouchableOpacity style={{borderBottomWidth:2,borderBottomColor:isDisponible?'#fd6c57':'#f9f9f9',paddingBottom:3}} onPress={disponibility}>
+              <TouchableOpacity style={{borderBottomWidth:screen.width/180,borderBottomColor:isDisponible?'#fd6c57':'#f9f9f9',paddingBottom:screen.width/120}} onPress={disponibility}>
                <Text style={styles.itemText}>{barber && barber[0].lang?polylanfr.Available:polylanar.Available}</Text>
               </TouchableOpacity>
            </View>
@@ -625,8 +629,8 @@ BarberServiceScreen.navigationOptions = navData => {
           <Image 
           resizeMode="cover"
           style={{
-            width:150,
-            height:40,
+            width:screen.width/2.4,
+            height:screen.width/9,
             resizeMode:'contain',
             alignSelf: 'center'}}
           
@@ -638,10 +642,11 @@ BarberServiceScreen.navigationOptions = navData => {
             <Item title = {disponible?'Sauvegarder':' '} 
               iconName ={disponible?'md-checkmark':''}
               color='#fff'
-              size={23}   
+              size={screen.width/15.7}   
               onPress={saveFunction}    
             />
-          </HeaderButtons>)
+          </HeaderButtons>),
+           headerLeft:()=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color="white" style={{marginLeft:screen.width/36}} />)
   };
   
 }
@@ -680,16 +685,17 @@ const styles= StyleSheet.create({
     alignItems:'center'
   },
   imageContainer:{
-    width:90,
-    height:90,
-    borderRadius:50,
-    marginTop:-55,
+    width:screen.width/4,
+    height:screen.width/4,
+    borderRadius:screen.width/7.2,
+    marginTop:-(screen.width/6.55),
     overflow:'hidden'
   },
   bname:{
     fontFamily:'poppins-bold',
-    fontSize:17,color:'#323446',
-    paddingTop:3
+    fontSize:screen.width/21.2,
+    color:'#323446',
+    paddingTop:screen.width/120
   },
   menu:{
     width:'90%',
@@ -699,45 +705,45 @@ const styles= StyleSheet.create({
     alignItems:'flex-end'
   },
   itemContainer:{
-    borderBottomWidth:2,
+    borderBottomWidth:screen.width/180,
     borderBottomColor:'#fd6c57',
-    paddingBottom:3
+    paddingBottom:screen.width/120
   },
   itemText:{
     fontFamily:'poppins',
     color:'grey',
-    fontSize:12
+    fontSize:screen.width/30
   },
   iconFormCircle:{
     backgroundColor:'#FD6C57',
-    width:40,
-    height:40,
-    borderRadius:20,
+    width:screen.width/9,
+    height:screen.width/9,
+    borderRadius:screen.width/18,
     justifyContent:'center',
     alignItems:'center',
   },
   iconFormCircle1:{
     backgroundColor:'#BA55D3',
-    width:40,
-    height:40,
-    borderRadius:20,
+    width:screen.width/9,
+    height:screen.width/9,
+    borderRadius:screen.width/18,
     justifyContent:'center',
     alignItems:'center'
   },
   
   iconsMenuContainer:{
     flexDirection:'row',
-    paddingVertical:5
+    paddingVertical:screen.width/72
   },
   iconContainer:{
-    marginHorizontal:13,
+    marginHorizontal:screen.width/27.7,
     alignItems:'center'
   },
   iconText:{
     fontFamily:'poppins',
     color:'grey',
-    paddingTop:3,
-    fontSize:10
+    paddingTop:screen.width/120,
+    fontSize:screen.width/36
   },
   activityIndicatorContainer:{
    flex:1,
@@ -755,20 +761,20 @@ const styles= StyleSheet.create({
 },
 noServicesText:{
   fontFamily:'poppins',
-  fontSize:14,
+  fontSize:screen.width/25.71,
   color:Colors.blue
 },
 labelButton:{
   color:'#FFF',
   fontFamily:'poppins',
-  fontSize:16,
+  fontSize:screen.width/22.5,
   textTransform:null,
  },
  buttonStyle:{
   borderColor:'#fd6c57',
   width:'50%',
-  borderRadius:20,
-  height:45,
+  borderRadius:screen.width/18,
+  height:screen.width/8,
   alignSelf:'center'
  }
 });

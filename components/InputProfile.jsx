@@ -76,9 +76,9 @@ const InputProfile = props =>{
         }
 
     return(
-        <View style={{height:props.height, width:props.widthView,borderWidth:1,borderRadius:20,backgroundColor:props.backgroundColor,
-        borderColor:!inputState.isValid?Colors.primary:props.backgroundColor,marginVertical:5,alignSelf:'center',shadowColor: 'black',shadowOpacity: 0.96,
-        shadowOffset: {width: 0, height:2},shadowRadius: 10,elevation: 3,overflow:'hidden'}}>
+        <View style={{height:props.height, width:props.widthView,borderWidth:1,borderRadius:screen.width/18,backgroundColor:props.backgroundColor,
+        borderColor:!inputState.isValid?Colors.primary:props.backgroundColor,marginVertical:screen.width/72,alignSelf:'center',shadowColor: 'black',shadowOpacity: 0.96,
+        shadowOffset: {width: 0, height:2},shadowRadius: screen.width/36,elevation: 3,overflow:'hidden'}}>
             <Input
                 {...props}
                 value={inputState.value}
@@ -86,7 +86,7 @@ const InputProfile = props =>{
                 placeholder={props.placeholder}
                 inputContainerStyle={styles.input}
                 placeholderTextColor={props.placeholderTextColor}
-                inputStyle={{fontSize:15,color:Platform.OS==='android'?Colors.blue:'white'}}
+                inputStyle={{fontSize:screen.width/24,color:Platform.OS==='android'?Colors.blue:'white'}}
                 errorMessage={props.errorMessage}
             />
         </View>
@@ -98,7 +98,7 @@ const styles= StyleSheet.create({
     
     input:{
         borderBottomWidth:0,
-        paddingHorizontal:10,
+        paddingHorizontal:screen.width/36,
       },
 });
 

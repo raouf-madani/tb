@@ -27,14 +27,14 @@ const Feedback = props =>{
                     {props.mark?<Rating
                     type='custom'
                     startingValue={props.mark}
-                    imageSize={20}
+                    imageSize={screen.width/18}
                     ratingBackgroundColor={Colors.blue}
                     ratingColor={Colors.primary}
                     tintColor='#fff'
                     />:<Text style={styles.noMark}>{barber && barber.lang?polylanfr.Nomarks:polylanar.Nomarks}</Text>}
                 </View>
                 <View style={styles.commentContainer}>
-                    <Text style={{fontFamily:'poppins-bold',fontSize:13,color:Colors.blue}}>{props.name===null && props.surname=== null ? 'Inconnu':props.name+' '+ props.surname}</Text>
+                    <Text style={{fontFamily:'poppins-bold',fontSize:screen.width/27.7,color:Colors.blue}}>{props.name===null && props.surname=== null ? 'Inconnu':props.name+' '+ props.surname}</Text>
                     <Text style={styles.comment}>
                     {props.comment? props.comment:barber && barber.lang?polylanfr.NoComments:polylanar.NoComments}
                     </Text>
@@ -49,18 +49,19 @@ const styles= StyleSheet.create({
 feedbackContainer:{
     flexDirection:'row',
     width:'90%',
-    marginVertical:10
+    marginVertical:screen.width/36
 },
 photoContainer:{
     width:'20%'
 },
 photoCircle:{
-   width:60,
-   height:60},
+   width:screen.width/6,
+   height:screen.width/6
+},
 photo:{
    width:'100%',
    height:'100%',
-   borderRadius:30
+   borderRadius:screen.width/12
 },
 commentRatingContainer:{
     width:'80%',
@@ -68,15 +69,15 @@ commentRatingContainer:{
     alignItems:'flex-start'
 },
 commentContainer:{
-    padding:10,
+    padding:screen.width/36,
     backgroundColor:'#f9f9f9',
-    borderRadius:20,
+    borderRadius:screen.width/18,
     alignItems:'flex-start',
     justifyContent:'center'
 },
 comment:{
     fontFamily:'poppins',
-    fontSize:13,
+    fontSize:screen.width/27.7,
     color:Colors.blue
 },
 noFeedbacksContainer:{
@@ -86,12 +87,12 @@ noFeedbacksContainer:{
   },
   noFeedbacksText:{
     fontFamily:'poppins',
-    fontSize:14,
+    fontSize:screen.width/25.7,
     color:Colors.blue
   },   
   noMark:{
       fontFamily:'poppins',
-      fontSize:14,
+      fontSize:screen.width/25.7,
       color:Colors.primary,
   }
 });

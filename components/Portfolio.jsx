@@ -25,7 +25,7 @@ const Portfolio = props =>{
           <Ionicons title = "add" 
           name ={'ios-camera'}
           color='#fff' 
-          size={23}
+          size={screen.width/15.7}
           />
         </TouchableHighlight>
         <TouchableHighlight style={styles.iconContainer2} onPress={props.libraryImage}>
@@ -33,7 +33,7 @@ const Portfolio = props =>{
           title = "library" 
           name ='photo-library' 
           color='#FFF' 
-          size={21} />
+          size={screen.width/17.1} />
         </TouchableHighlight>
         </View>
       </View>
@@ -45,7 +45,7 @@ const styles= StyleSheet.create({
 
     imageConainer:{
         width:'45%',
-        marginHorizontal:15,
+        marginHorizontal:screen.width/24,
         alignItems:'center'
       },
        modelImage:{ 
@@ -53,22 +53,22 @@ const styles= StyleSheet.create({
          height:windowHeight*0.25
         },
       iconContainer:{
-        height:30,
-        width:30,
-        borderRadius:30/2,
+        height:screen.width/12,
+        width:screen.width/12,
+        borderRadius:screen.width/24,
         backgroundColor:'#323446',
         justifyContent:'center',
         alignItems:'center',
-        marginVertical:5
+        marginVertical:screen.width/72
        },
        iconContainer2:{
-        height:30,
-        width:30,
-        borderRadius:30/2,
+        height:screen.width/12,
+        width:screen.width/12,
+        borderRadius:screen.width/24,
         backgroundColor:'#FE457C',
         justifyContent:'center',
         alignItems:'center',
-        marginVertical:5
+        marginVertical:screen.width/72
        },
 });
 

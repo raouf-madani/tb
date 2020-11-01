@@ -3,7 +3,7 @@ import { StyleSheet, Text, View,ActivityIndicator, Alert,ScrollView, Dimensions}
 import moment from 'moment';
 import Colors from "../../../constants/Colors";
 import BookingCard from '../../../components/BookingCard';
-import { Ionicons ,MaterialIcons } from '@expo/vector-icons';
+import { Ionicons ,MaterialIcons,FontAwesome5 } from '@expo/vector-icons';
 import { useDispatch,useSelector } from 'react-redux';
 import {changeBookingState} from "../../../store/actions/bookingsActions";
 import { Rating, AirbnbRating, Avatar } from 'react-native-elements';
@@ -244,7 +244,7 @@ if (isLoading) {
             <TouchableOpacity style = {{alignItems : "center"}}>
             
             <MaterialIcons name="call" 
-                            size={28} 
+                            size={screen.width/12.85} 
                             color={Colors.colorH1} 
 
                     />
@@ -257,7 +257,7 @@ if (isLoading) {
           <TouchableOpacity style = {{alignItems : "center"}} onPress = {()=>bookingHandler("annulée","Annuler","annuler")} >
           
           <Ionicons name="ios-close-circle-outline" 
-                      size={28} 
+                      size={screen.width/12.85} 
                       color= "#F9627D"
                       onPress = {()=>bookingHandler("annulée","Annuler","annuler")}
                /> 
@@ -272,7 +272,7 @@ if (isLoading) {
                     
                   <Ionicons 
                   name="ios-checkbox-outline" 
-                  size={28} 
+                  size={screen.width/12.85} 
                   color={Colors.colorH1} 
                   onPress = {()=>bookingHandler("confirmée","Confirmer","confirmer")}
                   />
@@ -381,9 +381,10 @@ if (isLoading) {
 
 BookingDetail.navigationOptions = (navData) => {
   return {
-    headerTintColor:Colors.primary,
+    headerTintColor:Colors.blue,
     headerBackTitle : " ",
-    title : "Ma Réservation"
+    title : "Ma Réservation",
+    headerLeft:()=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color="white" style={{marginLeft:screen.width/36}} />)
   }
   
   };
@@ -397,7 +398,7 @@ actions : {
  width :"90%",
  height : screen.height * 0.1 ,
  alignSelf : "center",
-borderRadius : 15,
+borderRadius : screen.width/24,
 flexDirection : "row",
 alignItems : "center",
 justifyContent : "space-around",
@@ -408,7 +409,7 @@ barber : {
 width : "90%",
 backgroundColor  : "#fff" ,
 alignSelf : "center" ,
-borderRadius : 15,
+borderRadius : screen.width/24,
 marginVertical : "2%",
 height : screen.height * 0.6 ,
 // justifyContent : "space-between"
@@ -417,7 +418,7 @@ height : screen.height * 0.6 ,
 services : {
   height : screen.height * 0.3 ,
     backgroundColor : "#fff",
-    borderRadius :  15,
+    borderRadius :  screen.width/24,
     width : "90%",
     alignSelf : "center",
 },
@@ -435,7 +436,7 @@ actionsText : {
 },
 barberText : {
     fontFamily : "poppins",
-    marginLeft : 5,
+    marginLeft : screen.width/72,
     fontSize : screen.width /28
 
 },
@@ -454,7 +455,7 @@ serviceText :{
 servicesTitle : {
     alignSelf : "center",
     fontFamily : "poppins-bold",
-    marginBottom : 10 ,
+    marginBottom : screen.width/36 ,
     color : Colors.primary,
     fontSize : screen.width /28
 

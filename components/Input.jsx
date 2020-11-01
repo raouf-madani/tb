@@ -72,7 +72,7 @@ const CustomInput = props =>{
         
 
     return(
-        <View style={{width:'100%',borderWidth:1, borderRadius:25,backgroundColor:'#d3d3d3',borderColor:!inputState.isValid?Colors.primary:'#d3d3d3',marginVertical:3,height:45,}}>
+        <View style={{width:'100%',borderWidth:1,borderRadius:screen.width/14.4,backgroundColor:'#d3d3d3',borderColor:!inputState.isValid?Colors.primary:'#d3d3d3',marginVertical:screen.width/72,height:screen.width/8}}>
             <Input
                 {...props}
                 value={inputState.value}
@@ -80,7 +80,7 @@ const CustomInput = props =>{
                 placeholder={props.placeholder}
                 inputContainerStyle={styles.input}
                 placeholderTextColor={props.placeholderTextColor}
-                inputStyle={{fontSize:15,color:Colors.blue}}
+                inputStyle={{fontSize:screen.width/24,color:Colors.blue}}
                 errorMessage={props.errorMessage}
             />
         </View>
@@ -92,7 +92,8 @@ const styles= StyleSheet.create({
     
     input:{
         borderBottomWidth:0,
-        paddingHorizontal:10,
+        paddingHorizontal:screen.width/36,
+        paddingVertical:screen.width<=500?null:screen.width/36,
       },
 });
 

@@ -3,8 +3,9 @@ import { StyleSheet, Text, View,Image, ImageBackground,Dimensions,TouchableOpaci
 import Colors from "../constants/Colors";
 import { Button ,Overlay,Divider} from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
-const screen = Dimensions.get("window");
 import moment from "moment";
+
+const screen = Dimensions.get("window");
 
 const ApproveOverlay = props =>{
 const date = moment(props.booking.bookingDate).format("LLLL").slice(0,-5);
@@ -95,7 +96,7 @@ const date = moment(props.booking.bookingDate).format("LLLL").slice(0,-5);
             height:"80%",
             backgroundColor:"#fff",
             justifyContent:"center",
-            borderRadius:25
+            borderRadius:screen.width/14.4
         },
         imageContainer : {
             height : "20%",
@@ -129,10 +130,10 @@ const date = moment(props.booking.bookingDate).format("LLLL").slice(0,-5);
             justifyContent:"space-around"
         },
         buttonStyle : {
-            borderRadius : 5,
+            borderRadius : screen.width/72,
             paddingHorizontal : "5%",
         
-            borderRadius: Platform.OS === "android"  ? 25 : 20
+            borderRadius: Platform.OS === "android"  ? screen.width/14.4 : screen.width/18
 
     },
     buttonText :{

@@ -1,6 +1,6 @@
 import React,{useState,useEffect,useReducer,useCallback} from 'react';
 import { StyleSheet,View,AsyncStorage,Linking,ScrollView,TouchableWithoutFeedback,Keyboard,ImageBackground,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActionSheetIOS,Picker,ActivityIndicator,Platform,StatusBar} from 'react-native';
-import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
+import {MaterialIcons,MaterialCommunityIcons,Ionicons,FontAwesome5} from "@expo/vector-icons";
 import {useSelector,useDispatch} from 'react-redux';
 import Colors from "../../../constants/Colors";
 import {HeaderButtons,Item} from "react-navigation-header-buttons";
@@ -311,10 +311,10 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 <View style={styles.detailsContainer}>
                   <View style={{width:'30%'}}>
                     <TouchableOpacity style={styles.iconFormCircle1} onPress={takeImageHandler}>
-                      <MaterialIcons title = "camera" name ='camera-enhance' color='#323446' size={23} />
+                      <MaterialIcons title = "camera" name ='camera-enhance' color='#323446' size={screen.width/15.7} />
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.iconFormCircle1} onPress={takeLibraryHandler}>
-                      <MaterialIcons title = "library" name ='photo-library' color='#FE457C' size={23} />
+                      <MaterialIcons title = "library" name ='photo-library' color='#FE457C' size={screen.width/15.7} />
                     </TouchableOpacity>
                   </View>  
                   <View style={{width:'70%'}}>
@@ -325,20 +325,20 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
             </View>
           </View>
           <View style={styles.menuContainer}>
-               <TouchableOpacity onPress={info} style={{padding:5,width:'50%',backgroundColor:isInfo?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
+               <TouchableOpacity onPress={info} style={{padding:screen.width/72,width:'50%',backgroundColor:isInfo?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
                   <Text style={{color:isInfo?'#fff':'#fd6c57',fontFamily:'poppins'}}>{barber && barber[0].lang?polylanfr.profileInfo:polylanar.profileInfo}</Text>
                </TouchableOpacity>
-               <TouchableOpacity onPress={localisation} style={{padding:5,width:'50%',backgroundColor:isLocalisation?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
+               <TouchableOpacity onPress={localisation} style={{padding:screen.width/72,width:'50%',backgroundColor:isLocalisation?'#fd6c57':'#fff',alignItems:'center',justifyContent:'center'}}>
                    <Text style={{color:isLocalisation?'#fff':'#fd6c57',fontFamily:'poppins'}}>{barber && barber[0].lang?polylanfr.MyAccount:polylanar.MyAccount}</Text>
                </TouchableOpacity>
           </View>
        {isInfo?(<ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-          <KeyboardAvoidingView keyboardVerticalOffset={10}>
+          <KeyboardAvoidingView keyboardVerticalOffset={screen.width/36}  behavior={Platform.OS === "ios" ? "padding" : null}>
             <View style={styles.bnameAgeContainer}>
               
                 <InputProfile
                       id='b_name'
-                      rightIcon={<MaterialIcons title = "person-pin" name ='person-pin' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
+                      rightIcon={<MaterialIcons title = "person-pin" name ='person-pin' color={Platform.OS==='android'?'#323446':'#fff'} size={screen.width/15.7} />}
                       placeholder={barber && barber[0].lang?polylanfr.BusinessName:polylanar.BusinessName}
                       keyboardType="default"
                       returnKeyType="next"
@@ -349,13 +349,13 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                       placeholderTextColor={Platform.OS==='android'?'rgba(50,52,70,0.4)':'#f9f9f9'}
                       widthView='57%'
                       backgroundColor={Platform.OS==='android'?'#fff':Colors.blue}
-                      height={45}
+                      height={screen.width/8}
                     />
               
               
                 <InputProfile
                       id='age'
-                      rightIcon={<MaterialCommunityIcons title = "age" name ='sort-numeric' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
+                      rightIcon={<MaterialCommunityIcons title = "age" name ='sort-numeric' color={Platform.OS==='android'?'#323446':'#fff'} size={screen.width/15.7} />}
                       placeholder={barber && barber[0].lang?polylanfr.Age:polylanar.Age}
                       keyboardType="phone-pad"
                       returnKeyType="next"
@@ -366,14 +366,14 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                       placeholderTextColor={Platform.OS==='android'?'rgba(50,52,70,0.4)':'#f9f9f9'}
                       widthView='40%'
                       backgroundColor={Platform.OS==='android'?'#fff':Colors.blue}
-                      height={45}
+                      height={screen.width/8}
                     />
               </View>
             
             
               <InputProfile
                   id='name'
-                  rightIcon={<MaterialIcons title = "firstName" name ='person' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
+                  rightIcon={<MaterialIcons title = "firstName" name ='person' color={Platform.OS==='android'?'#323446':'#fff'} size={screen.width/15.7} />}
                   placeholder={barber && barber[0].lang?polylanfr.Name:polylanar.Name}
                   keyboardType="default"
                   returnKeyType="next"
@@ -386,13 +386,13 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                   autoCapitalize='sentences'
                   widthView='90%'
                   backgroundColor={Platform.OS==='android'?'#fff':Colors.blue}
-                  height={45}
+                  height={screen.width/8}
                 />
              
              
               <InputProfile
                 id='surname'
-                rightIcon={<MaterialIcons title = "firstName" name ='person' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
+                rightIcon={<MaterialIcons title = "firstName" name ='person' color={Platform.OS==='android'?'#323446':'#fff'} size={screen.width/15.7} />}
                 placeholder={barber && barber[0].lang?polylanfr.Surname:polylanar.Surname}
                 keyboardType="default"
                 returnKeyType="next"
@@ -405,13 +405,13 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 autoCapitalize='sentences'
                 widthView='90%'
                 backgroundColor={Platform.OS==='android'?'#fff':Colors.blue}
-                height={45}
+                height={screen.width/8}
               />
             
            
               <InputProfile
                   id='email'
-                  rightIcon={<MaterialIcons title = "email" name ='email' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
+                  rightIcon={<MaterialIcons title = "email" name ='email' color={Platform.OS==='android'?'#323446':'#fff'} size={screen.width/15.7} />}
                   placeholder={barber && barber[0].lang?polylanfr.Email:polylanar.Email}
                   keyboardType="default"
                   returnKeyType="next"
@@ -424,12 +424,12 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                   minLength={6}
                   widthView='90%'
                   backgroundColor={Platform.OS==='android'?'#fff':Colors.blue}
-                  height={45}
+                  height={screen.width/8}
                 />
             
               <InputProfile
                 id='address'
-                rightIcon={<MaterialIcons title = "address" name ='map' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
+                rightIcon={<MaterialIcons title = "address" name ='map' color={Platform.OS==='android'?'#323446':'#fff'} size={screen.width/15.7} />}
                 placeholder={barber && barber[0].lang?polylanfr.Address:polylanar.Address}
                 keyboardType="default"
                 returnKeyType="next"
@@ -442,30 +442,31 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 autoCapitalize='sentences'
                 widthView='90%'
                 backgroundColor={Platform.OS==='android'?'#fff':Colors.blue}
-                height={45}
+                height={screen.width/8}
               />
             
-            <View style={{ width:'90%',borderWidth:1,paddingHorizontal:12,borderRadius:25,backgroundColor:Platform.OS==='android'?'#fff':Colors.blue,borderColor:wilaya!=='wilaya'?'#fff':Colors.primary,marginVertical:5,height:45,justifyContent:'center',shadowColor: 'black',shadowOpacity: 0.96,
-                          shadowOffset: {width: 0, height:2},shadowRadius: 10,elevation: 3,overflow:'hidden',alignSelf:'center'}}>
+            <View style={{ width:'90%',borderWidth:1,paddingHorizontal:screen.width/30,borderRadius:screen.width/14.4,backgroundColor:Platform.OS==='android'?'#fff':Colors.blue,borderColor:wilaya!=='wilaya'?'#fff':Colors.primary,marginVertical:screen.width/72,height:screen.width/8,justifyContent:'center',shadowColor: 'black',shadowOpacity: 0.96,
+                          shadowOffset: {width: 0, height:2},shadowRadius: screen.width/36,elevation: 3,overflow:'hidden',alignSelf:'center'}}>
               {Platform.OS === 'android' ? 
                         <Picker
                         selectedValue={wilaya}
                         onValueChange={itemValue => setWilaya(itemValue)}
-                        style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}
+                        style={{fontFamily:'poppins',color:'#323446', }}
+                        
                         >
-                        {wilayas.map(el=> <Picker.Item label={el} value={el} key={el} />)}
+                        {wilayas.map(el=> <Picker.Item label={el} value={el} key={el} itemStyle={{ fontSize: 100 }} />)}
                         </Picker> :
-                        <TouchableOpacity onPress={onPress} style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:17,paddingRight:25}}>
-                        <Text style={{fontFamily:'poppins',fontSize:15,fontWeight:'500',color:'#fff'}}>
+                        <TouchableOpacity onPress={onPress} style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:screen.width/21.2,paddingRight:screen.width/14.4}}>
+                        <Text style={{fontFamily:'poppins',fontSize:screen.width/24,fontWeight:'500',color:'#fff'}}>
                           {wilaya}
                         </Text>
-                        <Ionicons name="ios-arrow-down" size={24} color="#fff" onPress={onPress} />
+                        <Ionicons name="ios-arrow-down" size={screen.width/15} color="#fff" onPress={onPress} />
                         </TouchableOpacity>} 
             </View>
             
               <InputProfile
                 id='region'
-                rightIcon={<MaterialIcons title="region" name ='home' color={Platform.OS==='android'?'#323446':'#fff'} size={23} />}
+                rightIcon={<MaterialIcons title="region" name ='home' color={Platform.OS==='android'?'#323446':'#fff'} size={screen.width/15.7} />}
                 placeholder={barber && barber[0].lang?polylanfr.Region:polylanar.Region}
                 keyboardType="default"
                 returnKeyType="next"
@@ -477,7 +478,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 required
                 placeholderTextColor={Platform.OS==='android'?'rgba(50,52,70,0.4)':'#f9f9f9'}
                 widthView='90%'
-                height={45}
+                height={screen.width/8}
                 backgroundColor={Platform.OS==='android'?'#fff':Colors.blue}
               />
            
@@ -492,8 +493,8 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
            <View style={styles.buttonContainer}>
                 <View style={styles.cartContainer}>
                   <TouchableOpacity style={styles.cart} onPress={alertLogout}>
-                      <View style={{paddingBottom:5}}>
-                        <MaterialCommunityIcons title = "logout" name ='logout' color='#FD6C57' size={23} />
+                      <View style={{paddingBottom:screen.width/72}}>
+                        <MaterialCommunityIcons title = "logout" name ='logout' color='#FD6C57' size={screen.width/15.7} />
                       </View>
                       <View>
                         <Text style={styles.optionTitle}>{barber && barber[0].lang?polylanfr.Disconnect:polylanar.Disconnect}</Text>
@@ -503,7 +504,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 <View style={styles.cartContainer}>
                   <TouchableOpacity style={styles.cart} onPress={()=>props.navigation.navigate('BarberParameters',{barberUID:barberUID,barberID:barberID})}>
                        <View style={{paddingBottom:5}}>
-                         <Ionicons title = "options" name ='ios-options' color='#56A7FF' size={23} />
+                         <Ionicons title = "options" name ='ios-options' color='#56A7FF' size={screen.width/15.7} />
                        </View>
                        <View>
                          <Text style={styles.optionTitle}>{barber && barber[0].lang?polylanfr.Parameters:polylanar.Parameters}</Text>
@@ -527,29 +528,32 @@ BarberProfileScreen.navigationOptions = navData => {
     return {
       headerTransparent : true ,
       headerStyle:{
-          backgroundColor: 'white'
+          backgroundColor: 'white',
       },
+      
       headerBackTitle : " ",
       headerTitle: () => (
         <Image 
         resizeMode="cover"
         style={{
-          width:150,
-          height:40,
+          width:screen.width/2.4,
+          height:screen.width/9,
           resizeMode:'contain',
           alignSelf: 'center'}}
         
         />
       ),
       headerTintColor: '#fff',
-      headerRight : ()=> (load ? <ActivityIndicator color={Colors.primary} style={{marginRight:10}} />:
+      headerRight : ()=> (load ? <ActivityIndicator color={Colors.primary} style={{marginRight:screen.width/36}} />:
         <HeaderButtons HeaderButtonComponent = {HeaderButton}> 
           <Item title = "save" 
             iconName ='md-checkmark'
             color='white' 
             onPress={saveFunction}
+            style={{marginRight:screen.width/72}}
           />
-        </HeaderButtons>)
+        </HeaderButtons>),
+        headerLeft:()=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color="white" style={{marginLeft:screen.width/36}} />)
         };
 };
 
@@ -564,12 +568,12 @@ const styles= StyleSheet.create({
    firstCard:{
      width:'95%',
      height:'40%',
-     borderTopLeftRadius:30,
-     borderTopRightRadius:30,
+     borderTopLeftRadius:screen.width/12,
+     borderTopRightRadius:screen.width/12,
      shadowColor: 'black',
      shadowOpacity: 0.96,
      shadowOffset: {width: 0, height:2},
-     shadowRadius: 10,
+     shadowRadius: screen.width/36,
      elevation: 5,
     },
     backgroundFirstCard:{
@@ -577,20 +581,20 @@ const styles= StyleSheet.create({
       height:'100%',
       alignItems:'center',
       justifyContent:'space-between',
-      borderTopLeftRadius:30,
-      borderTopRightRadius:30, 
+      borderTopLeftRadius:screen.width/12,
+      borderTopRightRadius:screen.width/12, 
       overflow:'visible'
     },
     secondCard:{
-      height:80,
+      height:screen.width/4.5,
       width:'90%',
       backgroundColor:'white',
-      borderRadius:10,
-      marginTop:-50, 
+      borderRadius:screen.width/36,
+      marginTop:-(screen.width/7.2), 
       shadowColor: 'black',
       shadowOpacity: 0.96,
       shadowOffset: {width: 0, height:2},
-      shadowRadius: 10,
+      shadowRadius: screen.width/36,
       elevation: 5,
     },
     secondCardContent:{
@@ -598,26 +602,26 @@ const styles= StyleSheet.create({
       flexDirection:'row'
     },
     imageContainer:{
-      width:80,
-      height:110
+      width:screen.width/4.5,
+      height:screen.width/3.27
     },
     image:{
       width:'100%',
       height:'100%',
-      borderRadius:10,
-      marginTop:-60
+      borderRadius:screen.width/36,
+      marginTop:-(screen.width/6)
     },
     detailsContainer:{
-      marginTop:5,
+      marginTop:screen.width/72,
       width:'60%',
       flexDirection:'row',
       justifyContent:'space-between',
-      marginLeft:-15
+      marginLeft:-(screen.width/24)
     },
     bnameText:{
       fontFamily:'poppins-bold',
       color:'#323446',
-      fontSize:18,
+      fontSize:screen.width/20,
       alignSelf:'flex-start'
     },
     secondFirstCard:{
@@ -628,16 +632,16 @@ const styles= StyleSheet.create({
       alignItems:'flex-end'
     },
     iconFormCircle1:{
-      width:40,
-      height:30,
-      borderRadius:20,
+      width:screen.width/9,
+      height:screen.width/12,
+      borderRadius:screen.width/18,
       justifyContent:'center',
       alignItems:'center'
     },
     iconFormCircle2:{
-      width:40,
-      height:30,
-      borderRadius:20,
+      width:screen.width/9,
+      height:screen.width/12,
+      borderRadius:screen.width/18,
       justifyContent:'center',
       alignItems:'center',
       
@@ -645,15 +649,15 @@ const styles= StyleSheet.create({
     age:{
       fontFamily:'poppins',
       color:'grey',
-      fontSize:11,
-      marginTop:-5,
+      fontSize:screen.width/32.7,
+      marginTop:-(screen.width/72),
       alignSelf:'flex-start'
     },
     menuContainer:{
-      marginTop:25,
+      marginTop:screen.width/14.4,
       width:'90%',
       backgroundColor:'#f9f9f9',
-      borderRadius:5,
+      borderRadius:screen.width/72,
       borderColor:'#fd6c57',
       borderWidth:1,
       flexDirection:'row',
@@ -662,7 +666,7 @@ const styles= StyleSheet.create({
     },
     scrollView:{
       width:'100%',
-      marginVertical:20
+      marginVertical:screen.width/18
     },
     bnameAgeContainer:{
       flexDirection:'row',
@@ -673,55 +677,55 @@ const styles= StyleSheet.create({
   pickerContainer:{
     width:'90%',
     borderWidth:1,
-    borderRadius:20,
+    borderRadius:screen.width/18,
     backgroundColor:'#fff',
     borderColor:'#fff',
-    height:40,
+    height:screen.width/9,
     justifyContent:'center',
-    paddingHorizontal:12,
+    paddingHorizontal:screen.width/30,
     shadowColor: 'black',
     shadowOpacity: 0.96,
     shadowOffset: {width: 0, height:2},
-    shadowRadius: 10,
+    shadowRadius: screen.width/36,
     elevation: 3,
     overflow:'hidden',
-    marginVertical:5,
+    marginVertical:screen.width/72,
     alignSelf:'center'
    },
    pickerContainerRegion:{
     width:'90%',
     borderWidth:1,
-    borderRadius:20,
+    borderRadius:screen.width/18,
     backgroundColor:'#fff',
     borderColor:'#fff',
-    height:40,
+    height:screen.width/9,
     justifyContent:'center',
-    paddingHorizontal:12,
+    paddingHorizontal:screen.width/30,
     shadowColor: 'black',
     shadowOpacity: 0.96,
     shadowOffset: {width: 0, height:2},
-    shadowRadius: 10,
+    shadowRadius: screen.width/36,
     elevation: 3,
     overflow:'hidden',
-    marginTop:5,
-    marginBottom:20,
+    marginTop:screen.width/72,
+    marginBottom:screen.width/18,
     alignSelf:'center'
    },
    noticeContainer:{
-     width:'90%',
+     width:'85%',
      alignSelf:'center',
-     marginBottom:15,
-     marginTop:30
+     marginBottom:screen.width/24,
+     marginTop:screen.width/12
     },
     optionTitle:{
       fontFamily:'poppins-bold',
-      fontSize:11,
+      fontSize:screen.width/32.7,
       color:'#323446'
     },
     buttonContainer:{
       width:'90%',
       alignSelf:'center',
-      marginVertical:10,
+      marginVertical:screen.width/36,
       flexDirection:'row',
       justifyContent:'center'
     },
@@ -732,16 +736,16 @@ const styles= StyleSheet.create({
       justifyContent:'center',
       elevation: 2,
       overflow:'hidden',
-      borderRadius:10
+      borderRadius:screen.width/36
     },
     cartContainer:{
       width:'50%',
-      height:100,
+      height:screen.width/3.6,
       alignItems:'center',
       justifyContent:'center',
       borderWidth:Platform.OS==='ios'? 1:null,
-      borderRadius:Platform.OS==='ios'? 40:null,
-      marginHorizontal:Platform.OS==='ios'? 3:null,
+      borderRadius:Platform.OS==='ios'? screen.width/9:null,
+      marginHorizontal:Platform.OS==='ios'? screen.width/120:null,
       borderColor:Platform.OS==='ios'? Colors.blue:undefined,
       borderStyle:Platform.OS==='ios'? 'dashed':undefined
     },
@@ -755,21 +759,21 @@ const styles= StyleSheet.create({
     },
     noticeContent:{
       fontFamily:'poppins',
-      fontSize:12,
+      fontSize:screen.width/30,
       color:'#323446'
     },
      noticeTitle:{
        fontFamily:'poppins-bold',
-       fontSize:13,
+       fontSize:screen.width/27.7,
        color:'#323446'
      },
   
      
      tahfifaSignature:{
        fontFamily:'poppins',
-       fontSize:12,
+       fontSize:screen.width/30,
        color:'#fd6c57',
-       paddingTop:5
+       paddingTop:screen.width/72
      },
      activityIndicatorContainer:{
       flex:1,

@@ -8,7 +8,7 @@ import polylanfr from "../lang/fr";
 
 //responsivity (Dimensions get method)
 const height = Dimensions.get('window').height;
-
+const screen = Dimensions.get('window');
 
 
 const ServiceCart = props =>{
@@ -42,10 +42,10 @@ const ServiceCart = props =>{
                </View>
                <View style={styles.iconsRow}>
                      <TouchableOpacity onPress={props.onPressUpdate} style={Platform.OS === 'android?' ?styles.iconFormCircleService:styles.iconFormCircleEdit}>
-                       <MaterialIcons name="edit" size={19} color={Platform.OS === 'android?' ?Colors.colorF5:'white'} />
+                       <MaterialIcons name="edit" size={screen.width/18.9} color={Platform.OS === 'android?' ?Colors.colorF5:'white'} />
                      </TouchableOpacity>
                      <TouchableOpacity onPress={props.onPressDelete} style={Platform.OS === 'android?' ?styles.iconFormCircleService:styles.iconFormCircleDelete}>
-                       <MaterialCommunityIcons name="delete-forever" size={19} color={Platform.OS === 'android?' ?Colors.secondary:'white'} />
+                       <MaterialCommunityIcons name="delete-forever" size={screen.width/18.9} color={Platform.OS === 'android?' ?Colors.secondary:'white'} />
                      </TouchableOpacity>
                </View>
            </View>
@@ -62,11 +62,11 @@ const styles= StyleSheet.create({
     shadowOffset:{width:0,height:2},
     shadowRadius:2,
     shadowColor:"#000",
-    borderRadius:10,
-    elevation:5,
+    borderRadius:screen.width/36,
+    elevation:screen.width/72,
     alignSelf:'center',
     width:'90%',
-    marginVertical:10,
+    marginVertical:screen.width/36,
     height:height*0.25
   },
   backgroundContainer:{
@@ -84,18 +84,18 @@ const styles= StyleSheet.create({
     alignSelf:'center',
     flexDirection:'row',
     justifyContent:'space-between',
-    paddingTop:5
+    paddingTop:screen.width/72
   },
   serviceNumberContainer:{
     backgroundColor:'rgba(0,0,0,0.5)',
-    paddingVertical:3,
-    paddingHorizontal:10,
+    paddingVertical:screen.width/120,
+    paddingHorizontal:screen.width/36,
     alignItems:'center',
     justifyContent:'center',
-    borderRadius:20
+    borderRadius:screen.width/18
   },
   number:{
-    fontSize:9,
+    fontSize:screen.width/40,
     fontFamily:'poppins',
     color:'#fff'
   },
@@ -106,24 +106,24 @@ const styles= StyleSheet.create({
     justifyContent:'space-between',
     alignSelf:'center',
     alignItems:'center',
-    borderTopRightRadius:20,
-    borderTopLeftRadius:20,
-    paddingHorizontal:20
+    borderTopRightRadius:screen.width/18,
+    borderTopLeftRadius:screen.width/18,
+    paddingHorizontal:screen.width/18
   },
   textType:{
-    fontSize:12,
+    fontSize:screen.width/30,
     color:Colors.primary,
     fontFamily:'poppins-bold'
   },
   textPrice:{
-    fontSize:18,
+    fontSize:screen.width/20,
     color:Colors.primary,
     fontFamily:'poppins-bold'
   },
   serviceName:{
     color:Colors.blue,
     fontFamily:'poppins-bold',
-    fontSize:12,
+    fontSize:screen.width/30,
     alignSelf:'flex-start'
   },
   iconsContainer:{
@@ -132,10 +132,10 @@ const styles= StyleSheet.create({
     flexDirection:'row',
     alignItems:'center',
     backgroundColor:Platform.OS==='android'?'#fff':'#f9f9f9',
-    paddingVertical:10,
+    paddingVertical:screen.width/36,
     borderTopColor:'#f0F0F0',
     borderTopWidth:1,
-    paddingHorizontal:20
+    paddingHorizontal:screen.width/18
   },
   iconsRow:{
     flexDirection:'row',
@@ -143,9 +143,9 @@ const styles= StyleSheet.create({
     width:'50%',
   },
   iconFormCircleService:{
-    width:30,
-    height:30,
-    borderRadius:20,
+    width:screen.width/12,
+    height:screen.width/12,
+    borderRadius:screen.width/18,
     justifyContent:'center',
     alignItems:'center',
     backgroundColor:'white',
@@ -153,20 +153,20 @@ const styles= StyleSheet.create({
     elevation:5
   },
   iconFormCircleEdit:{
-    width:30,
-    height:30,
-    borderRadius:20,
+    width:screen.width/12,
+    height:screen.width/12,
+    borderRadius:screen.width/18,
     justifyContent:'center',
     alignItems:'center',
     backgroundColor:Colors.colorF5,
     overflow:'hidden',
     elevation:5,
-    marginRight:10
+    marginRight:screen.width/36
   },
   iconFormCircleDelete:{
-    width:30,
-    height:30,
-    borderRadius:20,
+    width:screen.width/12,
+    height:screen.width/12,
+    borderRadius:screen.width/18,
     justifyContent:'center',
     alignItems:'center',
     backgroundColor:'red',

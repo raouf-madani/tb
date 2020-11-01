@@ -12,6 +12,7 @@ import polylanfr from "../lang/fr";
 import moment from "moment";
 
 const screen = Dimensions.get("window");
+
 moment.locale("fr");  
 LocaleConfig.locales['fr'] = {
     monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
@@ -107,7 +108,7 @@ const BookingCard = props =>{
            >
           
           <Ionicons name="ios-arrow-forward" 
-          size={22} 
+          size={screen.width/16.36} 
           color="#252525" 
           onPress = {()=>props.navigation.navigate("BookingDetail", 
           { 
@@ -148,7 +149,7 @@ const styles= StyleSheet.create({
     width : "90%",
     height : screen.height * 0.15,
     alignSelf : "center",
-    borderRadius : 10,
+    borderRadius : screen.width/36,
     marginVertical : "2.5%",
     overflow : "hidden",
     flexDirection : "row",
@@ -167,8 +168,8 @@ leftDate : {
       width : "15%",
       justifyContent : "space-around",
       alignItems : "center",
-      borderRadius : 10,
-      marginLeft : 5
+      borderRadius : screen.width/36,
+      marginLeft : screen.width/72
 
 },
 
@@ -186,8 +187,8 @@ infos : {
 // },
 amount :{
   width : "10%" , 
-  borderTopRightRadius : 10,
-  borderBottomRightRadius : 10,
+  borderTopRightRadius : screen.width/36,
+  borderBottomRightRadius : screen.width/36,
   alignItems : "center",
 
 

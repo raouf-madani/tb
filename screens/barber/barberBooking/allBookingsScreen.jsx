@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { StyleSheet, Text, View,ActivityIndicator, Dimensions, ScrollView,ImageBackground } from 'react-native';
-
+import {FontAwesome5} from "@expo/vector-icons";
 import { Avatar ,Badge } from 'react-native-elements';
 import Colors from "../../../constants/Colors";
 import {Button } from 'react-native-elements';
@@ -193,7 +193,7 @@ if (isLoading) {
         <View style={{}}  >
 
             <Calendar
-            style = {{borderBottomLeftRadius : 25,borderBottomRightRadius : 25,overflow : "hidden",paddingVertical : "2%" , marginBottom : 15}}
+            style = {{borderBottomLeftRadius : screen.width/14.4,borderBottomRightRadius : screen.width/14.4,overflow : "hidden",paddingVertical : "2%" , marginBottom : screen.width/24}}
            theme={{
             // selectedDayTextColor: Colors.primary,
 
@@ -275,7 +275,7 @@ if (isLoading) {
 
 };
 
-AllBookingsScreen.navigationOptions= () => {
+AllBookingsScreen.navigationOptions= navData => {
     
   return {
    title:'Mes Réservations',
@@ -284,9 +284,9 @@ AllBookingsScreen.navigationOptions= () => {
    headerTintColor: Colors.blue,
    headerTitleStyle:{
      fontFamily:'poppins-bold',
-     marginTop:5,
+     marginTop:screen.width/72,
    },
-   
+   headerLeft:()=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color={Colors.blue} style={{marginLeft:screen.width/36}} />)
   
   };
 

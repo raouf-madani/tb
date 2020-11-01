@@ -1,5 +1,5 @@
 import React,{useState,useCallback,useRef,useReducer} from 'react';
-import { StyleSheet,View,ScrollView,KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard,Text,Image,ImageBackground,StatusBar,TextInput,TouchableOpacity,Picker,ActionSheetIOS,Alert,ActivityIndicator,AsyncStorage} from 'react-native';
+import { StyleSheet,View,ScrollView,KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard,Text,Image,ImageBackground,StatusBar,TextInput,TouchableOpacity,Picker,ActionSheetIOS,Alert,ActivityIndicator,AsyncStorage,Dimensions,Platform} from 'react-native';
 import {Button} from 'react-native-elements';
 import Colors from '../../constants/Colors';
 import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
@@ -13,6 +13,10 @@ import * as portfolioActions from '../../store/actions/portfolioActions';
 import {useDispatch} from 'react-redux';
 import * as Crypto from 'expo-crypto'; 
 import CustomInput from '../../components/Input';
+
+
+//responsivity (Dimensions get method)
+const screen = Dimensions.get('window');
 
 //Firebase config
 try {
@@ -242,7 +246,7 @@ const sendCode = async () => {
     return(
       <TouchableWithoutFeedback onPress = {()=>{Keyboard.dismiss()}}>
         <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/chica4.jpg'}} style={styles.container}>
-          <KeyboardAvoidingView keyboardVerticalOffset={10}>
+          <KeyboardAvoidingView keyboardVerticalOffset={screen.width/36}  behavior={Platform.OS === "ios" ? "padding" : null}>
           <StatusBar hidden />
           <FirebaseRecaptcha.FirebaseRecaptchaVerifierModal
                 ref={recaptchaVerifier}
@@ -259,8 +263,8 @@ const sendCode = async () => {
               {!verificationId ? (<View>
                 <CustomInput
                     id='phone'
-                    rightIcon={<MaterialIcons title = "phone" name ='phone' color='#323446' size={23} />}
-                    leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Colors.blue,paddingRight:5}}><Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/algeriaFlag.png'}} style={{width:24,height:28,marginRight:5}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
+                    rightIcon={<MaterialIcons title = "phone" name ='phone' color='#323446' size={screen.width/15.7} />}
+                    leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Colors.blue,paddingRight:screen.width/72}}><Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/algeriaFlag.png'}} style={{width:screen.width/15,height:screen.width/12.85,marginRight:screen.width/72}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
                     placeholder='555555555'
                     keyboardType="phone-pad"
                     returnKeyType="next"
@@ -275,7 +279,7 @@ const sendCode = async () => {
                     />
                  <CustomInput
                         id='password'
-                        rightIcon={<MaterialCommunityIcons title="lock" onPress={eye} name ={!isEye?'eye':'eye-off'} color='#323446' size={23} />}
+                        rightIcon={<MaterialCommunityIcons title="lock" onPress={eye} name ={!isEye?'eye':'eye-off'} color='#323446' size={screen.width/15.7} />}
                         placeholder='Mot de Passe'
                         keyboardType="default"
                         returnKeyType="next"
@@ -287,40 +291,40 @@ const sendCode = async () => {
                         initiallyValid={true}
                         required
                         placeholderTextColor='rgba(50,52,70,0.4)'
-                        inputStyle={{fontSize:15}}
+                        inputStyle={{fontSize:screen.width/24}}
                         editable={!verificationId}
                       />
                 
-                 <View style={{ width:'100%',borderWidth:1,borderRadius:25,backgroundColor:'#d3d3d3',borderColor:sex!==sexTypes[0]?'#d3d3d3':Colors.primary,marginVertical:3,height:45,justifyContent:'center'}}>
+                 <View style={{ width:'100%',borderWidth:1,borderRadius:screen.width/14.4,backgroundColor:'#d3d3d3',borderColor:sex!==sexTypes[0]?'#d3d3d3':Colors.primary,marginVertical:screen.width/120,height:screen.width/8,justifyContent:'center'}}>
                   {Platform.OS === 'android' ? 
                       <Picker
                       selectedValue={sex}
                       onValueChange={itemValue => setSex(itemValue)}
-                      style={{fontFamily:'poppins',fontSize:12,color:Colors.blue,marginHorizontal:14}}
+                      style={{fontFamily:'poppins',fontSize:screen.width/30,color:Colors.blue,marginHorizontal:screen.width/25.7}}
                       >
                       {sexTypes.map(el=> <Picker.Item label={el} value={el} key={el} />)}
                       </Picker> :
-                      <TouchableOpacity onPress={onPressSex} style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:17,paddingRight:25}}>
-                      <Text  style={{fontFamily:'poppins',fontSize:12,color:Colors.blue,fontSize:15,fontWeight:'500'}}>
+                      <TouchableOpacity onPress={onPressSex} style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:screen.width/21.2,paddingRight:screen.width/14.4}}>
+                      <Text  style={{fontFamily:'poppins',fontSize:screen.width/30,color:Colors.blue,fontSize:screen.width/24,fontWeight:'500'}}>
                         {sex?sex:sexTypes[0]}
                       </Text>
-                      <Ionicons name="ios-arrow-down" size={24} color={Colors.blue} onPress={onPressSex} />
+                      <Ionicons name="ios-arrow-down" size={screen.width/15} color={Colors.blue} onPress={onPressSex} />
                       </TouchableOpacity>}
                   </View>
-                  <View style={{ width:'100%',borderWidth:1,borderRadius:25,backgroundColor:'#d3d3d3',borderColor:wilaya!==wilayas[0]?'#d3d3d3':Colors.primary,marginVertical:3,height:45,justifyContent:'center'}}>
+                  <View style={{ width:'100%',borderWidth:1,borderRadius:screen.width/14.4,backgroundColor:'#d3d3d3',borderColor:wilaya!==wilayas[0]?'#d3d3d3':Colors.primary,marginVertical:screen.width/120,height:screen.width/8,justifyContent:'center'}}>
                   {Platform.OS === 'android' ? 
                               <Picker
                               selectedValue={wilaya}
                               onValueChange={itemValue => setWilaya(itemValue)}
-                              style={{fontFamily:'poppins',fontSize:12,color:Colors.blue,marginHorizontal:14}}
+                              style={{fontFamily:'poppins',fontSize:screen.width/30,color:Colors.blue,marginHorizontal:screen.width/25.7}}
                               >
                               {wilayas.map(el=> <Picker.Item label={el} value={el} key={el} />)}
                               </Picker> :
-                              <TouchableOpacity onPress={onPress} style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:17,paddingRight:25}}>
-                              <Text  style={{fontFamily:'poppins',fontSize:15,color:Colors.blue,fontWeight:'500'}}>
+                              <TouchableOpacity onPress={onPress} style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:screen.width/21.2,paddingRight:screen.width/14.4}}>
+                              <Text  style={{fontFamily:'poppins',fontSize:screen.width/24,color:Colors.blue,fontWeight:'500'}}>
                                 {wilaya?wilaya:wilayas[0]}
                               </Text>
-                              <Ionicons name="ios-arrow-down" size={24} color={Colors.blue} onPress={onPress} />
+                              <Ionicons name="ios-arrow-down" size={screen.width/15} color={Colors.blue} onPress={onPress} />
                               </TouchableOpacity>}
                 </View>
                 <CustomInput
@@ -336,7 +340,7 @@ const sendCode = async () => {
                         initiallyValid={true}
                         required
                         placeholderTextColor='rgba(50,52,70,0.4)'
-                        inputStyle={{fontSize:15}}
+                        inputStyle={{fontSize:screen.width/24}}
                         editable={!verificationId}
                       />
              
@@ -358,7 +362,7 @@ const sendCode = async () => {
                   </View>
                   </View>):
                   (<View style={{height:'50%'}}>
-                    <View style={{width:'100%',borderWidth:1, borderRadius:25,backgroundColor:'#d3d3d3',borderColor:confirmError?Colors.primary:'#d3d3d3',marginVertical:3,height:45,alignItems:'center',justifyContent:'center'}}>
+                    <View style={{width:'100%',borderWidth:1, borderRadius:screen.width/14.4,backgroundColor:'#d3d3d3',borderColor:confirmError?Colors.primary:'#d3d3d3',marginVertical:screen.width/120,height:screen.width/8,alignItems:'center',justifyContent:'center'}}>
                       <TextInput
                               placeholder='Entrez les 6 chiffres'
                               keyboardType='number-pad'
@@ -432,8 +436,8 @@ SignupBarberScreen.navigationOptions= ()=>{
         <Image 
         resizeMode="cover"
         style={{
-          width:150,
-          height:40,
+          width:screen.width/2.4,
+          height:screen.width/9,
           resizeMode:'contain',
           alignSelf: 'center'}}
         
@@ -459,45 +463,45 @@ const styles= StyleSheet.create({
     justifyContent:'flex-end'
   },
   icon:{
-    width:80,
-    height:80
+    width:screen.width/4.5,
+    height:screen.width/4.5
   },
   slogan:{
-    fontSize:18,
+    fontSize:screen.width/20,
     fontFamily:'poppins-bold',
     color:'#FFF',
-    paddingTop:5
+    paddingTop:screen.width/72
   },
   secondContainer:{
     width:'85%',
     alignSelf:'center',
-    paddingTop:20
+    paddingTop:screen.width/18
   },
   labelButton:{
     color:'#FFF',
     fontFamily:'poppins',
-    fontSize:16,
+    fontSize:screen.width/22.5,
     textTransform:null,
    },
    buttonStyle:{
     borderColor:'#fd6c57',
     width:'100%',
-    borderRadius:20,
-    height:45,
+    borderRadius:screen.width/18,
+    height:screen.width/8,
     alignSelf:'center',
-    marginTop:15
+    marginTop:screen.width/24
    },
    confirmedButtonStyle:{
     borderColor:'#fd6c57',
     width:'80%',
-    borderRadius:20,
-    height:45,
+    borderRadius:screen.width/18,
+    height:screen.width/8,
     alignSelf:'center',
-    marginTop:3
+    marginTop:screen.width/120
    },
    loginContainer:{
     flexDirection:'row',
-    paddingTop:15,
+    paddingTop:screen.width/24,
     alignSelf:'center'
   },
   doYouHaveAnAccount:{
@@ -506,27 +510,27 @@ const styles= StyleSheet.create({
     color:'#fff'
   },
   loginText:{
-    fontSize:14,
+    fontSize:screen.width/25.7,
     fontFamily:'poppins-bold',
     color:'#fd6c57'
   },
   loader: {
-    marginTop: 10,
+    marginTop: screen.width/36,
   },
   confirmErrorText:{
     color:Colors.primary,
-    fontSize:13,
+    fontSize:screen.width/27.7,
     alignSelf:'center'
   },
   smsText:{
     color:'green',
-    fontSize:11,
-    paddingTop:10,
+    fontSize:screen.width/32.7,
+    paddingTop:screen.width/36,
     alignSelf:'center',
     fontFamily:'poppins-bold'
   },
   phoneNumber:{
-    fontSize:15,
+    fontSize:screen.width/24,
     color:Colors.blue,
   },
   cofirmResendContainer:{
@@ -534,7 +538,7 @@ const styles= StyleSheet.create({
     justifyContent:'space-around',
     alignItems:'center',
     width:'100%',
-    marginTop:15
+    marginTop:screen.width/24
   }
    
 });
