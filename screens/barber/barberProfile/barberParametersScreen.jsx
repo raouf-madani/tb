@@ -61,10 +61,17 @@ const BarberParametersScreen = props =>{
 
   const getBarber=useCallback(async()=>{
     try{
-      setError(false);
-      setIsLoadingState(true);
-      await dispatch(barberActions.setBarber(barberID));
-      setIsLoadingState(false);
+    
+        setError(false);
+        setIsLoadingState(true);
+        await dispatch(barberActions.setBarber(barberID));
+        setIsLoadingState(false);
+      
+
+      return function cleanup() {
+        mounted = false
+    }
+      
       }catch(err){
         setError(true);
         throw err; 
@@ -218,7 +225,7 @@ const alertEditPhone = ()=>{
 const editPassword=async()=>{
   if(formState.inputValidities.password){
       try{
-          
+         
           const hashedPassword = await Crypto.digestStringAsync(
             Crypto.CryptoDigestAlgorithm.SHA512,
             formState.inputValues.password
@@ -227,14 +234,17 @@ const editPassword=async()=>{
             Alert.alert(barber && barber[0].lang?polylanfr.Error:polylanar.Error,barber && barber[0].lang?polylanfr.SamePassword:polylanar.SamePassword,[{text:barber && barber[0].lang?polylanfr.Repeat:polylanar.Repeat}]);
             return;
           }
+         
           setIsLoadingPassword(true);
           await dispatch(barberActions.updateBarberPassword(barberID,hashedPassword));                                   
           setIsLoadingPassword(false);
+
           dispatch(authActions.logout());
           AsyncStorage.clear();
-          props.navigation.navigate('Auth');                        
+                               
           Alert.alert(barber && barber[0].lang?polylanfr.Congratulations:polylanar.Congratulations,barber && barber[0].lang?polylanfr.SuccessNewPasswordMessage:polylanar.SuccessNewPasswordMessage,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
-    
+          props.navigation.navigate('Auth');   
+
       }catch(err){
         console.log(err);
         Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);

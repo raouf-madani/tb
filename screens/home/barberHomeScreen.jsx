@@ -431,7 +431,7 @@ async function registerForPushNotificationsAsync() {
             <View style={styles.firstRow}>
                 <View>
                   <Text style={styles.title}>{barber && barber.lang?polylanfr.Fullname:polylanar.Fullname}</Text>
-                  <Text style={styles.detail}>{barber && (barber.name!==null || barber.surname!==null)?`${barber.name} ${barber.surname}`:'Votre nom complet'}</Text>
+                  <Text style={styles.detail}>{barber && (barber.name!==null || barber.surname!==null)?`${barber.name} ${barber.surname}`:barber.lang?polylanfr.YourFullname:polylanar.YourFullName}</Text>
                 </View>
                 <View>
                   <Text style={styles.title}>{barber && barber.lang?polylanfr.StartFrom:polylanar.StartFrom}</Text> 
@@ -717,7 +717,8 @@ const styles= StyleSheet.create({
   detail:{
     fontFamily:'poppins',
     color:'grey',
-    fontSize:12
+    fontSize:12,
+    alignSelf:'flex-start'
   },
   price:{
     fontFamily:'poppins',

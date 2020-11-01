@@ -283,7 +283,7 @@ AllBookingsScreen.navigationOptions= () => {
    title:'Mes Réservations',
   
    headerBackTitle : " ",
-   headerTintColor: Colors.primary,
+   headerTintColor: Colors.blue,
    headerTitleStyle:{
      fontFamily:'poppins-bold',
      marginTop:5,
