@@ -108,7 +108,7 @@ useEffect(()=>{
   // if((selectedDateText ===moment (new Date()).format("ll")  ))
   todaysBookings();
   
-},[allBookings,selectedDate])
+},[])
   
 
 
@@ -173,8 +173,6 @@ setSelectedDate(moment(date.dateString).format());
 
 };
 
-
-
 //IF IS LOADING
 if (isLoading) {
     return (
@@ -218,7 +216,7 @@ if (isLoading) {
             
             
             }}
-           
+             current = {selectedDate}
              markedDates = {mark}
              onDayPress={(date)=>selectedDateHandler(date)}
              />
@@ -233,8 +231,7 @@ if (isLoading) {
                 {
 
                   dayBookings.map((booking , index)=>{
-                      
-                      console.log(booking);
+                  
                         return(
                         <BookingCard
                             key = {index}
@@ -254,6 +251,7 @@ if (isLoading) {
                             id = {booking.id}
                             press = {true}
                             address = {booking.address}
+                            duration = {booking.bookingDuration}
                          /> 
 
                     )})
