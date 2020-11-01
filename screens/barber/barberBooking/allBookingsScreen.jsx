@@ -173,8 +173,6 @@ setSelectedDate(moment(date.dateString).format());
 
 };
 
-
-
 //IF IS LOADING
 if (isLoading) {
     return (

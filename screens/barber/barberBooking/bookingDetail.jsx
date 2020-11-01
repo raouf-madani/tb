@@ -350,7 +350,7 @@ if (isLoading) {
                 <View style = {{alignSelf :"center" , flexDirection :"row",width:"90%",alignItems:"center"}}>
               
                 <Avatar
-          source = {require("../../../assets/images/avatarman.jpg")}
+           source = {{uri:'http://173.212.234.137/assets/tahfifa/unknown.jpeg'}}
           overlayContainerStyle = {{overflow:"hidden"}}
           size = "small"
           rounded
