@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View,Image, ImageBackground,Dimensions,TouchableOpacity, StatusBar,TouchableWithoutFeedback} from 'react-native';
+import { StyleSheet, Text, View,Image, ImageBackground,Dimensions,TouchableOpacity, StatusBar,TouchableWithoutFeedback, Platform} from 'react-native';
 import Colors from "../constants/Colors";
 import { Button ,Overlay,Divider} from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -132,7 +132,8 @@ const date = moment(props.booking.bookingDate).format("LLLL").slice(0,-5);
             borderRadius : 5,
             paddingHorizontal : "5%",
         
-            borderRadius:25
+            borderRadius: Platform.OS === "android"  ? 25 : 20
+
     },
     buttonText :{
         color :"#fff",
