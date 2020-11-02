@@ -252,7 +252,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
   //Update barber's data Management after pressing in Check icon
   const saveHandler = useCallback(async()=>{
     if(formState.formIsValid && wilaya!=='Wilaya'){
-      console.log(pickedImage);
+      
       
     try{
         setIsLoading(true);
@@ -260,7 +260,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
          await dispatch(barberActions.updateBarber(barberID,formState.inputValues.name,formState.inputValues.surname,
                                           formState.inputValues.b_name,formState.inputValues.age,
                                           formState.inputValues.email,formState.inputValues.address,
-                                          wilaya,formState.inputValues.region,pickedImage));
+                                          wilaya,formState.inputValues.region));
         setIsLoading(false); 
                                
         Alert.alert(barber && barber[0].lang?polylanfr.Congratulations:polylanar.Congratulations,barber && barber[0].lang?polylanfr.SuccessfulDataSent:polylanar.SuccessfulDataSent,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
