@@ -102,8 +102,7 @@ const responseListener = useRef();
    const feedbacks=useSelector(state=>state.feedbacks.feedbacks);
   
   
-   //A Voir
-   const myBarber=useSelector(state=>state.barbers.barber);
+
    
   const [isAbout,setIsAbout]= useState(true);
   const [isPortfolio,setIsPortfolio]= useState(false);
@@ -181,14 +180,14 @@ const responseListener = useRef();
 
 useEffect(() => {
 
-  if(myBarber.length !== 0 )
+  if( barber !== undefined )
   {
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
   
   }
 
 
-}, [myBarber,tokens]);
+}, [barber,tokens]);
 
 useEffect(()=>{
 

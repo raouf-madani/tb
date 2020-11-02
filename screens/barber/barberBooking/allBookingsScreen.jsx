@@ -108,7 +108,7 @@ useEffect(()=>{
   // if((selectedDateText ===moment (new Date()).format("ll")  ))
   todaysBookings();
   
-},[])
+},[expired])
   
 
 
@@ -216,7 +216,7 @@ if (isLoading) {
             
             
             }}
-             current = {selectedDate}
+             current = {selectedDate.substring(0,10)}
              markedDates = {mark}
              onDayPress={(date)=>selectedDateHandler(date)}
              />
