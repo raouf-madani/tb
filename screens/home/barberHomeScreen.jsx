@@ -695,7 +695,7 @@ const styles= StyleSheet.create({
     alignItems:'flex-end'
   },
   itemContainer:{
-    borderBottomWidth:screen.width/180,
+    borderBottomWidth:2,
     borderBottomColor:'#fd6c57',
     paddingBottom:screen.width/120
   },

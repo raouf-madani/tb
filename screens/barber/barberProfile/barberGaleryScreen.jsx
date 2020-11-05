@@ -500,7 +500,7 @@ BarberGaleryScreen.navigationOptions= navData => {
         fontFamily:'poppins-bold',
         marginTop:screen.width/72
       },
-      headerLeft:()=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color={Colors.blue} style={{marginLeft:screen.width/36}} />)
+      headerLeft:(navData)=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color={Colors.blue} style={{marginLeft:screen.width/36}} />)
      };
  
   };

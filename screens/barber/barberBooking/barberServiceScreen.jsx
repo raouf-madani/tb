@@ -646,7 +646,7 @@ BarberServiceScreen.navigationOptions = navData => {
               onPress={saveFunction}    
             />
           </HeaderButtons>),
-           headerLeft:()=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color="white" style={{marginLeft:screen.width/36}} />)
+           headerLeft:(navData)=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color="white" style={{marginLeft:screen.width/36}} />)
   };
   
 }
