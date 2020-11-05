@@ -2,7 +2,7 @@ import React,{useState,useEffect,useCallback,useRef} from 'react';
 import { StyleSheet, Text, View, ImageBackground , Image,Dimensions,TouchableOpacity,ScrollView,StatusBar,Alert,ActivityIndicator, Platform} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons,Entypo} from "@expo/vector-icons";
 import { LinearGradient } from 'expo-linear-gradient';
-import {  Rating,Button,Overlay  } from 'react-native-elements';
+import {  Rating,Button,Overlay ,Badge } from 'react-native-elements';
 import Colors from "../../constants/Colors";
 import { useDispatch,useSelector } from 'react-redux';
 import * as barberActions from '../../store/actions/barberActions';
@@ -41,7 +41,7 @@ const BarberHomeScreen = props =>{
 
 //Notifications 
 const [expoPushToken, setExpoPushToken] = useState('');
-const [notification, setNotification] = useState(false);
+
 const notificationListener = useRef();
 const responseListener = useRef();
 
@@ -51,6 +51,7 @@ const responseListener = useRef();
   const [isLoading,setIsLoading]= useState(false);//ActivityIndicator handling
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [finished,setFinished] = useState([]);
+  const [pendingBookings,setPendingBookings]=useState([]);
   const [finishVisible,setFinishVisible] = useState(false)
   const dispatch= useDispatch();
 
@@ -70,7 +71,9 @@ const responseListener = useRef();
     await dispatch(getTokens(barberID));
     
     setIsRefreshing(true);
-
+    const arr = await fetch(`http://173.212.234.137:3000/pendingBarberBookings/${barberID}`);
+    const resData = await arr.json ();
+    await setPendingBookings(resData);
     await dispatch(barberActions.setBarber(barberID));
     await dispatch(feedbackActions.setFeedbacks(barberID));
     await dispatch(portfolioActions.setPortfolio(barberID));
@@ -195,21 +198,18 @@ useEffect(()=>{
 
 
   notificationListener.current = Notifications.addNotificationReceivedListener(async (notification) => {
-    // setNotification(notification);
+    
 
     const notificationsList = await Notifications.getPresentedNotificationsAsync() ;
     
-    // setNotificationData(notificationsList);
+    
     props.navigation.navigate('AllBookingsScreen',{barberID:barberID,tokens}); 
     
   });
 
   responseListener.current = Notifications.addNotificationResponseReceivedListener(async (notification) => {
  
-    const notificationsList = await Notifications.getPresentedNotificationsAsync() ;
-    // Notifications.dismissAllNotificationsAsync();
-    // notificationsList.push(notification.notification);
-    // setNotificationData(notificationsList);
+    
     props.navigation.navigate('AllBookingsScreen',{barberID:barberID,tokens}); 
   });
 
@@ -404,6 +404,15 @@ async function registerForPushNotificationsAsync() {
                   </TouchableOpacity> 
                   <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('AllBookingsScreen',{barberID:barberID,tokens})} >
                     <View style={styles.iconFormCircle2}>
+                    {
+                      pendingBookings.length > 0 &&
+                       <Badge
+                       value= {pendingBookings.length}
+                        status="success"
+                        containerStyle={{ position: 'absolute', top: screen.width/-196, right: screen.width/-56}}
+                        />
+                        
+                        }
                        <MaterialCommunityIcons title = "calendar-check" name ='calendar-check' color='#fff' size={screen.width/15} />
                     </View>
                     <Text style={styles.iconText}>{barber && barber.lang?polylanfr.Bookings:polylanar.Bookings}</Text>
