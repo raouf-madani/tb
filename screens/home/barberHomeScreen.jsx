@@ -103,7 +103,7 @@ const responseListener = useRef();
   
 
    const feedbacks=useSelector(state=>state.feedbacks.feedbacks);
-  
+   
   
 
    
@@ -562,6 +562,7 @@ async function registerForPushNotificationsAsync() {
                name={feed.name}
                surname={feed.surname}
                feedbacks={feedbacks}
+               date={new Date(feed.date).getDate() +'/'+(new Date(feed.date).getMonth()+1)}
                image={feed.image!==null?feed.image:'unknown.jpeg'}
               />)}
            </View>)}

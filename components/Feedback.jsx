@@ -25,6 +25,7 @@ const Feedback = props =>{
             <View style={styles.commentRatingContainer}>
                 <View>
                     {props.mark?<Rating
+                    readonly
                     type='custom'
                     startingValue={props.mark}
                     imageSize={screen.width/18}
@@ -38,6 +39,7 @@ const Feedback = props =>{
                     <Text style={styles.comment}>
                     {props.comment? props.comment:barber && barber.lang?polylanfr.NoComments:polylanar.NoComments}
                     </Text>
+                    <Text style={{fontSize:screen.width/36,fontFamily:'poppins-bold',color:'grey'}}>{props.date}</Text>
                 </View>
             </View>
         </View>
