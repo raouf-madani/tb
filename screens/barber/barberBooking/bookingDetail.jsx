@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View,ActivityIndicator, Alert,ScrollView, Dimensions} from 'react-native';
+import { StyleSheet, Text, View,ActivityIndicator, Alert,ScrollView, Dimensions, Linking} from 'react-native';
 import moment from 'moment';
 import Colors from "../../../constants/Colors";
 import BookingCard from '../../../components/BookingCard';
@@ -38,7 +38,7 @@ const barber=useSelector(state=>state.barbers.barber[0]);
 // console.log(diffrence);
 
 /******************SEND A NOTIFICATION TO THE client WHEN A BOOKING IS Canceled ************************/
-async function sendPushNotification(type,alert1,alert2) {
+async function sendPushNotification(type,alert1,alert2,alert3) {
   // "annulée","Annuler","annuler
   const arr = await fetch(`http://173.212.234.137:3000/client/clienttokens/${props.navigation.getParam("clientId")}`);
   const resData = await arr.json ();
@@ -52,7 +52,7 @@ async function sendPushNotification(type,alert1,alert2) {
       to: e.expoToken,
       sound: 'default',
       title: 'Réservation '+type,
-      body: 'Un Coiffeur a '+alert2+' votre réservation !',
+      body: 'Un coiffeur a '+alert3+' votre réservation !',
       data: {
       id :  props.navigation.getParam("id"),
       title: 'Réservation '+type,
@@ -72,7 +72,7 @@ async function sendPushNotification(type,alert1,alert2) {
   
   })
 
-console.log(allMessages);
+
   allMessages.map(async (message)=>{
      await fetch('https://exp.host/--/api/v2/push/send', {
        method: 'POST',
@@ -110,7 +110,7 @@ const dispatch = useDispatch();
 const clientImage =  (clientInfos.image === null || clientInfos.image === undefined ) ? {uri:'http://173.212.234.137/assets/tahfifa/unknown.jpeg'} : {uri:`http://173.212.234.137/profileImages/client/${clientInfos.image}`}  ;
 //cancel booking
 
-const bookingHandler = (type,alert1,alert2) =>{
+const bookingHandler = (type,alert1,alert2,alert3) =>{
 
 
 //ALERT BEFORE CANCEL A BOOKING
@@ -132,7 +132,7 @@ Alert.alert(
         if(conditionConfirmer || conditionAnnuler ){
                        
             await dispatch(changeBookingState(props.navigation.getParam("id"),type));
-            await sendPushNotification(type,alert1,alert2);
+            await sendPushNotification(type,alert1,alert2,alert3);
      
             props.navigation.navigate( "Barber");
             }      
@@ -230,7 +230,7 @@ if (isLoading) {
 
             {
             conditionCall && 
-            <TouchableOpacity style = {{alignItems : "center"}}>
+            <TouchableOpacity style = {{alignItems : "center"}}  onPress = {()=>Linking.openURL(`tel:${clientInfos.phone}`)}  >
             
             <MaterialIcons name="call" 
                             size={screen.width/12.85} 
@@ -243,12 +243,12 @@ if (isLoading) {
 }
 
         { conditionAnnuler &&
-          <TouchableOpacity style = {{alignItems : "center"}} onPress = {()=>bookingHandler("annulée","Annuler","annuler")} >
+          <TouchableOpacity style = {{alignItems : "center"}} onPress = {()=>bookingHandler("annulée","Annuler","annuler","annulé")} >
           
           <Ionicons name="ios-close-circle-outline" 
                       size={screen.width/12.85} 
                       color= "#F9627D"
-                      onPress = {()=>bookingHandler("annulée","Annuler","annuler")}
+                      onPress = {()=>bookingHandler("annulée","Annuler","annuler","annulé")}
                /> 
   
             <Text style = {styles.actionsText}>{barber && barber.lang?polylanfr.Cancel:polylanar.Cancel}</Text>
@@ -257,13 +257,13 @@ if (isLoading) {
 
 
         {conditionConfirmer && 
-                  <TouchableOpacity style = {{alignItems : "center"}} onPress = {()=>bookingHandler("confirmée","Confirmer","confirmer")} >
+                  <TouchableOpacity style = {{alignItems : "center"}} onPress = {()=>bookingHandler("confirmée","Confirmer","confirmer","confirmé")} >
                     
                   <Ionicons 
                   name="ios-checkbox-outline" 
                   size={screen.width/12.85} 
                   color={Colors.colorH1} 
-                  onPress = {()=>bookingHandler("confirmée","Confirmer","confirmer")}
+                  onPress = {()=>bookingHandler("confirmée","Confirmer","confirmer","confirmé")}
                   />
 
                 <Text style = {styles.actionsText} >{barber && barber.lang?polylanfr.Confirm:polylanar.Confirm}</Text>
