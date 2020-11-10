@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View,ActivityIndicator, Alert,ScrollView, Dimensions} from 'react-native';
+import { StyleSheet, Text, View,ActivityIndicator, Alert,ScrollView, Dimensions, Linking} from 'react-native';
 import moment from 'moment';
 import Colors from "../../../constants/Colors";
 import BookingCard from '../../../components/BookingCard';
@@ -230,7 +230,7 @@ if (isLoading) {
 
             {
             conditionCall && 
-            <TouchableOpacity style = {{alignItems : "center"}}>
+            <TouchableOpacity style = {{alignItems : "center"}}  onPress = {()=>Linking.openURL(`tel:${clientInfos.phone}`)}  >
             
             <MaterialIcons name="call" 
                             size={screen.width/12.85} 
