@@ -230,7 +230,7 @@ useEffect(()=>{
     return(
     <TouchableWithoutFeedback onPress = {()=>Keyboard.dismiss()}>      
     <View style={styles.container}>
-      <KeyboardAvoidingView  keyboardVerticalOffset={10}  behavior={Platform.OS === "ios" ? "padding" : null}>
+      
          <StatusBar hidden />
           <View style={styles.backgroundContainer}>
             <Image source={barber.sex==='Femme'?{uri:'http://173.212.234.137/assets/tahfifabarber/woman5.jpg'}:{uri:'http://173.212.234.137/assets/tahfifabarber/loginimage.jpg'}} style={{resizeMode:'cover',width:'100%',height:'100%'}}/>
@@ -244,7 +244,7 @@ useEffect(()=>{
                      <Text style={{fontFamily:'poppins-bold',fontSize:screen.width/27.7,color:'#fd6c57'}}>{barber && currentUserService?currentUserService.price.toString()+' دج':'0 دج'}</Text>
                    </View>
              </View>
-
+             <KeyboardAvoidingView  keyboardVerticalOffset={10}  behavior={Platform.OS === "ios" ? "padding" : null}>
              <View style={styles.inputsContainer}>
             
              <View style={{flexDirection:'row',width:'90%',marginVertical:screen.width/72,alignItems:'center'}}>
@@ -306,6 +306,7 @@ useEffect(()=>{
                   
                  </View>
 
+
                  <View style={{flexDirection:'row',width:'90%',marginVertical:screen.width/72,alignItems:'center'}}>
                    <View style={{width:'50%'}}>
                     <Text style={{fontFamily:'poppins',fontSize:screen.width/30,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.Hours:polylanar.Hours}</Text>
@@ -347,7 +348,7 @@ useEffect(()=>{
                               </Text>} 
                   </View>
                  </View>
-
+                 
                  <View style={{flexDirection:'row',width:'90%',marginVertical:screen.width/72,alignItems:'center'}}>
                    <View style={{width:'50%'}}>
                     <Text style={{fontFamily:'poppins',fontSize:screen.width/30,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.PriceIn:polylanar.PriceIn}</Text>
@@ -360,15 +361,17 @@ useEffect(()=>{
                       initialValue={currentUserService?currentUserService.price.toString():''}
                       initiallyValid={true}
                       required
-                      placeholderTextColor={Platform.OS=='android'?'rgba(50,52,70,0.4)':'#d3d3d3'}
+                      placeholderTextColor={Platform.OS==='android'?'rgba(50,52,70,0.4)':'#d3d3d3'}
                       style={{height:screen.width/18}}
                       widthView='50%'
-                      backgroundColor={Platform.OS=='ios'?Colors.blue:'#d3d3d3'}
+                      backgroundColor={Platform.OS==='ios'?Colors.blue:'#d3d3d3'}
                       height={screen.width/9}
                       inputStyle={{color:'white'}}
                     />
                  </View>
+                 
              </View>
+             </KeyboardAvoidingView>
              <View style={styles.footerContainer}>
                  {!isLoading ?<Button
                     theme={{colors: {primary:'#fd6c57'}}} 
@@ -386,7 +389,7 @@ useEffect(()=>{
                   />: <ActivityIndicator style={{marginBottom:screen.width/14.4}} color={Colors.primary}/> }
              </View>
           </View>
-       </KeyboardAvoidingView>
+       
     </View>
     </TouchableWithoutFeedback>
      );    
@@ -436,7 +439,7 @@ headerContainer:{
   alignSelf:'center'
 },
 inputsContainer:{
- height:'50%',
+ height:'65%',
  width:'100%',
  alignItems:'center',
 },
@@ -448,10 +451,10 @@ inputContainer:{
  borderColor:'#d3d3d3'
 },
 footerContainer:{
- height:'30%',
+ height:'15%',
  width:'100%',
  justifyContent:'flex-end',
- paddingBottom:screen.width/14.4
+ paddingBottom:screen.width/14.4,
 },
 labelButton:{
  color:'#FFF',
