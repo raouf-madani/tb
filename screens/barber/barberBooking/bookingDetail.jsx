@@ -21,7 +21,7 @@ const start= props.navigation.getParam("start");
 const bookingDate = props.navigation.getParam("bookingDate");
 const now  = moment().format().substring(11,16) ;
 const diffrence = parseInt(moment.duration(moment(start,"h:mm:ss a").diff(moment(now,"h:mm:ss a"))).asMinutes());
-const clientImage = clientInfos.image === null ? {uri:'http://173.212.234.137/assets/tahfifa/unknown.jpeg'} : {uri:`http://173.212.234.137/profileImages/client/${clientInfos.image}`}  ;
+
 
 const gradient1 = props.navigation.getParam("status") === "en attente" ? "#fd6d57" : (props.navigation.getParam("status") === "confirmée" ||props.navigation.getParam("status") === "réalisée" ) ? "#11998e" : "#f14638";
 const gradient2 = props.navigation.getParam("status") === "en attente" ? "#fd9054" : (props.navigation.getParam("status") === "confirmée" ||props.navigation.getParam("status") === "réalisée" ) ? Colors.colorH1 : "#F4686A";
@@ -103,10 +103,11 @@ const [clientInfos , setClientInfos] = useState({
   "region": " ",
   "surname": " ",
   "wilaya": " ",
+  "image" : " "
 });
 
 const dispatch = useDispatch();
-
+const clientImage =  (clientInfos.image === null || clientInfos.image === undefined ) ? {uri:'http://173.212.234.137/assets/tahfifa/unknown.jpeg'} : {uri:`http://173.212.234.137/profileImages/client/${clientInfos.image}`}  ;
 //cancel booking
 
 const bookingHandler = (type,alert1,alert2) =>{
