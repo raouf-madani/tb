@@ -1,6 +1,7 @@
 import React, {useState,useReducer,useEffect,useCallback} from 'react';
-import { StyleSheet,View,KeyboardAvoidingView,Text,Image,Dimensions,TouchableWithoutFeedback,Keyboard,ActionSheetIOS, StatusBar,Picker,ActivityIndicator,Alert,Platform} from 'react-native';
+import { StyleSheet,View,KeyboardAvoidingView,Text,Image,Dimensions,TouchableWithoutFeedback,Keyboard,ActionSheetIOS, StatusBar,Picker,ActivityIndicator,Alert,Platform,TouchableOpacity} from 'react-native';
 import {Button } from 'react-native-elements';
+import {Ionicons} from "@expo/vector-icons";
 import InputProfile from '../../../components/InputProfile';
 import Colors from '../../../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -274,13 +275,19 @@ useEffect(()=>{
                               : 
                               Platform.OS === 'ios' &&  barber.sex === 'Homme' ?
                              
-                              (<Text onPress={onPressServiceType} style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#fff'}}>
+                              ( <TouchableOpacity onPress={onPressServiceType} style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingHorizontal:screen.width/72}}>
+                              <Text  style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#fff'}}>
                                 {serviceType}
-                              </Text>):
+                              </Text>
+                              <Ionicons name="ios-arrow-down" size={screen.width/15} color='#f9f9f9' onPress={onPressServiceType} />
+                              </TouchableOpacity>):
                                Platform.OS === 'ios' &&  barber.sex === 'Femme' ?
-                              (<Text onPress={onPressServiceTypeWoman} style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#fff'}}>
+                              (<TouchableOpacity onPress={onPressServiceTypeWoman} style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingHorizontal:screen.width/72}}>
+                              <Text  style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#fff'}}>
                                {serviceTypeWoman}
-                             </Text>):undefined} 
+                             </Text>
+                             <Ionicons name="ios-arrow-down" size={screen.width/15} color='#f9f9f9'  onPress={onPressServiceTypeWoman} />
+                             </TouchableOpacity>):undefined} 
                   </View>
                  </View>
                  <View style={{flexDirection:'row',width:'90%',marginVertical:screen.width/72,alignItems:'center'}}>
@@ -322,9 +329,12 @@ useEffect(()=>{
                               >
                               {hours.map(el=> <Picker.Item label={el} value={el} key={el} />)}
                               </Picker> :
-                              <Text onPress={onPress} style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#fff'}}>
+                              <TouchableOpacity onPress={onPress} style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingHorizontal:screen.width/36}}>
+                              <Text  style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#fff'}}>
                                 {hour}
-                              </Text>} 
+                              </Text>
+                              <Ionicons name="ios-arrow-down" size={screen.width/15} color='#f9f9f9'  onPress={onPress} />
+                              </TouchableOpacity>} 
                   </View>
                  </View>
                  
@@ -343,9 +353,12 @@ useEffect(()=>{
                               >
                               {minutes.map(el=> <Picker.Item label={el} value={el} key={el} />)}
                               </Picker> :
-                              <Text onPress={onPressMinute} style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#fff'}}>
+                               <TouchableOpacity onPress={onPressMinute} style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingHorizontal:screen.width/72}}>
+                              <Text style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#fff'}}>
                                 {minute}
-                              </Text>} 
+                              </Text>
+                              <Ionicons name="ios-arrow-down" size={screen.width/15} color='#f9f9f9'  onPress={onPressMinute} />
+                              </TouchableOpacity>} 
                   </View>
                  </View>
                  
