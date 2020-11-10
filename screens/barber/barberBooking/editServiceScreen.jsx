@@ -383,7 +383,7 @@ useEffect(()=>{
                         end:{x: 1, y: 0}
                         
                     }}
-                  />: <ActivityIndicator style={{marginBottom:screen.width/14.4}} color={Colors.primary}/>}
+                  />: <ActivityIndicator style={{marginBottom:screen.width/14.4}} color={Colors.primary}/> }
              </View>
           </View>
        </KeyboardAvoidingView>
