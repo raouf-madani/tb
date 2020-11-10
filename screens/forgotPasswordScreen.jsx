@@ -1,6 +1,6 @@
 import React,{useState,useCallback,useReducer,useRef} from 'react';
 import { StyleSheet,View,KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard,Text,Image,Dimensions,StatusBar,Alert,ActivityIndicator,TextInput,Platform} from 'react-native';
-import {MaterialIcons,MaterialCommunityIcons,FontAwesome5} from "@expo/vector-icons";
+import {MaterialIcons} from "@expo/vector-icons";
 import {Button } from 'react-native-elements';
 import Colors from '../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -163,7 +163,7 @@ const verifyNumber = async ()=>{
     return(
       <TouchableWithoutFeedback onPress = {()=>{Keyboard.dismiss()}}>
       <View style={styles.container}>
-       <KeyboardAvoidingView  keyboardVerticalOffset={screen.width/36}  behavior={Platform.OS === "ios" ? "padding" : null}>
+       <KeyboardAvoidingView  keyboardVerticalOffset={10}  behavior={Platform.OS === "ios" ? "padding" : null}>
          <StatusBar hidden />
          <FirebaseRecaptcha.FirebaseRecaptchaVerifierModal
                 ref={recaptchaVerifier}
@@ -294,8 +294,7 @@ ForgotPasswordScreen.navigationOptions= navData=>{
       
       />
     ),
-    headerTintColor: '#fff',
-    headerLeft:(navData)=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color="white" style={{marginLeft:screen.width/36}} />)
+    headerTintColor: '#fff'
   };
 }
 

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View,ActivityIndicator, Alert,ScrollView, Dimensions}
 import moment from 'moment';
 import Colors from "../../../constants/Colors";
 import BookingCard from '../../../components/BookingCard';
-import { Ionicons ,MaterialIcons,FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons ,MaterialIcons} from '@expo/vector-icons';
 import { useDispatch,useSelector } from 'react-redux';
 import {changeBookingState} from "../../../store/actions/bookingsActions";
 import { Rating, AirbnbRating, Avatar } from 'react-native-elements';
@@ -122,7 +122,7 @@ const bookingHandler = (type,alert1,alert2) =>{
 // Works on both Android and iOS
 Alert.alert(
   alert1+' la réservation ! ',
-  'Etes vous sùr de vouloir '+ alert2 +' cette réservation ?',
+  'Êtes-vous sûr de vouloir '+ alert2 +' cette réservation?',
   [
  
     {
@@ -384,7 +384,6 @@ BookingDetail.navigationOptions = (navData) => {
     headerTintColor:Colors.blue,
     headerBackTitle : " ",
     title : "Ma Réservation",
-    headerLeft:(navData)=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color="white" style={{marginLeft:screen.width/36}} />)
   }
   
   };

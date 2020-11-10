@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet,View,ImageBackground,TouchableOpacity,Text,Image,Alert,Dimensions,Platform,Linking,StatusBar} from 'react-native';
-import {MaterialIcons,MaterialCommunityIcons,Ionicons,FontAwesome5} from "@expo/vector-icons";
+import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
 import Colors from "../../../constants/Colors";
 import polylanar from "../../../lang/ar";
 import polylanfr from "../../../lang/fr";
@@ -127,8 +127,7 @@ BarberSupportScreen.navigationOptions = (navData) => {
         
         />
       ),
-      headerTintColor: Colors.blue,
-      headerLeft:(navData)=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color={Colors.blue} style={{marginLeft:screen.width/36}} />)
+      headerTintColor: Colors.blue
         };
 };
 

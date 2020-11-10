@@ -4,7 +4,7 @@ import {Button } from 'react-native-elements';
 import Colors from '../../../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import ServiceCart from '../../../components/ServiceCart';
-import {MaterialIcons,FontAwesome5} from "@expo/vector-icons";
+import {MaterialIcons} from "@expo/vector-icons";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import {HeaderButtons,Item} from "react-navigation-header-buttons";
 import HeaderButton from "../../../components/HeaderButton";
@@ -645,8 +645,7 @@ BarberServiceScreen.navigationOptions = navData => {
               size={screen.width/15.7}   
               onPress={saveFunction}    
             />
-          </HeaderButtons>),
-           headerLeft:(navData)=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color="white" style={{marginLeft:screen.width/36}} />)
+          </HeaderButtons>)
   };
   
 }

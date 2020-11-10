@@ -2,7 +2,6 @@ import React, {useState,useReducer,useEffect,useCallback} from 'react';
 import { StyleSheet,View,KeyboardAvoidingView,Text,Image,Dimensions,TouchableWithoutFeedback,Keyboard,ActionSheetIOS, StatusBar,Picker,ActivityIndicator,Alert,Platform} from 'react-native';
 import {Button } from 'react-native-elements';
 import InputProfile from '../../../components/InputProfile';
-import {FontAwesome5} from "@expo/vector-icons";
 import Colors from '../../../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as servicesActions from '../../../store/actions/serviceActions';
@@ -231,7 +230,7 @@ useEffect(()=>{
     return(
     <TouchableWithoutFeedback onPress = {()=>Keyboard.dismiss()}>      
     <View style={styles.container}>
-      <KeyboardAvoidingView  keyboardVerticalOffset={screen.width/36}  behavior={Platform.OS === "ios" ? "padding" : null}>
+      <KeyboardAvoidingView  keyboardVerticalOffset={10}  behavior={Platform.OS === "ios" ? "padding" : null}>
          <StatusBar hidden />
           <View style={styles.backgroundContainer}>
             <Image source={barber.sex==='Femme'?{uri:'http://173.212.234.137/assets/tahfifabarber/woman5.jpg'}:{uri:'http://173.212.234.137/assets/tahfifabarber/loginimage.jpg'}} style={{resizeMode:'cover',width:'100%',height:'100%'}}/>
@@ -405,8 +404,7 @@ useEffect(()=>{
             headerTitleStyle:{
               fontFamily:'poppins-bold',
               marginTop:screen.width/72
-            },
-            headerLeft:(navData)=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color="white" style={{marginLeft:screen.width/36}} />)
+            }
     };
 
  };

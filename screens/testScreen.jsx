@@ -139,7 +139,7 @@ const login = async()=>{
     return(
       <TouchableWithoutFeedback onPress = {()=>{Keyboard.dismiss()}}>
       <View style={styles.container}>
-       <KeyboardAvoidingView  keyboardVerticalOffset={screen.width/36}  behavior={Platform.OS === "ios" ? "padding" : null}>
+       <KeyboardAvoidingView  keyboardVerticalOffset={10}  behavior={Platform.OS === "ios" ? "padding" : null}>
          <StatusBar hidden />
          
           <View style={styles.backgroundContainer}>

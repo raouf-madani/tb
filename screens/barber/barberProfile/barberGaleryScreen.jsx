@@ -1,7 +1,6 @@
 import React,{useState} from 'react';
 import { StyleSheet,View,Alert,Dimensions,ScrollView,ImageBackground,StatusBar,ActivityIndicator} from 'react-native';
 import Colors from '../../../constants/Colors';
-import {FontAwesome5} from "@expo/vector-icons";
 import Portfolio from "../../../components/Portfolio";
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
@@ -499,8 +498,7 @@ BarberGaleryScreen.navigationOptions= navData => {
       headerTitleStyle:{
         fontFamily:'poppins-bold',
         marginTop:screen.width/72
-      },
-      headerLeft:(navData)=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color={Colors.blue} style={{marginLeft:screen.width/36}} />)
+      }
      };
  
   };

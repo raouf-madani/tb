@@ -1,6 +1,6 @@
 import React,{useState,useEffect,useReducer,useCallback} from 'react';
 import { StyleSheet,View,AsyncStorage,Linking,ScrollView,TouchableWithoutFeedback,Keyboard,ImageBackground,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActionSheetIOS,Picker,ActivityIndicator,Platform,StatusBar} from 'react-native';
-import {MaterialIcons,MaterialCommunityIcons,Ionicons,FontAwesome5} from "@expo/vector-icons";
+import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
 import {useSelector,useDispatch} from 'react-redux';
 import Colors from "../../../constants/Colors";
 import {HeaderButtons,Item} from "react-navigation-header-buttons";
@@ -278,7 +278,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
       Alert.alert(barber && barber[0].lang?polylanfr.Error:polylanar.Error,barber && barber[0].lang?polylanfr.EmptyFields:polylanar.EmptyFields,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
     }
   
-  },[dispatch,barber[0].id,formState,pickedImage,wilaya]);
+  },[dispatch,barber[0].id,formState,wilaya]);
 
    useEffect(()=>{
      props.navigation.setParams({load:isLoading});
@@ -333,7 +333,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                </TouchableOpacity>
           </View>
        {isInfo?(<ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-          <KeyboardAvoidingView keyboardVerticalOffset={screen.width/36}  behavior={Platform.OS === "ios" ? "padding" : null}>
+          <KeyboardAvoidingView keyboardVerticalOffset={10}  behavior={Platform.OS === "ios" ? "padding" : null}>
             <View style={styles.bnameAgeContainer}>
               
                 <InputProfile
@@ -552,8 +552,7 @@ BarberProfileScreen.navigationOptions = navData => {
             onPress={saveFunction}
             style={{marginRight:screen.width/72}}
           />
-        </HeaderButtons>),
-        headerLeft:(navData)=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color="white" style={{marginLeft:screen.width/36}} />)
+        </HeaderButtons>)
         };
 };
 

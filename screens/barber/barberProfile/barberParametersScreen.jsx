@@ -1,6 +1,6 @@
 import React,{useState,useReducer,useCallback,useEffect} from 'react';
 import {StyleSheet,View,AsyncStorage,ScrollView,ImageBackground,TouchableWithoutFeedback,Keyboard,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActivityIndicator,Platform,StatusBar} from 'react-native';
-import {MaterialIcons,MaterialCommunityIcons,FontAwesome5} from "@expo/vector-icons";
+import {MaterialIcons,MaterialCommunityIcons} from "@expo/vector-icons";
 import {Button} from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
 import polylanar from "../../../lang/ar";
@@ -499,8 +499,7 @@ BarberParametersScreen.navigationOptions= navData => {
       headerTitleStyle:{
         fontFamily:'poppins-bold',
         marginTop:5,
-      },
-      headerLeft:(navData)=>(<FontAwesome5 onPress={()=>navData.navigation.goBack()} name="arrow-left" size={24} color="white" style={{marginLeft:screen.width/36}} />)
+      }
      
      };
  
