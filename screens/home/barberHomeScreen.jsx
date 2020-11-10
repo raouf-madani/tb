@@ -268,7 +268,6 @@ async function registerForPushNotificationsAsync() {
         }
 
   } else {
-    alert('Must use physical device for Push Notifications');
   }
 
   if (Platform.OS === 'android') {
