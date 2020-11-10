@@ -21,6 +21,7 @@ const start= props.navigation.getParam("start");
 const bookingDate = props.navigation.getParam("bookingDate");
 const now  = moment().format().substring(11,16) ;
 const diffrence = parseInt(moment.duration(moment(start,"h:mm:ss a").diff(moment(now,"h:mm:ss a"))).asMinutes());
+const clientImage = clientInfos.image === null ? {uri:'http://173.212.234.137/assets/tahfifa/unknown.jpeg'} : {uri:`http://173.212.234.137/profileImages/client/${clientInfos.image}`}  ;
 
 const gradient1 = props.navigation.getParam("status") === "en attente" ? "#fd6d57" : (props.navigation.getParam("status") === "confirmée" ||props.navigation.getParam("status") === "réalisée" ) ? "#11998e" : "#f14638";
 const gradient2 = props.navigation.getParam("status") === "en attente" ? "#fd9054" : (props.navigation.getParam("status") === "confirmée" ||props.navigation.getParam("status") === "réalisée" ) ? Colors.colorH1 : "#F4686A";
@@ -42,17 +43,10 @@ async function sendPushNotification(type,alert1,alert2) {
   const arr = await fetch(`http://173.212.234.137:3000/client/clienttokens/${props.navigation.getParam("clientId")}`);
   const resData = await arr.json ();
   const allMessages = [];
-  
+ 
   
   resData.map(e=>{
-    // start = {start}
-    //                         end = {props.navigation.getParam("end")}
-    //                         bookingDate = {bookingDate}
-    //                         status = {props.navigation.getParam("state")}
-    //                         amount = {props.navigation.getParam("amount")}
-    //                         day = {props.navigation.getParam("day")}
-    //                         date = {props.navigation.getParam("date")}
-    //                         status = {props.navigation.getParam("status")}
+
   allMessages.push(
     {
       to: e.expoToken,
@@ -169,12 +163,6 @@ Alert.alert(
 );
 
 
-
-
-//  dispatch(cancelBooking(props.navigation.getParam("cancelDate"),props.navigation.getParam("clientId")))
-
-//  props.navigation.navigate(
-//   "Client");
 }
 
 
@@ -350,7 +338,7 @@ if (isLoading) {
                 <View style = {{alignSelf :"center" , flexDirection :"row",width:"90%",alignItems:"center"}}>
               
                 <Avatar
-           source = {{uri:'http://173.212.234.137/assets/tahfifa/unknown.jpeg'}}
+          source = {clientImage}
           overlayContainerStyle = {{overflow:"hidden"}}
           size = "small"
           rounded
