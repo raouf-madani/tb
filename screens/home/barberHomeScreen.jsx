@@ -254,19 +254,19 @@ async function registerForPushNotificationsAsync() {
 
       token = (await Notifications.getExpoPushTokenAsync()).data;
       let  tokenIndex;
-     
       if(tokens.length>0){
        tokenIndex = await tokens.findIndex(
         t => t.barberId === barberID && t.expoToken === token
       );
     
     }
-
+    if(barberID !== undefined )
+{
         if(tokenIndex < 0 || tokens.length ===0 ) {
          
             await dispatch(addtoken({expoToken:token , barberId : barberID}))
         }
-
+}
   } else {
   }
 
