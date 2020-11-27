@@ -425,6 +425,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                   widthView='90%'
                   backgroundColor={Platform.OS==='android'?'#fff':Colors.blue}
                   height={screen.width/8}
+                  autoCapitalize='none'
                 />
             
               <InputProfile
