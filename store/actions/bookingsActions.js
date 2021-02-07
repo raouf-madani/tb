@@ -17,7 +17,7 @@ export const getBarberBookings = (barberId)=>{
       try {
      
 
-      const arr = await fetch(`http://173.212.234.137:3000/barberBookings/${barberId}`);
+      const arr = await fetch(`http://95.111.243.233:3000/barberBookings/${barberId}`);
 
       const resData = await arr.json ();
      
@@ -89,7 +89,7 @@ export const changeBookingState = (id,type)=> {
         try {
             const response = await fetch(
 
-                `http://173.212.234.137:3000/bookings/changebooking`,
+                `http://95.111.243.233:3000/bookings/changebooking`,
 
                 {
                   method: 'PATCH',
@@ -131,7 +131,7 @@ export const changeBookingState = (id,type)=> {
 
 //   const response = await fetch(
 
-//       `http://173.212.234.137:3000/bookings/expiredbookings`,
+//       `http://95.111.243.233:3000/bookings/expiredbookings`,
 
 //       {
 //         method: 'PATCH',
@@ -179,7 +179,7 @@ export const expiredbookings = (barberId,tokens)=> {
 try {
  
 
-  const arr = await fetch(`http://173.212.234.137:3000/barber/getbookings/expired/${barberId}`);
+  const arr = await fetch(`http://95.111.243.233:3000/barber/getbookings/expired/${barberId}`);
   const resData = await arr.json ();
 
               if(resData.length > 0) {

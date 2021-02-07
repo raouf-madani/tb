@@ -32,7 +32,7 @@ const BarberServiceScreen = props =>{
   const [isUpdating,setIsUpdating]= useState(false);//ActivityIndicator handling for worktime update
 
   const dispatch= useDispatch();
-  const isImage= {beard:{uri:'http://173.212.234.137/assets/tahfifabarber/barbe.jpg'},hair:{uri:'http://173.212.234.137/assets/tahfifabarber/hair.jpg'},supp:{uri:'http://173.212.234.137/assets/tahfifabarber/supplements.jpg'},womanHair:{uri:'http://173.212.234.137/assets/tahfifabarber/womanhair.jpg'},wedding:{uri:'http://173.212.234.137/assets/tahfifabarber/mariage.jpg'},care:{uri:'http://173.212.234.137/assets/tahfifabarber/soins.jpg'}};
+  const isImage= {beard:{uri:'http://95.111.243.233/assets/tahfifabarber/barbe.jpg'},hair:{uri:'http://95.111.243.233/assets/tahfifabarber/hair.jpg'},supp:{uri:'http://95.111.243.233/assets/tahfifabarber/supplements.jpg'},womanHair:{uri:'http://95.111.243.233/assets/tahfifabarber/womanhair.jpg'},wedding:{uri:'http://95.111.243.233/assets/tahfifabarber/mariage.jpg'},care:{uri:'http://95.111.243.233/assets/tahfifabarber/soins.jpg'}};
    //variables for open times
   let satTimeO;
   let sunTimeO;
@@ -267,7 +267,7 @@ const BarberServiceScreen = props =>{
    
    if(error){
       
-    return ( <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/support.png'}} style={styles.activityIndicatorContainer}>
+    return ( <ImageBackground source={{uri:'http://95.111.243.233/assets/tahfifabarber/support.png'}} style={styles.activityIndicatorContainer}>
               <StatusBar hidden />
                 <View style={{marginBottom:screen.width /36,alignSelf:'center'}}>
                   <Text style={styles.noServicesText}>{barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet}</Text>
@@ -288,7 +288,7 @@ const BarberServiceScreen = props =>{
   };
 
     if(isLoading){
-      return <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/support.png'}} style={styles.activityIndicatorContainer} >
+      return <ImageBackground source={{uri:'http://95.111.243.233/assets/tahfifabarber/support.png'}} style={styles.activityIndicatorContainer} >
               <StatusBar hidden />
               <ActivityIndicator size='large' color={Colors.primary} />
              </ImageBackground>
@@ -301,13 +301,13 @@ const BarberServiceScreen = props =>{
          <StatusBar hidden />
         <View style={styles.firstContainer}>
           <View style={styles.coverContainer}>
-              <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/barberScreen.png'}} style={styles.cover} />
+              <ImageBackground source={{uri:'http://95.111.243.233/assets/tahfifabarber/barberScreen.png'}} style={styles.cover} />
           </View>
           
           <View style={styles.infoContainer}>
              <View style={styles.imageContainer}>
-             {barber[0] && barber[0].image ? <Image source={{uri:`http://173.212.234.137/profileImages/barber/${barber[0].image}`}} style={styles.icon} />:
-               <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/unknown.jpeg'}} style={styles.icon} />}
+             {barber[0] && barber[0].image ? <Image source={{uri:`http://95.111.243.233/profileImages/barber/${barber[0].image}`}} style={styles.icon} />:
+               <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknown.jpg'}} style={styles.icon} />}
              </View>
            
              <Text style={styles.bname}>{barber[0] && barber[0].b_name!==null?barber[0].b_name:barber && barber[0].lang?polylanfr.BusinessName:polylanar.BusinessName}</Text>
@@ -462,13 +462,13 @@ const BarberServiceScreen = props =>{
         <StatusBar hidden />
          <View style={styles.firstContainer}>
            <View style={styles.coverContainer}>
-               <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/barberScreen.png'}} style={styles.cover} />
+               <ImageBackground source={{uri:'http://95.111.243.233/assets/tahfifabarber/barberScreen.png'}} style={styles.cover} />
            </View>
            
            <View style={styles.infoContainer}>
               <View style={styles.imageContainer}>
-              {barber[0] && barber[0].image ? <Image source={{uri:`http://173.212.234.137/profileImages/barber/${barber[0].image}`}} style={styles.icon} />:
-               <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/unknown.jpeg'}} style={styles.icon} />}
+              {barber[0] && barber[0].image ? <Image source={{uri:`http://95.111.243.233/profileImages/barber/${barber[0].image}`}} style={styles.icon} />:
+               <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknown.jpg'}} style={styles.icon} />}
               </View>
             
               <Text style={styles.bname}>{barber[0] && barber[0].b_name!==null?barber[0].b_name:barber && barber[0].lang?polylanfr.BusinessName:polylanar.BusinessName}</Text>

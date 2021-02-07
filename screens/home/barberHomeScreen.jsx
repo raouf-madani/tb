@@ -71,7 +71,7 @@ const responseListener = useRef();
     await dispatch(getTokens(barberID));
     
     setIsRefreshing(true);
-    const arr = await fetch(`http://173.212.234.137:3000/pendingBarberBookings/${barberID}`);
+    const arr = await fetch(`http://95.111.243.233:3000/pendingBarberBookings/${barberID}`);
     const resData = await arr.json ();
     await setPendingBookings(resData);
     await dispatch(barberActions.setBarber(barberID));
@@ -288,7 +288,7 @@ async function registerForPushNotificationsAsync() {
 
     if(error){
       
-      return ( <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/support.png'}} style={styles.coverTwo}>
+      return ( <ImageBackground source={{uri:'http://95.111.243.233/assets/tahfifabarber/support.png'}} style={styles.coverTwo}>
                   <View style={{marginBottom:screen.width/36,alignSelf:'center'}}>
                     <Text style={styles.noServicesText}>{polylanfr.WeakInternet} </Text>
                   </View>
@@ -310,7 +310,7 @@ async function registerForPushNotificationsAsync() {
 
     if(isLoading || barber===undefined){
       
-      return ( <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/support.png'}} style={styles.coverTwo}>
+      return ( <ImageBackground source={{uri:'http://95.111.243.233/assets/tahfifabarber/support.png'}} style={styles.coverTwo}>
                   <ActivityIndicator size='large' color={Colors.primary} />
                </ImageBackground>)
     };
@@ -366,12 +366,12 @@ async function registerForPushNotificationsAsync() {
 
          <View style={styles.firstContainer}>
            <View style={styles.coverContainer}>
-               <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/barberScreen.png'}} style={styles.cover} />
+               <ImageBackground source={{uri:'http://95.111.243.233/assets/tahfifabarber/barberScreen.png'}} style={styles.cover} />
            </View>
            <View style={styles.infoContainer}>
                <View style={styles.imageContainer}>
-               {barber && barber.image ? <Image source={{uri:`http://173.212.234.137/profileImages/barber/${barber.image}`}} style={styles.icon} />:
-               <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/unknown.jpeg'}} style={styles.icon} />}
+               {barber && barber.image ? <Image source={{uri:`http://95.111.243.233/profileImages/barber/${barber.image}`}} style={styles.icon} />:
+               <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknown.jpg'}} style={styles.icon} />}
                   
                </View>
                <Text style={styles.bname}>{barber && barber.b_name!==null?barber.b_name:barber && barber.lang?polylanfr.BusinessName:polylanar.BusinessName}</Text>
@@ -498,7 +498,7 @@ async function registerForPushNotificationsAsync() {
                   
                 </View>
                 <View  style={styles.rightColumn}>
-                    <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/localisation.jpg'}} style={styles.mapImage} />
+                    <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/localisation.jpg'}} style={styles.mapImage} />
                 </View>
             </View>
             
@@ -516,7 +516,7 @@ async function registerForPushNotificationsAsync() {
                 (<View 
                   key={picture.id}
                   style={styles.modelImageContainer}>
-                  <Image source={{uri:picture.model===null?`http://173.212.234.137/uploads/ayoungleaderportfolio.jpg` :`http://173.212.234.137/uploads/${picture.model}`}} style={styles.modelImage} />
+                  <Image source={{uri:picture.model===null?`http://95.111.243.233/uploads/emptyimage.jpg` :`http://95.111.243.233/uploads/${picture.model}`}} style={styles.modelImage} />
                 </View>)
               )}
                  
@@ -531,7 +531,7 @@ async function registerForPushNotificationsAsync() {
                {barberPortfolio.slice(0,3).map(picture=>(<View 
                     key={picture.id}
                     style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={{uri:picture.model===null?`http://173.212.234.137/uploads/ayoungleaderportfolio.jpg` :`http://173.212.234.137/uploads/${picture.model}`}} style={styles.modelImage} />
+                    <Image source={{uri:picture.model===null?`http://95.111.243.233/uploads/emptyimage.jpg` :`http://95.111.243.233/uploads/${picture.model}`}} style={styles.modelImage} />
                   </View>)
                  )}
                  
@@ -540,7 +540,7 @@ async function registerForPushNotificationsAsync() {
                {barberPortfolio.slice(3,6).map(picture=>(<View 
                     key={picture.id}
                     style={{width:'33.3%',alignItems:'center'}}>
-                    <Image source={{uri:picture.model===null?`http://173.212.234.137/uploads/ayoungleaderportfolio.jpg` :`http://173.212.234.137/uploads/${picture.model}`}} style={styles.modelImage} />
+                    <Image source={{uri:picture.model===null?`http://95.111.243.233/uploads/emptyimage.jpg` :`http://95.111.243.233/uploads/${picture.model}`}} style={styles.modelImage} />
                   </View>))}
                   
                  

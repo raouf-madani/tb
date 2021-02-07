@@ -100,9 +100,9 @@ const login = async()=>{
 
 
     setIsLogin(true);
-    const result = await fetch(`http://173.212.234.137:3000/phone/${prefix+phoneNumber}`);
+    const result = await fetch(`http://95.111.243.233:3000/phone/${prefix+phoneNumber}`);
     const resData= await result.json();
-    const barbers= await fetch('http://173.212.234.137:3000/barber');
+    const barbers= await fetch('http://95.111.243.233:3000/barber');
     const barbersData= await barbers.json();
     setIsLogin(false);
 
@@ -143,11 +143,11 @@ const login = async()=>{
          <StatusBar hidden />
          
           <View style={styles.backgroundContainer}>
-            <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/loginimage.jpg'}} style={{resizeMode:'cover',width:'100%',height:'100%'}}/>
+            <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/loginimage.jpg'}} style={{resizeMode:'cover',width:'100%',height:'100%'}}/>
           </View>
           <View style={styles.secondContainer}>
              <View style={styles.logoContainer}>
-                 <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/logo.png'}} style={styles.logo}/>
+                 <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/logo.png'}} style={styles.logo}/>
                  <Text style={styles.callToAction}>Exercez votre métier et gagnez plus d'argent</Text>
              </View>
              <View style={styles.inputsContainer}> 

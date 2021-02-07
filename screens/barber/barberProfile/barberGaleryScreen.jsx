@@ -435,7 +435,7 @@ const BarberGaleryScreen = props =>{
  };
 
  if(isLoading){
-  return <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/support.png'}} style={styles.activityIndicatorContainer} >
+  return <ImageBackground source={{uri:'http://95.111.243.233/assets/tahfifabarber/support.png'}} style={styles.activityIndicatorContainer} >
           <StatusBar hidden />
           <ActivityIndicator size='large' color={Colors.primary} />
          </ImageBackground>
@@ -448,36 +448,36 @@ const BarberGaleryScreen = props =>{
       <ScrollView style={styles.grid} contentContainerStyle={{ alignItems:'center'}} showsVerticalScrollIndicator={false}>
        <View style={styles.row}>
           <Portfolio
-          modelName={barberPortfolio && pickedImage?pickedImage:'ayoungleaderportfolio.jpg'}
+          modelName={barberPortfolio && pickedImage?pickedImage:'emptyimage.jpg'}
           cameraImage={takeImageHandler}
           libraryImage={takeLibraryHandler}
           />
             <Portfolio
-          modelName={barberPortfolio && pickedImage2?pickedImage2:'ayoungleaderportfolio.jpg'}
+          modelName={barberPortfolio && pickedImage2?pickedImage2:'emptyimage.jpg'}
           cameraImage={takeImageHandler2}
           libraryImage={takeLibraryHandler2}
           />
       </View>
       <View style={styles.row}>
        <Portfolio
-        modelName={barberPortfolio && pickedImage3?pickedImage3:'ayoungleaderportfolio.jpg'}
+        modelName={barberPortfolio && pickedImage3?pickedImage3:'emptyimage.jpg'}
         cameraImage={takeImageHandler3}
         libraryImage={takeLibraryHandler3}
        />
          <Portfolio
-        modelName={barberPortfolio && pickedImage4?pickedImage4:'ayoungleaderportfolio.jpg'}
+        modelName={barberPortfolio && pickedImage4?pickedImage4:'emptyimage.jpg'}
         cameraImage={takeImageHandler4}
         libraryImage={takeLibraryHandler4}
        />
     </View>
     <View style={styles.row}>
        <Portfolio
-        modelName={barberPortfolio && pickedImage5?pickedImage5:'ayoungleaderportfolio.jpg'}
+        modelName={barberPortfolio && pickedImage5?pickedImage5:'emptyimage.jpg'}
         cameraImage={takeImageHandler5}
         libraryImage={takeLibraryHandler5}
        />
          <Portfolio
-        modelName={barberPortfolio && pickedImage6?pickedImage6:'ayoungleaderportfolio.jpg'}
+        modelName={barberPortfolio && pickedImage6?pickedImage6:'emptyimage.jpg'}
         cameraImage={takeImageHandler6}
         libraryImage={takeLibraryHandler6}
        />

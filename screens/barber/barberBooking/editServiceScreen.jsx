@@ -234,7 +234,7 @@ useEffect(()=>{
       
          <StatusBar hidden />
           <View style={styles.backgroundContainer}>
-            <Image source={barber.sex==='Femme'?{uri:'http://173.212.234.137/assets/tahfifabarber/woman5.jpg'}:{uri:'http://173.212.234.137/assets/tahfifabarber/loginimage.jpg'}} style={{resizeMode:'cover',width:'100%',height:'100%'}}/>
+            <Image source={barber.sex==='Femme'?{uri:'http://95.111.243.233/assets/tahfifabarber/woman5.jpg'}:{uri:'http://95.111.243.233/assets/tahfifabarber/loginimage.jpg'}} style={{resizeMode:'cover',width:'100%',height:'100%'}}/>
           </View>
           <View style={styles.secondContainer}>
              <View style={styles.headerContainer}>

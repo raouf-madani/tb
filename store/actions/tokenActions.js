@@ -10,7 +10,7 @@ export const deleteToken = (mytoken)=>{
     return async (dispatch) =>{
         try {
 
-            const response = await fetch(`http://173.212.234.137:3000/barber/deletetoken/${mytoken.token}`,{
+            const response = await fetch(`http://95.111.243.233:3000/barber/deletetoken/${mytoken.token}`,{
                 method:'DELETE'});
  
              if(!response.ok){
@@ -54,7 +54,7 @@ export const getTokens = (barberID)=>{
     return async (dispatch) =>{
         try {
 
-            const arr = await fetch(`http://173.212.234.137:3000/barber/barbertokens/${barberID}`);
+            const arr = await fetch(`http://95.111.243.233:3000/barber/barbertokens/${barberID}`);
             const resData = await arr.json ();
  
 
@@ -81,7 +81,7 @@ export const getTokens = (barberID)=>{
                 try {
                    
 
-                    const response = await fetch(`http://173.212.234.137:3000/barber/addtoken`,
+                    const response = await fetch(`http://95.111.243.233:3000/barber/addtoken`,
                      {
                         method : "POST",
                         headers: {

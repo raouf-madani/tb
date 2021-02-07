@@ -9,7 +9,7 @@ export const createPortfolio=(barber_id)=>{
         const portfolioData={barber_id};
          
         try{
-            const response= await fetch('http://173.212.234.137:3000/portfolio',{
+            const response= await fetch('http://95.111.243.233:3000/portfolio',{
                 method : "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ export const updatePortfolio=(imgsource,model,barber_id,id)=>{
         const portfolioData={imgsource,model};
        
         try{
-            const response= await fetch(`http://173.212.234.137:3000/portfolio/${barber_id}/${id}`,{
+            const response= await fetch(`http://95.111.243.233:3000/portfolio/${barber_id}/${id}`,{
                 method : "POST",
                 headers: {
                     Accept: 'application/json',
@@ -64,7 +64,7 @@ export const setPortfolio= barber_id => {
     return async dispatch=>{
         try{
 
-            const response= await fetch(`http://173.212.234.137:3000/portfolio/${barber_id}`);
+            const response= await fetch(`http://95.111.243.233:3000/portfolio/${barber_id}`);
 
             if(!response.ok){
              throw new Error('Oups! Une erreur est survenue.');

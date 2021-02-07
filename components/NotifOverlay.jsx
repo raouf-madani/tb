@@ -9,7 +9,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 const screen = Dimensions.get("window");
 
 const NotifOverlay = props =>{
-const url = props.type === "confirmée" ? {uri:'http://173.212.234.137/assets/tahfifabarber/true.png'} : props.type === "annulée" ?  {uri:'http://173.212.234.137/assets/tahfifabarber/false.png'} : {uri:'http://173.212.234.137/assets/tahfifabarber/expired.png'} ; 
+const url = props.type === "confirmée" ? {uri:'http://95.111.243.233/assets/tahfifabarber/true.png'} : props.type === "annulée" ?  {uri:'http://95.111.243.233/assets/tahfifabarber/false.png'} : {uri:'http://95.111.243.233/assets/tahfifabarber/expired.png'} ; 
     const buttonColors = props.type ==="confirmée" ?['#0DA598', '#11998e'] : ['#fd6d57', '#fd9054'] ;
 
 

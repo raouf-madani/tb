@@ -40,7 +40,7 @@ const barber=useSelector(state=>state.barbers.barber[0]);
 /******************SEND A NOTIFICATION TO THE client WHEN A BOOKING IS Canceled ************************/
 async function sendPushNotification(type,alert1,alert2,alert3) {
   // "annulée","Annuler","annuler
-  const arr = await fetch(`http://173.212.234.137:3000/client/clienttokens/${props.navigation.getParam("clientId")}`);
+  const arr = await fetch(`http://95.111.243.233:3000/client/clienttokens/${props.navigation.getParam("clientId")}`);
   const resData = await arr.json ();
   const allMessages = [];
  
@@ -107,7 +107,7 @@ const [clientInfos , setClientInfos] = useState({
 });
 
 const dispatch = useDispatch();
-const clientImage =  (clientInfos.image === null || clientInfos.image === undefined ) ? {uri:'http://173.212.234.137/assets/tahfifa/unknown.jpeg'} : {uri:`http://173.212.234.137/profileImages/client/${clientInfos.image}`}  ;
+const clientImage =  (clientInfos.image === null || clientInfos.image === undefined ) ? {uri:'http://95.111.243.233/assets/tahfifa/unknown.jpg'} : {uri:`http://95.111.243.233/profileImages/client/${clientInfos.image}`}  ;
 //cancel booking
 
 const bookingHandler = (type,alert1,alert2,alert3) =>{
@@ -175,7 +175,7 @@ useEffect(()=>{
   setLoading(true);
     
 
-      const arr = await fetch(`http://173.212.234.137:3000/client/clientinfos/${props.navigation.getParam("clientId")}`);
+      const arr = await fetch(`http://95.111.243.233:3000/client/clientinfos/${props.navigation.getParam("clientId")}`);
 
       const resData = await arr.json ();
       setClientInfos(...resData);

@@ -19,7 +19,7 @@ const Portfolio = props =>{
 
     return(
       <View style={styles.imageConainer}>
-        <Image source={{uri:`http://173.212.234.137/uploads/${props.modelName}`}} style={styles.modelImage} />
+        <Image source={{uri:`http://95.111.243.233/uploads/${props.modelName}`}} style={styles.modelImage} />
         <View style={{width:'100%',flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
         <TouchableHighlight style={styles.iconContainer} onPress={props.cameraImage}>
           <Ionicons title = "add" 

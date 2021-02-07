@@ -164,7 +164,7 @@ const signupHandler = async () => {
 
     
 
-      const result = await fetch(`http://173.212.234.137:3000/phone/${prefix+formState.inputValues.phone}`);
+      const result = await fetch(`http://95.111.243.233:3000/phone/${prefix+formState.inputValues.phone}`);
     
       const resData= await result.json();
       console.log(resData);
@@ -245,7 +245,7 @@ const sendCode = async () => {
 
     return(
       <TouchableWithoutFeedback onPress = {()=>{Keyboard.dismiss()}}>
-        <ImageBackground source={{uri:'http://173.212.234.137/assets/tahfifabarber/chica4.jpg'}} style={styles.container}>
+        <ImageBackground source={{uri:'http://95.111.243.233/assets/tahfifabarber/chica4.jpg'}} style={styles.container}>
           <KeyboardAvoidingView keyboardVerticalOffset={screen.width/36}  behavior={Platform.OS === "ios" ? "padding" : null}>
           <StatusBar hidden />
           <FirebaseRecaptcha.FirebaseRecaptchaVerifierModal
@@ -256,7 +256,7 @@ const sendCode = async () => {
               />
           
               <View style={{width:'85%',height:verificationId?'50%':'30%',alignSelf:'center',alignItems:'flex-start',justifyContent:'flex-end'}}>
-                 <Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/icon.png'}} style={styles.icon}/>
+                 <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/icon.png'}} style={styles.icon}/>
                  <Text style={styles.slogan}>Allez chez votre client ou recevez-le au salon</Text>
               </View>
               <View style={styles.secondContainer}>
@@ -264,7 +264,7 @@ const sendCode = async () => {
                 <CustomInput
                     id='phone'
                     rightIcon={<MaterialIcons title = "phone" name ='phone' color='#323446' size={screen.width/15.7} />}
-                    leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Colors.blue,paddingRight:screen.width/72}}><Image source={{uri:'http://173.212.234.137/assets/tahfifabarber/algeriaFlag.png'}} style={{width:screen.width/15,height:screen.width/12.85,marginRight:screen.width/72}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
+                    leftIcon={<View style={{flexDirection:'row',alignItems:'center',justifyContent:'space-around',borderRightWidth:1,borderRightColor:Colors.blue,paddingRight:screen.width/72}}><Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/algeriaFlag.png'}} style={{width:screen.width/15,height:screen.width/12.85,marginRight:screen.width/72}}></Image><Text style={styles.phoneNumber}>+213</Text></View>}
                     placeholder='555555555'
                     keyboardType="phone-pad"
                     returnKeyType="next"

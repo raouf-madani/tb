@@ -7,7 +7,7 @@ export const createWorktime=(barber_id)=>{
         const worktimeData={barber_id};
          
         try{
-            const response= await fetch('http://173.212.234.137:3000/worktime/addWorktime',{
+            const response= await fetch('http://95.111.243.233:3000/worktime/addWorktime',{
                 method : "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -37,7 +37,7 @@ export const updateWorktime= (isworkingSat,isworkingSun,isworkingMon,isworkingTu
 
          try{
            
-           const response = await fetch(`http://173.212.234.137:3000/worktime/updateWorktime/${barber_id}`,{
+           const response = await fetch(`http://95.111.243.233:3000/worktime/updateWorktime/${barber_id}`,{
               method:'PATCH',
               headers: {
                 'Content-Type': 'application/json'

@@ -38,7 +38,7 @@ const StartupScreen = props =>{
       <View style = {styles.container}>
         <StatusBar hidden />
         <ImageBackground 
-        source={{uri:'http://173.212.234.137/assets/tahfifabarber/support.png'}} 
+        source={{uri:'http://95.111.243.233/assets/tahfifabarber/support.png'}} 
         style={styles.bigBackgroundImage}
         >
             
