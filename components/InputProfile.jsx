@@ -70,10 +70,7 @@ const InputProfile = props =>{
             dispatchInputState({type:INPUT_UPDATE,value:text,isValid:isValid})
         }
 
-        const lostFocusHandler = ()=>{
-
-            dispatchInputState({type:INPUT_BLUR});
-        }
+    
 
     return(
         <View style={{height:props.height, width:props.widthView,borderWidth:1,borderRadius:screen.width/18,backgroundColor:props.backgroundColor,
@@ -86,7 +83,7 @@ const InputProfile = props =>{
                 placeholder={props.placeholder}
                 inputContainerStyle={styles.input}
                 placeholderTextColor={props.placeholderTextColor}
-                inputStyle={{fontSize:screen.width/24,color:Platform.OS==='android'?Colors.blue:'white'}}
+                inputStyle={{fontSize:screen.width/35,color:'white'}}
                 errorMessage={props.errorMessage}
             />
         </View>

@@ -131,6 +131,8 @@ export default{
     ChooseService:"إختر خدمتك",
     ServiceType:"نوع الخدمة",
     ServiceName:"إسم الخدمة",
+    DurationH:'المدة بالساعات',
+    DurationM:'المدة بالدقائق',
     Beard:"لحية",
     BeardTrace:"مثال: لحية مرسومة",
     Hours:"الساعات",

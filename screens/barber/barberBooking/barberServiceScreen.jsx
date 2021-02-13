@@ -642,7 +642,7 @@ BarberServiceScreen.navigationOptions = navData => {
             <Item title = {disponible?'Sauvegarder':' '} 
               iconName ={disponible?'md-checkmark':''}
               color='#fff'
-              size={screen.width/15.7}   
+              size={screen.width/32}   
               onPress={saveFunction}    
             />
           </HeaderButtons>)

@@ -8,7 +8,7 @@ import HeaderButton from "../../../components/HeaderButton";
 import InputProfile from '../../../components/InputProfile';
 import polylanar from "../../../lang/ar";
 import polylanfr from "../../../lang/fr";
-
+import RNPickerSelect from 'react-native-picker-select';
 import * as barberActions from '../../../store/actions/barberActions';
 import * as authActions from '../../../store/actions/authActions';
 
@@ -91,28 +91,11 @@ const BarberProfileScreen = props =>{
    };
 
     //States for complex information textInputs
-   const [wilaya,setWilaya] = useState(barber[0]?barber[0].wilaya:undefined);
-   const wilayas = [barber && barber[0].lang?polylanfr.City:polylanar.City,'Alger','Blida'];
+   const [wilaya,setWilaya] = useState(barber[0]?barber[0].wilaya:null);
 
    const dispatch = useDispatch();
    
-   //picker only iOS function 
-   const onPress = () =>{
-     const wilayasIOS = [barber && barber[0].lang?polylanfr.City:polylanar.City,'Alger','Blida'];    
-     ActionSheetIOS.showActionSheetWithOptions(
-       {
-         options: wilayasIOS,
-         cancelButtonIndex: -1
-       },
-       buttonIndex => {
-         if (buttonIndex === -1) {
-           // cancel action
-         } else {
-          setWilaya(wilayasIOS[buttonIndex]);
-         } 
-       }
-     );  
- }
+  
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///ImagePicker
 
@@ -448,21 +431,24 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
             
             <View style={{ width:'90%',borderWidth:1,paddingHorizontal:screen.width/30,borderRadius:screen.width/14.4,backgroundColor:Platform.OS==='android'?'#fff':Colors.blue,borderColor:wilaya!=='wilaya'?'#fff':Colors.primary,marginVertical:screen.width/72,height:screen.width/8,justifyContent:'center',shadowColor: 'black',shadowOpacity: 0.96,
                           shadowOffset: {width: 0, height:2},shadowRadius: screen.width/36,elevation: 3,overflow:'hidden',alignSelf:'center'}}>
-              {Platform.OS === 'android' ? 
-                        <Picker
-                        selectedValue={wilaya}
-                        onValueChange={itemValue => setWilaya(itemValue)}
-                        style={{fontFamily:'poppins',color:'#323446', }}
-                        
-                        >
-                        {wilayas.map(el=> <Picker.Item label={el} value={el} key={el} itemStyle={{ fontSize: 100 }} />)}
-                        </Picker> :
-                        <TouchableOpacity onPress={onPress} style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:screen.width/21.2,paddingRight:screen.width/14.4}}>
-                        <Text style={{fontFamily:'poppins',fontSize:screen.width/24,fontWeight:'500',color:'#fff'}}>
-                          {wilaya}
-                        </Text>
-                        <Ionicons name="ios-arrow-down" size={screen.width/15} color="#fff" onPress={onPress} />
-                        </TouchableOpacity>} 
+              <RNPickerSelect
+                              value={wilaya}
+                              useNativeAndroidPickerStyle={false}
+                              style={{ inputIOS:{fontFamily:'poppins',fontSize:screen.width/35,color:'#fff'},inputAndroid: {
+                                
+                                fontFamily:'poppins',
+                                color:'#323446',
+                                fontSize:screen.width/35
+                              }}}
+                             
+                              placeholder={{label:barber && barber.lang?polylanfr.City:polylanar.City,value:null}}
+                              onValueChange={itemValue => setWilaya(itemValue)}
+                              doneText={barber && barber.lang?polylanfr.Cancel:polylanar.Cancel}
+                              items={[
+                                { label: 'Blida', value: 'Blida'},
+                                { label: 'Alger', value: 'Alger' }
+                            ]}
+                            />
             </View>
             
               <InputProfile
@@ -545,7 +531,7 @@ BarberProfileScreen.navigationOptions = navData => {
         />
       ),
       headerTintColor: '#fff',
-      headerRight : ()=> (load ? <ActivityIndicator color={Colors.primary} style={{marginRight:screen.width/36}} />:
+      headerRight : ()=> (load ? <ActivityIndicator color={Colors.primary} style={{marginRight:screen.width/32}} />:
         <HeaderButtons HeaderButtonComponent = {HeaderButton}> 
           <Item title = "save" 
             iconName ='md-checkmark'

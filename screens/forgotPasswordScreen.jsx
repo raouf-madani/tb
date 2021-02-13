@@ -407,6 +407,9 @@ const styles= StyleSheet.create({
     alignSelf:'center',
     fontFamily:'poppins-bold'
   },
+  phoneNumber:{
+    fontSize:screen.width/35
+  }
 });
 
 export default ForgotPasswordScreen;

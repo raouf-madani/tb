@@ -601,7 +601,7 @@ const styles= StyleSheet.create({
  },
  phoneNumber:{
  color:Platform.OS==='android'?'#323446':'#fff',
- fontSize:screen.width/24
+ fontSize:screen.width/35
 },
 coverTwo:{
   flex:1,

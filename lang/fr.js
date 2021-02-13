@@ -129,6 +129,8 @@ export default{
     //EditService Detail screen********************************************************************
     ChooseService:"Choisissez votre service",
     ServiceType:"Type de service",
+    DurationH:'Durée en h',
+    DurationM:'Durée en m',
     ServiceName:"Nom de service",
     Beard:"Barbe",
     BeardTrace:"Ex: Barbe tracée",

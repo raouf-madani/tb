@@ -1,7 +1,6 @@
 import React, {useState,useReducer,useEffect,useCallback} from 'react';
-import { StyleSheet,View,KeyboardAvoidingView,Text,Image,Dimensions,TouchableWithoutFeedback,Keyboard,ActionSheetIOS, StatusBar,Picker,ActivityIndicator,Alert,Platform,TouchableOpacity} from 'react-native';
+import { StyleSheet,View,KeyboardAvoidingView,Text,Image,Dimensions,TouchableWithoutFeedback,Keyboard,ActionSheetIOS, StatusBar,ActivityIndicator,Alert,Platform,TouchableOpacity} from 'react-native';
 import {Button } from 'react-native-elements';
-import {Ionicons} from "@expo/vector-icons";
 import InputProfile from '../../../components/InputProfile';
 import Colors from '../../../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -9,7 +8,7 @@ import * as servicesActions from '../../../store/actions/serviceActions';
 import { useDispatch,useSelector } from 'react-redux';
 import polylanar from "../../../lang/ar";
 import polylanfr from "../../../lang/fr";
-import BarberServiceScreen from './barberServiceScreen';
+import RNPickerSelect from 'react-native-picker-select';
 
 //responsivity (Dimensions get method)
 const screen = Dimensions.get('window');
@@ -46,82 +45,31 @@ const EditServiceScreen = props =>{
    
 
    const currentServiceID=props.navigation.getParam('idService');  //get Service ID
-   
    const barber=useSelector(state=>state.barbers.barber[0]);
    //console.log(barber);
    const currentUserService = barber.services.find(service => service.serviceId === currentServiceID); //get current service data
    
 
    //States for complex information textInputs
-   const [hour,setHour] = useState(!currentServiceID?0:currentUserService.durationHour.toString());
-   const hours = ['0','1','2','3','4','5','6','7','8','9','10','11','12'];
-   const [minute,setMinute] = useState(!currentServiceID?0:currentUserService.durationMinute.toString());
-   const minutes = ['0','5','10','15','20','25','30','35','40','45','50','55']; 
-   const serviceTypes = ['Barbe','Cheveux','Suppléments'];
-   const [serviceType,setServiceType] = useState(!currentServiceID?serviceTypes[0]:currentUserService.typeOfService);
-   const serviceTypesWoman = ['Cheveux femme','Mariage','Soins'];
-   const [serviceTypeWoman,setServiceTypeWoman] = useState(!currentServiceID?serviceTypesWoman[0]:currentUserService.typeOfService);
+   const [hour,setHour] = useState(!currentServiceID?null:currentUserService.durationHour.toString());
+   const [minute,setMinute] = useState(!currentServiceID?null:currentUserService.durationMinute.toString());
+   const [serviceType,setServiceType] = useState(!currentServiceID?null:currentUserService.typeOfService);
+   const [serviceTypeWoman,setServiceTypeWoman] = useState(!currentServiceID?null:currentUserService.typeOfService);
    const [error, setError] = useState();
    const [isLoading,setIsLoading]= useState(false);//ActivityIndicator handling
    const dispatch= useDispatch();
+
+   const pickedMenServicesHandler =  (itemValue)=>{
+    setServiceType(itemValue);
+        };
+    const pickedWomenServicesHandler =  (itemValue)=>{
+      setServiceTypeWoman(itemValue);
+          };
    
-   //picker only iOS hours function 
-   const onPress = () =>{
-     const hoursIOS = ['0','1','2','3','4','5','6','7','8','9','10','11','12'];    
-     ActionSheetIOS.showActionSheetWithOptions(
-       {
-         options: hoursIOS,
-         cancelButtonIndex: -1
-       },
-       buttonIndex => {
-         if (buttonIndex === -1) {
-           // cancel action
-         } else {
-          setHour(hoursIOS[buttonIndex]);
-         } 
-       }
-     );  
- };
-
- //picker only iOS minutes function 
- const onPressMinute = () =>{
-  const minutesIOS = ['0','5','10','15','20','25','30','35','40','45','50','55'];    
-  ActionSheetIOS.showActionSheetWithOptions(
-    {
-      options: minutesIOS,
-      cancelButtonIndex: -1
-    },
-    buttonIndex => {
-      if (buttonIndex === -1) {
-        // cancel action
-      } else {
-       setMinute(minutesIOS[buttonIndex]);
-      } 
-    }
-  );  
-};
-
- //picker only iOS service type function 
- const onPressServiceType = () =>{
-  const serviceTypesIOS = ['Barbe','Cheveux','Suppléments'];    
-  ActionSheetIOS.showActionSheetWithOptions(
-    {
-      options: serviceTypesIOS,
-      cancelButtonIndex: -1
-    },
-    buttonIndex => {
-      if (buttonIndex === -1) {
-        // cancel action
-      } else {
-       setServiceType(serviceTypesIOS[buttonIndex]);
-      } 
-    }
-  );  
-};
-
+  
 //picker only iOS service type Woman function 
-const onPressServiceTypeWoman = () =>{
-  const serviceTypesWomanIOS = ['Cheveux femme','Mariage','Soins'];    
+/*const onPressServiceTypeWoman = () =>{
+  const serviceTypesWomanIOS = ['Coiffure','Mariage','Soins'];    
   ActionSheetIOS.showActionSheetWithOptions(
     {
       options: serviceTypesWomanIOS,
@@ -135,7 +83,7 @@ const onPressServiceTypeWoman = () =>{
       } 
     }
   );  
-};
+};*/
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -172,7 +120,9 @@ useEffect(() => {
  const submitHandler =async () => {
  
   try{
-      if(!formState.formIsValid || ((hour==='0' && minute==='0') || (hour===0 && minute===0) || (hour==='0' && minute===0) || (hour===0 && minute==='0')) ){
+      console.log(formState.formIsValid);
+
+      if(!formState.formIsValid || ((minute===null || hour===null || (serviceType===null && serviceTypeWoman===null) || formState.inputValues.price==='' || formState.inputValues.name==='') ||  (hour==='0' && minute==='0') || (hour===0 && minute===0) || (hour==='0' && minute===0) || (hour===0 && minute==='0')) ){
           Alert.alert(barber && barber.lang?polylanfr.Error:polylanar.Error,barber && barber.lang?polylanfr.EmptyFields:polylanar.EmptyFields,[
               {text:barber && barber.lang?polylanfr.OK:polylanar.OK}
           ]);
@@ -252,42 +202,57 @@ useEffect(()=>{
                    <View style={{width:'50%'}}>
                     <Text style={{fontFamily:'poppins',fontSize:screen.width/30,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.ServiceType:polylanar.ServiceType}</Text>
                    </View>
-                   <View style={{ width:'50%',borderWidth:1,paddingHorizontal:screen.width/30,borderRadius:screen.width/14.4,backgroundColor:Platform.OS=='ios'?Colors.blue:'#d3d3d3',
-                                  borderColor:'#d3d3d3',height:screen.width/8,
-                                  justifyContent:'center',alignSelf:'center'}}>
-                   {Platform.OS === 'android' &&  barber.sex === 'Homme' ? 
+                   <View style={{ width:'50%',borderWidth:1,paddingHorizontal:screen.width/30,borderRadius:screen.width/14.4,backgroundColor:Platform.OS==='android'?'#d3d3d3':'#323446',
+                                  borderColor:'#d3d3d3',height:screen.width/8,justifyContent:'center',alignSelf:'center',shadowOpacity: 0.96,
+                                  shadowOffset: {width: 0, height:2},shadowRadius: screen.width/36,elevation: 3,overflow:'hidden'}}>
+                   { barber.sex === 'Homme' ? 
                     
-                              (<Picker
-                              selectedValue={serviceType}
-                              onValueChange={itemValue => setServiceType(itemValue)}
-                              style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#323446'}}
-                              >
-                              {serviceTypes.map(el=> <Picker.Item label={el} value={el} key={el} />)}
-                              </Picker>) :
-                              Platform.OS === 'android' &&  barber.sex === 'Femme' ?
-                              ( <Picker
-                               selectedValue={serviceTypeWoman}
-                               onValueChange={itemValue => setServiceTypeWoman(itemValue)}
-                               style={{fontFamily:'poppins',fontSize:12,color:'#323446'}}
-                               >
-                               {serviceTypesWoman.map(el=> <Picker.Item label={el} value={el} key={el} />)}
-                               </Picker> )
-                              : 
-                              Platform.OS === 'ios' &&  barber.sex === 'Homme' ?
+                              (<RNPickerSelect
+                                value={serviceType}
+                                useNativeAndroidPickerStyle={false}
+                                style={{ inputIOS:{fontFamily:'poppins',fontSize:screen.width/35,color:'#fff'},inputAndroid: {
+                                  
+                                  fontFamily:'poppins',
+                                  color:'#323446',
+                                  fontSize:screen.width/35
+                                }}}
+                               
+                                placeholder={{label:barber && barber.lang?polylanfr.ServiceType:polylanar.ServiceType,value:null}}
+                                onValueChange={itemValue => pickedMenServicesHandler(itemValue)}
+                                doneText={barber && barber.lang?polylanfr.Cancel:polylanar.Cancel}
+                                items={[
+                                  { label: 'Tahfifa', value: 'Tahfifa'},
+                                  { label: 'Barbe', value: 'Barbe' },
+                                  { label: 'Suppléments', value: 'Suppléments' },
+                                  { label: 'Soins', value: 'Soins' },
+                              ]}
+                              />) :
                              
-                              ( <TouchableOpacity onPress={onPressServiceType} style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingHorizontal:screen.width/72}}>
-                              <Text  style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#fff'}}>
-                                {serviceType}
-                              </Text>
-                              <Ionicons name="ios-arrow-down" size={screen.width/15} color='#f9f9f9' onPress={onPressServiceType} />
-                              </TouchableOpacity>):
-                               Platform.OS === 'ios' &&  barber.sex === 'Femme' ?
-                              (<TouchableOpacity onPress={onPressServiceTypeWoman} style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingHorizontal:screen.width/72}}>
-                              <Text  style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#fff'}}>
-                               {serviceTypeWoman}
-                             </Text>
-                             <Ionicons name="ios-arrow-down" size={screen.width/15} color='#f9f9f9'  onPress={onPressServiceTypeWoman} />
-                             </TouchableOpacity>):undefined} 
+                              <RNPickerSelect
+                               value={serviceTypeWoman}
+                               onValueChange={itemValue => pickedWomenServicesHandler(itemValue)}
+                               useNativeAndroidPickerStyle={false}
+                               style={{ inputIOS:{fontFamily:'poppins',fontSize:screen.width/35,color:'#fff'},inputAndroid: {
+                                 
+                                 fontFamily:'poppins',
+                                 color:'#323446',
+                                 fontSize:screen.width/35
+                               }}}
+                              
+                               placeholder={{label:barber && barber.lang?polylanfr.ServiceType:polylanar.ServiceType,value:null}}
+                            
+                            items={[
+                              { label: 'Coiffure', value: 'Coiffure'},
+                              { label: 'Soins', value: 'Soins' },
+                              { label: 'Mariage', value: 'Mariage' },
+                              { label: 'Maquillage', value: 'Maquillage' },
+                              { label: 'Manucure', value: 'Manucure'},
+                              { label: 'Pédicure', value: 'Pédicure' },
+                              { label: 'Epilation', value: 'Epilation' },
+                          ]}
+                               />
+                              
+                      }
                   </View>
                  </View>
                  <View style={{flexDirection:'row',width:'90%',marginVertical:screen.width/72,alignItems:'center'}}>
@@ -298,7 +263,7 @@ useEffect(()=>{
                     <InputProfile
                         id="name" 
                         placeholder={barber && barber.lang?polylanfr.BeardTrace:polylanar.BeardTrace}
-                        placeholderTextColor={Platform.OS=='android'?'rgba(50,52,70,0.4)':'#d3d3d3'}
+                        placeholderTextColor={Platform.OS==='android'? 'rgba(50,52,70,0.4)':'#d3d3d3'}
                         keyboardType="default"
                         onInputChange={inputChangeHandler}
                         initialValue={currentUserService?currentUserService.name:''}
@@ -307,7 +272,7 @@ useEffect(()=>{
                         minLength={3}
                         autoCapitalize='sentences'
                         widthView='50%'
-                        backgroundColor={Platform.OS=='ios'?Colors.blue:'#d3d3d3'}
+                        backgroundColor={Platform.OS==='android'?'#d3d3d3':'#323446'}
                         height={screen.width/9}
                         /> 
                   
@@ -318,23 +283,37 @@ useEffect(()=>{
                    <View style={{width:'50%'}}>
                     <Text style={{fontFamily:'poppins',fontSize:screen.width/30,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.Hours:polylanar.Hours}</Text>
                    </View>
-                   <View style={{ width:'50%',borderWidth:1,paddingHorizontal:screen.width/72,borderRadius:screen.width/14.4,backgroundColor:Platform.OS=='ios'?Colors.blue:'#d3d3d3',
-                                  borderColor:hour!=='0'||minute!=='0'?'#d3d3d3':Colors.primary,height:screen.width/8,
-                                  justifyContent:'center',alignSelf:'center'}}>
-                   {Platform.OS === 'android' ? 
-                              <Picker
-                              selectedValue={hour}
+                   <View style={{ width:'50%',borderWidth:1,paddingHorizontal:screen.width/30,borderRadius:screen.width/14.4,backgroundColor:Platform.OS==='android'?'#d3d3d3':'#323446',
+                                  borderColor:hour!=='0'||minute!=='0'?'#d3d3d3':Colors.primary,height:screen.width/9,
+                                  justifyContent:'center',alignSelf:'center',shadowOpacity: 0.96,
+                                  shadowOffset: {width: 0, height:2},shadowRadius: screen.width/36,elevation: 3,overflow:'hidden'}}>
+                           <RNPickerSelect
+                              value={hour}
+                              useNativeAndroidPickerStyle={false}
+                              style={{ inputIOS:{fontFamily:'poppins',fontSize:screen.width/35,color:'#fff'},inputAndroid: {
+                                
+                                fontFamily:'poppins',
+                                color:'#323446',
+                                fontSize:screen.width/35
+                              }}}
+                             
+                              placeholder={{label:barber && barber.lang?polylanfr.DurationH:polylanar.DurationH,value:null}}
                               onValueChange={itemValue => setHour(itemValue)}
-                              style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#323446'}}
-                              >
-                              {hours.map(el=> <Picker.Item label={el} value={el} key={el} />)}
-                              </Picker> :
-                              <TouchableOpacity onPress={onPress} style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingHorizontal:screen.width/36}}>
-                              <Text  style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#fff'}}>
-                                {hour}
-                              </Text>
-                              <Ionicons name="ios-arrow-down" size={screen.width/15} color='#f9f9f9'  onPress={onPress} />
-                              </TouchableOpacity>} 
+                              doneText={barber && barber.lang?polylanfr.Cancel:polylanar.Cancel}
+                              items={[
+                                { label: '0', value: '0'},
+                                { label: '1', value: '1' },
+                                { label: '2', value: '2' },
+                                { label: '3', value: '3'},
+                                { label: '4', value: '4' },
+                                { label: '5', value: '5' },
+                                { label: '6', value: '6'},
+                                { label: '7', value: '7' },
+                                { label: '8', value: '8' },
+                                { label: '9', value: '9'},
+                                { label: '10', value: '10' }
+                            ]}
+                            />
                   </View>
                  </View>
                  
@@ -342,23 +321,37 @@ useEffect(()=>{
                    <View style={{width:'50%'}}>
                     <Text style={{fontFamily:'poppins',fontSize:screen.width/30,color:'#323446',alignSelf:'flex-start'}}>{barber && barber.lang?polylanfr.Minutes:polylanar.Minutes}</Text>
                    </View>
-                   <View style={{ width:'50%',borderWidth:1,paddingHorizontal:screen.width/30,borderRadius:screen.width/14.4,backgroundColor:Platform.OS=='ios'?Colors.blue:'#d3d3d3',
-                                  borderColor:hour!=='0'||minute!=='0'?'#d3d3d3':Colors.primary,height:screen.width/8,
-                                  justifyContent:'center',alignSelf:'center'}}>
-                   {Platform.OS === 'android' ? 
-                              <Picker
-                              selectedValue={minute}
+                   <View style={{ width:'50%',borderWidth:1,paddingHorizontal:screen.width/30,borderRadius:screen.width/14.4,backgroundColor:Platform.OS==='android'?'#d3d3d3':'#323446',
+                                  borderColor:hour!=='0'||minute!=='0'?'#d3d3d3':Colors.primary,height:screen.width/9,
+                                  justifyContent:'center',alignSelf:'center',shadowOpacity: 0.96,shadowOffset: {width: 0, height:2},
+                                  shadowRadius: screen.width/36,elevation: 3,overflow:'hidden'}}>
+                   <RNPickerSelect
+                              value={minute}
+                              useNativeAndroidPickerStyle={false}
+                              useNativeIOSPickerStyle={false}
+                              style={{ inputIOS:{fontFamily:'poppins',fontSize:screen.width/35,color:'#fff'},inputAndroid: {
+                                fontFamily:'poppins',
+                                color:'#323446',
+                                fontSize:screen.width/35
+                              }}}
+                              placeholder={{label:barber && barber.lang?polylanfr.DurationM:polylanar.DurationM,value:null}}
                               onValueChange={itemValue => setMinute(itemValue)}
-                              style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#323446'}}
-                              >
-                              {minutes.map(el=> <Picker.Item label={el} value={el} key={el} />)}
-                              </Picker> :
-                               <TouchableOpacity onPress={onPressMinute} style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingHorizontal:screen.width/72}}>
-                              <Text style={{fontFamily:'poppins',fontSize:screen.width/24,color:'#fff'}}>
-                                {minute}
-                              </Text>
-                              <Ionicons name="ios-arrow-down" size={screen.width/15} color='#f9f9f9'  onPress={onPressMinute} />
-                              </TouchableOpacity>} 
+                              doneText={barber && barber.lang?polylanfr.Cancel:polylanar.Cancel}
+                              items={[
+                                { label: '0', value: '0'},
+                                { label: '5', value: '5' },
+                                { label: '10', value: '10' },
+                                { label: '15', value: '15'},
+                                { label: '20', value: '20'},
+                                { label: '25', value: '25'},
+                                { label: '30', value: '30'},
+                                { label: '35', value: '35'},
+                                { label: '40', value: '40'},
+                                { label: '45', value: '45'},
+                                { label: '50', value: '50' },
+                                { label: '55', value: '55' }
+                            ]}
+                            />
                   </View>
                  </View>
                  
@@ -368,16 +361,15 @@ useEffect(()=>{
                    </View>
                    <InputProfile
                       id='price'
-                      placeholder={barber && barber.lang?polylanfr.Example+': 1500 دج':polylanar.Example+': 1500 دج'}
+                      placeholder={barber && barber.lang?polylanfr.Example+': 1500':polylanar.Example+': 1500'}
                       keyboardType="phone-pad"
                       onInputChange={inputChangeHandler}
                       initialValue={currentUserService?currentUserService.price.toString():''}
                       initiallyValid={true}
                       required
-                      placeholderTextColor={Platform.OS==='android'?'rgba(50,52,70,0.4)':'#d3d3d3'}
-                      style={{height:screen.width/18}}
+                      placeholderTextColor={Platform.OS='android'?'rgba(50,52,70,0.4)':'#d3d3d3'}
                       widthView='50%'
-                      backgroundColor={Platform.OS==='ios'?Colors.blue:'#d3d3d3'}
+                      backgroundColor={Platform.OS==='android'?'#d3d3d3':'#323446'}
                       height={screen.width/9}
                       inputStyle={{color:'white'}}
                     />
@@ -467,7 +459,7 @@ footerContainer:{
  height:'15%',
  width:'100%',
  justifyContent:'flex-end',
- paddingBottom:screen.width/14.4,
+ paddingBottom:screen.width/18,
 },
 labelButton:{
  color:'#FFF',

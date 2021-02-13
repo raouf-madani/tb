@@ -305,6 +305,9 @@ const styles= StyleSheet.create({
     fontSize:screen.width/28,
     fontFamily:'poppins-bold',
     color:'#fd6c57'
+  },
+  phoneNumber:{
+    fontSize:screen.width/24
   }
 });
 

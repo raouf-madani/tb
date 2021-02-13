@@ -530,7 +530,7 @@ const styles= StyleSheet.create({
     fontFamily:'poppins-bold'
   },
   phoneNumber:{
-    fontSize:screen.width/24,
+    fontSize:screen.width/35,
     color:Colors.blue,
   },
   cofirmResendContainer:{
