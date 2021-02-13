@@ -1,5 +1,5 @@
 import React,{useState,useEffect,useReducer,useCallback} from 'react';
-import { StyleSheet,View,AsyncStorage,Linking,ScrollView,TouchableWithoutFeedback,Keyboard,ImageBackground,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActionSheetIOS,Picker,ActivityIndicator,Platform,StatusBar} from 'react-native';
+import { StyleSheet,View,AsyncStorage,Linking,ScrollView,TouchableWithoutFeedback,Keyboard,ImageBackground,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActivityIndicator,Platform,StatusBar} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
 import {useSelector,useDispatch} from 'react-redux';
 import Colors from "../../../constants/Colors";
@@ -234,7 +234,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //Update barber's data Management after pressing in Check icon
   const saveHandler = useCallback(async()=>{
-    if(formState.formIsValid && wilaya!=='Wilaya'){
+    if(formState.formIsValid && wilaya!==null){
       
       
     try{
@@ -429,24 +429,22 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 height={screen.width/8}
               />
             
-            <View style={{ width:'90%',borderWidth:1,paddingHorizontal:screen.width/30,borderRadius:screen.width/14.4,backgroundColor:Platform.OS==='android'?'#fff':Colors.blue,borderColor:wilaya!=='wilaya'?'#fff':Colors.primary,marginVertical:screen.width/72,height:screen.width/8,justifyContent:'center',shadowColor: 'black',shadowOpacity: 0.96,
+            <View style={{ width:'90%',borderWidth:1,paddingHorizontal:screen.width/18,borderRadius:screen.width/14.4,backgroundColor:Platform.OS==='android'?'#fff':Colors.blue,borderColor:wilaya!=='wilaya'?'#fff':Colors.primary,marginVertical:screen.width/72,height:screen.width/8,justifyContent:'center',shadowColor: 'black',shadowOpacity: 0.96,
                           shadowOffset: {width: 0, height:2},shadowRadius: screen.width/36,elevation: 3,overflow:'hidden',alignSelf:'center'}}>
               <RNPickerSelect
                               value={wilaya}
                               useNativeAndroidPickerStyle={false}
-                              style={{ inputIOS:{fontFamily:'poppins',fontSize:screen.width/35,color:'#fff'},inputAndroid: {
-                                
+                              style={{ inputIOS:{fontFamily:'poppins',fontSize:screen.width/30,color:'#fff'},inputAndroid: {
                                 fontFamily:'poppins',
                                 color:'#323446',
-                                fontSize:screen.width/35
+                                fontSize:screen.width/30
                               }}}
-                             
-                              placeholder={{label:barber && barber.lang?polylanfr.City:polylanar.City,value:null}}
+                              placeholder={{label:barber[0] && barber[0].lang?polylanfr.City:polylanar.City,value:null}}
                               onValueChange={itemValue => setWilaya(itemValue)}
                               doneText={barber && barber.lang?polylanfr.Cancel:polylanar.Cancel}
                               items={[
-                                { label: 'Blida', value: 'Blida'},
-                                { label: 'Alger', value: 'Alger' }
+                                { label: 'Alger', value: 'Alger'},
+                                { label: 'Blida', value: 'Blida' }
                             ]}
                             />
             </View>

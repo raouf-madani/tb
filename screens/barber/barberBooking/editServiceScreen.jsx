@@ -46,7 +46,7 @@ const EditServiceScreen = props =>{
 
    const currentServiceID=props.navigation.getParam('idService');  //get Service ID
    const barber=useSelector(state=>state.barbers.barber[0]);
-   //console.log(barber);
+   console.log(Platform.OS);
    const currentUserService = barber.services.find(service => service.serviceId === currentServiceID); //get current service data
    
 
@@ -120,7 +120,7 @@ useEffect(() => {
  const submitHandler =async () => {
  
   try{
-      console.log(formState.formIsValid);
+      
 
       if(!formState.formIsValid || ((minute===null || hour===null || (serviceType===null && serviceTypeWoman===null) || formState.inputValues.price==='' || formState.inputValues.name==='') ||  (hour==='0' && minute==='0') || (hour===0 && minute===0) || (hour==='0' && minute===0) || (hour===0 && minute==='0')) ){
           Alert.alert(barber && barber.lang?polylanfr.Error:polylanar.Error,barber && barber.lang?polylanfr.EmptyFields:polylanar.EmptyFields,[
@@ -210,11 +210,11 @@ useEffect(()=>{
                               (<RNPickerSelect
                                 value={serviceType}
                                 useNativeAndroidPickerStyle={false}
-                                style={{ inputIOS:{fontFamily:'poppins',fontSize:screen.width/35,color:'#fff'},inputAndroid: {
+                                style={{ inputIOS:{fontFamily:'poppins',fontSize:screen.width/30,color:'#fff'},inputAndroid: {
                                   
                                   fontFamily:'poppins',
                                   color:'#323446',
-                                  fontSize:screen.width/35
+                                  fontSize:screen.width/30
                                 }}}
                                
                                 placeholder={{label:barber && barber.lang?polylanfr.ServiceType:polylanar.ServiceType,value:null}}
@@ -232,11 +232,11 @@ useEffect(()=>{
                                value={serviceTypeWoman}
                                onValueChange={itemValue => pickedWomenServicesHandler(itemValue)}
                                useNativeAndroidPickerStyle={false}
-                               style={{ inputIOS:{fontFamily:'poppins',fontSize:screen.width/35,color:'#fff'},inputAndroid: {
+                               style={{ inputIOS:{fontFamily:'poppins',fontSize:screen.width/30,color:'#fff'},inputAndroid: {
                                  
                                  fontFamily:'poppins',
                                  color:'#323446',
-                                 fontSize:screen.width/35
+                                 fontSize:screen.width/30
                                }}}
                               
                                placeholder={{label:barber && barber.lang?polylanfr.ServiceType:polylanar.ServiceType,value:null}}
@@ -290,11 +290,11 @@ useEffect(()=>{
                            <RNPickerSelect
                               value={hour}
                               useNativeAndroidPickerStyle={false}
-                              style={{ inputIOS:{fontFamily:'poppins',fontSize:screen.width/35,color:'#fff'},inputAndroid: {
+                              style={{ inputIOS:{fontFamily:'poppins',fontSize:screen.width/30,color:'#fff'},inputAndroid: {
                                 
                                 fontFamily:'poppins',
                                 color:'#323446',
-                                fontSize:screen.width/35
+                                fontSize:screen.width/30
                               }}}
                              
                               placeholder={{label:barber && barber.lang?polylanfr.DurationH:polylanar.DurationH,value:null}}
@@ -329,10 +329,10 @@ useEffect(()=>{
                               value={minute}
                               useNativeAndroidPickerStyle={false}
                               useNativeIOSPickerStyle={false}
-                              style={{ inputIOS:{fontFamily:'poppins',fontSize:screen.width/35,color:'#fff'},inputAndroid: {
+                              style={{ inputIOS:{fontFamily:'poppins',fontSize:screen.width/30,color:'#fff'},inputAndroid: {
                                 fontFamily:'poppins',
                                 color:'#323446',
-                                fontSize:screen.width/35
+                                fontSize:screen.width/30
                               }}}
                               placeholder={{label:barber && barber.lang?polylanfr.DurationM:polylanar.DurationM,value:null}}
                               onValueChange={itemValue => setMinute(itemValue)}
@@ -367,7 +367,7 @@ useEffect(()=>{
                       initialValue={currentUserService?currentUserService.price.toString():''}
                       initiallyValid={true}
                       required
-                      placeholderTextColor={Platform.OS='android'?'rgba(50,52,70,0.4)':'#d3d3d3'}
+                      placeholderTextColor={Platform.OS==='android'?'rgba(50,52,70,0.4)':'#d3d3d3'}
                       widthView='50%'
                       backgroundColor={Platform.OS==='android'?'#d3d3d3':'#323446'}
                       height={screen.width/9}

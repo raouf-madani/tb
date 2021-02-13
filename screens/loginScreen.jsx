@@ -307,7 +307,7 @@ const styles= StyleSheet.create({
     color:'#fd6c57'
   },
   phoneNumber:{
-    fontSize:screen.width/24
+    fontSize:screen.width/30
   }
 });
 

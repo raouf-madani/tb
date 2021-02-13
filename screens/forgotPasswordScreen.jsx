@@ -408,7 +408,7 @@ const styles= StyleSheet.create({
     fontFamily:'poppins-bold'
   },
   phoneNumber:{
-    fontSize:screen.width/35
+    fontSize:screen.width/30
   }
 });
 

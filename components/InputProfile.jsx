@@ -83,7 +83,7 @@ const InputProfile = props =>{
                 placeholder={props.placeholder}
                 inputContainerStyle={styles.input}
                 placeholderTextColor={props.placeholderTextColor}
-                inputStyle={{fontSize:screen.width/35,color:'white'}}
+                inputStyle={{fontSize:screen.width/30,color:Platform.OS==='android'?'#323446':'#fff'}}
                 errorMessage={props.errorMessage}
             />
         </View>
