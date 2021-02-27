@@ -139,7 +139,7 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
           </View>
           <View style={styles.secondContainer}>
              <View style={styles.logoContainer}>
-                 <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/logo.png'}} style={styles.logo}/>
+                 <Image source={require('../assets/titleReBorn.png')} style={styles.logo}/>
                  <Text style={styles.callToAction}>Exercez votre métier et gagnez plus d'argent</Text>
              </View>
               <View style={styles.inputsContainer}>

@@ -73,7 +73,7 @@ const BarberSupportScreen = props =>{
        <ImageBackground source={{uri:'http://95.111.243.233/assets/tahfifabarber/support.png'}} style={styles.background}>
          <View style={{alignItems:'center',width:'90%'}}>
             <View style={{marginBottom:screen.width/24}}>
-               <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/icon.png'}} style={{width:screen.width/4.5,height:screen.width/4.5}} />
+               <Image source={require('../../../assets/iconReBorn.png')} style={{width:screen.width/4.5,height:screen.width/4.5}} />
             </View>
             <View style={{width:'100%',marginBottom:screen.width/24}}>
               <Text style={{fontFamily:'poppins',fontSize:screen.width/27.7,color:Colors.blue,alignSelf:'center'}}>

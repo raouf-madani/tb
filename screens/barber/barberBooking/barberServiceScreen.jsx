@@ -26,13 +26,13 @@ const BarberServiceScreen = props =>{
   const [isDisponible,setIsDisponible]= useState(false);
 
   const barberID= props.navigation.getParam('barberID');  //get Barber ID
-  console.log(barberID);
+  
   const [error, setError] = useState();
   const [isLoading,setIsLoading]= useState(false);//ActivityIndicator handling
   const [isUpdating,setIsUpdating]= useState(false);//ActivityIndicator handling for worktime update
 
   const dispatch= useDispatch();
-  const isImage= {beard:{uri:'http://95.111.243.233/assets/tahfifabarber/barbe.jpg'},hair:{uri:'http://95.111.243.233/assets/tahfifabarber/hair.jpg'},supp:{uri:'http://95.111.243.233/assets/tahfifabarber/supplements.jpg'},womanHair:{uri:'http://95.111.243.233/assets/tahfifabarber/womanhair.jpg'},wedding:{uri:'http://95.111.243.233/assets/tahfifabarber/mariage.jpg'},care:{uri:'http://95.111.243.233/assets/tahfifabarber/soins.jpg'}};
+  const isImage= {beard:{uri:'http://95.111.243.233/assets/tahfifabarber/barbe.jpg'},hair:{uri:'http://95.111.243.233/assets/tahfifabarber/hair.jpg'},supp:{uri:'http://95.111.243.233/assets/tahfifabarber/supplements.jpg'},womanHair:{uri:'http://95.111.243.233/assets/tahfifabarber/womanhair.jpg'},wedding:{uri:'http://95.111.243.233/assets/tahfifabarber/mariage.jpg'},care:{uri:'http://95.111.243.233/assets/tahfifabarber/soins.jpg'},manCare:{uri:'http://95.111.243.233/assets/tahfifabarber/soinshomme.jpg'},makeup:{uri:'http://95.111.243.233/assets/tahfifabarber/makeup.jpg'},manucure:{uri:'http://95.111.243.233/assets/tahfifabarber/manucure.jpg'},pedicure:{uri:'http://95.111.243.233/assets/tahfifabarber/pedicure.jpg'},epilation:{uri:'http://95.111.243.233/assets/tahfifabarber/epilation.jpg'}};
    //variables for open times
   let satTimeO;
   let sunTimeO;
@@ -217,6 +217,7 @@ const BarberServiceScreen = props =>{
 
    };
 
+   
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //Update barber's worktime data after pressing in Check icon
   const saveHandler = useCallback(async()=>{
@@ -237,8 +238,114 @@ const BarberServiceScreen = props =>{
      wedTimeC= wedClose.closeTimeWed;
      thuTimeC= thuClose.closeTimeThu;
      friTimeC= friClose.closeTimeFri;
-     
+
+    if(satTimeO && satTimeC) { 
+    //sat
+     const satHourO= satTimeO.split(':');
+     const satHourOInteger= parseInt(satHourO[0]);
+     const satHourC= satTimeC.split(':');
+     const satHourCInteger= parseInt(satHourC[0]);
+     if(satHourOInteger >=  satHourCInteger){
+      Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.SaturdayHours:polylanar.SaturdayHours,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+      return;
+     }
+    }else if((satTimeO && !satTimeC) || (!satTimeO && satTimeC)){
+      Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,"Veuillez compléter les horaires de la journée du Samedi s'il vous plaît",[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+      return;
+    }
+   
+    if(sunTimeO && sunTimeC) { 
+     //sun
+     const sunHourO= sunTimeO.split(':');
+     const sunHourOInteger= parseInt(sunHourO[0]);
+     const sunHourC= sunTimeC.split(':');
+     const sunHourCInteger= parseInt(sunHourC[0]);
+     if(sunHourOInteger >=  sunHourCInteger){
+      Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.SundayHours:polylanar.SundayHours,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+      return;
+     }
+    }else if((sunTimeO && !sunTimeC) || (!sunTimeO && sunTimeC)){
+      Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,"Veuillez compléter les horaires de la journée du Dimanche s'il vous plaît",[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+      return;
+    }
+
+    if(monTimeO && monTimeC) {
+     //mon
+     const monHourO= monTimeO.split(':');
+     const monHourOInteger= parseInt(monHourO[0]);
+     const monHourC= monTimeC.split(':');
+     const monHourCInteger= parseInt(monHourC[0]);
+     if(monHourOInteger >=  monHourCInteger){
+      Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.MondayHours:polylanar.MondayHours,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+      return;
+     }
+    }else if((monTimeO && !monTimeC) || (!monTimeO && monTimeC)){
+      Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,"Veuillez compléter les horaires de la journée du Lundi s'il vous plaît",[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+      return;
+    }
+
+    if(tueTimeO && tueTimeC) {   
+     //tue
+     const tueHourO=tueTimeO.split(':');
+     const tueHourOInteger= parseInt(tueHourO[0]);
+     const tueHourC=tueTimeC.split(':');
+     const tueHourCInteger= parseInt(tueHourC[0]);
+     if(tueHourOInteger >=  tueHourCInteger){
+      Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.TuesdayHours:polylanar.TuesdayHours,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+      return;
+     }
+    }else if((tueTimeO && !tueTimeC) || (!tueTimeO && tueTimeC)){
+      Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,"Veuillez compléter les horaires de la journée du Mardi s'il vous plaît",[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+      return;
+    }
+
+    if(wedTimeO && wedTimeC) {
+     //wed
+     const wedHourO=wedTimeO.split(':');
+     const wedHourOInteger= parseInt(wedHourO[0]);
+     const wedHourC=wedTimeC.split(':');
+     const wedHourCInteger= parseInt(wedHourC[0]);
+     if(wedHourOInteger >=  wedHourCInteger){
+      Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.WednesdayHours:polylanar.WednesdayHours,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+      return;
+     }
+    }else if((wedTimeO && !wedTimeC) || (!wedTimeO && wedTimeC)){
+      Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,"Veuillez compléter les horaires de la journée du Mercredi s'il vous plaît",[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+      return;
+    }
+
+    if(thuTimeO && thuTimeC) {
+     //thu
+     const thuHourO=thuTimeO.split(':');
+     const thuHourOInteger= parseInt(thuHourO[0]);
+     const thuHourC=thuTimeC.split(':');
+     const thuHourCInteger= parseInt(thuHourC[0]);
+     if(thuHourOInteger >=  thuHourCInteger){
+      Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.ThursdayHours:polylanar.ThursdayHours,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+      return;
+     }
+    }else if((thuTimeO && !thuTimeC) || (!thuTimeO && thuTimeC)){
+      Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,"Veuillez compléter les horaires de la journée du Jeudi s'il vous plaît",[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+      return;
+    }
+
+    if(friTimeO && friTimeC) {
+     //fri
+     const friHourO=friTimeO.split(':');
+     const friHourOInteger= parseInt(friHourO[0]);
+     const friHourC=friTimeC.split(':');
+     const friHourCInteger= parseInt(friHourC[0]);
+     if(friHourOInteger >=  friHourCInteger){
+      Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,barber && barber[0].lang?polylanfr.FridayHours:polylanar.FridayHours,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+      return;
+     }
+    }else if((friTimeO && !friTimeC) || (!friTimeO && friTimeC)){
+      Alert.alert(barber && barber[0].lang?polylanfr.Oups:polylanar.Oups,"Veuillez compléter les horaires de la journée du Vendredi s'il vous plaît",[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+      return;
+    }
+
     try{
+      
       setIsUpdating(true);
        
        await dispatch(worktimeActions.updateWorktime(
@@ -306,8 +413,8 @@ const BarberServiceScreen = props =>{
           
           <View style={styles.infoContainer}>
              <View style={styles.imageContainer}>
-             {barber[0] && barber[0].image ? <Image source={{uri:`http://95.111.243.233/profileImages/barber/${barber[0].image}`}} style={styles.icon} />:
-               <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknown.jpg'}} style={styles.icon} />}
+             {barber[0] && barber[0].image ? <Image source={{uri:`http://95.111.243.233/profileImages/barber/${barber[0].image}`}} style={styles.icon} />:barber && barber[0].sex==='homme'?
+               <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknown.jpg'}} style={styles.icon} />:<Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknownfemale.jpg'}} style={styles.icon} />}
              </View>
            
              <Text style={styles.bname}>{barber[0] && barber[0].b_name!==null?barber[0].b_name:barber && barber[0].lang?polylanfr.BusinessName:polylanar.BusinessName}</Text>
@@ -467,8 +574,8 @@ const BarberServiceScreen = props =>{
            
            <View style={styles.infoContainer}>
               <View style={styles.imageContainer}>
-              {barber[0] && barber[0].image ? <Image source={{uri:`http://95.111.243.233/profileImages/barber/${barber[0].image}`}} style={styles.icon} />:
-               <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknown.jpg'}} style={styles.icon} />}
+              {barber[0] && barber[0].image ? <Image source={{uri:`http://95.111.243.233/profileImages/barber/${barber[0].image}`}} style={styles.icon} />:barber && barber[0].sex==='homme'?
+               <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknown.jpg'}} style={styles.icon} />:<Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknownfemale.jpg'}} style={styles.icon} />}
               </View>
             
               <Text style={styles.bname}>{barber[0] && barber[0].b_name!==null?barber[0].b_name:barber && barber[0].lang?polylanfr.BusinessName:polylanar.BusinessName}</Text>
@@ -501,7 +608,7 @@ const BarberServiceScreen = props =>{
           <ServiceCart
             key={service.serviceId}
             number={index+1}
-            source={service.typeOfService==='Cheveux'?isImage.hair: service.typeOfService==='Barbe'?isImage.beard: service.typeOfService==='Soins'?isImage.care:service.typeOfService==='Mariage'?isImage.wedding:service.typeOfService==='Suppléments'?isImage.supp:service.typeOfService==='Cheveux femme'?isImage.womanHair:undefined}
+            source={service.typeOfService==='Tahfifa'?isImage.hair: service.typeOfService==='Barbe'?isImage.beard: service.typeOfService==='Soins'?isImage.care:service.typeOfService==='Mariage'?isImage.wedding:service.typeOfService==='Suppléments'?isImage.supp:service.typeOfService==='Coiffure'?isImage.womanHair:service.typeOfService==='Soins homme'?isImage.manCare:service.typeOfService==='Maquillage'?isImage.makeup:service.typeOfService==='Manucure'?isImage.manucure:service.typeOfService==='Pédicure'?isImage.pedicure:service.typeOfService==='Epilation'?isImage.epilation:undefined}
             name={service.name}
             type={service.typeOfService}
             minute={service.duration}

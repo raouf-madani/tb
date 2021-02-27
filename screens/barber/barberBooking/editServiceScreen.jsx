@@ -224,7 +224,7 @@ useEffect(()=>{
                                   { label: 'Tahfifa', value: 'Tahfifa'},
                                   { label: 'Barbe', value: 'Barbe' },
                                   { label: 'Suppléments', value: 'Suppléments' },
-                                  { label: 'Soins', value: 'Soins' },
+                                  { label: 'Soins homme', value: 'Soins homme' },
                               ]}
                               />) :
                              
@@ -270,6 +270,7 @@ useEffect(()=>{
                         initiallyValid={true}
                         required
                         minLength={3}
+                        maxLenth={40}
                         autoCapitalize='sentences'
                         widthView='50%'
                         backgroundColor={Platform.OS==='android'?'#d3d3d3':'#323446'}

@@ -1,5 +1,5 @@
 import React,{useState,useEffect,useCallback,useRef} from 'react';
-import { StyleSheet, Text, View, ImageBackground , Image,Dimensions,TouchableOpacity,ScrollView,StatusBar,Alert,ActivityIndicator, Platform} from 'react-native';
+import { StyleSheet, Text, View, ImageBackground , Image,Linking,Dimensions,TouchableOpacity,ScrollView,StatusBar,Alert,ActivityIndicator, Platform} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons,Entypo} from "@expo/vector-icons";
 import { LinearGradient } from 'expo-linear-gradient';
 import {  Rating,Button,Overlay ,Badge } from 'react-native-elements';
@@ -64,6 +64,9 @@ const responseListener = useRef();
   */
 
  const getBarber=useCallback(async()=>{
+  
+  
+
   try{
     setError(false);
     setIsLoading(true);
@@ -105,11 +108,22 @@ const responseListener = useRef();
    const feedbacks=useSelector(state=>state.feedbacks.feedbacks);
    
   
-
+   const instagramURL=barber && barber.b_name?`https://www.instagram.com/${barber.b_name}/`:'https://www.instagram.com/';
+   const instagramUrl= ()=>{
+    Linking.openURL(instagramURL).catch((err) => {
+      if(barber.b_name===null){
+        Alert.alert(barber && barber.lang?polylanfr.Oups:polylanar.Oups,barber && barber.lang?polylanfr.NoInstagram:polylanar.NoInstagram,[{text:barber && barber.lang?polylanfr.OK:polylanar.OK}]);
+      }
+      if(err){
+        Alert.alert(barber && barber.lang?polylanfr.Oups:polylanar.Oups,barber && barber.lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber.lang?polylanfr.OK:polylanar.OK}]);
+    } 
+    });
+   };
    
   const [isAbout,setIsAbout]= useState(true);
   const [isPortfolio,setIsPortfolio]= useState(false);
   const [isFeedback,setIsFeedback]= useState(false);
+  /*const [blinkingInsta,setBlinkingInsta]= useState(true);*/
 
     const about = ()=>{
       setIsAbout(true);
@@ -128,6 +142,10 @@ const responseListener = useRef();
       setIsPortfolio(false); 
       setIsFeedback(true);
     };
+
+     /*setInterval(()=>{
+      setBlinkingInsta(prevValue=>!prevValue);
+    },3000);*/
 
     const minServicesPrice=prices=>{
       let arrayPrices=[];
@@ -370,11 +388,14 @@ async function registerForPushNotificationsAsync() {
            </View>
            <View style={styles.infoContainer}>
                <View style={styles.imageContainer}>
-               {barber && barber.image ? <Image source={{uri:`http://95.111.243.233/profileImages/barber/${barber.image}`}} style={styles.icon} />:
-               <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknown.jpg'}} style={styles.icon} />}
+               {barber && barber.image ? <Image source={{uri:`http://95.111.243.233/profileImages/barber/${barber.image}`}} style={styles.icon} />:barber && barber.sex==='homme'?
+               <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknown.jpg'}} style={styles.icon} />:<Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknownfemale.jpg'}} style={styles.icon} />}
                   
                </View>
+               <TouchableOpacity style={{flexDirection:'row'}} onPress={instagramUrl}>
+              <Image source={{uri:'http://95.111.243.233/assets/instagram.png'}} style={{height:screen.width/18,width:screen.width/18,marginRight:10,marginTop:5}} />
                <Text style={styles.bname}>{barber && barber.b_name!==null?barber.b_name:barber && barber.lang?polylanfr.BusinessName:polylanar.BusinessName}</Text>
+               </TouchableOpacity>
                <Text style={styles.jobAge}>{barber && (barber.name!==null || barber.surname!==null || barber.age!==null)?`${barber.name} ${barber.surname}, ${barber.age} ${barber && barber.lang?polylanfr.Yo:polylanar.Yo}`:barber && barber.lang?polylanfr.personalInforamtion:polylanar.personalInforamtion}</Text>
                <View style={{flexDirection:'row'}}>
                 <Rating
@@ -441,7 +462,7 @@ async function registerForPushNotificationsAsync() {
             <View style={styles.firstRow}>
                 <View>
                   <Text style={styles.title}>{barber && barber.lang?polylanfr.Fullname:polylanar.Fullname}</Text>
-                  <Text style={styles.detail}>{barber && (barber.name!==null || barber.surname!==null)?`${barber.name} ${barber.surname}`:barber.lang?polylanfr.YourFullname:polylanar.YourFullName}</Text>
+                  <Text style={styles.detail}>{barber && (barber.name!==null || barber.surname!==null)?`${barber.name} ${barber.surname}`:barber.lang?polylanfr.YourFullName:polylanar.YourFullName}</Text>
                 </View>
                 <View>
                   <Text style={styles.title}>{barber && barber.lang?polylanfr.StartFrom:polylanar.StartFrom}</Text> 
