@@ -96,7 +96,7 @@ const [selectedDate , setSelectedDate] = useState(moment(moment().format("YYYY-M
 
 
 useEffect(()=>{
- 
+  let isMounted=true;
   const todaysBookings= async ()=>{
       setLoading(true);
       const dayBooks = await allBookings.filter(bookings => moment(bookings.bookingDate).isSame(selectedDate,"day"));
@@ -106,7 +106,9 @@ useEffect(()=>{
 
   // if((selectedDateText ===moment (new Date()).format("ll")  ))
   todaysBookings();
-  
+  return ()=>{
+    isMounted = false;
+  };
 },[expired])
   
 
@@ -134,11 +136,16 @@ useEffect(()=>{
   
   
   useEffect(()=>{
+    let isMounted=true;
     expired();
+    return ()=>{
+      isMounted = false;
+    };
   },[])
   
   
   useEffect(()=>{
+  let isMounted=true;
   const willFocusSub= props.navigation.addListener(
     'willFocus',
     () => {
@@ -149,6 +156,7 @@ useEffect(()=>{
   );
   return ()=>{
     willFocusSub.remove();
+    isMounted = false;
   };
   },[expired]);
   

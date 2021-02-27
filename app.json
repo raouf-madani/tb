@@ -7,7 +7,7 @@
     "orientation": "portrait",
     "icon": "./assets/iconReBorn.png",
     "splash": {
-      "image": "./assets/splash.jpg",
+      "image": "./assets/splash.png",
       "resizeMode": "cover",
       "backgroundColor": "#ffffff"
     },

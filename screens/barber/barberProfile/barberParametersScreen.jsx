@@ -79,8 +79,12 @@ const BarberParametersScreen = props =>{
   },[dispatch,setError]);
   
     useEffect(()=>{
+      let isMounted=true;
+     
     getBarber();
-    
+    return ()=>{
+      isMounted = false;
+    };
     },[dispatch,getBarber,setError]);
 
 

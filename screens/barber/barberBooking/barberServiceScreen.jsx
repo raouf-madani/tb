@@ -71,13 +71,21 @@ const BarberServiceScreen = props =>{
 },[dispatch,setError]);
 
   useEffect(()=>{
+  let isMounted=true;
   getBarber();
+  return ()=>{
+    isMounted = false;
+  };
   },[dispatch,getBarber,setError]);
 
   useEffect(()=>{
+    let isMounted=true;
     const willFocusSub= props.navigation.addListener('willFocus',getBarber);
     return ()=>{
       willFocusSub.remove();
+    };
+    return ()=>{
+      isMounted = false;
     };
   },[getBarber]);
 
@@ -137,6 +145,7 @@ const BarberServiceScreen = props =>{
  
       //if the Saturday switch is off >>> initialState
       useEffect(()=>{
+        let isMounted=true;
         if(!switchSat){
            setSat({...sat,isOpenSat:false,openTimeSat:null});
            setSatClose({...satClose,isCloseSat:false,closeTimeSat:null})
@@ -159,7 +168,9 @@ const BarberServiceScreen = props =>{
            setFri({...fri,isOpenFri:false,openTimeFri:null});
            setFriClose({...friClose,isCloseFri:false,closeTimeFri:null});
         }    
-          
+        return ()=>{
+          isMounted = false;
+        };
       },[switchSat,switchSun,switchMon,switchTue,switchWed,switchThu,switchFri]);
  
       const handleConfirm = (date) => {
@@ -366,9 +377,13 @@ const BarberServiceScreen = props =>{
   },[dispatch,switchSat,switchSun,switchMon,switchTue,switchWed,switchThu,switchFri,sat.openTimeSat,sun.openTimeSun,mon.openTimeMon,tue.openTimeTue,wed.openTimeWed,thu.openTimeThu,fri.openTimeFri,satClose.closeTimeSat,sunClose.closeTimeSun,monClose.closeTimeMon,tueClose.closeTimeTue,wedClose.closeTimeWed,thuClose.closeTimeThu,friClose.closeTimeFri,barber[0].id]);
 
    useEffect(()=>{
+     let isMounted=true;
      props.navigation.setParams({load:isUpdating});
      props.navigation.setParams({save:saveHandler});
-     props.navigation.setParams({disponible:isDisponible})
+     props.navigation.setParams({disponible:isDisponible});
+     return ()=>{
+      isMounted = false;
+    };
    },[saveHandler,isUpdating,isDisponible]);
 
    

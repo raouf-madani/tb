@@ -234,10 +234,12 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
 
     //logout handler
     const logout = async ()=>{
+      
       await  dispatch(deleteToken(myToken));
       dispatch(authActions.logout());
       AsyncStorage.clear();
       props.navigation.navigate('Auth');
+     
     };
 
     const alertLogout = ()=>{
@@ -246,7 +248,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
         barber && barber[0].lang?polylanfr.DoYouWantToDisconnect:polylanar.DoYouWantToDisconnect,
        [{text:barber && barber[0].lang?polylanfr.Yes:polylanar.Yes, style:'destructive', onPress:logout},
         {text:barber && barber[0].lang?polylanfr.No:polylanar.No, style:'cancel'}]);
-        return;
+        
    };
 
    
@@ -284,9 +286,13 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
   },[dispatch,barber[0].id,formState,wilaya]);
 
    useEffect(()=>{
+    let isMounted = true; // note this flag denote mount status
      props.navigation.setParams({load:isLoading});
      props.navigation.setParams({save:saveHandler});
-     
+
+     return ()=>{
+      isMounted = false;
+    };
    },[saveHandler,isLoading]);
 
 

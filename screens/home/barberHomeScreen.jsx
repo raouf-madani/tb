@@ -90,13 +90,17 @@ const responseListener = useRef();
 },[dispatch,setError]);
 
   useEffect(()=>{
+  let isMounted = true; // note this flag denote mount status
   getBarber();
+  return () => { isMounted = false };
   },[dispatch,getBarber,setError]);
 
   useEffect(()=>{
+    let isMounted = true; // note this flag denote mount status
     const willFocusSub= props.navigation.addListener('willFocus',getBarber);
     return ()=>{
       willFocusSub.remove();
+      isMounted = false;
     };
   },[getBarber]);
 
@@ -179,7 +183,7 @@ const responseListener = useRef();
 
   useEffect(()=>{
     // console.log(moment().format("lll"));
- 
+    let isMounted = true; // note this flag denote mount status
     const finished2 = allBookings.filter(e=>(
       ((moment().isSame(e.bookingDate,"day") && moment().format().substring(11,16)> e.end) && e.status === "confirmée" ) ||  (moment().isAfter(e.bookingDate, 'day') && e.status === "confirmée") )
     
@@ -191,6 +195,9 @@ const responseListener = useRef();
       if (finished2.length > 0){
           setFinishVisible(true);
       }
+      return ()=>{
+        isMounted = false;
+      };
 
   },[allBookings]);
 
@@ -200,20 +207,22 @@ const responseListener = useRef();
 
 
 useEffect(() => {
-
+  let isMounted = true; // note this flag denote mount status
   if( barber !== undefined )
   {
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
   
   }
-
+  return ()=>{
+    isMounted = false;
+  };
 
 }, [barber,tokens]);
 
 useEffect(()=>{
 
   // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
-
+  let isMounted = true; // note this flag denote mount status
 
   notificationListener.current = Notifications.addNotificationReceivedListener(async (notification) => {
     
@@ -236,6 +245,7 @@ useEffect(()=>{
 return () => {
   Notifications.removeNotificationSubscription(notificationListener);
   Notifications.removeNotificationSubscription(responseListener);
+  isMounted = false;
 };
 
 

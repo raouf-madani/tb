@@ -169,7 +169,7 @@ Alert.alert(
 
 
 useEffect(()=>{
-
+  let isMounted=true;
   const getBarber = async ()=>{
     try {
   setLoading(true);
@@ -191,7 +191,9 @@ useEffect(()=>{
   }
 
   getBarber();
-
+  return ()=>{
+    isMounted = false;
+  };
 
 },[])
 
