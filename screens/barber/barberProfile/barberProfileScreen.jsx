@@ -234,12 +234,15 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
 
     //logout handler
     const logout = async ()=>{
-      
+      let isMounted=true;
       await  dispatch(deleteToken(myToken));
       dispatch(authActions.logout());
       AsyncStorage.clear();
       props.navigation.navigate('Auth');
-     
+      
+      return ()=>{
+        isMounted = false;
+      };
     };
 
     const alertLogout = ()=>{

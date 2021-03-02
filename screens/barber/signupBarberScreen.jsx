@@ -230,7 +230,7 @@ const sendCode = async () => {
      
         
       props.navigation.navigate('Barber',{barberID:formState.inputValues.phone,barberUID:user.uid}); 
-      Alert.alert('Salut!','Bienvenue à Tahfifa :-)',[{text:"Merci"}]);
+      Alert.alert('Salut!','Bienvenue à ReBorn :-)',[{text:"Merci"}]);
       saveDataToStorage(tokenResult.token,user.uid,expirationDate,"Barber",formState.inputValues.phone);                                  
 
 

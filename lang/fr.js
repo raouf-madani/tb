@@ -57,7 +57,7 @@ export default{
     Thursday:"Jeudi",
     Friday:"Vendredi",
     Location:"Région, Ville",
-    WelcomeTotahfifa:"Bienvenue à Tahfifa",
+    WelcomeTotahfifa:"Bienvenue à ReBorn",
     //profile screen********************************************************************
     profileInfo:"Informations",
     MyAccount:"Mon Compte",
@@ -71,7 +71,7 @@ export default{
     DeleteMyAccount:"Supprimer Mon Compte",
     DoYouKnow:'Saviez-vous?',
     DoYouKnowNotice:"Visitez-nous sur le lien suivant pour plus d'informations: ",
-    TeamTahfifa:"Equipe Tahfifa",
+    TeamTahfifa:"Equipe ReBorn",
     Disconnect:"Se déconnecter",
     YourAge:"Votre âge",
     //Services screen********************************************************************

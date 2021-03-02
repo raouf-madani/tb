@@ -56,7 +56,7 @@ export default{
     Thursday:"الخميس",
     Friday:"الجمعة",
     Location:"المقاطعة ، الولاية",
-    WelcomeTotahfifa:"مرحبا بكم في التطبيق تحفيفة",
+    WelcomeTotahfifa:"مرحبا بكم في التطبيق ريبورن",
     //profile screen********************************************************************
     profileInfo:"معلوماتك",
     MyAccount:"حسابي",
@@ -66,7 +66,7 @@ export default{
     Email:"بريدك الإلكتروني",
     Notice:"ملاحظة هامة",
     NoticeMessage:"كن حذرا! بمجرد حذف حسابك، لن تتمكن أبدًا من الوصول إلى معلومات حسابك الحالي.",
-    TeamTahfifa:"فريق تحفيفة",
+    TeamTahfifa:"فريق ريبورن",
     DeleteMyAccount:"حذف حسابي",
     DoYouKnow:'هل تعلم؟',
     DoYouKnowNotice:"قم بزيارتنا على الرابط التالي لمزيد من المعلومات: ",

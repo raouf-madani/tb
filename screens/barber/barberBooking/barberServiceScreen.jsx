@@ -871,8 +871,7 @@ const styles= StyleSheet.create({
    resizeMode:'cover',
    width:'100%',
    height:'100%',
-   justifyContent:'center',
-   alignItems:'center' 
+   justifyContent:'center'
  },
  noServicesContainer:{
   width:'100%',
