@@ -331,8 +331,7 @@ const sendCode = async () => {
                               onValueChange={itemValue => setWilaya(itemValue)}
                               doneText='Annuler'
                               items={[
-                                { label: 'Alger', value: 'Alger'},
-                                { label: 'Blida', value: 'Blida' }
+                                { label: 'Alger', value: 'Alger'}
                             ]}
                             />):
                             (<TouchableOpacity onPress={onPress}  style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:screen.width/36,paddingRight:screen.width/36}}>

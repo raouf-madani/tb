@@ -318,7 +318,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
             <View style={styles.secondCardContent}>
                 <View style={styles.imageContainer}>
                 {barber && pickedImage?<Image source={{uri:`http://95.111.243.233/profileImages/barber/${pickedImage}`}} style={styles.image} />:
-                barber && barber[0].sex==='homme'? <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknown.jpg'}} style={styles.image} />:<Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknownfemale.jpg'}} style={styles.image}/>}
+                barber && barber[0].sex==='Homme'? <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknown.jpg'}} style={styles.image} />:<Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknownfemale.jpg'}} style={styles.image}/>}
                 </View>
                 <View style={styles.detailsContainer}>
                   <View style={{width:'30%'}}>
@@ -473,8 +473,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                               onValueChange={itemValue => setWilaya(itemValue)}
                               doneText={barber && barber[0].lang?polylanfr.Cancel:polylanar.Cancel}
                               items={[
-                                { label: 'Alger', value: 'Alger'},
-                                { label: 'Blida', value: 'Blida' }
+                                { label: 'Alger', value: 'Alger'}
                             ]}
                             />):(<TouchableOpacity onPress={onPress}  style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:screen.width/36,paddingRight:screen.width/36}}>
                             <Text style={{fontFamily:'poppins',color:wilaya?'#fff':'#f9f9f9',fontSize:screen.width/30,fontWeight:'500'}}>

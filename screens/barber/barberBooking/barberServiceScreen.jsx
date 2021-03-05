@@ -428,7 +428,7 @@ const BarberServiceScreen = props =>{
           
           <View style={styles.infoContainer}>
              <View style={styles.imageContainer}>
-             {barber[0] && barber[0].image ? <Image source={{uri:`http://95.111.243.233/profileImages/barber/${barber[0].image}`}} style={styles.icon} />:barber && barber[0].sex==='homme'?
+             {barber[0] && barber[0].image ? <Image source={{uri:`http://95.111.243.233/profileImages/barber/${barber[0].image}`}} style={styles.icon} />:barber && barber[0].sex==='Homme'?
                <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknown.jpg'}} style={styles.icon} />:<Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknownfemale.jpg'}} style={styles.icon} />}
              </View>
            
@@ -589,7 +589,7 @@ const BarberServiceScreen = props =>{
            
            <View style={styles.infoContainer}>
               <View style={styles.imageContainer}>
-              {barber[0] && barber[0].image ? <Image source={{uri:`http://95.111.243.233/profileImages/barber/${barber[0].image}`}} style={styles.icon} />:barber && barber[0].sex==='homme'?
+              {barber[0] && barber[0].image ? <Image source={{uri:`http://95.111.243.233/profileImages/barber/${barber[0].image}`}} style={styles.icon} />:barber && barber[0].sex==='Homme'?
                <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknown.jpg'}} style={styles.icon} />:<Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknownfemale.jpg'}} style={styles.icon} />}
               </View>
             
