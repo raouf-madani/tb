@@ -9,25 +9,40 @@ import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { getClientBookings, expiredbookings, getBarberBookings } from '../../../store/actions/bookingsActions';
 import 'moment/locale/fr' ;
+import 'moment/locale/ar-dz';
 
 const screen = Dimensions.get("window");
-moment.locale('fr')
 
-LocaleConfig.locales['fr'] = {
-    monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
-    monthNamesShort: ['Janv.','Févr.','Mars','Avril','Mai','Juin','Juil.','Août','Sept.','Oct.','Nov.','Déc.'],
-    dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
-    dayNamesShort: ['Dim.','Lun.','Mar.','Mer.','Jeu.','Ven.','Sam.'],
-    today: 'Aujourd\'hui'
-  };
-  LocaleConfig.defaultLocale = 'fr';
+
   ///////////////////////////////////////////////////////////////////////
 const AllBookingsScreen = (props) => {
 
   const allBookings = useSelector(state => state.bookings.bookings);
   //get Client ID
   const barberID= props.navigation.getParam('barberID');  
-  
+  const barber= useSelector(state=>state.barbers.barber);
+  if(barber[0] && barber[0].lang){
+    moment.locale('fr');
+    LocaleConfig.locales['fr'] = {
+      monthNames: ['Janvier','Février','Mars','Avril','Mai','Juin','Juillet','Août','Septembre','Octobre','Novembre','Décembre'],
+      monthNamesShort: ['Janv.','Févr.','Mars','Avril','Mai','Juin','Juil.','Août','Sept.','Oct.','Nov.','Déc.'],
+      dayNames: ['Dimanche','Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'],
+      dayNamesShort: ['Dim.','Lun.','Mar.','Mer.','Jeu.','Ven.','Sam.'],
+      today: 'Aujourd\'hui'
+    };
+    LocaleConfig.defaultLocale = 'fr';
+  }else{
+    moment.locale('ar-dz');
+    LocaleConfig.locales['ar'] = {
+      monthNames: ['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],
+      monthNamesShort: ['جانفي','فيفري','مارس','أفريل','ماي','جوان','جويلية','أوت','سبتمبر','أكتوبر','نوفمبر','ديسمبر'],
+      dayNames: ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'],
+      dayNamesShort: ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'],
+      today: 'اليوم'
+    };
+    LocaleConfig.defaultLocale = 'ar';
+  }
+
 //Selected Date State
 const [selectedDate , setSelectedDate] = useState(moment(moment().format("YYYY-MM-DD")).format());
   

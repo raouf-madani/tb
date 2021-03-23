@@ -179,5 +179,6 @@ export default{
     EnterYourNewPassword:'الرجاء إدخال كلمة المرور الجديدة الخاصة بك!',
     Booking:'الحجز',
     SuccessLanguageMessage:'لقد نجحت في تغيير لغة حسابك!',
-    DoYouWantToChangeYourLanguage:'هل أنت متأكد أنك تريد تغيير لغة حسابك؟'
+    DoYouWantToChangeYourLanguage:'هل أنت متأكد أنك تريد تغيير لغة حسابك؟',
+    DZ:"دج",
 };

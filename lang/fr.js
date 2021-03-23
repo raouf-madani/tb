@@ -184,5 +184,6 @@ export default{
     Booking:'Réservation',
     ABarberDid:'Un Coiffeur a ',
     YourBooking:' votre réservation!', 
-    SuccessfulDataSent:'Vos données ont été changées avec succès!'
+    SuccessfulDataSent:'Vos données ont été changées avec succès!',
+    DZ:"DZD",
 };
