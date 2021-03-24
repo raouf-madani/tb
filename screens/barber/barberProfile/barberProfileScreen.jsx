@@ -373,7 +373,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                       keyboardType="phone-pad"
                       returnKeyType="next"
                       onInputChange={inputChangeHandler}
-                      initialValue={barber[0] && barber[0].age && barber[0].lang?`${barber[0].age} ${polylanfr.Yo}`:barber[0] && barber[0].age && !barber[0].lang?`${barber[0].age} ${polylanar.Yo}`:''}
+                      initialValue={barber[0] && barber[0].age && barber[0].lang?`${barber[0].age}`:barber[0] && barber[0].age && !barber[0].lang?`${barber[0].age}`:''}
                       initiallyValid={true}
                       required
                       placeholderTextColor={Platform.OS==='android'?'rgba(50,52,70,0.4)':'#f9f9f9'}

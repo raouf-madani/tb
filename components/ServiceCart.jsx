@@ -31,7 +31,7 @@ const ServiceCart = props =>{
                     </View>
                     <View style={styles.secondRow}>
                           <Text style={styles.textType}>{props.type}</Text>
-                          <Text style={styles.textPrice}>{props.price+' دج'}</Text>
+                          <Text style={styles.textPrice}>{props.price} {props.dzdText}</Text>
                     </View>
             </ImageBackground>
           </View>

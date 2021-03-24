@@ -628,6 +628,7 @@ const BarberServiceScreen = props =>{
             type={service.typeOfService}
             minute={service.duration}
             price={service.price}
+            dzdText={barber && barber[0].lang?polylanfr.DZ:polylanar.DZ}
             onPressUpdate={()=>props.navigation.navigate('EditService',{idService:service.serviceId})}
             onPressDelete={deleteHandler.bind(this,service.serviceId)}
           />)}

@@ -139,6 +139,8 @@ export default{
     No:"Non",
     CancelBooking:"Annuler la Réservation!",
     CancelBookingMessage:"Etes-vous sûr de vouloir annuler cette réservation?",
+    TotalPrice:"Prix Total",
+    Client:'Client',
     //Support Detail screen********************************************************************
     SupportMessage:"Si un problème persiste, n'hésitez pas à nous contacter au plus vite via les informations suivantes:",
     //EditService Detail screen********************************************************************
@@ -151,7 +153,7 @@ export default{
     BeardTrace:"Ex: Barbe tracée",
     Hours:"Heures",
     Minutes:"Minutes",
-    PriceIn:"Prix en دج",
+    PriceIn:"Prix en DZD",
     Add:"Ajouter",
     Edit:"Modifier",
     EditService:"Modifier Service",
