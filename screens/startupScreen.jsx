@@ -9,6 +9,7 @@ const StartupScreen = props =>{
 
     const dispatch = useDispatch();
     useEffect(()=>{
+       let isMounted=true;
        const tryLogin=async()=>{
            const userData= await AsyncStorage.getItem('userData');
            
@@ -32,6 +33,9 @@ const StartupScreen = props =>{
          
        }
        tryLogin();
+       return ()=>{
+        isMounted = false;
+      };
     },[dispatch]);
 
     return(

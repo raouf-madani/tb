@@ -169,7 +169,7 @@ Alert.alert(
 
 
 useEffect(()=>{
-
+  let isMounted=true;
   const getBarber = async ()=>{
     try {
   setLoading(true);
@@ -191,7 +191,9 @@ useEffect(()=>{
   }
 
   getBarber();
-
+  return ()=>{
+    isMounted = false;
+  };
 
 },[])
 
@@ -237,7 +239,7 @@ if (isLoading) {
                             color={Colors.colorH1} 
 
                     />
-            <Text style = {styles.actionsText} >Appeler</Text>
+            <Text style = {styles.actionsText} >{barber && barber.lang?polylanfr.Call:polylanar.Call}</Text>
 
           </TouchableOpacity>
 }
@@ -276,7 +278,7 @@ if (isLoading) {
             <View style = {styles.barber}>
 
 <View style={styles.title}>
-    <Text style={{fontFamily : "poppins-bold",color :Colors.blue,fontSize : screen.width /24}}>Détail de la réservation
+    <Text style={{fontFamily : "poppins-bold",color :Colors.blue,fontSize : screen.width /24}}>{barber && barber.lang?polylanfr.BookingDetails:polylanar.BookingDetails}
     </Text>
     </View>
 
@@ -296,7 +298,7 @@ if (isLoading) {
               </Text>
             
               <Text  style={styles.serviceText}>
-              {service.price + " DA " }
+              {service.price} {barber && barber.lang?polylanfr.DZ:polylanar.DZ}
               </Text>
               
               </View>
@@ -316,11 +318,11 @@ if (isLoading) {
 <LinearGradient colors = { [gradient1, gradient2]} style ={{height:"20%",justifyContent:"center"}}> 
 <View style ={{flexDirection :"row",width:"90%",justifyContent :"space-between",alignSelf:"center"}}>
 <View>
-<Text  style = {styles.priceText}  >Prix Total:</Text>
-<Text style = {styles.timeText} >{props.navigation.getParam("duration")+" Min"}</Text>
+<Text  style = {styles.priceText}  >{barber && barber.lang?polylanfr.TotalPrice:polylanar.TotalPrice} :</Text>
+<Text style = {styles.timeText} >{props.navigation.getParam("duration")} {barber && barber.lang?polylanfr.Minute:polylanar.Minute}</Text>
 
 </View>
-<Text style = {styles.priceText} >{props.navigation.getParam("amount")+" DA"}</Text>
+<Text style = {styles.priceText} >{props.navigation.getParam("amount")} {barber && barber.lang?polylanfr.DZ:polylanar.DZ}</Text>
 
 
 </View>
@@ -334,7 +336,7 @@ if (isLoading) {
 
                 <View style = {{height : "30%",alignItems:"center",paddingTop : "2%"}}>
                 <View style = {{width : "90%",marginBottom : "5%",}}>
-                <Text style = {{color : Colors.textGrey,fontFamily : "poppins-bold",fontSize : screen.width /26}}>Client</Text>
+                <Text style = {{color : Colors.textGrey,fontFamily : "poppins-bold",fontSize : screen.width /26}}>{barber && barber.lang?polylanfr.Client:polylanar.Client}</Text>
                 </View>
                 <View style = {{alignSelf :"center" , flexDirection :"row",width:"90%",alignItems:"center"}}>
               

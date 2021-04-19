@@ -110,10 +110,14 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 useEffect(() => {
+  let isMounted=true;
   if(error){
       Alert.alert(barber && barber.lang?polylanfr.Oups:polylanar.Oups,barber && barber.lang?polylanfr.WeakInternet:polylanar.WeakInternet,[{text:barber && barber.lang?polylanfr.OK:polylanar.OK}]);
       console.log(error);
   } 
+  return ()=>{
+    isMounted = false;
+  };
 }, [error]); 
 
  //Submitting
@@ -173,8 +177,11 @@ useEffect(() => {
 };
 
 useEffect(()=>{
+  let isMounted=true;
   props.navigation.setParams({currentBarberServiceID:currentServiceID});
- 
+  return ()=>{
+    isMounted = false;
+  };
 },[currentServiceID]);
 
 
@@ -224,7 +231,7 @@ useEffect(()=>{
                                   { label: 'Tahfifa', value: 'Tahfifa'},
                                   { label: 'Barbe', value: 'Barbe' },
                                   { label: 'Suppléments', value: 'Suppléments' },
-                                  { label: 'Soins', value: 'Soins' },
+                                  { label: 'Soins homme', value: 'Soins homme' },
                               ]}
                               />) :
                              
@@ -270,6 +277,7 @@ useEffect(()=>{
                         initiallyValid={true}
                         required
                         minLength={3}
+                        maxLenth={40}
                         autoCapitalize='sentences'
                         widthView='50%'
                         backgroundColor={Platform.OS==='android'?'#d3d3d3':'#323446'}

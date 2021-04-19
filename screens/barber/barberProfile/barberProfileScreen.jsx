@@ -1,5 +1,5 @@
 import React,{useState,useEffect,useReducer,useCallback} from 'react';
-import { StyleSheet,View,AsyncStorage,Linking,ScrollView,TouchableWithoutFeedback,Keyboard,ImageBackground,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActivityIndicator,Platform,StatusBar} from 'react-native';
+import { StyleSheet,View,AsyncStorage,Linking,ScrollView,TouchableWithoutFeedback,Keyboard,ImageBackground,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActivityIndicator,Platform,StatusBar,ActionSheetIOS} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
 import {useSelector,useDispatch} from 'react-redux';
 import Colors from "../../../constants/Colors";
@@ -57,6 +57,7 @@ const BarberProfileScreen = props =>{
     const [isLoadingImage,setIsLoadingImage]=useState(false);
     const [error,setError]=useState();
     
+    
     //bring firebase user id
     const barberUID= props.navigation.getParam('barberUID');
     const barberID=props.navigation.getParam('barberID');
@@ -92,8 +93,27 @@ const BarberProfileScreen = props =>{
 
     //States for complex information textInputs
    const [wilaya,setWilaya] = useState(barber[0]?barber[0].wilaya:null);
+   const wilayas = ['Wilaya','Alger','Blida'];
 
    const dispatch = useDispatch();
+
+      //picker only iOS function 
+      const onPress = () =>{
+        const wilayasIOS = ['Annuler','Alger','Blida'];    
+        ActionSheetIOS.showActionSheetWithOptions(
+          {
+            options: wilayasIOS,
+            cancelButtonIndex:0
+          },
+          buttonIndex => {
+            if (buttonIndex === 0) {
+              // cancel action
+            } else {
+             setWilaya(wilayasIOS[buttonIndex]);
+            } 
+          }
+        );  
+    }
    
   
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -214,10 +234,15 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
 
     //logout handler
     const logout = async ()=>{
+      let isMounted=true;
       await  dispatch(deleteToken(myToken));
       dispatch(authActions.logout());
       AsyncStorage.clear();
       props.navigation.navigate('Auth');
+      
+      return ()=>{
+        isMounted = false;
+      };
     };
 
     const alertLogout = ()=>{
@@ -226,7 +251,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
         barber && barber[0].lang?polylanfr.DoYouWantToDisconnect:polylanar.DoYouWantToDisconnect,
        [{text:barber && barber[0].lang?polylanfr.Yes:polylanar.Yes, style:'destructive', onPress:logout},
         {text:barber && barber[0].lang?polylanfr.No:polylanar.No, style:'cancel'}]);
-        return;
+        
    };
 
    
@@ -234,7 +259,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   //Update barber's data Management after pressing in Check icon
   const saveHandler = useCallback(async()=>{
-    if(formState.formIsValid && wilaya!==null){
+    if(formState.formIsValid && (wilaya!==null || wilaya!==wilayas[0])){
       
       
     try{
@@ -264,9 +289,13 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
   },[dispatch,barber[0].id,formState,wilaya]);
 
    useEffect(()=>{
+    let isMounted = true; // note this flag denote mount status
      props.navigation.setParams({load:isLoading});
      props.navigation.setParams({save:saveHandler});
-     
+
+     return ()=>{
+      isMounted = false;
+    };
    },[saveHandler,isLoading]);
 
 
@@ -289,7 +318,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
             <View style={styles.secondCardContent}>
                 <View style={styles.imageContainer}>
                 {barber && pickedImage?<Image source={{uri:`http://95.111.243.233/profileImages/barber/${pickedImage}`}} style={styles.image} />:
-                <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknown.jpg'}} style={styles.image} />}
+                barber && barber[0].sex==='Homme'? <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknown.jpg'}} style={styles.image} />:<Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/unknownfemale.jpg'}} style={styles.image}/>}
                 </View>
                 <View style={styles.detailsContainer}>
                   <View style={{width:'30%'}}>
@@ -321,7 +350,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
               
                 <InputProfile
                       id='b_name'
-                      rightIcon={<MaterialIcons title = "person-pin" name ='person-pin' color={Platform.OS==='android'?'#323446':'#fff'} size={screen.width/15.7} />}
+                      rightIcon={<MaterialCommunityIcons title = "instagram" name ='instagram' color={Platform.OS==='android'?'#323446':'#fff'} size={screen.width/15.7} />}
                       placeholder={barber && barber[0].lang?polylanfr.BusinessName:polylanar.BusinessName}
                       keyboardType="default"
                       returnKeyType="next"
@@ -333,6 +362,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                       widthView='57%'
                       backgroundColor={Platform.OS==='android'?'#fff':Colors.blue}
                       height={screen.width/8}
+                      autoCapitalize='none'
                     />
               
               
@@ -343,7 +373,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                       keyboardType="phone-pad"
                       returnKeyType="next"
                       onInputChange={inputChangeHandler}
-                      initialValue={barber[0]?barber[0].age:''}
+                      initialValue={barber[0] && barber[0].age && barber[0].lang?`${barber[0].age}`:barber[0] && barber[0].age && !barber[0].lang?`${barber[0].age}`:''}
                       initiallyValid={true}
                       required
                       placeholderTextColor={Platform.OS==='android'?'rgba(50,52,70,0.4)':'#f9f9f9'}
@@ -413,8 +443,8 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
             
               <InputProfile
                 id='address'
-                rightIcon={<MaterialIcons title = "address" name ='map' color={Platform.OS==='android'?'#323446':'#fff'} size={screen.width/15.7} />}
-                placeholder={barber && barber[0].lang?polylanfr.Address:polylanar.Address}
+                rightIcon={<MaterialIcons title = "address" name ='home' color={Platform.OS==='android'?'#323446':'#fff'} size={screen.width/15.7} />}
+                placeholder={barber && barber[0].lang?polylanfr.ComfortZone:polylanar.ComfortZone}
                 keyboardType="default"
                 returnKeyType="next"
                 onInputChange={inputChangeHandler}
@@ -431,7 +461,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
             
             <View style={{ width:'90%',borderWidth:1,paddingHorizontal:screen.width/18,borderRadius:screen.width/14.4,backgroundColor:Platform.OS==='android'?'#fff':Colors.blue,borderColor:wilaya!=='wilaya'?'#fff':Colors.primary,marginVertical:screen.width/72,height:screen.width/8,justifyContent:'center',shadowColor: 'black',shadowOpacity: 0.96,
                           shadowOffset: {width: 0, height:2},shadowRadius: screen.width/36,elevation: 3,overflow:'hidden',alignSelf:'center'}}>
-              <RNPickerSelect
+              { Platform.OS==='android'?(<RNPickerSelect
                               value={wilaya}
                               useNativeAndroidPickerStyle={false}
                               style={{ inputIOS:{fontFamily:'poppins',fontSize:screen.width/30,color:'#fff'},inputAndroid: {
@@ -439,14 +469,19 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                                 color:'#323446',
                                 fontSize:screen.width/30
                               }}}
-                              placeholder={{label:barber[0] && barber[0].lang?polylanfr.City:polylanar.City,value:null}}
+                              placeholder={{label:barber && barber[0].lang?polylanfr.City:polylanar.City,value:null}}
                               onValueChange={itemValue => setWilaya(itemValue)}
-                              doneText={barber && barber.lang?polylanfr.Cancel:polylanar.Cancel}
+                              doneText={barber && barber[0].lang?polylanfr.Cancel:polylanar.Cancel}
                               items={[
-                                { label: 'Alger', value: 'Alger'},
-                                { label: 'Blida', value: 'Blida' }
+                                { label: 'Alger', value: 'Alger'}
                             ]}
-                            />
+                            />):(<TouchableOpacity onPress={onPress}  style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:screen.width/36,paddingRight:screen.width/36}}>
+                            <Text style={{fontFamily:'poppins',color:wilaya?'#fff':'#f9f9f9',fontSize:screen.width/30,fontWeight:'500'}}>
+                              {wilaya?wilaya:wilayas[0]}
+                            </Text>
+                            <Ionicons name="ios-arrow-down" size={screen.width/15} color='#fff' onPress={onPress} />
+                            </TouchableOpacity>)
+                          }
             </View>
             
               <InputProfile
@@ -605,7 +640,7 @@ const styles= StyleSheet.create({
     bnameText:{
       fontFamily:'poppins-bold',
       color:'#323446',
-      fontSize:screen.width/20,
+      fontSize:screen.width/24,
       alignSelf:'flex-start'
     },
     secondFirstCard:{
@@ -634,7 +669,7 @@ const styles= StyleSheet.create({
       fontFamily:'poppins',
       color:'grey',
       fontSize:screen.width/32.7,
-      marginTop:-(screen.width/72),
+      marginTop:(screen.width/78),
       alignSelf:'flex-start'
     },
     menuContainer:{

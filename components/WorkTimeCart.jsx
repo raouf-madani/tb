@@ -51,7 +51,7 @@ disponibilityContainer:{
   shadowColor:"#000",
   borderRadius:screen.width/36,
   elevation:5,
-  paddingHorizontal:screen.width/36,
+  paddingHorizontal:screen.width/32,
   paddingVertical:screen.width/24,
   marginVertical:screen.width/36,
   width:'90%',

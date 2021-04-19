@@ -1,10 +1,11 @@
 {
   "expo": {
-    "name": "TAHFIFA Barber",
-    "slug": "tb",
+    "name": "ReBorn Partner",
+    "slug": "rebornpartner",
+    "description":"ReBorn partner est une application mobile conçue spécialement pour les prestataires de services de coiffure et beauté. Gérez vos heures de travail, vos services et vos tarifs directement depuis la magnifique application ReBorn Partner",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/iconReBorn.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "cover",

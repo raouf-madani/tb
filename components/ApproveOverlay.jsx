@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View,Image, ImageBackground,Dimensions,TouchableOpacity, StatusBar,TouchableWithoutFeedback, Platform} from 'react-native';
 import Colors from "../constants/Colors";
 import { Button ,Overlay,Divider} from 'react-native-elements';

@@ -1,5 +1,5 @@
 import React,{useState,useCallback,useRef,useReducer} from 'react';
-import { StyleSheet,View,KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard,Text,Image,ImageBackground,StatusBar,TextInput,TouchableOpacity,Picker,ActionSheetIOS,Alert,ActivityIndicator,AsyncStorage,Dimensions,Platform} from 'react-native';
+import { StyleSheet,View,KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard,Text,Image,ImageBackground,StatusBar,TextInput,TouchableOpacity,ActionSheetIOS,Alert,ActivityIndicator,AsyncStorage,Dimensions,Platform} from 'react-native';
 import {Button} from 'react-native-elements';
 import Colors from '../../constants/Colors';
 import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
@@ -70,54 +70,53 @@ const SignupBarberScreen = props =>{
     const prefix='+213';
     
      //States for complex information textInputs
-     const wilayas = ['Wilaya','Alger','Blida'];
      const [wilaya,setWilaya] = useState(undefined);
-     const sexTypes= ['Sexe','Homme','Femme'];
      const [sex,setSex] = useState(undefined);
      const [isEye,setIsEye]=useState(false);
+     const wilayas = ['Wilaya','Alger','Blida'];
+     const sexTypes= ['Sexe','Homme','Femme'];
 
       const eye=()=>{
         setIsEye(prevValue=>!prevValue);
       };
-      
-     
-     
-     //picker only iOS wilaya function 
-     const onPress = () =>{
-       const wilayasIOS = ['Alger','Blida'];    
-       ActionSheetIOS.showActionSheetWithOptions(
-         {
-           options: wilayasIOS,
-           cancelButtonIndex: -1
-         },
-         buttonIndex => {
-           if (buttonIndex === -1) {
-             // cancel action
-           } else {
-            setWilaya(wilayasIOS[buttonIndex]);
-           } 
-         }
-       );  
-   }
 
-   //picker only iOS gender function 
-   const onPressSex = () =>{
-    const sexIOS = ['Homme','Femme'];    
+       //picker only iOS function 
+   const onPress = () =>{
+    const wilayasIOS = ['Annuler','Alger','Blida'];    
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: sexIOS,
-        cancelButtonIndex: -1
+        options: wilayasIOS,
+        cancelButtonIndex:0
       },
       buttonIndex => {
-        if (buttonIndex === -1) {
+        if (buttonIndex === 0) {
           // cancel action
         } else {
-         setSex(sexIOS[buttonIndex]);
+         setWilaya(wilayasIOS[buttonIndex]);
         } 
       }
     );  
 }
 
+
+    //picker only iOS function 
+    const onPressSex = () =>{
+    const sexIOS = ['Annuler','Homme','Femme'];    
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options: sexIOS,
+        cancelButtonIndex: 0
+      },
+      buttonIndex => {
+        if (buttonIndex === 0) {
+          // cancel action
+        } else {
+          setSex(sexIOS[buttonIndex]);
+        } 
+      }
+    );  
+    }
+      
  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ///Input management
 
@@ -158,7 +157,7 @@ const signupHandler = async () => {
 
   const phoneProvider = new firebase.auth.PhoneAuthProvider();
  
-  if(formState.formIsValid && wilaya!==null && sex!==null && wilaya!==undefined && sex!==undefined){
+  if(formState.formIsValid && (wilaya!==null || wilaya!==wilayas[0]) &&  (sex!==null || sex!==sexTypes[0])  && wilaya!==undefined && sex!==undefined){
     try {
 
       setVerifyInProgress(true);
@@ -231,7 +230,7 @@ const sendCode = async () => {
      
         
       props.navigation.navigate('Barber',{barberID:formState.inputValues.phone,barberUID:user.uid}); 
-      Alert.alert('Salut!','Bienvenue à Tahfifa :-)',[{text:"Merci"}]);
+      Alert.alert('Salut!','Bienvenue à ReBorn :-)',[{text:"Merci"}]);
       saveDataToStorage(tokenResult.token,user.uid,expirationDate,"Barber",formState.inputValues.phone);                                  
 
 
@@ -257,7 +256,7 @@ const sendCode = async () => {
               />
           
               <View style={{width:'85%',height:verificationId?'50%':'30%',alignSelf:'center',alignItems:'flex-start',justifyContent:'flex-end'}}>
-                 <Image source={{uri:'http://95.111.243.233/assets/tahfifabarber/icon.png'}} style={styles.icon}/>
+                 <Image source={require('../../assets/iconReBorn.png')} style={styles.icon}/>
                  <Text style={styles.slogan}>Allez chez votre client ou recevez-le au salon</Text>
               </View>
               <View style={styles.secondContainer}>
@@ -295,10 +294,10 @@ const sendCode = async () => {
                       />
                 
                  <View style={{ width:'100%',borderWidth:1,borderRadius:screen.width/14.4,backgroundColor:'#d3d3d3',borderColor:sex!==null?'#d3d3d3':Colors.primary,marginVertical:screen.width/120,height:screen.width/8,justifyContent:'center', paddingHorizontal:screen.width/28}}>
-                 <RNPickerSelect
+                 {Platform.OS === 'android' ?(<RNPickerSelect
                               value={sex}
                               useNativeAndroidPickerStyle={false}
-                              style={{ inputIOS:{fontFamily:'poppins',fontSize:screen.width/35,color:'#323446'},inputAndroid: {
+                              style={{ color:'red',inputIOS:{fontFamily:'poppins',fontSize:screen.width/35,color:'#323446'},inputAndroid: {
                                 fontFamily:'poppins',
                                 color:'#323446',
                                 fontSize:screen.width/30
@@ -310,10 +309,17 @@ const sendCode = async () => {
                                 { label: 'Homme', value: 'Homme'},
                                 { label: 'Femme', value: 'Femme' }
                             ]}
-                            />
+                            />):
+                            (<TouchableOpacity onPress={onPressSex} style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:screen.width/36,paddingRight:screen.width/36}}>
+                            <Text  style={{fontFamily:'poppins',color:sex?'#323446':'rgba(50,52,70,0.4)',fontSize:screen.width/30,fontWeight:'500'}}>
+                              {sex?sex:sexTypes[0]}
+                            </Text>
+                            <Ionicons name="ios-arrow-down" size={screen.width/15} color='#323446' onPress={onPressSex} />
+                            </TouchableOpacity>)}
                   </View>
                   <View style={{ width:'100%',borderWidth:1,borderRadius:screen.width/14.4,backgroundColor:'#d3d3d3',borderColor:wilaya!==null?'#d3d3d3':Colors.primary,marginVertical:screen.width/120,height:screen.width/8,justifyContent:'center',paddingHorizontal:screen.width/28}}>
-                  <RNPickerSelect
+                  {Platform.OS==='android'?
+                          (<RNPickerSelect
                               value={wilaya}
                               useNativeAndroidPickerStyle={false}
                               style={{ inputIOS:{fontFamily:'poppins',fontSize:screen.width/35,color:'#323446'},inputAndroid: {
@@ -325,10 +331,15 @@ const sendCode = async () => {
                               onValueChange={itemValue => setWilaya(itemValue)}
                               doneText='Annuler'
                               items={[
-                                { label: 'Homme', value: 'Homme'},
-                                { label: 'Femme', value: 'Femme' }
+                                { label: 'Alger', value: 'Alger'}
                             ]}
-                            />
+                            />):
+                            (<TouchableOpacity onPress={onPress}  style={{ width:'100%',flexDirection:'row',alignItems:'center',justifyContent:'space-between',paddingLeft:screen.width/36,paddingRight:screen.width/36}}>
+                            <Text style={{fontFamily:'poppins',color:wilaya?'#323446':'rgba(50,52,70,0.4)',fontSize:screen.width/30,fontWeight:'500'}}>
+                              {wilaya?wilaya:wilayas[0]}
+                            </Text>
+                            <Ionicons name="ios-arrow-down" size={screen.width/15} color='#323446' onPress={onPress} />
+                            </TouchableOpacity>)}
                 </View>
                 <CustomInput
                         id='region'
@@ -458,16 +469,11 @@ const styles= StyleSheet.create({
     width:'100%',
     flex:1
    },
-  firstContainer:{
-    width:'85%',
-    height:'30%',
-    alignSelf:'center',
-    alignItems:'flex-start',
-    justifyContent:'flex-end'
-  },
   icon:{
-    width:screen.width/4.5,
-    height:screen.width/4.5
+    width:screen.width/4,
+    height:screen.width/4,
+    position:'relative',
+    
   },
   slogan:{
     fontSize:screen.width/20,

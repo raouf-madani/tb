@@ -36,9 +36,11 @@ const InputProfile = props =>{
     //forward the value and the information whether it's valid or not to the parent
     const {onInputChange,id} = props;
     useEffect(()=>{
-        
+        let isMounted=true;
         onInputChange(id,inputState.value,inputState.isValid);
-        
+        return ()=>{
+            isMounted = false;
+          };
     },[inputState,onInputChange,id]);
 
         const inputChangeHandler= text=>{
