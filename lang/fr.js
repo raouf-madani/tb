@@ -74,6 +74,7 @@ export default{
     TeamTahfifa:"Equipe ReBorn",
     Disconnect:"Se déconnecter",
     YourAge:"Votre âge",
+    ComfortZone:"Zone de confort",
     //Services screen********************************************************************
     AddSerivce:"Ajouter Service",
     AddPortfolio:"Ajouter Portfolio",

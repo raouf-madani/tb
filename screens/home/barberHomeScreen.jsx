@@ -147,13 +147,11 @@ const responseListener = useRef();
       setIsFeedback(true);
     };
 
-     /*setInterval(()=>{
-      setBlinkingInsta(prevValue=>!prevValue);
-    },3000);*/
+    
 
     const minServicesPrice=prices=>{
       let arrayPrices=[];
-      if(prices.lentgh ===0){
+      if(prices.lentgh ===0 || !prices){
         return;
       }
       prices.forEach(e=>{

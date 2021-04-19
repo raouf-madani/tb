@@ -6,11 +6,12 @@ export const UPDATE_BARBER_PHONE = "UPDATE_BARBER_PHONE";
 export const UPDATE_BARBER = "UPDATE_BARBER";
 export const DELETE_BARBER = "DELETE_BARBER";
 export const UPDATE_BARBER_LANG = "UPDATE_BARBER_LANG";
+export const UPDATE_BARBER_WORKPLACE = "UPDATE_BARBER_WORKPLACE";
 
-export const createBarber=(id,phone,password,sex,wilaya,region)=>{
+export const createBarber=(id,phone,password,sex,wilaya,region,workplace)=>{
   
     return async dispatch =>{
-        const barberData={id,phone,password,sex,wilaya,region};
+        const barberData={id,phone,password,sex,wilaya,region,workplace};
 
         try{
 
@@ -24,7 +25,7 @@ export const createBarber=(id,phone,password,sex,wilaya,region)=>{
             } 
             );
             if(!response.ok){
-                throw new Error('Oups! Une erreur est survenue haha.');
+                throw new Error('Oups! Une erreur est survenue.');
             }
             
             dispatch({type:CREATE_BARBER,barberData});
@@ -116,6 +117,33 @@ export const updateBarberPassword= (id,password) => {
 
 };
 
+export const updateBarberWorkplace= (id,workplace) => {
+
+    return async dispatch => {
+
+         try{
+
+           const response = await fetch(`http://95.111.243.233:3000/barber/updateWorkplace/${id}`,{
+
+              method:'PATCH',
+              headers: {
+                'Content-Type': 'application/json'
+            },
+            body : JSON.stringify({workplace})
+           });
+           if(!response.ok){
+               throw new Error('Oups! Une erreur est survenue.');
+           }
+           console.log('finish');
+           dispatch({type:UPDATE_BARBER_WORKPLACE,id,barberData:{workplace}});
+           
+         }catch(err){
+             console.log(err);
+             throw err;
+         }
+    };
+
+};
 
 export const updateBarberLang= (id,lang) => {
 

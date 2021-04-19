@@ -1,6 +1,6 @@
 class Barber {
 
-    constructor(id,phone,password,sex,name,surname,b_name,age,email,address,wilaya,region,image,long,lat,mark,lang,gender,services,workingTimes){
+    constructor(id,phone,password,sex,name,surname,b_name,age,email,address,wilaya,region,image,long,lat,mark,lang,gender,services,workingTimes,workplace){
         this.id = id;
         this.phone = phone;
         this.password = password;
@@ -21,6 +21,7 @@ class Barber {
         this.gender=gender;
         this.services=services;
         this.workingTimes= workingTimes;
+        this.workplace= workplace;
     }
     
     

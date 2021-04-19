@@ -19,12 +19,39 @@ import polylanfr from "../../../lang/fr";
 
 
 const screen = Dimensions.get("window");
- 
+ //UseReducer Input Management//////////////////////////////////////////////////////////////////////////////////
+const Form_Input_Update = 'Form_Input_Update';
+const formReducer=(state,action) =>{
+    if(action.type === Form_Input_Update){
+        const updatedValues = {
+          ...state.inputValues,
+          [action.inputID]:action.value
+        };
+        const updatedValidities = {
+          ...state.inputValidities,
+          [action.inputID]:action.isValid
+        };
+        let formIsValidUpdated = true;
+        for(const key in updatedValidities){
+          formIsValidUpdated = formIsValidUpdated && updatedValidities[key];
+        }
+        return{
+          inputValues:updatedValues,
+          inputValidities:updatedValidities,
+          formIsValid:formIsValidUpdated
+        };
+    }
+   
+     return state;
+    
+};
+
 const BarberServiceScreen = props =>{
   
   const [isServices,setIsServices]= useState(true);
   const [isDisponible,setIsDisponible]= useState(false);
-
+  
+  
   const barberID= props.navigation.getParam('barberID');  //get Barber ID
   
   const [error, setError] = useState();
@@ -71,22 +98,19 @@ const BarberServiceScreen = props =>{
 },[dispatch,setError]);
 
   useEffect(()=>{
-  let isMounted=true;
   getBarber();
-  return ()=>{
-    isMounted = false;
-  };
   },[dispatch,getBarber,setError]);
 
+   
+
   useEffect(()=>{
-    let isMounted=true;
+   
     const willFocusSub= props.navigation.addListener('willFocus',getBarber);
     return ()=>{
       willFocusSub.remove();
+     
     };
-    return ()=>{
-      isMounted = false;
-    };
+    
   },[getBarber]);
 
   const barber= useSelector(state=>state.barbers.barber);
@@ -94,42 +118,43 @@ const BarberServiceScreen = props =>{
     const services = ()=>{
       setIsServices(true);
       setIsDisponible(false);
+     
     };
 
     const disponibility =()=>{
       setIsServices(false);
       setIsDisponible(true);
+     
     };
 
-   
-
+    
      //Switch buttons states for slots
-     const [switchSat, setSwitchSat] = useState(barber[0]?barber[0].workingTimes['Sam'].isworking : false);
-     const [switchSun, setSwitchSun] = useState(barber[0]?barber[0].workingTimes['Dim'].isworking :false);
-     const [switchMon, setSwitchMon] = useState(barber[0]?barber[0].workingTimes['Lun'].isworking :false);
-     const [switchTue, setSwitchTue] = useState(barber[0]?barber[0].workingTimes['Mar'].isworking :false);
-     const [switchWed, setSwitchWed] = useState(barber[0]?barber[0].workingTimes['Mer'].isworking :false);
-     const [switchThu, setSwitchThu] = useState(barber[0].workingTimes['Jeu'].isworking);
-     const [switchFri, setSwitchFri] = useState(barber[0]?barber[0].workingTimes['Ven'].isworking :false);
+     const [switchSat, setSwitchSat] = useState(barber[0] && barber[0].workingTimes['Sam']?barber[0].workingTimes['Sam'].isworking : false);
+     const [switchSun, setSwitchSun] = useState(barber[0] && barber[0].workingTimes['Dim']?barber[0].workingTimes['Dim'].isworking :false);
+     const [switchMon, setSwitchMon] = useState(barber[0] && barber[0].workingTimes['Lun']?barber[0].workingTimes['Lun'].isworking :false);
+     const [switchTue, setSwitchTue] = useState(barber[0] && barber[0].workingTimes['Mar']?barber[0].workingTimes['Mar'].isworking :false);
+     const [switchWed, setSwitchWed] = useState(barber[0] && barber[0].workingTimes['Mer']?barber[0].workingTimes['Mer'].isworking :false);
+     const [switchThu, setSwitchThu] = useState(barber[0] && barber[0].workingTimes['Jeu']?barber[0].workingTimes['Jeu'].isworking:false);
+     const [switchFri, setSwitchFri] = useState(barber[0] && barber[0].workingTimes['Ven']?barber[0].workingTimes['Ven'].isworking :false);
    
      //Text states for 7 days isOpenSat ? date : Début
      // isCloseSat ? date : Fin
      //Open Date states for 7 days. isOpenSat ? openTimeSat : Début
      //Close Date states for 7 days. isCloseSat ? closeTimeSat : Fin
-     const [sat, setSat] = useState({isOpenSat:barber[0]?barber[0].workingTimes['Sam'].isworking :false,openTimeSat:barber[0]?barber[0].workingTimes['Sam'].debut :null});
-     const [satClose, setSatClose] = useState({isCloseSat:barber[0]?barber[0].workingTimes['Sam'].isworking :false,closeTimeSat:barber[0]?barber[0].workingTimes['Sam'].finish :null});
-     const [sun, setSun] = useState({isOpenSun:barber[0]?barber[0].workingTimes['Dim'].isworking :false,openTimeSun:barber[0]?barber[0].workingTimes['Dim'].debut :null});
-     const [sunClose, setSunClose] = useState({isCloseSun:barber[0]?barber[0].workingTimes['Dim'].isworking :false,closeTimeSun:barber[0]?barber[0].workingTimes['Dim'].finish :null});
-     const [mon, setMon] = useState({isOpenMon:barber[0]?barber[0].workingTimes['Lun'].isworking :false,openTimeMon:barber[0]?barber[0].workingTimes['Lun'].debut :null});
-     const [monClose, setMonClose] = useState({isCloseMon:barber[0]?barber[0].workingTimes['Lun'].isworking :false,closeTimeMon:barber[0]?barber[0].workingTimes['Lun'].finish :null});
-     const [tue, setTue] = useState({isOpenTue:barber[0]?barber[0].workingTimes['Mar'].isworking :false,openTimeTue:barber[0]?barber[0].workingTimes['Mar'].debut :null});
-     const [tueClose, setTueClose] = useState({isCloseTue:barber[0]?barber[0].workingTimes['Mar'].isworking :false,closeTimeTue:barber[0]?barber[0].workingTimes['Mar'].finish :null});
-     const [wed, setWed] = useState({isOpenWed:barber[0]?barber[0].workingTimes['Mer'].isworking :false,openTimeWed:barber[0]?barber[0].workingTimes['Mer'].debut :null});
-     const [wedClose, setWedClose] = useState({isCloseWed:barber[0]?barber[0].workingTimes['Mer'].isworking :false,closeTimeWed:barber[0]?barber[0].workingTimes['Mer'].finish :null});
-     const [thu, setThu] = useState({isOpenThu:barber[0]?barber[0].workingTimes['Jeu'].isworking :false,openTimeThu:barber[0]?barber[0].workingTimes['Jeu'].debut :null});
-     const [thuClose, setThuClose] = useState({isCloseThu:barber[0]?barber[0].workingTimes['Jeu'].isworking :false,closeTimeThu:barber[0]?barber[0].workingTimes['Jeu'].finish :null});
-     const [fri, setFri] = useState({isOpenFri:barber[0]?barber[0].workingTimes['Ven'].isworking :false,openTimeFri:barber[0]?barber[0].workingTimes['Ven'].debut :null});
-     const [friClose, setFriClose] = useState({isCloseFri:barber[0]?barber[0].workingTimes['Ven'].isworking :false,closeTimeFri:barber[0]?barber[0].workingTimes['Ven'].finish :null});
+     const [sat, setSat] = useState({isOpenSat:barber[0] && barber[0].workingTimes['Sam']?barber[0].workingTimes['Sam'].isworking :false,openTimeSat:barber[0] && barber[0].workingTimes['Sam']?barber[0].workingTimes['Sam'].debut :null});
+     const [satClose, setSatClose] = useState({isCloseSat:barber[0] && barber[0].workingTimes['Sam']?barber[0].workingTimes['Sam'].isworking :false,closeTimeSat:barber[0] && barber[0].workingTimes['Sam']?barber[0].workingTimes['Sam'].finish :null});
+     const [sun, setSun] = useState({isOpenSun:barber[0] && barber[0].workingTimes['Dim']?barber[0].workingTimes['Dim'].isworking :false,openTimeSun:barber[0] && barber[0].workingTimes['Dim']?barber[0].workingTimes['Dim'].debut :null});
+     const [sunClose, setSunClose] = useState({isCloseSun:barber[0] && barber[0].workingTimes['Dim']?barber[0].workingTimes['Dim'].isworking :false,closeTimeSun:barber[0] && barber[0].workingTimes['Dim']?barber[0].workingTimes['Dim'].finish :null});
+     const [mon, setMon] = useState({isOpenMon:barber[0] && barber[0].workingTimes['Lun']?barber[0].workingTimes['Lun'].isworking :false,openTimeMon:barber[0] && barber[0].workingTimes['Lun']?barber[0].workingTimes['Lun'].debut :null});
+     const [monClose, setMonClose] = useState({isCloseMon:barber[0] && barber[0].workingTimes['Lun']?barber[0].workingTimes['Lun'].isworking :false,closeTimeMon:barber[0] && barber[0].workingTimes['Lun']?barber[0].workingTimes['Lun'].finish :null});
+     const [tue, setTue] = useState({isOpenTue:barber[0] && barber[0].workingTimes['Mar']?barber[0].workingTimes['Mar'].isworking :false,openTimeTue:barber[0] && barber[0].workingTimes['Mar']?barber[0].workingTimes['Mar'].debut :null});
+     const [tueClose, setTueClose] = useState({isCloseTue:barber[0] && barber[0].workingTimes['Mar']?barber[0].workingTimes['Mar'].isworking :false,closeTimeTue:barber[0] && barber[0].workingTimes['Mar']?barber[0].workingTimes['Mar'].finish :null});
+     const [wed, setWed] = useState({isOpenWed:barber[0] && barber[0].workingTimes['Mer']?barber[0].workingTimes['Mer'].isworking :false,openTimeWed:barber[0] && barber[0].workingTimes['Mer']?barber[0].workingTimes['Mer'].debut :null});
+     const [wedClose, setWedClose] = useState({isCloseWed:barber[0] && barber[0].workingTimes['Mer']?barber[0].workingTimes['Mer'].isworking :false,closeTimeWed:barber[0] && barber[0].workingTimes['Mer']?barber[0].workingTimes['Mer'].finish :null});
+     const [thu, setThu] = useState({isOpenThu:barber[0] && barber[0].workingTimes['Jeu']?barber[0].workingTimes['Jeu'].isworking :false,openTimeThu:barber[0] && barber[0].workingTimes['Jeu']?barber[0].workingTimes['Jeu'].debut :null});
+     const [thuClose, setThuClose] = useState({isCloseThu:barber[0] && barber[0].workingTimes['Jeu']?barber[0].workingTimes['Jeu'].isworking :false,closeTimeThu:barber[0] && barber[0].workingTimes['Jeu']?barber[0].workingTimes['Jeu'].finish :null});
+     const [fri, setFri] = useState({isOpenFri:barber[0] && barber[0].workingTimes['Ven']?barber[0].workingTimes['Ven'].isworking :false,openTimeFri:barber[0] && barber[0].workingTimes['Ven']?barber[0].workingTimes['Ven'].debut :null});
+     const [friClose, setFriClose] = useState({isCloseFri:barber[0] && barber[0].workingTimes['Ven']?barber[0].workingTimes['Ven'].isworking :false,closeTimeFri:barber[0] && barber[0].workingTimes['Ven']?barber[0].workingTimes['Ven'].finish :null});
      
      //Date Picker states
      const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -208,9 +233,6 @@ const BarberServiceScreen = props =>{
         }
       
     };
-
-    
-
 
 
     const deleteHandler = id => {
@@ -386,17 +408,19 @@ const BarberServiceScreen = props =>{
     };
    },[saveHandler,isUpdating,isDisponible]);
 
+  
+
    
    if(error){
       
     return ( <ImageBackground source={{uri:'http://95.111.243.233/assets/tahfifabarber/support.png'}} style={styles.activityIndicatorContainer}>
               <StatusBar hidden />
                 <View style={{marginBottom:screen.width /36,alignSelf:'center'}}>
-                  <Text style={styles.noServicesText}>{barber && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet}</Text>
+                  <Text style={styles.noServicesText}>{barber[0] && barber[0].lang?polylanfr.WeakInternet:polylanar.WeakInternet}</Text>
                 </View>
                 <Button
                   theme={{colors: {primary:'#fd6c57'}}} 
-                  title={barber && barber[0].lang?polylanfr.Repeat:polylanar.Repeat}
+                  title={barber[0] && barber[0].lang?polylanfr.Repeat:polylanar.Repeat}
                   titleStyle={styles.labelButton}
                   buttonStyle={styles.buttonStyle}
                   ViewComponent={LinearGradient}
@@ -440,6 +464,12 @@ const BarberServiceScreen = props =>{
                  </View>
                  <Text style={styles.iconText}>{barber && barber[0].lang?polylanfr.AddSerivce:polylanar.AddSerivce}</Text>
                </TouchableOpacity>
+               <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberWorkplace',{barberID:barberID})}>
+                  <View style={styles.iconFormCircle2}>
+                          <MaterialIcons title = "home" name ='home' color='#fff' size={screen.width/15.7} onPress={()=>props.navigation.navigate('BarberWorkplace',{barberID:barberID})} />
+                  </View>
+                  <Text style={styles.iconText}>{barber && barber[0].lang?polylanfr.ComfortZone:polylanar.ComfortZone}</Text>
+                </TouchableOpacity>
                <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberGalery',{barberID:barberID})}>
                <View style={styles.iconFormCircle1}>
                        <MaterialIcons title = "portfolio" name ='linked-camera' color='#fff' size={screen.width/15.7} onPress={()=>props.navigation.navigate('BarberGalery',{barberID:barberID})} />
@@ -599,23 +629,32 @@ const BarberServiceScreen = props =>{
                   <View style={styles.iconFormCircle}>
                           <MaterialIcons title = "service" name ='add-shopping-cart' color='#fff' size={screen.width/15.7} onPress={()=>props.navigation.navigate('EditService')} />
                   </View>
-                  <Text style={styles.iconText}>{barber && barber[0].lang?polylanfr.AddSerivce:polylanar.AddSerivce}</Text>
+                  <Text style={styles.iconText}>{barber[0] && barber[0].lang?polylanfr.AddSerivce:polylanar.AddSerivce}</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberWorkplace',{barberID:barberID})}>
+                  <View style={styles.iconFormCircle2}>
+                          <MaterialIcons title = "home" name ='home' color='#fff' size={screen.width/15.7} onPress={()=>props.navigation.navigate('BarberWorkplace',{barberID:barberID})} />
+                  </View>
+                  <Text style={styles.iconText}>{barber[0] && barber[0].lang?polylanfr.ComfortZone:polylanar.ComfortZone}</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.iconContainer} onPress={()=>props.navigation.navigate('BarberGalery',{barberID:barberID})}>
                 <View style={styles.iconFormCircle1}>
                         <MaterialIcons title = "portfolio" name ='linked-camera' color='#fff' size={screen.width/15.7} onPress={()=>props.navigation.navigate('BarberGalery',{barberID:barberID})} />
                 </View>
-                <Text style={styles.iconText}>{barber && barber[0].lang?polylanfr.AddPortfolio:polylanar.AddPortfolio}</Text>
+                <Text style={styles.iconText}>{barber[0] && barber[0].lang?polylanfr.AddPortfolio:polylanar.AddPortfolio}</Text>
                 </TouchableOpacity>
               </View>
            </View>
            <View style={styles.menu}>
               <TouchableOpacity style={{borderBottomWidth:screen.width/180,borderBottomColor:isServices ?'#fd6c57':'#f9f9f9',paddingBottom:screen.width/120}} onPress={services}>
-               <Text style={styles.itemText}>{barber && barber[0].lang?polylanfr.MyServices:polylanar.MyServices}</Text>
+               <Text style={styles.itemText}>{barber[0] && barber[0].lang?polylanfr.MyServices:polylanar.MyServices}</Text>
               </TouchableOpacity>
               <TouchableOpacity style={{borderBottomWidth:screen.width/180,borderBottomColor:isDisponible?'#fd6c57':'#f9f9f9',paddingBottom:screen.width/120}} onPress={disponibility}>
-               <Text style={styles.itemText}>{barber && barber[0].lang?polylanfr.Available:polylanar.Available}</Text>
+               <Text style={styles.itemText}>{barber[0] && barber[0].lang?polylanfr.Available:polylanar.Available}</Text>
               </TouchableOpacity>
+           </View>
+           <View>
+
            </View>
          </View>
         {isServices ?( <ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false}>
@@ -628,11 +667,11 @@ const BarberServiceScreen = props =>{
             type={service.typeOfService}
             minute={service.duration}
             price={service.price}
-            dzdText={barber && barber[0].lang?polylanfr.DZ:polylanar.DZ}
+            dzdText={barber[0] && barber[0].lang?polylanfr.DZ:polylanar.DZ}
             onPressUpdate={()=>props.navigation.navigate('EditService',{idService:service.serviceId})}
             onPressDelete={deleteHandler.bind(this,service.serviceId)}
           />)}
-         </ScrollView>): 
+         </ScrollView>):
          (<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false}>
            <WorkTimeCart
              switchDay={switchSat}
@@ -852,6 +891,14 @@ const styles= StyleSheet.create({
     justifyContent:'center',
     alignItems:'center'
   },
+  iconFormCircle2:{
+    backgroundColor:'#FE457C',
+    width:screen.width/9,
+    height:screen.width/9,
+    borderRadius:screen.width/18,
+    justifyContent:'center',
+    alignItems:'center'
+  },
   
   iconsMenuContainer:{
     flexDirection:'row',
@@ -897,7 +944,41 @@ labelButton:{
   borderRadius:screen.width/18,
   height:screen.width/8,
   alignSelf:'center'
- }
+ },
+ firstRow:{
+  marginTop:screen.width/24,
+  width:'90%',
+  alignSelf:'center',
+  justifyContent:'center'
+},
+question:{
+  fontFamily:'poppins',
+  color:Colors.blue,
+  fontSize:screen.width/30,
+  alignSelf:'flex-start'
+},
+optionsRow:{
+   flexDirection:'row',
+   width:'90%',
+   height:screen.width/7.2,
+   backgroundColor:'#f8f8f8',
+   alignSelf:'center',
+   marginTop:screen.width/18,
+   borderRadius:screen.width/3.6,
+   justifyContent:'space-between'
+},
+textOptionsRow:{
+  flexDirection:'row',
+   width:'85%',
+   alignSelf:'center',
+   borderRadius:screen.width/3.6,
+   justifyContent:'space-between',
+   marginBottom:screen.width/36,
+   marginTop:screen.width/120
+},
+buttonView:{
+  marginTop:screen.width/36
+}
 });
 
 export default BarberServiceScreen;

@@ -18,7 +18,7 @@ import BarberHomeScreen from '../screens/home/barberHomeScreen';
 import ForgotPasswordScreen from '../screens/forgotPasswordScreen';
 import BarberSupportScreen  from '../screens/barber/barberProfile/barberSupportScreen';
 import TestScreen from '../screens/testScreen';
-
+import BarberWorkPlaceScreen  from '../screens/barber/barberProfile/barberWorkPlaceScreen';
 
 //Main Stack Navigator
 const BarberNavigation = createStackNavigator({
@@ -31,7 +31,7 @@ const BarberNavigation = createStackNavigator({
    BarberParameters: BarberParametersScreen,
    BarberProfile: BarberProfileScreen,
    BarberGalery: BarberGaleryScreen,
-   
+   BarberWorkplace:BarberWorkPlaceScreen
    
 },
 );

@@ -72,6 +72,7 @@ export default{
     DoYouKnowNotice:"قم بزيارتنا على الرابط التالي لمزيد من المعلومات: ",
     Disconnect:"تسجيل الخروج",
     YourAge:"عمرك",
+    ComfortZone:"منطقة الراحة",
     //Services screen********************************************************************
     AddSerivce:"إضافة خدمة",
     AddPortfolio:"إضافة نموذج",

@@ -443,8 +443,8 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
             
               <InputProfile
                 id='address'
-                rightIcon={<MaterialIcons title = "address" name ='map' color={Platform.OS==='android'?'#323446':'#fff'} size={screen.width/15.7} />}
-                placeholder={barber && barber[0].lang?polylanfr.Address:polylanar.Address}
+                rightIcon={<MaterialIcons title = "address" name ='home' color={Platform.OS==='android'?'#323446':'#fff'} size={screen.width/15.7} />}
+                placeholder={barber && barber[0].lang?polylanfr.ComfortZone:polylanar.ComfortZone}
                 keyboardType="default"
                 returnKeyType="next"
                 onInputChange={inputChangeHandler}
