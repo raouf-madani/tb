@@ -17,7 +17,6 @@ import polylanar from "../../../lang/ar";
 import polylanfr from "../../../lang/fr";
 
 
-
 const screen = Dimensions.get("window");
  //UseReducer Input Management//////////////////////////////////////////////////////////////////////////////////
 const Form_Input_Update = 'Form_Input_Update';
@@ -102,6 +101,7 @@ const BarberServiceScreen = props =>{
   },[dispatch,getBarber,setError]);
 
    
+
 
   useEffect(()=>{
    

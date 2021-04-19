@@ -134,10 +134,11 @@ export const updateBarberWorkplace= (id,workplace) => {
            if(!response.ok){
                throw new Error('Oups! Une erreur est survenue.');
            }
-           console.log('finish');
-           dispatch({type:UPDATE_BARBER_WORKPLACE,id,barberData:{workplace}});
+          
+       dispatch({type:UPDATE_BARBER_WORKPLACE,id,barberData:{workplace}});
            
          }catch(err){
+            console.log('finisssssssssssssssssssssssssssssssssssssssss');
              console.log(err);
              throw err;
          }

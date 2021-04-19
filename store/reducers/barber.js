@@ -7,7 +7,7 @@ const initialState={
 };
 
 const barbersReducer=(state=initialState,action)=>{
-   console.log(action.type);
+   //console.log(action.type);
    switch(action.type){
        case CREATE_BARBER:
          const newBarber= new Barber(action.barberData.id,action.barberData.phone,action.barberData.password,
@@ -178,8 +178,9 @@ const barbersReducer=(state=initialState,action)=>{
           };
 
           case UPDATE_BARBER_WORKPLACE:
+          
           const indexBarberFind = state.barber.findIndex(barber => barber.id === action.id);
-          console.log(state.barber);
+      
           const updatedBarberWorkplace = new Barber(
             action.id,
             state.barber[indexBarberFind].phone,
@@ -199,15 +200,15 @@ const barbersReducer=(state=initialState,action)=>{
             state.barber[indexBarberFind].mark,
             state.barber[indexBarberFind].lang,
             state.barber[indexBarberFind].type,
-            action.barberData.workplace,
             state.barber[indexBarberFind].services,
-            state.barber[indexBarberFind].workingTimes
+            state.barber[indexBarberFind].workingTimes,
+            action.barberData.workplace,
           );   
 
           const updatedCurrentBarber=[...state.barber];
           updatedCurrentBarber[indexBarberFind]=updatedBarberWorkplace;
           return{
-            ...state,
+            state,
             barber:updatedCurrentBarber
           };
 
