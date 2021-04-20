@@ -51,37 +51,37 @@ const BarberWorkPlaceScreen = props =>{
  /*
    *******Fetch One barber DATA
   */
-   const getBarber=useCallback(async()=>{
-    try{
-      setError(false);
-      setIsLoading(true);
-      await dispatch(barberActions.setBarber(barberID));
-      setIsLoading(false);
-      }catch(err){
-        setError(true);
-        if(err){
-          Alert.alert('Oups!','Votre connexion est trop faible!',[{text:'OK'}]);
-      } 
-        console.log(err);
-        throw err;
-      }
-  },[dispatch,setError]);
+  //  const getBarber=useCallback(async()=>{
+  //   try{
+  //     setError(false);
+  //     setIsLoading(true);
+  //     await dispatch(barberActions.setBarber(barberID));
+  //     setIsLoading(false);
+  //     }catch(err){
+  //       setError(true);
+  //       if(err){
+  //         Alert.alert('Oups!','Votre connexion est trop faible!',[{text:'OK'}]);
+  //     } 
+  //       console.log(err);
+  //       throw err;
+  //     }
+  // },[dispatch,setError]);
   
-    useEffect(()=>{
-    getBarber();
-    },[dispatch,getBarber,setError]);
+  //   useEffect(()=>{
+  //   getBarber();
+  //   },[dispatch,getBarber,setError]);
   
      
   
-    useEffect(()=>{
+    // useEffect(()=>{
      
-      const willFocusSub= props.navigation.addListener('willFocus',getBarber);
-      return ()=>{
-        willFocusSub.remove();
+    //   const willFocusSub= props.navigation.addListener('willFocus',getBarber);
+    //   return ()=>{
+    //     willFocusSub.remove();
        
-      };
+    //   };
       
-    },[getBarber]);
+    // },[getBarber]);
   
   const barber= useSelector(state=>state.barbers.barber);
   
@@ -137,12 +137,13 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
      try{
        setError(false);
        setIsLoading(true);
-       console.log(isHome);
+       //console.log(isHome);
        await dispatch(barberActions.updateBarberWorkplace(barberID,'home'));
   
        setIsLoading(false);
        
        }catch(err){
+        
          setError(true);
          if(err){
            Alert.alert('Oups!','Votre connexion est trop faible!',[{text:'OK'}]);
@@ -154,9 +155,9 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
      try{
        setError(false);
        setIsLoading(true);
-       console.log(isBoth);
+       //console.log(isBoth);
        await dispatch(barberActions.updateBarberWorkplace(barberID,'both'));
-      
+   
        setIsLoading(false);
     
        }catch(err){
@@ -184,7 +185,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                 titleStyle={styles.labelButton}
                 buttonStyle={styles.buttonStyle}
                 ViewComponent={LinearGradient}
-                onPress={getBarber}
+               
                 linearGradientProps={{
                     colors: ['#fd6d57', '#fd9054'],
                     start: {x: 0, y: 0} ,

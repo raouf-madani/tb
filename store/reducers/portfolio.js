@@ -6,7 +6,7 @@ const initialState={
 };
 
 const portfolioReducer=(state=initialState,action)=>{
-   console.log(action.type);
+   //console.log(action.type);
    switch(action.type){
       
      
