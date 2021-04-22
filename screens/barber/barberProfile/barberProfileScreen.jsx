@@ -74,8 +74,8 @@ const BarberProfileScreen = props =>{
       setIsLocalisation(true);
     };
 
-  const URL = "https://tahfifaapp.com";
-  const URLAbout = "https://tahfifaapp.com/qui-sommes-nous/";
+  const URL = "http://rebornapp.com";
+  const URLAbout = "http://rebornapp.com/qui-sommes-nous/";
   const url= ()=>{
     Linking.openURL(URL).catch((err) => {
       if(err){
@@ -283,7 +283,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
     }
     
     }else{
-      Alert.alert(barber && barber[0].lang?polylanfr.Error:polylanar.Error,barber && barber[0].lang?polylanfr.EmptyFields:polylanar.EmptyFields,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+      Alert.alert(barber[0] && barber[0].lang?polylanfr.Error:polylanar.Error,barber && barber[0].lang?polylanfr.EmptyFields:polylanar.EmptyFields,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
     }
   
   },[dispatch,barber[0].id,formState,wilaya]);
@@ -507,7 +507,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
        (<ScrollView style={{width:'100%'}} showsVerticalScrollIndicator={false}>
            <View style={styles.noticeContainer}>
              <Text style={styles.noticeTitle}>{barber && barber[0].lang?polylanfr.DoYouKnow:polylanar.DoYouKnow}</Text>
-             <Text style={styles.noticeContent}>{barber && barber[0].lang?polylanfr.DoYouKnowNotice:polylanar.DoYouKnowNotice} <Text onPress={url} style={{color:Colors.primary}}>tahfifaapp.com</Text></Text>
+             <Text style={styles.noticeContent}>{barber && barber[0].lang?polylanfr.DoYouKnowNotice:polylanar.DoYouKnowNotice} <Text onPress={url} style={{color:Colors.primary}}>rebornapp.com</Text></Text>
              <Text style={styles.tahfifaSignature} onPress={url2}>{barber && barber[0].lang?polylanfr.TeamTahfifa:polylanar.TeamTahfifa}</Text>
          </View>
            <View style={styles.buttonContainer}>

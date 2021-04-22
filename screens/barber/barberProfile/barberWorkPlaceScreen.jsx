@@ -1,4 +1,4 @@
-import React,{useState,useReducer,useCallback,useEffect} from 'react';
+import React,{useState,useReducer,useCallback} from 'react';
 import { StyleSheet,View,Alert,Dimensions,ImageBackground,StatusBar,ActivityIndicator,TouchableOpacity,Text,TouchableWithoutFeedback,Image,Keyboard} from 'react-native';
 import Colors from '../../../constants/Colors';
 import { useDispatch,useSelector } from 'react-redux';
@@ -48,40 +48,7 @@ const BarberWorkPlaceScreen = props =>{
   const [error, setError] = useState();
   const [isLoading,setIsLoading]= useState(false);
 
- /*
-   *******Fetch One barber DATA
-  */
-  //  const getBarber=useCallback(async()=>{
-  //   try{
-  //     setError(false);
-  //     setIsLoading(true);
-  //     await dispatch(barberActions.setBarber(barberID));
-  //     setIsLoading(false);
-  //     }catch(err){
-  //       setError(true);
-  //       if(err){
-  //         Alert.alert('Oups!','Votre connexion est trop faible!',[{text:'OK'}]);
-  //     } 
-  //       console.log(err);
-  //       throw err;
-  //     }
-  // },[dispatch,setError]);
-  
-  //   useEffect(()=>{
-  //   getBarber();
-  //   },[dispatch,getBarber,setError]);
-  
-     
-  
-    // useEffect(()=>{
-     
-    //   const willFocusSub= props.navigation.addListener('willFocus',getBarber);
-    //   return ()=>{
-    //     willFocusSub.remove();
-       
-    //   };
-      
-    // },[getBarber]);
+ 
   
   const barber= useSelector(state=>state.barbers.barber);
   
@@ -92,12 +59,9 @@ const BarberWorkPlaceScreen = props =>{
   const [isClientHome,setIsClientHome]=useState(barber[0] && barber[0].workplace==="cli"?true:false);
   const [isHome,setIsHome]=useState(barber[0] && barber[0].workplace==="home"?true:false);
   const [isBoth,setIsBoth]=useState(barber[0] && barber[0].workplace==="both"?true:false);
+
+
   
-  const clientHouse=()=>{
-    setIsClientHome(true);
-    setIsHome(false);
-    setIsBoth(false);
- };
 
  const home=()=>{
    setIsHome(true);
@@ -109,6 +73,14 @@ const both=()=>{
  setIsBoth(true);
  setIsHome(false);
  setIsClientHome(false);
+};
+
+
+const clientHouse=()=>{
+    
+  setIsClientHome(true);
+  setIsHome(false);
+  setIsBoth(false);
 };
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -133,45 +105,77 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
    *******Confirm workplace function
   */
    const barberWorkplace=async()=>{
-    if(isHome){
-     try{
-       setError(false);
-       setIsLoading(true);
-       //console.log(isHome);
-       await dispatch(barberActions.updateBarberWorkplace(barberID,'home'));
-  
-       setIsLoading(false);
-       
-       }catch(err){
-        
-         setError(true);
-         if(err){
-           Alert.alert('Oups!','Votre connexion est trop faible!',[{text:'OK'}]);
-       } 
-         console.log(err);
-         throw err;
-       }
-    }else if(isBoth){
-     try{
-       setError(false);
-       setIsLoading(true);
-       //console.log(isBoth);
-       await dispatch(barberActions.updateBarberWorkplace(barberID,'both'));
-   
-       setIsLoading(false);
-    
-       }catch(err){
-         setError(true);
-         if(err){
-           Alert.alert('Oups!','Votre connexion est trop faible!',[{text:'OK'}]);
-       } 
-         console.log(err);
-         throw err;
-       }
-    }
+
+    if(formState.formIsValid){
+
+        if(isHome){
+        try{
+          setError(false);
+          setIsLoading(true);
+          //console.log(isHome);
+          await dispatch(barberActions.updateBarberWorkplace(barberID,'home'));
+          await dispatch(barberActions.updateBarberAddress(barberID,formState.inputValues.address));
+          setIsLoading(false);
+          Alert.alert(barber[0] && barber[0].lang?polylanfr.Awesome:polylanar.Awesome,barber && barber[0].lang?polylanfr.InHome:polylanar.InHome,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+          }catch(err){
+            
+            setError(true);
+            if(err){
+              Alert.alert('Oups!','Votre connexion est trop faible!',[{text:'OK'}]);
+          } 
+            console.log(err);
+            throw err;
+          }
+        }else if(isBoth){
+        try{
+          setError(false);
+          setIsLoading(true);
+          //console.log(isBoth);
+          await dispatch(barberActions.updateBarberWorkplace(barberID,'both'));
+          await dispatch(barberActions.updateBarberAddress(barberID,formState.inputValues.address));
+          setIsLoading(false);
+          Alert.alert(barber[0] && barber[0].lang?polylanfr.Excellent:polylanar.Excellent,barber && barber[0].lang?polylanfr.InBoth:polylanar.InBoth,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+          }catch(err){
+            setError(true);
+            if(err){
+              Alert.alert('Oups!','Votre connexion est trop faible!',[{text:'OK'}]);
+          } 
+            console.log(err);
+            throw err;
+          }
+        }
+  }else{
+    Alert.alert(barber[0] && barber[0].lang?polylanfr.Error:polylanar.Error,barber && barber[0].lang?polylanfr.EmptyFields:polylanar.EmptyFields,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+  }
    
  };
 
+
+   /*
+   *******Confirm barber client home workplace function
+  */
+   const barberWorkplaceAtClientHome=async()=>{
+        console.log(isClientHome);
+        if(isClientHome){
+        try{
+          setError(false);
+          setIsLoading(true);
+          await dispatch(barberActions.updateBarberWorkplace(barberID,'cli'));
+          setIsLoading(false);
+          Alert.alert(barber[0] && barber[0].lang?polylanfr.Awesome:polylanar.Awesome,barber && barber[0].lang?polylanfr.InClient:polylanar.InClient,[{text:barber && barber[0].lang?polylanfr.OK:polylanar.OK}]);
+          }catch(err){
+            
+            setError(true);
+            if(err){
+              Alert.alert('Oups!','Votre connexion est trop faible!',[{text:'OK'}]);
+          } 
+            console.log(err);
+            throw err;
+          }
+        }
+  
+   
+ };
  if(error){
       
   return ( <ImageBackground source={{uri:'http://95.111.243.233/assets/tahfifabarber/support.png'}} style={styles.activityIndicatorContainer}>
@@ -213,30 +217,64 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
             <View style={styles.secondContainer}>
           
            <View style={styles.firstRow}>
-                  <Text style={styles.question}>Voulez-vous recevoir votre client dans votre zone de confort ou vous déplacez chez lui ?</Text>
+                  <Text style={styles.question}>{barber[0] && barber[0].lang?polylanfr.WordplaceText:polylanar.WordplaceText}</Text>
             </View>
             <View style={styles.optionsRow}>
                   <TouchableOpacity onPress={clientHouse} style={{backgroundColor:isClientHome?'#fd6c57':Colors.blue,width:screen.width/7.2,height:screen.width/7.2,borderRadius:screen.width/3.6,alignSelf:'flex-start',justifyContent:'center',alignItems:'center'}}>
-                    <MaterialCommunityIcons name="home-group" size={screen.width/11.25} color="white" />
+                    <MaterialIcons name="person-pin-circle" size={screen.width/11.25} color="white" />
                   </TouchableOpacity>
                   <TouchableOpacity onPress={home} style={{backgroundColor:isHome?'#fd6c57':Colors.blue,width:screen.width/7.2,height:screen.width/7.2,borderRadius:screen.width/3.6,alignSelf:'flex-end',justifyContent:'center',alignItems:'center'}}>
                      <MaterialIcons name="home" size={screen.width/11.25} color="white" />
                   </TouchableOpacity>
                   <TouchableOpacity onPress={both} style={{backgroundColor:isBoth?'#fd6c57':Colors.blue,width:screen.width/7.2,height:screen.width/7.2,borderRadius:screen.width/3.6,alignSelf:'center',justifyContent:'center',alignItems:'center'}}>
-                  <MaterialCommunityIcons name="home-export-outline" size={screen.width/11.25} color="white" />
+                  <MaterialCommunityIcons name="home-group" size={screen.width/11.25} color="white" />
                   </TouchableOpacity>
             </View> 
             <View style={styles.textOptionsRow}>
               <View style={{ justifyContent:'center',alignItems:'flex-start'}}>
-                 <Text style={{fontFamily:'poppins',fontSize:screen.width/28,color:isClientHome?'#fd6c57':Colors.blue,alignSelf:'flex-start'}}>Client</Text>
+                 <Text style={{fontFamily:'poppins',fontSize:screen.width/28,color:isClientHome?'#fd6c57':Colors.blue,alignSelf:'flex-start'}}>{barber[0] && barber[0].lang?polylanfr.Client:polylanar.Client}</Text>
               </View>
               <View style={{ justifyContent:'center',alignItems:'flex-start'}}>
-                 <Text style={{fontFamily:'poppins',fontSize:screen.width/28,color:isHome?'#fd6c57':Colors.blue}}>A domicile</Text>
+                 <Text style={{fontFamily:'poppins',fontSize:screen.width/28,color:isHome?'#fd6c57':Colors.blue}}>{barber[0] && barber[0].lang?polylanfr.AtHome:polylanar.AtHome}</Text>
               </View>
               <View style={{ justifyContent:'center',alignItems:'flex-start'}}>
-                 <Text style={{fontFamily:'poppins',fontSize:screen.width/28,color:isBoth?'#fd6c57':Colors.blue}}>Les deux</Text>
+                 <Text style={{fontFamily:'poppins',fontSize:screen.width/28,color:isBoth?'#fd6c57':Colors.blue}}>{barber[0] && barber[0].lang?polylanfr.Both:polylanar.Both}</Text>
               </View>
             </View> 
+            {isClientHome && !(barber[0].workplace==='cli')? <View style={{paddingTop:screen.width/18}} >
+              <Text style={{alignSelf:'center',paddingBottom:screen.width/18}}>{barber[0] && barber[0].lang?polylanfr.OptionConfiramtion:polylanar.OptionConfiramtion}</Text>
+              <View style={{flexDirection:'row',width:'100%',justifyContent:'center'}}>
+              <Button
+                    theme={{colors: {primary:'#fd6c57'}}} 
+                    title={barber[0] && barber[0].lang?polylanfr.Yes:polylanar.Yes}
+                    titleStyle={styles.labelButton}
+                    buttonStyle={styles.buttonStyle}
+                    ViewComponent={LinearGradient} 
+                    onPress={barberWorkplaceAtClientHome}
+                    linearGradientProps={{
+                        colors: ['#fd6d57', '#fd9054'],
+                        start: {x: 0, y: 0} ,
+                        end:{x: 1, y: 0}  
+                    }}
+                  />
+                  <Button
+                    theme={{colors: {primary:Colors.blue}}} 
+                    title={barber[0] && barber[0].lang?polylanfr.No:polylanar.No}
+                    titleStyle={styles.labelButton}
+                    buttonStyle={styles.buttonStyle}
+                    ViewComponent={LinearGradient} 
+                    onPress={home}
+                    linearGradientProps={{
+                        colors: [Colors.blue, Colors.blue],
+                        start: {x: 0, y: 0} ,
+                        end:{x: 1, y: 0}
+                        
+                    }}
+                  />
+              </View>
+ 
+            </View>:undefined}
+
             {isHome || isBoth?<View>
                 <InputProfile
                 id='address'
@@ -258,7 +296,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
               <View style={styles.buttonView}>
               <Button
                     theme={{colors: {primary:'#fd6c57'}}} 
-                    title={"Modifier"}
+                    title={barber[0] && barber[0].lang?polylanfr.Confirm:polylanar.Confirm}
                     titleStyle={styles.labelButton}
                     buttonStyle={styles.buttonStyle}
                     ViewComponent={LinearGradient} 

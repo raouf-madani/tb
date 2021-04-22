@@ -74,7 +74,7 @@ export default{
     TeamTahfifa:"Equipe ReBorn",
     Disconnect:"Se déconnecter",
     YourAge:"Votre âge",
-    ComfortZone:"Zone de confort",
+    ComfortZone:"Zone de travail",
     //Services screen********************************************************************
     AddSerivce:"Ajouter Service",
     AddPortfolio:"Ajouter Portfolio",
@@ -189,4 +189,14 @@ export default{
     YourBooking:' votre réservation!', 
     SuccessfulDataSent:'Vos données ont été changées avec succès!',
     DZ:"DZD",
+    //WordplaceScreen********************************************************************
+    WordplaceText:'Voulez-vous recevoir votre client dans votre zone de confort ou vous déplacer chez lui?',
+    AtHome:"A domicile",
+    Both:"Les deux",
+    OptionConfiramtion:"Êtes-vous sûr de choisir cette option?",
+    Awesome:"Génial!",
+    InHome:"Après choisir cette option, vous allez seulement recevoir vos clients chez vous ou chez votre salon.",
+    InClient:"Après choisir cette option, vous allez seulement vous déplacer chez vos clients.",
+    InBoth:"Après choisir cette option, vous allez déplacer chez vos clients et les recevoir chez vous.",
+    Excellent:"Excellent!"
 };

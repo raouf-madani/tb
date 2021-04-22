@@ -1,4 +1,4 @@
-import {CREATE_BARBER,SET_BARBERS,SET_BARBER,UPDATE_BARBER_PASSWORD,UPDATE_BARBER,DELETE_BARBER,UPDATE_BARBER_PHONE,UPDATE_BARBER_LANG,UPDATE_BARBER_WORKPLACE} from '../actions/barberActions';
+import {CREATE_BARBER,SET_BARBERS,SET_BARBER,UPDATE_BARBER_PASSWORD,UPDATE_BARBER,DELETE_BARBER,UPDATE_BARBER_PHONE,UPDATE_BARBER_LANG,UPDATE_BARBER_WORKPLACE,UPDATE_BARBER_ADDRESS} from '../actions/barberActions';
 import Barber from '../../models/barber';
 
 const initialState={
@@ -200,9 +200,10 @@ const barbersReducer=(state=initialState,action)=>{
             state.barber[indexBarberFind].mark,
             state.barber[indexBarberFind].lang,
             state.barber[indexBarberFind].type,
+            action.barberData.workplace,
             state.barber[indexBarberFind].services,
             state.barber[indexBarberFind].workingTimes,
-            action.barberData.workplace,
+            
           );   
 
           const updatedCurrentBarber=[...state.barber];
@@ -210,6 +211,42 @@ const barbersReducer=(state=initialState,action)=>{
           return{
             state,
             barber:updatedCurrentBarber
+          };
+
+          case UPDATE_BARBER_ADDRESS:
+          
+          const indexBarberSearch = state.barber.findIndex(barber => barber.id === action.id);
+      
+          const updatedBarberAddress = new Barber(
+            action.id,
+            state.barber[indexBarberSearch].phone,
+            state.barber[indexBarberSearch].password,
+            state.barber[indexBarberSearch].sex,
+            state.barber[indexBarberSearch].name,
+            state.barber[indexBarberSearch].surname,
+            state.barber[indexBarberSearch].b_name,
+            state.barber[indexBarberSearch].age,
+            state.barber[indexBarberSearch].email,
+            action.barberData.address,
+            state.barber[indexBarberSearch].wilaya,
+            state.barber[indexBarberSearch].region,
+            state.barber[indexBarberSearch].image,
+            state.barber[indexBarberSearch].long,
+            state.barber[indexBarberSearch].lat,
+            state.barber[indexBarberSearch].mark,
+            state.barber[indexBarberSearch].lang,
+            state.barber[indexBarberSearch].type,
+            state.barber[indexBarberSearch].workplace,
+            state.barber[indexBarberSearch].services,
+            state.barber[indexBarberSearch].workingTimes,
+            
+          );   
+
+          const updatedOneBarber=[...state.barber];
+          updatedOneBarber[indexBarberSearch]=updatedBarberAddress;
+          return{
+            state,
+            barber:updatedOneBarber
           };
 
           
