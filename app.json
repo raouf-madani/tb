@@ -23,7 +23,7 @@
     },
     "android": {
       "googleServicesFile": "./google-services.json",
-      "package": "com.ayoungleader.reborn_partner_app",
+      "package": "com.ayl.tahfifa",
       "useNextNotificationsApi": true,
       "versionCode":1,
       "permissions":[
