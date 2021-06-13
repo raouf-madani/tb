@@ -19,7 +19,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier":"com.ayoungleader.reborn_partner",
+      "bundleIdentifier":"host.exp.reborn_partner",
       "buildNumber":"1.0.0"
     },
     "android": {
