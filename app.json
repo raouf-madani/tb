@@ -18,12 +18,19 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier":"com.ayoungleader.reborn-partner-app",
+      "buildnumber":"1,0,0"
     },
     "android": {
       "googleServicesFile": "./google-services.json",
-      "package": "com.ayl.tahfifa",
-      "useNextNotificationsApi": true
+      "package": "com.ayoungleader.reborn-partner-app",
+      "useNextNotificationsApi": true,
+      "versionCode":1,
+      "permissions":[
+        "CAMERA",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
     }
   }
 }
