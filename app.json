@@ -19,8 +19,8 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier":"com.ayoungleader.reborn_partner_app",
-      "buildnumber":"1,0,0"
+      "bundleIdentifier":"com.ayoungleader.reborn_partner",
+      "buildNumber":"1.0.0"
     },
     "android": {
       "googleServicesFile": "./google-services.json",
