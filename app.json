@@ -19,7 +19,6 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier":"host.exp.reborn_partner",
       "buildNumber":"1.0.0"
     },
     "android": {
