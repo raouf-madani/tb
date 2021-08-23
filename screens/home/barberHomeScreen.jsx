@@ -410,7 +410,7 @@ async function registerForPushNotificationsAsync() {
                       type='custom'
                       startingValue={barber && feedbacks.length===0?2.5:barber.mark}
                       imageSize={screen.width/18}
-                      ratingBackgroundColor={'#323446'}
+                      ratingBackgroundColor={Colors.blue}
                       ratingColor='#fd6c57'
                       tintColor='#f9f9f9'
                       readonly = {true}
