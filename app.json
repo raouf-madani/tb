@@ -25,7 +25,7 @@
       "googleServicesFile": "./google-services.json",
       "package": "com.ayl.tahfifa",
       "useNextNotificationsApi": true,
-      "versionCode":2,
+      "versionCode":3,
       "permissions": [
         "CAMERA",
         "CAMERA_ROLL",
