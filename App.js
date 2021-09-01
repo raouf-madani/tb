@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {enableScreens} from 'react-native-screens';
 import BarberNavigation from './navigation/barberNavigation';
-import {AppLoading} from 'expo';
+import AppLoading from 'expo-app-loading';
 import * as Font from 'expo-font';
 
 import {createStore,combineReducers,applyMiddleware} from 'redux';
@@ -44,6 +44,7 @@ export default function App() {
        <AppLoading 
         startAsync={fetchFonts}
         onFinish={()=> setFontLoaded(true)}
+        onError={console.warn}
        />
      )
    }
