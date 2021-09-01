@@ -28,6 +28,7 @@
       "versionCode":2,
       "permissions": [
         "CAMERA",
+        "CAMERA_ROLL",
         "READ_EXTERNAL_STORAGE",
         "READ_INTERNAL_STORAGE",
         "WRITE_EXTERNAL_STORAGE"
