@@ -3,7 +3,7 @@
     "name": "ReBorn Partner",
     "slug": "rebornpartner",
     "description":"ReBorn partner est une application mobile conçue spécialement pour les prestataires de services de coiffure et beauté. Gérez vos heures de travail, vos services et vos tarifs directement depuis la magnifique application ReBorn Partner",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/iconReBorn.png",
     "splash": {
@@ -19,13 +19,13 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "buildNumber":"1.0.1"
+      "buildNumber":"1.0.2"
     },
     "android": {
       "googleServicesFile": "./google-services.json",
       "package": "com.ayl.tahfifa",
       "useNextNotificationsApi": true,
-      "versionCode":3,
+      "versionCode":6,
       "permissions": [
         "CAMERA",
         "CAMERA_ROLL",

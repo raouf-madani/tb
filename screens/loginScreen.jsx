@@ -1,11 +1,12 @@
 import React,{useState,useCallback,useReducer} from 'react';
-import { StyleSheet,View,KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard,Text,Image,Dimensions,TouchableOpacity, StatusBar,Alert,ActivityIndicator,AsyncStorage,Platform} from 'react-native';
+import { StyleSheet,View,KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard,Text,Image,Dimensions,TouchableOpacity, StatusBar,Alert,ActivityIndicator,Platform} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons} from "@expo/vector-icons";
 import {Button } from 'react-native-elements';
 import Colors from '../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import CustomInput from '../components/Input';
 import * as Crypto from 'expo-crypto'; 
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //responsivity (Dimensions get method)
 const screen = Dimensions.get('window');

@@ -1,7 +1,7 @@
 export const AUTHENTICATE = "AUTHENTICATE";
 export const LOGOUT ="LOGOUT";
 import Firebase from "../../helpers/Firebaseconfig";
-import {AsyncStorage} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const authenticate = (token,userID,expiryTime)=>{
 

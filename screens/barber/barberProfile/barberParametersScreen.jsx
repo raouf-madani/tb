@@ -1,5 +1,5 @@
 import React,{useState,useReducer,useCallback,useEffect} from 'react';
-import {StyleSheet,View,AsyncStorage,ScrollView,ImageBackground,TouchableWithoutFeedback,Keyboard,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActivityIndicator,Platform,StatusBar} from 'react-native';
+import {StyleSheet,View,ScrollView,ImageBackground,TouchableWithoutFeedback,Keyboard,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActivityIndicator,Platform,StatusBar} from 'react-native';
 import {MaterialIcons,MaterialCommunityIcons} from "@expo/vector-icons";
 import {Button} from 'react-native-elements';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -11,6 +11,7 @@ import InputProfile from '../../../components/InputProfile';
 import * as barberActions from '../../../store/actions/barberActions';
 import * as authActions from '../../../store/actions/authActions';
 import * as Crypto from 'expo-crypto';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 //responsivity (Dimensions get method)
 const screen = Dimensions.get('window');

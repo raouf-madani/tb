@@ -1,10 +1,10 @@
 import React,{useState,useCallback,useRef,useReducer} from 'react';
-import { StyleSheet,View,KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard,Text,Image,ImageBackground,StatusBar,TextInput,TouchableOpacity,ActionSheetIOS,Alert,ActivityIndicator,AsyncStorage,Dimensions,Platform} from 'react-native';
+import { StyleSheet,View,KeyboardAvoidingView,TouchableWithoutFeedback,Keyboard,Text,Image,ImageBackground,StatusBar,TextInput,TouchableOpacity,ActionSheetIOS,Alert,ActivityIndicator,Dimensions,Platform} from 'react-native';
 import {Button} from 'react-native-elements';
 import Colors from '../../constants/Colors';
 import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
 import { LinearGradient } from 'expo-linear-gradient';
-import * as FirebaseRecaptcha from "expo-firebase-recaptcha";
+import {FirebaseRecaptchaVerifierModal} from "expo-firebase-recaptcha";
 import * as firebase from "firebase";
 import Firebaseconfig from '../../helpers/Firebaseconfig';
 import * as barberActions from '../../store/actions/barberActions';
@@ -14,6 +14,7 @@ import {useDispatch} from 'react-redux';
 import * as Crypto from 'expo-crypto'; 
 import CustomInput from '../../components/Input';
 import RNPickerSelect from 'react-native-picker-select';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 //responsivity (Dimensions get method)
@@ -23,7 +24,6 @@ const screen = Dimensions.get('window');
 try {
   if (Firebaseconfig.apiKey) {
     firebase.initializeApp(Firebaseconfig);
-    console.log(Firebaseconfig);
   }
 } catch (err) {
   // ignore app already initialized error on snack
@@ -167,7 +167,7 @@ const signupHandler = async () => {
       const result = await fetch(`http://95.111.243.233:3000/phone/${prefix+formState.inputValues.phone}`);
     
       const resData= await result.json();
-      console.log(resData);
+    
       setVerifyInProgress(false);
 
       //Check if User Exists
@@ -207,7 +207,8 @@ const sendCode = async () => {
       verificationCode
     );
     
-     await firebase.auth().signInWithCredential(credential);
+     const verificationResults = await firebase.auth().signInWithCredential(credential);
+    
 
       //Retrieve user data
       const user = firebase.auth().currentUser;
@@ -248,7 +249,7 @@ const sendCode = async () => {
         <ImageBackground source={{uri:'http://95.111.243.233/assets/tahfifabarber/chica4.jpg'}} style={styles.container}>
           <KeyboardAvoidingView keyboardVerticalOffset={screen.width/36}  behavior={Platform.OS === "ios" ? "padding" : null}>
           <StatusBar hidden />
-          <FirebaseRecaptcha.FirebaseRecaptchaVerifierModal
+          <FirebaseRecaptchaVerifierModal
                 ref={recaptchaVerifier}
                 firebaseConfig={Firebaseconfig}
                 title='Prouvez que vous êtes humain!'

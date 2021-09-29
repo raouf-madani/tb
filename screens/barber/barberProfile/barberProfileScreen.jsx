@@ -1,6 +1,6 @@
 import React,{useState,useEffect,useReducer,useCallback} from 'react';
-import { StyleSheet,View,AsyncStorage,Linking,ScrollView,TouchableWithoutFeedback,Keyboard,ImageBackground,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActivityIndicator,Platform,StatusBar,ActionSheetIOS} from 'react-native';
-import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
+import { StyleSheet,View,Linking,ScrollView,TouchableWithoutFeedback,Keyboard,ImageBackground,TouchableOpacity,Text,Image,Alert,KeyboardAvoidingView,Dimensions,ActivityIndicator,Platform,StatusBar,ActionSheetIOS} from 'react-native';
+import {MaterialIcons,MaterialCommunityIcons,Ionicons,AntDesign} from "@expo/vector-icons";
 import {useSelector,useDispatch} from 'react-redux';
 import Colors from "../../../constants/Colors";
 import {HeaderButtons,Item} from "react-navigation-header-buttons";
@@ -11,7 +11,7 @@ import polylanfr from "../../../lang/fr";
 import RNPickerSelect from 'react-native-picker-select';
 import * as barberActions from '../../../store/actions/barberActions';
 import * as authActions from '../../../store/actions/authActions';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 import { deleteToken } from '../../../store/actions/tokenActions';
@@ -368,7 +368,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
               
                 <InputProfile
                       id='age'
-                      rightIcon={<MaterialCommunityIcons title = "age" name ='sort-numeric' color={Platform.OS==='android'?'#323446':'#fff'} size={screen.width/15.7} />}
+                      rightIcon={<AntDesign title = "age" name ='idcard' color={Platform.OS==='android'?'#323446':'#fff'} size={screen.width/15.7} />}
                       placeholder={barber && barber[0].lang?polylanfr.Age:polylanar.Age}
                       keyboardType="phone-pad"
                       returnKeyType="next"

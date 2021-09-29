@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.15.8",
     "@react-native-community/datetimepicker": "3.5.2",
     "@react-native-community/masked-view": "0.1.10",
     "body-parser": "^1.19.0",
