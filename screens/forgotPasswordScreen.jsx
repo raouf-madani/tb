@@ -5,7 +5,7 @@ import {Button } from 'react-native-elements';
 import Colors from '../constants/Colors';
 import { LinearGradient } from 'expo-linear-gradient';
 import CustomInput from '../components/Input';
-import * as FirebaseRecaptcha from "expo-firebase-recaptcha";
+import {FirebaseRecaptchaVerifierModal} from "expo-firebase-recaptcha";
 import * as firebase from "firebase";
 import Firebaseconfig from '../helpers/Firebaseconfig';
 
@@ -165,7 +165,7 @@ const verifyNumber = async ()=>{
       <View style={styles.container}>
        <KeyboardAvoidingView  keyboardVerticalOffset={10}  behavior={Platform.OS === "ios" ? "padding" : null}>
          <StatusBar hidden />
-         <FirebaseRecaptcha.FirebaseRecaptchaVerifierModal
+         <FirebaseRecaptchaVerifierModal
                 ref={recaptchaVerifier}
                 firebaseConfig={Firebaseconfig}
                 title='Prouvez que vous êtes humain!'

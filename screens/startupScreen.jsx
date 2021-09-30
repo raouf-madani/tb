@@ -1,9 +1,9 @@
 import React,{useEffect} from 'react';
-import { StyleSheet, View, ImageBackground, ActivityIndicator,AsyncStorage,StatusBar} from 'react-native';
+import { StyleSheet, View, ImageBackground, ActivityIndicator,StatusBar} from 'react-native';
 import Colors from '../constants/Colors';
 import * as authActions from '../store/actions/authActions';
 import {useDispatch} from 'react-redux';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const StartupScreen = props =>{
 
