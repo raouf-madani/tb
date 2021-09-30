@@ -474,7 +474,7 @@ async function registerForPushNotificationsAsync() {
                 </View>
                 <View>
                   <Text style={styles.title}>{barber && barber.lang?polylanfr.StartFrom:polylanar.StartFrom}</Text> 
-                  <Text style={styles.price}>{barber && barber.services.length!==0 && barber.lang ? minServicesPrice(barber.services) +' '+ polylanfr.DZ:barber && barber.services.length!==0 && !barber.lang ? minServicesPrice(barber.services) +' '+ polylanar.DZ:'0 '+ barber && barber.lang?polylanfr.DZ:polylanar.DZ}</Text>
+                  <Text style={styles.price}>{barber && barber.services.length!==0 && barber.lang ? minServicesPrice(barber.services) +' '+ polylanfr.DZ:barber && barber.services.length!==0 && !barber.lang ? minServicesPrice(barber.services) +' '+ polylanar.DZ:barber && barber.lang?'0 '+ polylanfr.DZ:'0 '+ polylanar.DZ}</Text>
                 </View>  
             </View>
             

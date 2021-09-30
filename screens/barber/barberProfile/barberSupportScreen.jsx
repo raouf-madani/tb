@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet,View,ImageBackground,TouchableOpacity,Text,Image,Alert,Dimensions,Platform,Linking,StatusBar} from 'react-native';
-import {MaterialIcons,MaterialCommunityIcons,Ionicons} from "@expo/vector-icons";
+import {MaterialCommunityIcons} from "@expo/vector-icons";
 import Colors from "../../../constants/Colors";
 import polylanar from "../../../lang/ar";
 import polylanfr from "../../../lang/fr";
@@ -9,16 +9,12 @@ import {useSelector} from 'react-redux';
 //responsivity (Dimensions get method)
 const screen = Dimensions.get('window');
 
-
- 
-
-
 const BarberSupportScreen = props =>{
 
-  const URL = "https://tahfifaapp.com";
+  const URL = "https://rebornapp.com";
   const facebookURL = "https://www.facebook.com/TahfifaApp";
   const instagramURL = "https://www.instagram.com/tahfifaapp/";
-  const linkedinURL = "https://www.linkedin.com/company/tahfifa/";
+  const linkedinURL = "https://www.linkedin.com/company/rebornapp/";
   //get the barber's data
   const barber= useSelector(state=>state.barbers.barber);
   const callPhone = ()=>{
@@ -82,12 +78,6 @@ const BarberSupportScreen = props =>{
             </View>
            
             <View style={{flexDirection:'row',alignItems:'center',alignSelf:'center'}}>
-              <TouchableOpacity  style={{marginHorizontal:screen.width/72}} onPress={instagramUrl}>
-                 <MaterialCommunityIcons name="instagram" size={screen.width/11.25} color="black" />
-              </TouchableOpacity>
-              <TouchableOpacity style={{marginHorizontal:screen.width/72}} onPress={facebookUrl}>
-                <MaterialCommunityIcons name="facebook-box" size={screen.width/11.25} color="black" /> 
-              </TouchableOpacity>
               <TouchableOpacity style={{marginHorizontal:screen.width/72}} onPress={linkedinUrl}>
                 <MaterialCommunityIcons name="linkedin" size={screen.width/11.25} color="black" /> 
               </TouchableOpacity> 

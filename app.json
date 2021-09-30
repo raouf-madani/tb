@@ -19,13 +19,13 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "buildNumber":"1.0.2"
+      "buildNumber":"1.0.3"
     },
     "android": {
       "googleServicesFile": "./google-services.json",
       "package": "com.ayl.tahfifa",
       "useNextNotificationsApi": true,
-      "versionCode":6,
+      "versionCode":7,
       "permissions": [
         "CAMERA",
         "CAMERA_ROLL",

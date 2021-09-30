@@ -331,7 +331,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                   </View>  
                   <View style={{width:'70%'}}>
                     <Text style={styles.bnameText}>{barber[0].b_name!==null?barber[0].b_name: barber && barber[0].lang?polylanfr.BusinessName:polylanar.BusinessName}</Text>
-                    <Text style={styles.age}>{barber[0].age!==null && barber[0].lang?barber[0].age+' ans': barber[0].age!==null && !barber[0].lang?barber[0].age+' سنة':barber[0].age===null && barber[0].lang?polylanfr.YourAge:barber[0].age===null && !barber[0].lang?polylanar.YourAge :undefined}</Text>
+                    <Text style={styles.age}>{barber[0].age && barber[0].lang?`${barber[0].age} ans`: barber[0].age!==null && !barber[0].lang?barber[0].age+' سنة':barber[0].age===null && barber[0].lang?polylanfr.YourAge:barber[0].age===null && !barber[0].lang?polylanar.YourAge :undefined}</Text>
                   </View>
                 </View>
             </View>
@@ -373,7 +373,7 @@ disaptchFormState({type:Form_Input_Update,value:inputValue,isValid:inputValidity
                       keyboardType="phone-pad"
                       returnKeyType="next"
                       onInputChange={inputChangeHandler}
-                      initialValue={barber[0] && barber[0].age && barber[0].lang?`${barber[0].age}`:barber[0] && barber[0].age && !barber[0].lang?`${barber[0].age}`:''}
+                      initialValue={barber[0].age!== null && barber[0].lang?`${barber[0].age} ans`:barber[0].age!== null && !barber[0].lang?`${barber[0].age} سنة`:''}
                       initiallyValid={true}
                       required
                       placeholderTextColor={Platform.OS==='android'?'rgba(50,52,70,0.4)':'#f9f9f9'}
