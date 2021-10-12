@@ -400,7 +400,7 @@ if(isLoadingState || barber===undefined){
           <KeyboardAvoidingView keyboardVerticalOffset={screen.width/36} behavior={Platform.OS === "ios" ? "padding" : null}>
                 <InputProfile
                 id='password'
-                rightIcon={<MaterialCommunityIcons title="lock" onPress={eye} name ={!isEye?'eye':'eye-off'} color={Platform.OS==='android'?'#323446':'#fff'} size={screen.width/15.7} />}
+                rightIcon={<MaterialCommunityIcons title="lock" onPress={eye} name ={!isEye?'eye-off':'eye'} color={Platform.OS==='android'?'#323446':'#fff'} size={screen.width/15.7} />}
                 placeholder={barber && barber[0].lang?polylanfr.NewPassword:polylanar.NewPassword}
                 keyboardType="default"
                 returnKeyType="next"

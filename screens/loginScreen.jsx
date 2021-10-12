@@ -160,7 +160,7 @@ const saveDataToStorage = (token,userID,expirationDate,gender,id) => {
                   />
                   <CustomInput
                     id='password'
-                    rightIcon={<MaterialCommunityIcons title="lock" onPress={eye} name ={!isEye?'eye':'eye-off'} color='#323446' size={screen.width/15.7} />}
+                    rightIcon={<MaterialCommunityIcons title="lock" onPress={eye} name ={!isEye?'eye-off':'eye'} color='#323446' size={screen.width/15.7} />}
                     placeholder='Mot de Passe'
                     keyboardType="default"
                     secureTextEntry={!isEye?true:false}
